@@ -1,0 +1,12 @@
+{
+    "name": "najs",
+    "version": "0.0.1",
+    "repository" : { 
+        "type" : "git", 
+        "url" : "https://github.com/najs-root/najs.git"
+    },
+    "author": {
+        "name" : "Nhat Phan",
+        "email" : "najs@ntworld.net"
+    }
+}
