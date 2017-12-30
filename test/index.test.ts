@@ -1,5 +1,5 @@
 import 'jest'
-import Najs, { register } from '../lib'
+import Najs from '../lib'
 
 class Test {
   className: 'Test'

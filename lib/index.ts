@@ -3,6 +3,7 @@ import { register } from './core/register'
 
 export * from './core/make'
 export * from './core/register'
+export * from './core/autoload'
 export * from './core/ClassRegistry'
 
 export default class Najs {
