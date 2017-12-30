@@ -1,12 +1,44 @@
 {
-    "name": "najs",
-    "version": "0.0.1",
-    "repository" : { 
-        "type" : "git", 
-        "url" : "https://github.com/najs-root/najs.git"
+  "name": "najs",
+  "version": "0.0.1",
+  "scripts": {
+    "build": "npm run build-ts && npm run tslint",
+    "build-ts": "tsc",
+    "tslint": "tslint -c tslint.json -p tsconfig.json"
+  },
+  "jest": {
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json",
+        "skipBabel": true
+      }
     },
-    "author": {
-        "name" : "Nhat Phan",
-        "email" : "najs@ntworld.net"
-    }
+    "moduleFileExtensions": ["js", "ts", "json"],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js"
+    },
+    "testMatch": ["**/test/**/*.test.ts", "**/test/**/*Test.ts"],
+    "testEnvironment": "node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/najs-root/najs.git"
+  },
+  "author": {
+    "name": "Nhat Phan",
+    "email": "najs@ntworld.net"
+  },
+  "dependencies": {
+    "express": "^4.16.2",
+    "lodash": "^4.17.4"
+  },
+  "devDependencies": {
+    "@types/jest": "^21.1.8",
+    "@types/express": "^4.11.0",
+    "@types/lodash": "^4.14.91",
+    "jest": "^21.2.1",
+    "ts-jest": "^21.2.3",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.2"
+  }
 }
