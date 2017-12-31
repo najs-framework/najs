@@ -2,7 +2,7 @@ import 'jest'
 import Najs from '../lib'
 
 class Test {
-  className: 'Test'
+  static className: string = 'Test'
 }
 
 describe('Najs', function() {

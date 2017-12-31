@@ -1,6 +1,6 @@
 import { isString, isFunction } from 'lodash'
 
-export default function get_class_name(classDefinition: any, allowString: boolean = true): string {
+export function get_class_name(classDefinition: any, allowString: boolean = true): string {
   if (allowString && isString(classDefinition)) {
     return classDefinition
   }

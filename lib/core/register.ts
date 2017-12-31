@@ -1,5 +1,5 @@
-import get_class_name from './internal/get_class_name'
-import RegistryItem from './internal/RegistryItem'
+import { get_class_name } from '../private/get_class_name'
+import { RegistryItem } from '../private/RegistryItem'
 import { ClassRegistry } from './ClassRegistry'
 
 export function register<T>(classDefinition: T): void
