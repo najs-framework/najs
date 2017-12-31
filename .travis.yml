@@ -1,3 +1,23 @@
 language: node_js
 node_js:
-  - "carbon"
+  - "lts/carbon"
+
+jobs:
+  include:
+    - stage: test
+      node_js: "node"
+      os: linux
+      before_script: npm run build || exit 1;
+      after_success: npm run coverage;
+    - stage: platform-test
+      node_js: "lts/carbon"
+      os: linux
+    - stage: platform-test
+      node_js: "lts/carbon"
+      os: osx
+
+install:
+  - npm install
+
+script:
+  - npm test

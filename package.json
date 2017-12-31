@@ -4,8 +4,9 @@
   "scripts": {
     "build": "npm run build-ts && npm run tslint",
     "build-ts": "tsc",
-    "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "test": "jest --forceExit"
+    "coverage": "jest --coverage --forceExit",
+    "test": "jest --forceExit",
+    "tslint": "tslint -c tslint.json -p tsconfig.json"
   },
   "jest": {
     "globals": {
