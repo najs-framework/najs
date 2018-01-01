@@ -31,6 +31,12 @@ class TestCached extends Test implements IAutoload {
   }
 }
 
+class Singleton extends Test implements IAutoload {
+  getClassName() {
+    return 'Singleton'
+  }
+}
+
 class TestInstanceWithData implements IAutoload {
   any: string
   constructor(any?: string) {
@@ -75,6 +81,14 @@ describe('Najs.make', function() {
       expect(make(Test) === make(Test)).toBe(false)
       expect(make<Test>(Test).getSomething()).toEqual('something')
       expect(make<Test>(Test).getFromParent()).toEqual('gift')
+    })
+
+    it('always returns same instance of class if it is singleton', function() {
+      register(Singleton, 'Singleton', true, true)
+      expect(make(Singleton) === make(Singleton)).toBe(true)
+      expect(make(Singleton) === make(Singleton)).toBe(true)
+      expect(make(Singleton) === make(Singleton)).toBe(true)
+      expect(make(Singleton) === make(Singleton)).toBe(true)
     })
 
     it('always returns newest instance of class definitions was overridden', function() {

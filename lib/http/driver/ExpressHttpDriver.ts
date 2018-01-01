@@ -5,6 +5,7 @@ import { isFunction } from 'lodash'
 import { register } from '../../index'
 import * as Express from 'express'
 
+@register()
 export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   static driverName: string = 'express'
   private express: Express.Express
@@ -55,5 +56,3 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     response.redirect(status, url)
   }
 }
-
-register(ExpressHttpDriver)
