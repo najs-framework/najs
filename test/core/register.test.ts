@@ -28,9 +28,9 @@ describe('Najs.register', function() {
   describe('<typeof T>(classDefinition: T)', function() {
     it('can registry a class definition by called IAutoload.getClassName()', function() {
       register<typeof TestAutoload>(TestAutoload)
-      expect(ClassRegistry[Symbol.for('TestAutoload')]).toEqual({
-        name: 'TestAutoload',
-        definition: TestAutoload,
+      expect(ClassRegistry.findOrFail('TestAutoload')).toEqual({
+        className: 'TestAutoload',
+        instanceConstructor: TestAutoload,
         overridable: true,
         singleton: false
       })
@@ -38,9 +38,9 @@ describe('Najs.register', function() {
 
     it('can registry a class definition get value of property Class.className', function() {
       register<typeof TestClassName>(TestClassName)
-      expect(ClassRegistry[Symbol.for('TestClassName')]).toEqual({
-        name: 'TestClassName',
-        definition: TestClassName,
+      expect(ClassRegistry.findOrFail('TestClassName')).toEqual({
+        className: 'TestClassName',
+        instanceConstructor: TestClassName,
         overridable: true,
         singleton: false
       })
@@ -50,9 +50,9 @@ describe('Najs.register', function() {
   describe('<typeof T>(classDefinition: T, className: string)', function() {
     it('can register an class definition with custom name', function() {
       register<typeof TestAutoload>(TestAutoload, 'Najs.TestAutoload')
-      expect(ClassRegistry[Symbol.for('Najs.TestAutoload')]).toEqual({
-        name: 'Najs.TestAutoload',
-        definition: TestAutoload,
+      expect(ClassRegistry.findOrFail('Najs.TestAutoload')).toEqual({
+        className: 'Najs.TestAutoload',
+        instanceConstructor: TestAutoload,
         overridable: true,
         singleton: false
       })
@@ -60,9 +60,9 @@ describe('Najs.register', function() {
 
     it('we often use this param for overriding the class definition', function() {
       register<typeof TestClassName>(TestClassName, 'Najs.TestAutoload')
-      expect(ClassRegistry[Symbol.for('Najs.TestAutoload')]).toEqual({
-        name: 'Najs.TestAutoload',
-        definition: TestClassName,
+      expect(ClassRegistry.findOrFail('Najs.TestAutoload')).toEqual({
+        className: 'Najs.TestAutoload',
+        instanceConstructor: TestClassName,
         overridable: true,
         singleton: false
       })
@@ -72,9 +72,9 @@ describe('Najs.register', function() {
   describe('<typeof T>(classDefinition: T, className: string, overridable: boolean)', function() {
     it('can lock the definition, no one can override it', function() {
       register<typeof TestAutoload>(TestAutoload, 'Not-Overridable', false)
-      expect(ClassRegistry[Symbol.for('Not-Overridable')]).toEqual({
-        name: 'Not-Overridable',
-        definition: TestAutoload,
+      expect(ClassRegistry.findOrFail('Not-Overridable')).toEqual({
+        className: 'Not-Overridable',
+        instanceConstructor: TestAutoload,
         overridable: false,
         singleton: false
       })
@@ -95,9 +95,9 @@ describe('Najs.register', function() {
   describe('<typeof T>(classDefinition: T, className: string, overridable: boolean, singleton: boolean)', function() {
     it('has default value is false', function() {
       register<typeof TestAutoload>(TestAutoload, 'Singleton', true)
-      expect(ClassRegistry[Symbol.for('Singleton')]).toEqual({
-        name: 'Singleton',
-        definition: TestAutoload,
+      expect(ClassRegistry.findOrFail('Singleton')).toEqual({
+        className: 'Singleton',
+        instanceConstructor: TestAutoload,
         overridable: true,
         singleton: false
       })
@@ -105,9 +105,9 @@ describe('Najs.register', function() {
 
     it('can define a class is singleton', function() {
       register<typeof TestAutoload>(TestAutoload, 'Singleton', false, true)
-      expect(ClassRegistry[Symbol.for('Singleton')]).toEqual({
-        name: 'Singleton',
-        definition: TestAutoload,
+      expect(ClassRegistry.findOrFail('Singleton')).toEqual({
+        className: 'Singleton',
+        instanceConstructor: TestAutoload,
         overridable: false,
         singleton: true
       })
@@ -123,9 +123,9 @@ describe('Najs.register', function() {
         }
       }
       expect(new A()).toBeInstanceOf(A)
-      expect(ClassRegistry[Symbol.for('A')]).toEqual({
-        name: 'A',
-        definition: A,
+      expect(ClassRegistry.findOrFail('A')).toEqual({
+        className: 'A',
+        instanceConstructor: A,
         overridable: true,
         singleton: false
       })
@@ -137,9 +137,9 @@ describe('Najs.register', function() {
         static className: string = 'B'
       }
       expect(new B()).toBeInstanceOf(B)
-      expect(ClassRegistry[Symbol.for('B')]).toEqual({
-        name: 'B',
-        definition: B,
+      expect(ClassRegistry.findOrFail('B')).toEqual({
+        className: 'B',
+        instanceConstructor: B,
         overridable: true,
         singleton: false
       })
@@ -151,9 +151,9 @@ describe('Najs.register', function() {
         static className: 'C'
       }
       expect(new C()).toBeInstanceOf(C)
-      expect(ClassRegistry[Symbol.for('Cindy')]).toEqual({
-        name: 'Cindy',
-        definition: C,
+      expect(ClassRegistry.findOrFail('Cindy')).toEqual({
+        className: 'Cindy',
+        instanceConstructor: C,
         overridable: true,
         singleton: false
       })

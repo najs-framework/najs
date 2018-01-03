@@ -1,6 +1,6 @@
 {
   "name": "najs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "scripts": {
     "build": "npm run build-ts && npm run tslint",
     "build-ts": "tsc",
@@ -15,18 +15,11 @@
         "skipBabel": true
       }
     },
-    "moduleFileExtensions": [
-      "js",
-      "ts",
-      "json"
-    ],
+    "moduleFileExtensions": ["js", "ts", "json"],
     "transform": {
       "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js"
     },
-    "testMatch": [
-      "**/test/**/*.test.ts",
-      "**/test/**/*Test.ts"
-    ],
+    "testMatch": ["**/test/**/*.test.ts", "**/test/**/*Test.ts"],
     "testEnvironment": "node"
   },
   "repository": {
@@ -37,8 +30,8 @@
     "name": "Nhat Phan",
     "email": "najs@ntworld.net"
   },
+  "engines": { "node": ">=8.7" },
   "dependencies": {
-    "@types/sinon": "^4.1.2",
     "collect.js": "^4.0.1",
     "coveralls": "^3.0.0",
     "express": "^4.16.2",
@@ -49,6 +42,7 @@
     "@types/express": "^4.11.0",
     "@types/jest": "^21.1.8",
     "@types/lodash": "^4.14.91",
+    "@types/sinon": "^4.1.2",
     "jest": "^21.2.1",
     "ts-jest": "^21.2.3",
     "tslint": "^5.8.0",

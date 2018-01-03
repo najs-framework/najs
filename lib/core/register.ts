@@ -60,21 +60,13 @@ export function register(
     }
   }
 
-  const name: string = className || get_class_name(classDefinition, false)
-  const symbol: symbol = Symbol.for(name)
-
-  if (Object.getOwnPropertySymbols(ClassRegistry).indexOf(symbol) !== -1) {
-    const registry: ClassRegistryItem = ClassRegistry[symbol]
-    if (!registry.overridable) {
-      throw new Error('Can not overridable ' + className)
-    }
-  }
-
-  const item: ClassRegistryItem = {
-    name: name,
-    definition: classDefinition,
-    overridable: overridable === false ? false : true,
-    singleton: singleton === true ? true : false
-  }
-  ClassRegistry[symbol] = item
+  const item: ClassRegistryItem = new ClassRegistryItem(
+    className || get_class_name(classDefinition, false),
+    classDefinition,
+    undefined,
+    undefined,
+    overridable,
+    singleton
+  )
+  ClassRegistry.register(item)
 }
