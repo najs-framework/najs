@@ -1,6 +1,6 @@
 {
   "name": "najs",
-  "version": "0.0.4",
+  "version": "0.1.1",
   "scripts": {
     "build": "npm run build-ts && npm run tslint",
     "build-ts": "tsc -d",
@@ -23,6 +23,7 @@
     "testMatch": ["**/test/**/*.test.ts", "**/test/**/*Test.ts"],
     "testEnvironment": "node"
   },
+  "files": ["dist/**/*"],
   "main": "./dist/lib/index.js",
   "types": "./dist/lib/index.d.ts",
   "repository": {
