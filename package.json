@@ -6,7 +6,8 @@
     "build-ts": "tsc",
     "coverage": "jest --coverage --forceExit",
     "test": "jest --forceExit",
-    "tslint": "tslint -c tslint.json -p tsconfig.json"
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "prepublishOnly": "rm -rf ./dst && npm run build"
   },
   "jest": {
     "globals": {
@@ -22,6 +23,7 @@
     "testMatch": ["**/test/**/*.test.ts", "**/test/**/*Test.ts"],
     "testEnvironment": "node"
   },
+  "main": "./dst/lib/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/najs-framework/najs.git"
