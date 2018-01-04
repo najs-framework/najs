@@ -2,7 +2,7 @@ import { ClassRegistryItem } from './../private/ClassRegistryItem'
 import { mapValues } from 'lodash'
 import { class_registry_circular_reference_check } from '../private/class_registry_circular_reference_check'
 
-class ClassRegistryCollection {
+export class ClassRegistryCollection {
   private items: {
     [key: string]: ClassRegistryItem
   } = {}

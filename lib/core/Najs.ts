@@ -2,7 +2,7 @@ import { make } from './make'
 import { register } from './register'
 import { IHttpDriver } from '../http/IHttpDriver'
 
-type NajsOptions = {
+export type NajsOptions = {
   port: number
   host: string
   httpDriver: string

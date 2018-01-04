@@ -1,7 +1,7 @@
 import { register } from './register'
 import { isString } from 'lodash'
 
-type Decorator = (target: any) => any
+export type Decorator = (target: any) => any
 
 /**
  * Decorator to register a class.

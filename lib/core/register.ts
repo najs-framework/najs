@@ -3,7 +3,7 @@ import { ClassRegistryItem } from '../private/ClassRegistryItem'
 import { ClassRegistry } from './ClassRegistry'
 import { isString } from 'lodash'
 
-type Decorator = (target: any) => any
+export type Decorator = (target: any) => any
 
 /**
  * Decorator to register a class.

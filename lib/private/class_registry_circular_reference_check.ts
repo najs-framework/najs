@@ -1,6 +1,6 @@
-type ConcreteClassName = string | undefined
+export type ConcreteClassName = string | undefined
 
-type RegistryItems = {
+export type RegistryItems = {
   [className: string]: ConcreteClassName
 }
 

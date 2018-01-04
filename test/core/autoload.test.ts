@@ -1,7 +1,7 @@
 import 'jest'
 import { register, autoload } from '../../lib'
 
-class Repository {
+export class Repository {
   static className = 'Repository'
 
   getSomething() {

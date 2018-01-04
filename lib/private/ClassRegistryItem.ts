@@ -1,6 +1,6 @@
 import { isFunction } from 'lodash'
 
-type InstanceCreator = () => any
+export type InstanceCreator = () => any
 
 export class ClassRegistryItem {
   className: string

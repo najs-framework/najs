@@ -2,8 +2,8 @@ import { ClassRegistry } from './ClassRegistry'
 import { ClassRegistryItem } from '../private/ClassRegistryItem'
 import { isString, isFunction } from 'lodash'
 
-type Decorator = (target: any) => any
-type InstanceCreator = () => any
+export type Decorator = (target: any) => any
+export type InstanceCreator = () => any
 
 export function bind(className: string): Decorator
 export function bind(className: string, instanceCreator: InstanceCreator): void
