@@ -1,13 +1,13 @@
 {
   "name": "najs",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "build": "npm run build-ts && npm run tslint",
     "build-ts": "tsc -d",
     "coverage": "jest --coverage --forceExit",
     "test": "jest --forceExit",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "prepublishOnly": "tsc -d -p ./ --outDir dst/"
+    "prepublishOnly": "tsc -d -p ./ --outDir dist/"
   },
   "jest": {
     "globals": {
@@ -23,8 +23,8 @@
     "testMatch": ["**/test/**/*.test.ts", "**/test/**/*Test.ts"],
     "testEnvironment": "node"
   },
-  "main": "./dst/lib/index.js",
-  "types": "./dst/lib/index.d.ts",
+  "main": "./dist/lib/index.js",
+  "types": "./dist/lib/index.d.ts",
   "repository": {
     "type": "git",
     "url": "https://github.com/najs-framework/najs.git"
