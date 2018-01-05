@@ -1,13 +1,13 @@
 {
   "name": "najs",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "scripts": {
     "build": "npm run build-ts && npm run tslint",
     "build-ts": "tsc -d",
     "coverage": "jest --coverage --forceExit",
     "test": "jest --forceExit",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "prepublishOnly": "tsc -d -p ./ --outDir dist/"
+    "prepublishOnly": "tsc -d -p ./ --outDir dist"
   },
   "jest": {
     "globals": {
