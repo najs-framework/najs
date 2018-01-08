@@ -11,20 +11,17 @@ var Najs = /** @class */ (function () {
     function Najs() {
     }
     Najs.use = function (options) {
-        this.options = Object.assign({}, options, NajsDefaultOptions);
+        this.options = Object.assign({}, NajsDefaultOptions, options);
         return Najs;
     };
-    Najs.make = function (className) {
-        return make_1.make(className);
+    Najs.make = function (className, data) {
+        return make_1.make(className, data);
     };
-    Najs.register = function (classDefinition, className, overridable) {
-        register_1.register(classDefinition, className, overridable);
+    Najs.register = function (classDefinition, className, overridable, singleton) {
+        register_1.register(classDefinition, className, overridable, singleton);
         return this;
     };
     Najs.loadClasses = function (classes) {
-        return this;
-    };
-    Najs.remap = function (target, destination) {
         return this;
     };
     Najs.start = function (options) {
