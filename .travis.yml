@@ -8,14 +8,12 @@ jobs:
       node_js: "node"
       os: linux
       before_script: npm run build || exit 1;
-      after_success: npm run coverage;
-      after_success: 'cat ./coverage/lcov.info | coveralls'
+      after_success:
+        - npm run coverage;
+        - 'cat ./coverage/lcov.info | coveralls'
     - stage: platform-test
       node_js: "lts/carbon"
       os: linux
-    - stage: platform-test
-      node_js: "lts/carbon"
-      os: osx
 
 install:
   - npm install
