@@ -1,1 +1,1 @@
-{"version":3,"file":"RouteCollection.js","sourceRoot":"","sources":["../../../lib/http/RouteCollection.ts"],"names":[],"mappings":";;AAGA;IAAA;IAQA,CAAC;IALQ,uBAAO,GAAd;QACE,MAAM,CAAC,EAAE,CAAA;IACX,CAAC;IAEM,mBAAG,GAAV,cAAc,CAAC;IANR,sBAAM,GAAkB,EAAE,CAAA;IAOnC,sBAAC;CAAA,AARD,IAQC;AARY,0CAAe"}
+{"version":3,"file":"RouteCollection.js","sourceRoot":"","sources":["../../../lib/http/RouteCollection.ts"],"names":[],"mappings":";;AAGA;IAGE,MAAM,CAAC,OAAO;QACZ,MAAM,CAAC,EAAE,CAAA;IACX,CAAC;IAED,MAAM,CAAC,GAAG,KAAI,CAAC;;AANR,sBAAM,GAAkB,EAAE,CAAA;AADnC,0CAQC"}

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Najs_1 = require("./core/Najs");
+const Najs_1 = require("./core/Najs");
 exports.default = Najs_1.Najs;
 var make_1 = require("./core/make");
 exports.make = make_1.make;

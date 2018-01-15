@@ -1,24 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
-var Sinon = require("sinon");
-var Register = require("../../lib/core/register");
-var Make = require("../../lib/core/make");
-var Najs_1 = require("../../lib/core/Najs");
-var Test = /** @class */ (function () {
-    function Test() {
-    }
-    Test.className = 'Test';
-    return Test;
-}());
-var FakeHttpDriver = /** @class */ (function () {
-    function FakeHttpDriver() {
-    }
-    FakeHttpDriver.prototype.start = function (options) { };
-    FakeHttpDriver.className = 'FakeHttpDriver';
-    return FakeHttpDriver;
-}());
-var DefaultOptions = {
+const Sinon = require("sinon");
+const Register = require("../../lib/core/register");
+const Make = require("../../lib/core/make");
+const Najs_1 = require("../../lib/core/Najs");
+class Test {
+}
+Test.className = 'Test';
+class FakeHttpDriver {
+    start(options) { }
+}
+FakeHttpDriver.className = 'FakeHttpDriver';
+const DefaultOptions = {
     port: 3000,
     host: 'localhost',
     httpDriver: 'ExpressHttpDriver'
@@ -43,7 +37,7 @@ describe('Najs', function () {
     });
     describe('Najs.register()', function () {
         it('proxies register() function', function () {
-            var registerSpy = Sinon.spy(Register, 'register');
+            const registerSpy = Sinon.spy(Register, 'register');
             Najs_1.Najs.register(FakeHttpDriver);
             expect(registerSpy.calledWith(FakeHttpDriver)).toBe(true);
             Najs_1.Najs.register(Test, 'Test');
@@ -56,7 +50,7 @@ describe('Najs', function () {
     });
     describe('Najs.make()', function () {
         it('proxies make() function', function () {
-            var makeSpy = Sinon.spy(Make, 'make');
+            const makeSpy = Sinon.spy(Make, 'make');
             Najs_1.Najs.make(Test);
             expect(makeSpy.calledWith(Test)).toBe(true);
             Najs_1.Najs.make('Test');
@@ -67,7 +61,7 @@ describe('Najs', function () {
     });
     describe('start(options?: Object)', function () {
         it('called use(options) if provided', function () {
-            var useSpy = Sinon.spy(Najs_1.Najs, 'use');
+            const useSpy = Sinon.spy(Najs_1.Najs, 'use');
             Najs_1.Najs.start({
                 httpDriver: FakeHttpDriver.className
             });

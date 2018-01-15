@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var register_1 = require("./register");
-var lodash_1 = require("lodash");
+const register_1 = require("./register");
+const lodash_1 = require("lodash");
 function singleton(classDefinition, className, overridable) {
     if (typeof classDefinition === 'undefined' || lodash_1.isString(classDefinition)) {
         return function decorator(target) {

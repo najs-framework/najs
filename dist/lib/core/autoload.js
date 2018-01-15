@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var make_1 = require("./make");
+const make_1 = require("./make");
 function autoload(className) {
     return function (target, key, descriptor) {
         if (typeof target === 'function') {

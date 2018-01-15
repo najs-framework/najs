@@ -6,52 +6,48 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var lodash_1 = require("lodash");
-var index_1 = require("../../index");
-var Express = require("express");
-var ExpressHttpDriver = /** @class */ (function () {
-    function ExpressHttpDriver() {
-    }
-    ExpressHttpDriver_1 = ExpressHttpDriver;
-    ExpressHttpDriver.prototype.getClassName = function () {
+const lodash_1 = require("lodash");
+const index_1 = require("../../index");
+const Express = require("express");
+let ExpressHttpDriver = ExpressHttpDriver_1 = class ExpressHttpDriver {
+    getClassName() {
         return 'ExpressHttpDriver';
-    };
-    ExpressHttpDriver.prototype.getDriverName = function () {
+    }
+    getDriverName() {
         return ExpressHttpDriver_1.driverName;
-    };
-    ExpressHttpDriver.prototype.initialize = function () {
+    }
+    initialize() {
         this.express = lodash_1.isFunction(this.setupFunction) ? this.setupFunction() : this.defaultInitialize();
         if (lodash_1.isFunction(this.didSetupHandler)) {
             this.didSetupHandler(this.express);
         }
-    };
-    ExpressHttpDriver.prototype.defaultInitialize = function () {
-        var app = Express();
+    }
+    defaultInitialize() {
+        const app = Express();
         return app;
-    };
-    ExpressHttpDriver.prototype.setup = function (setupFunction) {
+    }
+    setup(setupFunction) {
         this.setupFunction = setupFunction;
         return this;
-    };
-    ExpressHttpDriver.prototype.driverDidSetup = function (handler) {
+    }
+    driverDidSetup(handler) {
         this.didSetupHandler = handler;
         return this;
-    };
+    }
     // -------------------------------------------------------------------------------------------------------------------
-    ExpressHttpDriver.prototype.route = function (route) { };
-    ExpressHttpDriver.prototype.start = function (options) { };
-    ExpressHttpDriver.prototype.respondJson = function (response, value) {
+    route(route) { }
+    start(options) { }
+    respondJson(response, value) {
         response.json(value);
-    };
-    ExpressHttpDriver.prototype.respondRedirect = function (response, url, status) {
+    }
+    respondRedirect(response, url, status) {
         response.redirect(status, url);
-    };
-    ExpressHttpDriver.driverName = 'express';
-    ExpressHttpDriver = ExpressHttpDriver_1 = __decorate([
-        index_1.register()
-    ], ExpressHttpDriver);
-    return ExpressHttpDriver;
-    var ExpressHttpDriver_1;
-}());
+    }
+};
+ExpressHttpDriver.driverName = 'express';
+ExpressHttpDriver = ExpressHttpDriver_1 = __decorate([
+    index_1.register()
+], ExpressHttpDriver);
 exports.ExpressHttpDriver = ExpressHttpDriver;
+var ExpressHttpDriver_1;
 //# sourceMappingURL=ExpressHttpDriver.js.map

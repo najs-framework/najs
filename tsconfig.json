@@ -1,19 +1,13 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es5",
+    "target": "es6",
     "experimentalDecorators": true,
     "sourceMap": true,
     "moduleResolution": "node",
     "outDir": "dist",
-    "types": [
-      "node",
-      "express"
-    ],
-    "lib": [
-      "es6",
-      "es2015.promise"
-    ],
+    "types": ["node", "express"],
+    "lib": ["es6", "es2015.promise"],
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
@@ -23,12 +17,6 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true
   },
-  "include": [
-    "./lib/**/*.ts",
-    "./test/**/*.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "build"
-  ]
+  "include": ["./lib/**/*.ts", "./test/**/*.ts"],
+  "exclude": ["node_modules", "build"]
 }

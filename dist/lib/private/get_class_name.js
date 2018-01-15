@@ -1,8 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var lodash_1 = require("lodash");
-function get_class_name(classDefinition, allowString) {
-    if (allowString === void 0) { allowString = true; }
+const lodash_1 = require("lodash");
+function get_class_name(classDefinition, allowString = true) {
     if (allowString && lodash_1.isString(classDefinition)) {
         return classDefinition;
     }

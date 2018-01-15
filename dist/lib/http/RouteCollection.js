@@ -1,14 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var RouteCollection = /** @class */ (function () {
-    function RouteCollection() {
-    }
-    RouteCollection.getData = function () {
+class RouteCollection {
+    static getData() {
         return [];
-    };
-    RouteCollection.has = function () { };
-    RouteCollection.routes = [];
-    return RouteCollection;
-}());
+    }
+    static has() { }
+}
+RouteCollection.routes = [];
 exports.RouteCollection = RouteCollection;
 //# sourceMappingURL=RouteCollection.js.map

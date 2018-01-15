@@ -38,11 +38,11 @@ export class Najs {
     return this
   }
 
-  static loadClasses(classes: Array<any>): typeof Najs
-  static loadClasses(classes: Object): typeof Najs
-  static loadClasses(classes: Object | Array<any>): typeof Najs {
-    return this
-  }
+  // static loadClasses(classes: Array<any>): typeof Najs
+  // static loadClasses(classes: Object): typeof Najs
+  // static loadClasses(classes: Object | Array<any>): typeof Najs {
+  //   return this
+  // }
 
   static start(): void
   static start(options: Partial<NajsOptions>): void

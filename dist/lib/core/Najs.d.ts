@@ -13,8 +13,6 @@ export declare class Najs {
     static register<T>(classDefinition: T, className: string): typeof Najs;
     static register<T>(classDefinition: T, className: string, overridable: boolean): typeof Najs;
     static register<T>(classDefinition: T, className: string, overridable: boolean, singleton: boolean): typeof Najs;
-    static loadClasses(classes: Array<any>): typeof Najs;
-    static loadClasses(classes: Object): typeof Najs;
     static start(): void;
     static start(options: Partial<NajsOptions>): void;
 }

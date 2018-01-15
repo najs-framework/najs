@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var RouteBuilder = /** @class */ (function () {
-    function RouteBuilder(method, path) {
+class RouteBuilder {
+    constructor(method, path) {
         this.data = {
             name: '',
             method: method,
@@ -12,25 +12,24 @@ var RouteBuilder = /** @class */ (function () {
             middleware: []
         };
     }
-    RouteBuilder.prototype.getRouteData = function () {
+    getRouteData() {
         return this.data;
-    };
-    RouteBuilder.prototype.registerChildRoute = function (route) { };
-    RouteBuilder.prototype.shouldRegisterChildRoute = function () {
+    }
+    registerChildRoute(route) { }
+    shouldRegisterChildRoute() {
         return false;
-    };
-    RouteBuilder.prototype.hasChildRoute = function () {
+    }
+    hasChildRoute() {
         return false;
-    };
+    }
     // -------------------------------------------------------------------------------------------------------------------
-    RouteBuilder.prototype.name = function (name) {
+    name(name) {
         this.data.name = name;
         return this;
-    };
-    RouteBuilder.prototype.validateInput = function () {
+    }
+    validateInput() {
         return this;
-    };
-    return RouteBuilder;
-}());
+    }
+}
 exports.RouteBuilder = RouteBuilder;
 //# sourceMappingURL=RouteBuilder.js.map

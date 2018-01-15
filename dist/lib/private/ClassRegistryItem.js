@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var lodash_1 = require("lodash");
-var ClassRegistryItem = /** @class */ (function () {
-    function ClassRegistryItem(className, instanceConstructor, instanceCreator, instance, overridable, singleton) {
+const lodash_1 = require("lodash");
+class ClassRegistryItem {
+    constructor(className, instanceConstructor, instanceCreator, instance, overridable, singleton) {
         this.className = className;
         this.concreteClassName = undefined;
         this.instanceConstructor = instanceConstructor;
@@ -11,16 +11,23 @@ var ClassRegistryItem = /** @class */ (function () {
         this.overridable = overridable === false ? false : true;
         this.singleton = singleton === true ? true : false;
     }
-    ClassRegistryItem.prototype.createInstance = function () {
+    createInstance() {
         if (lodash_1.isFunction(this.instanceConstructor)) {
             return Object.create(this.instanceConstructor.prototype);
         }
-    };
-    ClassRegistryItem.prototype.make = function (data) {
+        if (lodash_1.isFunction(this.instanceCreator)) {
+            return this.instanceCreator.call(undefined);
+        }
+        if (this.singleton) {
+            return this.instance;
+        }
+        return undefined;
+    }
+    make(data) {
         if (this.singleton && this.instance) {
             return this.instance;
         }
-        var instance = this.createInstance();
+        let instance = this.createInstance();
         if (typeof data !== 'undefined' && lodash_1.isFunction(instance['createClassInstance'])) {
             instance = instance.createClassInstance(data);
         }
@@ -28,8 +35,7 @@ var ClassRegistryItem = /** @class */ (function () {
             this.instance = instance;
         }
         return instance;
-    };
-    return ClassRegistryItem;
-}());
+    }
+}
 exports.ClassRegistryItem = ClassRegistryItem;
 //# sourceMappingURL=ClassRegistryItem.js.map

@@ -16,9 +16,10 @@ I want to create a web framework with really _`Najs`_ and elegant syntax like La
 
 Najs must have:
 
-1. Type-Safe: Written 100% in Typescript with strict rules
+1. Type-Safety: Written 100% in Typescript with strict rules
 2. Beautiful code: Use Class as must as possible, just like Java
 3. Reliable: Rely on strong and trusted frameworks such as `express` (for routing), `bull` (for Task Queue)
+4. High-Quality: Every single line of `Najs` must have unit test, coverage up to `99%` (because awaiter coverage problem)
 
 ## Syntax
 
@@ -31,12 +32,13 @@ Register a class
 ```typescript
 // file: UserRepository.ts
 import { register } from 'najs'
+import { User } from './User' // please checkout najs-eloquent package
 
 @register()
 class UserRepository {
   static className = 'Namespace.UserRepository'
 
-  async getUser(): Promise<User> {
+  async getUsers(): Promise<User> {
     return User.all()
   }
 }
@@ -52,9 +54,9 @@ import { register } from 'najs'
 class UserRepositoryCached extends UserRepository {
   static className = 'Namespace.UserRepositoryCached'
 
-  async getUser(): Promise<User> {
-    return this.cacheManager.cache('getUser', 10, () => {
-      return super.getUser()
+  async getUsers(): Promise<User> {
+    return this.cacheManager.cache('getUsers', 10, () => {
+      return super.getUsers()
     })
   }
 }
@@ -89,10 +91,8 @@ class UserService {
   // this autoload UserRepository instance, if you already binding in index.ts it loads UserRepositoryCached instead
   @autoload(UserRepository) userRepository: UserRepository
 
-  async getUser(): Promise<User> {
-    return this.cacheManager.cache('getUser', 10, () => {
-      return super.getUser()
-    })
+  async getUsers(): Promise<User> {
+    return this.userRepository.getUsers()
   }
 }
 ```
@@ -100,7 +100,6 @@ class UserService {
 ### Routing
 
 ```typescript
-// Routing
 Route.middleware('csrf', 'cors').group(function() {
   Route.get('/users/', 'UserController@getUsers')
 })
@@ -126,6 +125,10 @@ class UsersController extends Controller {
   async getUsers(): Promise<User> {
     return Response.json(this.userService.getUsers())
   }
+
+  getIndex(): any {
+    return Response.view('users').with('currentUser', this.Auth.user())
+  }
 }
 ```
 
@@ -143,5 +146,7 @@ II. Model [Released] - It's developed and released in separate package [Najs Elo
 III. Routing - I'm going to use `express` as a routing framework
 
 IV. Controller
+
+## Contribute
 
 If you want to be a contributor, please [let me know](mailto:nhat@ntworld.net).

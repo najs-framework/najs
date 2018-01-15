@@ -7,26 +7,17 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
-var lib_1 = require("../../lib");
-var TestAutoload = /** @class */ (function () {
-    function TestAutoload() {
-    }
-    TestAutoload.prototype.getClassName = function () {
+const lib_1 = require("../../lib");
+class TestAutoload {
+    getClassName() {
         return 'TestAutoload';
-    };
-    return TestAutoload;
-}());
-var TestClassName = /** @class */ (function () {
-    function TestClassName() {
     }
-    TestClassName.className = 'TestClassName';
-    return TestClassName;
-}());
-var Invalid = /** @class */ (function () {
-    function Invalid() {
-    }
-    return Invalid;
-}());
+}
+class TestClassName {
+}
+TestClassName.className = 'TestClassName';
+class Invalid {
+}
 describe('Najs.register', function () {
     it('throws an TypeError if the class definition not implemented IAutoload or has no className', function () {
         try {
@@ -123,17 +114,14 @@ describe('Najs.register', function () {
     });
     describe('@register(name?: string)', function () {
         it('can be used as a decorator', function () {
-            var A = /** @class */ (function () {
-                function A() {
-                }
-                A.prototype.getClassName = function () {
+            let A = class A {
+                getClassName() {
                     return 'A';
-                };
-                A = __decorate([
-                    lib_1.register()
-                ], A);
-                return A;
-            }());
+                }
+            };
+            A = __decorate([
+                lib_1.register()
+            ], A);
             expect(new A()).toBeInstanceOf(A);
             expect(lib_1.ClassRegistry.findOrFail('A')).toEqual({
                 className: 'A',
@@ -143,15 +131,12 @@ describe('Najs.register', function () {
             });
         });
         it('can be used if class has static className', function () {
-            var B = /** @class */ (function () {
-                function B() {
-                }
-                B.className = 'B';
-                B = __decorate([
-                    lib_1.register()
-                ], B);
-                return B;
-            }());
+            let B = class B {
+            };
+            B.className = 'B';
+            B = __decorate([
+                lib_1.register()
+            ], B);
             expect(new B()).toBeInstanceOf(B);
             expect(lib_1.ClassRegistry.findOrFail('B')).toEqual({
                 className: 'B',
@@ -161,14 +146,11 @@ describe('Najs.register', function () {
             });
         });
         it('can be used as a decorator with custom name', function () {
-            var C = /** @class */ (function () {
-                function C() {
-                }
-                C = __decorate([
-                    lib_1.register('Cindy')
-                ], C);
-                return C;
-            }());
+            let C = class C {
+            };
+            C = __decorate([
+                lib_1.register('Cindy')
+            ], C);
             expect(new C()).toBeInstanceOf(C);
             expect(lib_1.ClassRegistry.findOrFail('Cindy')).toEqual({
                 className: 'Cindy',

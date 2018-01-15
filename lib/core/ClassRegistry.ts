@@ -9,7 +9,7 @@ export class ClassRegistryCollection {
 
   register(item: ClassRegistryItem) {
     this.assertRegistryItemCouldBeUpdated(item.className)
-    this.assertNoCircularReference()
+    this.assertNoCircularReference(item)
     this.items[item.className] = item
   }
 
@@ -33,13 +33,9 @@ export class ClassRegistryCollection {
     }
   }
 
-  assertNoCircularReference(item?: ClassRegistryItem) {
+  assertNoCircularReference(item: ClassRegistryItem) {
     const result: { [className: string]: string | undefined } = mapValues(this.items, 'concreteClassName')
-
-    if (item) {
-      result[item.className] = item.concreteClassName
-    }
-
+    result[item.className] = item.concreteClassName
     const circularReferences: Array<string> | false = class_registry_circular_reference_check(result)
     if (class_registry_circular_reference_check(result) !== false) {
       throw new Error('Circular reference detected "' + (circularReferences as Array<string>).join(' => ') + '"')

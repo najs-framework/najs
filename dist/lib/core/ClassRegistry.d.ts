@@ -5,6 +5,6 @@ export declare class ClassRegistryCollection {
     findOrFail(className: string): ClassRegistryItem;
     has(className: string): boolean;
     assertRegistryItemCouldBeUpdated(className: string): void;
-    assertNoCircularReference(item?: ClassRegistryItem): void;
+    assertNoCircularReference(item: ClassRegistryItem): void;
 }
 export declare const ClassRegistry: ClassRegistryCollection;

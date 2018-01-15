@@ -32,6 +32,13 @@ export class ClassRegistryItem {
     if (isFunction(this.instanceConstructor)) {
       return Object.create(this.instanceConstructor.prototype)
     }
+    if (isFunction(this.instanceCreator)) {
+      return this.instanceCreator.call(undefined)
+    }
+    if (this.singleton) {
+      return this.instance
+    }
+    return undefined
   }
 
   make<T>(data?: Object): T

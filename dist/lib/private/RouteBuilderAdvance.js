@@ -1,75 +1,62 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
-var RouteBuilder_1 = require("./RouteBuilder");
-var RouteBuilderAdvance = /** @class */ (function (_super) {
-    __extends(RouteBuilderAdvance, _super);
-    function RouteBuilderAdvance(method, path) {
-        var _this = _super.call(this, method, path) || this;
-        _this.children = [];
-        return _this;
+const RouteBuilder_1 = require("./RouteBuilder");
+class RouteBuilderAdvance extends RouteBuilder_1.RouteBuilder {
+    constructor(method, path) {
+        super(method, path);
+        this.children = [];
     }
-    RouteBuilderAdvance.prototype.getRouteData = function () {
+    getRouteData() {
         return this.data;
-    };
-    RouteBuilderAdvance.prototype.registerChildRoute = function (route) {
+    }
+    registerChildRoute(route) {
         if (this.children.length === 0) {
             this.children.push(route);
             return;
         }
-        var lastChild = this.children[this.children.length - 1];
+        const lastChild = this.children[this.children.length - 1];
         if (lastChild.shouldRegisterChildRoute()) {
             lastChild.registerChildRoute(route);
             return;
         }
         this.children.push(route);
-    };
-    RouteBuilderAdvance.prototype.shouldRegisterChildRoute = function () {
+    }
+    shouldRegisterChildRoute() {
         if (!this.data.metadata) {
             return false;
         }
         return this.data.metadata['grouped'] === true;
-    };
-    RouteBuilderAdvance.prototype.hasChildRoute = function () {
+    }
+    hasChildRoute() {
         return this.children.length === 0;
-    };
+    }
     // -------------------------------------------------------------------------------------------------------------------
-    RouteBuilderAdvance.prototype.middleware = function (middleware) {
+    middleware(middleware) {
         this.data.middleware.push(middleware);
         return this;
-    };
-    RouteBuilderAdvance.prototype.prefix = function (prefix) {
+    }
+    prefix(prefix) {
         this.data.prefix = prefix;
         return this;
-    };
-    RouteBuilderAdvance.prototype.get = function (path) {
+    }
+    get(path) {
         this.data.method = 'GET';
         this.data.path = path;
         return this;
-    };
-    RouteBuilderAdvance.prototype.post = function (path) {
+    }
+    post(path) {
         this.data.method = 'POST';
         this.data.path = path;
         return this;
-    };
-    RouteBuilderAdvance.prototype.group = function (callback) {
+    }
+    group(callback) {
         if (!this.data.metadata) {
             this.data.metadata = {};
         }
         this.data.metadata['grouped'] = true;
         callback.call(undefined);
         delete this.data.metadata['grouped'];
-    };
-    return RouteBuilderAdvance;
-}(RouteBuilder_1.RouteBuilder));
+    }
+}
 exports.RouteBuilderAdvance = RouteBuilderAdvance;
 //# sourceMappingURL=RouteBuilderAdvance.js.map

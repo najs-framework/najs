@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
-var class_registry_circular_reference_check_1 = require("../../lib/private/class_registry_circular_reference_check");
-var dataset = {
+const class_registry_circular_reference_check_1 = require("../../lib/private/class_registry_circular_reference_check");
+const dataset = {
     'returns false if there is circular setup is empty': {
         input: {},
         expected: false
@@ -53,13 +53,10 @@ var dataset = {
     }
 };
 describe('class_registry_circular_reference_check()', function () {
-    var _loop_1 = function (name) {
+    for (const name in dataset) {
         it(name, function () {
             expect(class_registry_circular_reference_check_1.class_registry_circular_reference_check(dataset[name].input)).toEqual(dataset[name].expected);
         });
-    };
-    for (var name in dataset) {
-        _loop_1(name);
     }
 });
 //# sourceMappingURL=class_registry_circular_reference_check.test.js.map

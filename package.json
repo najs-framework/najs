@@ -1,10 +1,10 @@
 {
   "name": "najs",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "scripts": {
     "build": "npm run build-ts && npm run tslint",
     "build-ts": "tsc -d",
-    "coverage": "jest ./dist/test --coverage --forceExit",
+    "coverage": "npm run build && jest ./dist/test --coverage --forceExit",
     "test": "jest --forceExit",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "prepublishOnly": "tsc -d -p ./ --outDir dist"

@@ -1,75 +1,51 @@
 "use strict";
-var __extends = (this && this.__extends) || (function () {
-    var extendStatics = Object.setPrototypeOf ||
-        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
-        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
-    return function (d, b) {
-        extendStatics(d, b);
-        function __() { this.constructor = d; }
-        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-    };
-})();
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
-var lib_1 = require("../../lib");
-var Test = /** @class */ (function () {
-    function Test() {
-    }
-    Test.prototype.getClassName = function () {
+const lib_1 = require("../../lib");
+class Test {
+    getClassName() {
         return 'Test';
-    };
-    Test.prototype.getSomething = function () {
+    }
+    getSomething() {
         return 'something';
-    };
-    Test.prototype.getFromParent = function () {
+    }
+    getFromParent() {
         return 'gift';
-    };
-    return Test;
-}());
-var TestCached = /** @class */ (function (_super) {
-    __extends(TestCached, _super);
-    function TestCached() {
-        return _super !== null && _super.apply(this, arguments) || this;
     }
-    TestCached.prototype.getClassName = function () {
+}
+class TestCached extends Test {
+    getClassName() {
         return 'TestCached';
-    };
-    TestCached.prototype.getSomething = function () {
-        return 'something cached';
-    };
-    TestCached.prototype.getFromParent = function () {
-        return 'thanks for your ' + _super.prototype.getFromParent.call(this);
-    };
-    return TestCached;
-}(Test));
-var Singleton = /** @class */ (function (_super) {
-    __extends(Singleton, _super);
-    function Singleton() {
-        return _super !== null && _super.apply(this, arguments) || this;
     }
-    Singleton.prototype.getClassName = function () {
+    getSomething() {
+        return 'something cached';
+    }
+    getFromParent() {
+        return 'thanks for your ' + super.getFromParent();
+    }
+}
+class Singleton extends Test {
+    getClassName() {
         return 'Singleton';
-    };
-    return Singleton;
-}(Test));
-var TestInstanceWithData = /** @class */ (function () {
-    function TestInstanceWithData(any) {
+    }
+}
+class TestInstanceWithData {
+    constructor(any) {
         this.any = any || '';
     }
-    TestInstanceWithData.prototype.getClassName = function () {
+    getClassName() {
         return 'TestInstanceWithData';
-    };
-    TestInstanceWithData.prototype.createClassInstance = function (data) {
-        var instance = new TestInstanceWithData();
+    }
+    createClassInstance(data) {
+        const instance = new TestInstanceWithData();
         if (data) {
-            for (var name in data) {
+            for (const name in data) {
                 instance[name] = data[name];
             }
         }
         return instance;
-    };
-    return TestInstanceWithData;
-}());
+    }
+}
 describe('Najs.make', function () {
     lib_1.register(Test);
     it('throws an ReferenceError if the class definition was not register', function () {

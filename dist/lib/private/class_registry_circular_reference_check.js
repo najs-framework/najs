@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 function class_registry_circular_reference_check(items) {
-    for (var className in items) {
+    for (const className in items) {
         if (typeof items[className] === 'undefined') {
             continue;
         }
-        var traveled = [];
-        var currentName = className;
+        const traveled = [];
+        let currentName = className;
         while (typeof items[currentName] !== 'undefined') {
             if (traveled.indexOf(currentName) !== -1) {
                 traveled.push(currentName);

@@ -1,38 +1,32 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var make_1 = require("./make");
-var register_1 = require("./register");
-var NajsDefaultOptions = {
+const make_1 = require("./make");
+const register_1 = require("./register");
+const NajsDefaultOptions = {
     port: 3000,
     host: 'localhost',
     httpDriver: 'ExpressHttpDriver'
 };
-var Najs = /** @class */ (function () {
-    function Najs() {
-    }
-    Najs.use = function (options) {
+class Najs {
+    static use(options) {
         this.options = Object.assign({}, NajsDefaultOptions, options);
         return Najs;
-    };
-    Najs.make = function (className, data) {
+    }
+    static make(className, data) {
         return make_1.make(className, data);
-    };
-    Najs.register = function (classDefinition, className, overridable, singleton) {
+    }
+    static register(classDefinition, className, overridable, singleton) {
         register_1.register(classDefinition, className, overridable, singleton);
         return this;
-    };
-    Najs.loadClasses = function (classes) {
-        return this;
-    };
-    Najs.start = function (options) {
+    }
+    static start(options) {
         if (options) {
             this.use(options);
         }
-        var httpDriver = make_1.make(this.options.httpDriver);
+        const httpDriver = make_1.make(this.options.httpDriver);
         httpDriver.start(this.options);
-    };
-    Najs.options = NajsDefaultOptions;
-    return Najs;
-}());
+    }
+}
+Najs.options = NajsDefaultOptions;
 exports.Najs = Najs;
 //# sourceMappingURL=Najs.js.map

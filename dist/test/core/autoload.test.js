@@ -7,42 +7,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
-var lib_1 = require("../../lib");
-var Repository = /** @class */ (function () {
-    function Repository() {
-    }
-    Repository.prototype.getSomething = function () {
+const lib_1 = require("../../lib");
+class Repository {
+    getSomething() {
         return 'something';
-    };
-    Repository.className = 'Repository';
-    return Repository;
-}());
-exports.Repository = Repository;
-var TestAutoloadPropertyDecorator = /** @class */ (function () {
-    function TestAutoloadPropertyDecorator() {
     }
-    TestAutoloadPropertyDecorator.prototype.getSomething = function () {
+}
+Repository.className = 'Repository';
+exports.Repository = Repository;
+class TestAutoloadPropertyDecorator {
+    getSomething() {
         return this.repository.getSomething();
-    };
-    TestAutoloadPropertyDecorator.className = 'TestAutoloadDecorator';
-    __decorate([
-        lib_1.autoload(Repository.className)
-    ], TestAutoloadPropertyDecorator.prototype, "repository", void 0);
-    return TestAutoloadPropertyDecorator;
-}());
+    }
+}
+TestAutoloadPropertyDecorator.className = 'TestAutoloadDecorator';
+__decorate([
+    lib_1.autoload(Repository.className)
+], TestAutoloadPropertyDecorator.prototype, "repository", void 0);
 exports.TestAutoloadPropertyDecorator = TestAutoloadPropertyDecorator;
 describe('@autoload', function () {
     lib_1.register(Repository);
     it('can be used for property inside a class to initialize automatically', function () {
-        for (var i = 0; i < 10; i++) {
-            var hosted = new TestAutoloadPropertyDecorator();
+        for (let i = 0; i < 10; i++) {
+            const hosted = new TestAutoloadPropertyDecorator();
             expect(hosted.repository).toBeInstanceOf(Repository);
         }
     });
     it('creates new instance of autoload property for every instance of hosted class', function () {
-        var previousInstance;
-        for (var i = 0; i < 100; i++) {
-            var hosted = new TestAutoloadPropertyDecorator();
+        let previousInstance;
+        for (let i = 0; i < 100; i++) {
+            const hosted = new TestAutoloadPropertyDecorator();
             expect(hosted.repository).toBeInstanceOf(Repository);
             if (previousInstance) {
                 expect(previousInstance === hosted.repository).toBe(false);
@@ -51,15 +45,15 @@ describe('@autoload', function () {
         }
     });
     it('creates single instance inside the hosted class', function () {
-        var hosted = new TestAutoloadPropertyDecorator();
-        var previousInstance = hosted.repository;
-        for (var i = 0; i < 100; i++) {
+        const hosted = new TestAutoloadPropertyDecorator();
+        let previousInstance = hosted.repository;
+        for (let i = 0; i < 100; i++) {
             expect(previousInstance === hosted.repository).toBe(true);
             previousInstance = hosted.repository;
         }
     });
     it('prevents assign new value to autoload property', function () {
-        var hosted = new TestAutoloadPropertyDecorator();
+        const hosted = new TestAutoloadPropertyDecorator();
         try {
             hosted.repository = new Repository();
         }
@@ -72,14 +66,11 @@ describe('@autoload', function () {
     });
     it('throws a TypeError if used to decorate a class', function () {
         try {
-            var DecorateByAutoload = /** @class */ (function () {
-                function DecorateByAutoload() {
-                }
-                DecorateByAutoload = __decorate([
-                    lib_1.autoload('Repository')
-                ], DecorateByAutoload);
-                return DecorateByAutoload;
-            }());
+            let DecorateByAutoload = class DecorateByAutoload {
+            };
+            DecorateByAutoload = __decorate([
+                lib_1.autoload('Repository')
+            ], DecorateByAutoload);
             new DecorateByAutoload();
         }
         catch (error) {
@@ -91,15 +82,12 @@ describe('@autoload', function () {
     });
     it('throws a TypeError if used to decorate a method', function () {
         try {
-            var DecorateByAutoload = /** @class */ (function () {
-                function DecorateByAutoload() {
-                }
-                DecorateByAutoload.prototype.getSomething = function () { };
-                __decorate([
-                    lib_1.autoload('Repository')
-                ], DecorateByAutoload.prototype, "getSomething", null);
-                return DecorateByAutoload;
-            }());
+            class DecorateByAutoload {
+                getSomething() { }
+            }
+            __decorate([
+                lib_1.autoload('Repository')
+            ], DecorateByAutoload.prototype, "getSomething", null);
             new DecorateByAutoload();
         }
         catch (error) {
