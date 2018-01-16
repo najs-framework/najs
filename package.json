@@ -1,6 +1,6 @@
 {
   "name": "najs",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "scripts": {
     "build": "npm run build-ts && npm run tslint",
     "build-ts": "tsc -d",
@@ -35,7 +35,7 @@
     "email": "nhat@ntworld.net"
   },
   "license": "MIT",
-  "engines": { "node": ">=6.x" },
+  "engines": { "node": ">=8.7" },
   "dependencies": {
     "collect.js": "^4.0.1",
     "coveralls": "^3.0.0",

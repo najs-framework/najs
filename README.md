@@ -19,7 +19,7 @@ Najs must have:
 1. Type-Safety: Written 100% in Typescript with strict rules
 2. Beautiful code: Use Class as must as possible, just like Java
 3. Reliable: Rely on strong and trusted frameworks such as `express` (for routing), `bull` (for Task Queue)
-4. High-Quality: Every single line of `Najs` must have unit test, coverage up to `99%` (because awaiter coverage problem)
+4. High-Quality: Every single line of `Najs` must have unit test, coverage up to `100%`
 
 ## Syntax
 

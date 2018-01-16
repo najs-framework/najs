@@ -1,13 +1,13 @@
 {
   "compilerOptions": {
     "module": "commonjs",
-    "target": "es6",
+    "target": "es2017",
     "experimentalDecorators": true,
     "sourceMap": true,
     "moduleResolution": "node",
     "outDir": "dist",
     "types": ["node", "express"],
-    "lib": ["es6", "es2015.promise"],
+    "lib": ["es2017"],
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
