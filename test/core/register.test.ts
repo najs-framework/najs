@@ -85,7 +85,7 @@ describe('Najs.register', function() {
         register<typeof TestClassName>(TestClassName, 'Not-Overridable')
       } catch (error) {
         expect(error instanceof Error)
-        expect(error.message).toEqual('Can not overridable Not-Overridable')
+        expect(error.message).toEqual('Can not override Not-Overridable')
         return
       }
       expect('should throw an Error').toEqual('')

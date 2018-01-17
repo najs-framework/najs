@@ -24,7 +24,7 @@ class ClassRegistryCollection {
         if (this.has(className)) {
             const registry = this.items[className];
             if (!registry.overridable) {
-                throw new Error('Can not overridable ' + className);
+                throw new Error('Can not override ' + className);
             }
         }
     }
