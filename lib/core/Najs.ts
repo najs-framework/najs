@@ -1,5 +1,6 @@
 import { make } from './make'
 import { register } from './register'
+import { bind, InstanceCreator } from './bind'
 import { IHttpDriver } from '../http/IHttpDriver'
 
 export type NajsOptions = {
@@ -35,6 +36,13 @@ export class Najs {
   static register<T>(classDefinition: T, className: string, overridable: boolean, singleton: boolean): typeof Najs
   static register(classDefinition: any, className?: any, overridable?: any, singleton?: any): typeof Najs {
     register(classDefinition, className, overridable, singleton)
+    return this
+  }
+
+  static bind(className: string, instanceCreator: InstanceCreator): typeof Najs
+  static bind(className: string, concrete: string): typeof Najs
+  static bind(abstract: string, concrete: string | InstanceCreator): typeof Najs {
+    bind(abstract, <any>concrete)
     return this
   }
 

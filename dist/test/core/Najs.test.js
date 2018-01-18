@@ -4,6 +4,7 @@ require("jest");
 const Sinon = require("sinon");
 const Register = require("../../lib/core/register");
 const Make = require("../../lib/core/make");
+const Bind = require("../../lib/core/bind");
 const Najs_1 = require("../../lib/core/Najs");
 class Test {
 }
@@ -57,6 +58,16 @@ describe('Najs', function () {
             expect(makeSpy.calledWith('Test')).toBe(true);
             Najs_1.Najs.make('Something', { data: 'any' });
             expect(makeSpy.calledWith('Something', { data: 'any' })).toBe(true);
+        });
+    });
+    describe('Najs.bind()', function () {
+        it('proxies bind() function', function () {
+            const bindSpy = Sinon.spy(Bind, 'bind');
+            Najs_1.Najs.bind('Cache', 'RedisCached');
+            expect(bindSpy.calledWith('Cache', 'RedisCached')).toBe(true);
+            const servicePoolInstanceCreator = function () { };
+            Najs_1.Najs.bind('ServicePool', servicePoolInstanceCreator);
+            expect(bindSpy.calledWith('ServicePool', servicePoolInstanceCreator)).toBe(true);
         });
     });
     describe('start(options?: Object)', function () {

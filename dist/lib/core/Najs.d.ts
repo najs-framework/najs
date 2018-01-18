@@ -1,3 +1,4 @@
+import { InstanceCreator } from './bind';
 export declare type NajsOptions = {
     port: number;
     host: string;
@@ -13,6 +14,8 @@ export declare class Najs {
     static register<T>(classDefinition: T, className: string): typeof Najs;
     static register<T>(classDefinition: T, className: string, overridable: boolean): typeof Najs;
     static register<T>(classDefinition: T, className: string, overridable: boolean, singleton: boolean): typeof Najs;
+    static bind(className: string, instanceCreator: InstanceCreator): typeof Najs;
+    static bind(className: string, concrete: string): typeof Najs;
     static start(): void;
     static start(options: Partial<NajsOptions>): void;
 }

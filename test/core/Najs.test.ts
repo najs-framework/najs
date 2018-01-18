@@ -2,6 +2,7 @@ import 'jest'
 import * as Sinon from 'sinon'
 import * as Register from '../../lib/core/register'
 import * as Make from '../../lib/core/make'
+import * as Bind from '../../lib/core/bind'
 import { Najs } from '../../lib/core/Najs'
 
 class Test {
@@ -43,12 +44,16 @@ describe('Najs', function() {
   describe('Najs.register()', function() {
     it('proxies register() function', function() {
       const registerSpy = Sinon.spy(Register, 'register')
+
       Najs.register(FakeHttpDriver)
       expect(registerSpy.calledWith(FakeHttpDriver)).toBe(true)
+
       Najs.register(Test, 'Test')
       expect(registerSpy.calledWith(Test, 'Test')).toBe(true)
+
       Najs.register(Test, 'Something', false)
       expect(registerSpy.calledWith(Test, 'Something', false)).toBe(true)
+
       Najs.register(Test, 'SomethingNew', true, false)
       expect(registerSpy.calledWith(Test, 'SomethingNew', true, false)).toBe(true)
     })
@@ -59,10 +64,24 @@ describe('Najs', function() {
       const makeSpy = Sinon.spy(Make, 'make')
       Najs.make(Test)
       expect(makeSpy.calledWith(Test)).toBe(true)
+
       Najs.make('Test')
       expect(makeSpy.calledWith('Test')).toBe(true)
+
       Najs.make('Something', { data: 'any' })
       expect(makeSpy.calledWith('Something', { data: 'any' })).toBe(true)
+    })
+  })
+
+  describe('Najs.bind()', function() {
+    it('proxies bind() function', function() {
+      const bindSpy = Sinon.spy(Bind, 'bind')
+      Najs.bind('Cache', 'RedisCached')
+      expect(bindSpy.calledWith('Cache', 'RedisCached')).toBe(true)
+
+      const servicePoolInstanceCreator = function() {}
+      Najs.bind('ServicePool', servicePoolInstanceCreator)
+      expect(bindSpy.calledWith('ServicePool', servicePoolInstanceCreator)).toBe(true)
     })
   })
 
