@@ -104,5 +104,26 @@ describe('Najs.bind', function() {
       expect(item.className).toEqual('TestInstanceCreatorConcrete')
       expect(item.concreteClassName).toEqual('Test')
     })
+
+    it('detects circular reference and throw error', function() {
+      class CircularReferenceA {
+        static className = 'CircularReferenceA'
+      }
+      register(CircularReferenceA)
+      class CircularReferenceB {
+        static className = 'CircularReferenceB'
+      }
+      register(CircularReferenceB)
+      bind(CircularReferenceA.className, CircularReferenceB.className)
+      try {
+        bind(CircularReferenceB.className, CircularReferenceA.className)
+      } catch (error) {
+        expect(error.message).toEqual(
+          'Circular reference detected "CircularReferenceA => CircularReferenceB => CircularReferenceA"'
+        )
+        return
+      }
+      expect('should not reach this line').toBe(true)
+    })
   })
 })

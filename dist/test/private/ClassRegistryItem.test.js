@@ -10,6 +10,36 @@ require("jest");
 const lib_1 = require("../../lib");
 describe('ClassRegistryItem', function () {
     describe('private createInstance', function () {
+        let Original = class Original {
+        };
+        Original.className = 'Original';
+        Original = __decorate([
+            lib_1.register()
+        ], Original);
+        it('returns undefined if there is concreteClassName but concreteClass not register yet', function () {
+            class Final1 {
+            }
+            Final1.className = 'Final1';
+            lib_1.bind(Original.className, Final1.className);
+            expect(lib_1.ClassRegistry.findOrFail(Original.className)['createInstance']()).toBeUndefined();
+        });
+        it('skips instance... values if has concreteClassName', function () {
+            const classRegistryItem = lib_1.ClassRegistry.findOrFail(Original.className);
+            classRegistryItem.instanceCreator = function () {
+                return new Date();
+            };
+            expect(lib_1.ClassRegistry.findOrFail(Original.className)['createInstance']()).toBeUndefined();
+        });
+        it('returns createInstance of ClassRegistryItem with concreteClassName', function () {
+            let Final = class Final {
+            };
+            Final.className = 'Final';
+            Final = __decorate([
+                lib_1.register()
+            ], Final);
+            lib_1.bind(Original.className, Final.className);
+            expect(lib_1.ClassRegistry.findOrFail(Original.className)['createInstance']()).toBeInstanceOf(Final);
+        });
         it('creates instance from instanceConstructor if it set', function () {
             let Test = class Test {
             };

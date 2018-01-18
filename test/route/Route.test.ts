@@ -1,8 +1,9 @@
 import 'jest'
-// import { Route } from '../../lib'
+// import { Route } from '../../lib/http/Route'
 
 describe('Route', function() {
   it('can route all http verbs', function() {
+    // Route.get('test').name()
     // Route.get('/')
     // Route.prefix('/retails').get('/')
     // Route.middleware('Something').group(function() {

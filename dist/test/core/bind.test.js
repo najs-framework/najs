@@ -102,6 +102,25 @@ describe('Najs.bind', function () {
             expect(item.className).toEqual('TestInstanceCreatorConcrete');
             expect(item.concreteClassName).toEqual('Test');
         });
+        it('detects circular reference and throw error', function () {
+            class CircularReferenceA {
+            }
+            CircularReferenceA.className = 'CircularReferenceA';
+            register_1.register(CircularReferenceA);
+            class CircularReferenceB {
+            }
+            CircularReferenceB.className = 'CircularReferenceB';
+            register_1.register(CircularReferenceB);
+            bind_1.bind(CircularReferenceA.className, CircularReferenceB.className);
+            try {
+                bind_1.bind(CircularReferenceB.className, CircularReferenceA.className);
+            }
+            catch (error) {
+                expect(error.message).toEqual('Circular reference detected "CircularReferenceA => CircularReferenceB => CircularReferenceA"');
+                return;
+            }
+            expect('should not reach this line').toBe(true);
+        });
     });
 });
 //# sourceMappingURL=bind.test.js.map
