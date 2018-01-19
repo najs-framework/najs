@@ -1,9 +1,13 @@
 import { IRouteBuilder } from './interfaces/IRouteBuilder';
 import { IRouteData } from './interfaces/IRouteData';
 import { RouteGrammarGroupChain, RouteGrammarVerbChain, RouteGrammarNameChain, RouteGrammarControlChain, IRouteGrammarControl, IRouteGrammarGroup, IRouteGrammarNamed, IRouteGrammarVerbs } from './interfaces/IRouteGrammars';
+/**
+ * Route syntax implementation
+ */
 export declare class RouteBuilder implements IRouteBuilder, IRouteGrammarControl, IRouteGrammarGroup, IRouteGrammarNamed, IRouteGrammarVerbs {
     protected data: IRouteData;
     protected children: Array<IRouteBuilder>;
+    constructor();
     constructor(method: string, path: string);
     getRouteData(): IRouteData;
     registerChildRoute(route: IRouteBuilder): void;
@@ -15,5 +19,5 @@ export declare class RouteBuilder implements IRouteBuilder, IRouteGrammarControl
     group(callback: () => void): RouteGrammarGroupChain;
     name(name: string): RouteGrammarNameChain;
     get(path: string): RouteGrammarVerbChain;
-    protected httpVerb(method: string): RouteGrammarVerbChain;
+    method(method: string): RouteGrammarVerbChain;
 }

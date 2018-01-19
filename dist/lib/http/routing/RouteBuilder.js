@@ -1,16 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+/**
+ * Route syntax implementation
+ */
 class RouteBuilder {
     constructor(method, path) {
         this.data = {
             name: '',
-            method: method,
-            path: path,
+            method: method || '',
+            path: path || '',
             prefix: '',
             controller: '',
             endpoint: '',
             middleware: []
         };
+        this.children = [];
     }
     getRouteData() {
         return this.data;
@@ -34,7 +38,7 @@ class RouteBuilder {
         return this.data.metadata['grouped'] === true;
     }
     hasChildRoute() {
-        return this.children.length === 0;
+        return this.children.length !== 0;
     }
     // -------------------------------------------------------------------------------------------------------------------
     use(middleware) {
@@ -72,7 +76,7 @@ class RouteBuilder {
     //   this.data.path = path
     //   return this
     // }
-    httpVerb(method) {
+    method(method) {
         return this;
     }
 }

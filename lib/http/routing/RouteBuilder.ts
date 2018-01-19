@@ -11,21 +11,27 @@ import {
   IRouteGrammarVerbs
 } from './interfaces/IRouteGrammars'
 
+/**
+ * Route syntax implementation
+ */
 export class RouteBuilder
   implements IRouteBuilder, IRouteGrammarControl, IRouteGrammarGroup, IRouteGrammarNamed, IRouteGrammarVerbs {
   protected data: IRouteData
   protected children: Array<IRouteBuilder>
 
-  constructor(method: string, path: string) {
+  constructor()
+  constructor(method: string, path: string)
+  constructor(method?: string, path?: string) {
     this.data = {
       name: '',
-      method: method,
-      path: path,
+      method: method || '',
+      path: path || '',
       prefix: '',
       controller: '',
       endpoint: '',
       middleware: []
     }
+    this.children = []
   }
 
   getRouteData(): IRouteData {
@@ -55,7 +61,7 @@ export class RouteBuilder
   }
 
   hasChildRoute(): boolean {
-    return this.children.length === 0
+    return this.children.length !== 0
   }
 
   // -------------------------------------------------------------------------------------------------------------------
@@ -101,8 +107,7 @@ export class RouteBuilder
   //   this.data.path = path
   //   return this
   // }
-
-  protected httpVerb(method: string): RouteGrammarVerbChain {
+  method(method: string): RouteGrammarVerbChain {
     return this
   }
 }
