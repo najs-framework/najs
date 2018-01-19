@@ -134,16 +134,16 @@ class UsersController extends Controller {
 
 ## Status and Road map
 
-I. Class Binding (In Progress - 75%)
+I. Class Binding (In Progress - 90%)
 
 * `register()` [Released] - register a class
 * `singleton()` [Released] - register a class as a singleton
 * `make()` [Released] - make an instance of class which registered by `register()`
-* `bind()` [In Progress] - simple binding + primitives binding
+* `bind()` [Release] - simple binding _(primitives binding is delayed)_
 
 II. Model [Released] - It's developed and released in separate package [Najs Eloquent](https://www.npmjs.com/package/najs-eloquent)
 
-III. Routing - I'm going to use `express` as a routing framework
+III. Routing [In Progress] - I'm going to use `express` as a routing framework
 
 IV. Controller
 
