@@ -1,11 +1,12 @@
 import 'jest'
+import { HttpMethod } from '../../lib/http/HttpMethod'
 import { RouteBuilder } from '../../lib/http/routing/RouteBuilder'
 
 describe('RouteBuilder', function() {
   describe('constructor', function() {
     it('can create new builder without argument', function() {
       const builder = new RouteBuilder()
-      expect(builder['data'].method).toEqual('')
+      expect(builder['data'].method).toEqual(HttpMethod.GET)
       expect(builder['data'].path).toEqual('')
       expect(builder['children']).toEqual([])
     })
@@ -113,10 +114,15 @@ describe('RouteBuilder', function() {
       builder.middleware('test')
     })
 
-    // TODO: write test
     describe('prefix()', function() {
-      const builder = new RouteBuilder()
-      builder.prefix('test')
+      it('assigns parameter to data.prefix, and overrides if called again', function() {
+        const builder = new RouteBuilder()
+        expect(builder['data'].prefix).toEqual('')
+        builder.prefix('test')
+        expect(builder['data'].prefix).toEqual('test')
+        builder.prefix('change')
+        expect(builder['data'].prefix).toEqual('change')
+      })
     })
   })
 

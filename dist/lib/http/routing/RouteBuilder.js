@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const HttpMethod_1 = require("./../HttpMethod");
 /**
  * Route syntax implementation
  */
@@ -7,7 +8,7 @@ class RouteBuilder {
     constructor(method, path) {
         this.data = {
             name: '',
-            method: method || '',
+            method: method || HttpMethod_1.HttpMethod.GET,
             path: path || '',
             prefix: '',
             controller: '',
@@ -17,6 +18,7 @@ class RouteBuilder {
         this.children = [];
     }
     getRouteData() {
+        // const result: IRouteData[] = []
         return this.data;
     }
     registerChildRoute(route) {

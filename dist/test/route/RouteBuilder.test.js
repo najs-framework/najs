@@ -1,12 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
+const HttpMethod_1 = require("../../lib/http/HttpMethod");
 const RouteBuilder_1 = require("../../lib/http/routing/RouteBuilder");
 describe('RouteBuilder', function () {
     describe('constructor', function () {
         it('can create new builder without argument', function () {
             const builder = new RouteBuilder_1.RouteBuilder();
-            expect(builder['data'].method).toEqual('');
+            expect(builder['data'].method).toEqual(HttpMethod_1.HttpMethod.GET);
             expect(builder['data'].path).toEqual('');
             expect(builder['children']).toEqual([]);
         });
@@ -99,10 +100,15 @@ describe('RouteBuilder', function () {
             const builder = new RouteBuilder_1.RouteBuilder();
             builder.middleware('test');
         });
-        // TODO: write test
         describe('prefix()', function () {
-            const builder = new RouteBuilder_1.RouteBuilder();
-            builder.prefix('test');
+            it('assigns parameter to data.prefix, and overrides if called again', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                expect(builder['data'].prefix).toEqual('');
+                builder.prefix('test');
+                expect(builder['data'].prefix).toEqual('test');
+                builder.prefix('change');
+                expect(builder['data'].prefix).toEqual('change');
+            });
         });
     });
     describe('IRouteGrammarGroup functions', function () {

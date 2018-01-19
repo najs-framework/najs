@@ -1,3 +1,4 @@
+import { HttpMethod } from './../HttpMethod'
 import { IRouteBuilder } from './interfaces/IRouteBuilder'
 import { IRouteData } from './interfaces/IRouteData'
 import {
@@ -24,7 +25,7 @@ export class RouteBuilder
   constructor(method?: string, path?: string) {
     this.data = {
       name: '',
-      method: method || '',
+      method: method || HttpMethod.GET,
       path: path || '',
       prefix: '',
       controller: '',
@@ -35,6 +36,7 @@ export class RouteBuilder
   }
 
   getRouteData(): IRouteData {
+    // const result: IRouteData[] = []
     return this.data
   }
 
