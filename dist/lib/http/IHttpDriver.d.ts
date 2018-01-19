@@ -1,4 +1,4 @@
-import { IRouteData } from './IRouteData';
+import { IRouteData } from './routing/interfaces/IRouteData';
 export declare type HttpDriverSetupFunction<T = any> = () => T;
 export declare type HttpDriverDidSetupHandler<T = any> = (instance: T) => void;
 export declare type HttpDriverStartOptions = {

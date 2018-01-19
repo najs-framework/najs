@@ -1,6 +1,6 @@
 import { IHttpDriver, HttpDriverSetupFunction, HttpDriverDidSetupHandler, HttpDriverStartOptions } from '../IHttpDriver'
 import { IAutoload } from '../../core/IAutoload'
-import { IRouteData } from '../IRouteData'
+import { IRouteData } from '../routing/interfaces/IRouteData'
 import { isFunction } from 'lodash'
 import { register } from '../../index'
 import * as Express from 'express'

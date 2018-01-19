@@ -1,7 +1,7 @@
 /// <reference types="express" />
 import { IHttpDriver, HttpDriverSetupFunction, HttpDriverDidSetupHandler, HttpDriverStartOptions } from '../IHttpDriver';
 import { IAutoload } from '../../core/IAutoload';
-import { IRouteData } from '../IRouteData';
+import { IRouteData } from '../routing/interfaces/IRouteData';
 import * as Express from 'express';
 export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
     static driverName: string;

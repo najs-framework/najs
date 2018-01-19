@@ -1,4 +1,4 @@
-import { IRouteData } from './IRouteData'
+import { IRouteData } from './routing/interfaces/IRouteData'
 
 export type HttpDriverSetupFunction<T = any> = () => T
 export type HttpDriverDidSetupHandler<T = any> = (instance: T) => void
