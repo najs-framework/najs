@@ -30,6 +30,9 @@ export declare class RouteBuilder implements IRouteBuilder, IRouteGrammarControl
     prefix(prefix: string): RouteGrammarControlChain;
     group(callback: () => void): RouteGrammarGroupChain;
     name(name: string): RouteGrammarNameChain;
+    method(method: HttpMethod, path: string, target: string): RouteGrammarVerbChain;
+    method(method: HttpMethod, path: string, endpoint: Function): RouteGrammarVerbChain;
+    method<T extends Object>(method: HttpMethod, path: string, controller: T, endpoint: keyof T): RouteGrammarVerbChain;
     checkout(path: string, target: string): RouteGrammarVerbChain;
     checkout(path: string, endpoint: Function): RouteGrammarVerbChain;
     checkout<T extends Object>(path: string, controller: T, endpoint: keyof T): RouteGrammarVerbChain;
@@ -99,7 +102,4 @@ export declare class RouteBuilder implements IRouteBuilder, IRouteGrammarControl
     unsubscribe(path: string, target: string): RouteGrammarVerbChain;
     unsubscribe(path: string, endpoint: Function): RouteGrammarVerbChain;
     unsubscribe<T extends Object>(path: string, controller: T, endpoint: keyof T): RouteGrammarVerbChain;
-    method(method: HttpMethod, path: string, target: string): RouteGrammarVerbChain;
-    method(method: HttpMethod, path: string, endpoint: Function): RouteGrammarVerbChain;
-    method<T extends Object>(method: HttpMethod, path: string, controller: T, endpoint: keyof T): RouteGrammarVerbChain;
 }

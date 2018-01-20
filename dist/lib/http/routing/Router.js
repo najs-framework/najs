@@ -3,22 +3,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const RouteCollection_1 = require("./RouteCollection");
 const RouteBuilder_1 = require("./RouteBuilder");
 class Router {
+    // redirect(...args: Array<any>): void {}
     group(callback) {
         return this.register(new RouteBuilder_1.RouteBuilder('', '')).group(callback);
     }
     use(...list) {
-        return this.register(new RouteBuilder_1.RouteBuilder('', '')).use(...list);
+        return this.register(new RouteBuilder_1.RouteBuilder()).use(...list);
     }
     middleware(...list) {
-        return this.register(new RouteBuilder_1.RouteBuilder('', '')).middleware(...list);
+        return this.register(new RouteBuilder_1.RouteBuilder()).middleware(...list);
     }
     prefix(prefix) {
-        return this.register(new RouteBuilder_1.RouteBuilder('', '')).prefix(prefix);
+        return this.register(new RouteBuilder_1.RouteBuilder()).prefix(prefix);
     }
     name(name) {
-        return this.register(new RouteBuilder_1.RouteBuilder('', '')).name(name);
+        return this.register(new RouteBuilder_1.RouteBuilder()).name(name);
     }
-    redirect(...args) { }
     checkout(arg0, arg1, arg2) {
         return this.register(new RouteBuilder_1.RouteBuilder()).checkout(arg0, arg1, arg2);
     }

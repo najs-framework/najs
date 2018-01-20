@@ -148,16 +148,6 @@ describe('RouteBuilder', function () {
             });
         });
     });
-    describe('IRouteGrammarGroup functions', function () {
-        // TODO: write test
-        describe('group()', function () {
-            it('does something', function () {
-                const builder = new RouteBuilder_1.RouteBuilder();
-                builder.group(function () { });
-                builder.group(function () { });
-            });
-        });
-    });
     describe('IRouteGrammarNamed functions', function () {
         describe('name()', function () {
             it('assign name to data.name', function () {
@@ -170,6 +160,16 @@ describe('RouteBuilder', function () {
             });
         });
     });
+    describe('IRouteGrammarGroup functions', function () {
+        // TODO: write test
+        describe('group()', function () {
+            it('does something', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                builder.group(function () { });
+                builder.group(function () { });
+            });
+        });
+    });
     describe('IRouteGrammarVerbs functions', function () {
         describe('method()', function () {
             // TODO: write test
@@ -178,48 +178,46 @@ describe('RouteBuilder', function () {
                 builder.method(HttpMethod_1.HttpMethod.GET, '/', '');
             });
         });
-        describe('http method functions()', function () {
-            const list = {
-                checkout: HttpMethod_1.HttpMethod.CHECKOUT,
-                copy: HttpMethod_1.HttpMethod.COPY,
-                delete: HttpMethod_1.HttpMethod.DELETE,
-                get: HttpMethod_1.HttpMethod.GET,
-                head: HttpMethod_1.HttpMethod.HEAD,
-                lock: HttpMethod_1.HttpMethod.LOCK,
-                merge: HttpMethod_1.HttpMethod.MERGE,
-                mkactivity: HttpMethod_1.HttpMethod.MKACTIVITY,
-                mkcol: HttpMethod_1.HttpMethod.MKCOL,
-                move: HttpMethod_1.HttpMethod.MOVE,
-                msearch: HttpMethod_1.HttpMethod.M_SEARCH,
-                notify: HttpMethod_1.HttpMethod.NOTIFY,
-                options: HttpMethod_1.HttpMethod.OPTIONS,
-                patch: HttpMethod_1.HttpMethod.PATCH,
-                post: HttpMethod_1.HttpMethod.POST,
-                purge: HttpMethod_1.HttpMethod.PURGE,
-                put: HttpMethod_1.HttpMethod.PUT,
-                report: HttpMethod_1.HttpMethod.REPORT,
-                search: HttpMethod_1.HttpMethod.SEARCH,
-                subscribe: HttpMethod_1.HttpMethod.SUBSCRIBE,
-                trace: HttpMethod_1.HttpMethod.TRACE,
-                unlock: HttpMethod_1.HttpMethod.UNLOCK,
-                unsubscribe: HttpMethod_1.HttpMethod.UNSUBSCRIBE
-            };
-            for (const name in list) {
-                it(name + '() calls .method() function with HttpMethod.' + list[name], function () {
-                    const builder = new RouteBuilder_1.RouteBuilder();
-                    const methodSpy = Sinon.spy(builder, 'method');
-                    builder[name]('path', 'target');
-                    expect(methodSpy.calledWith(list[name], 'path', 'target')).toBe(true);
-                    function handler() { }
-                    builder[name]('path', handler);
-                    expect(methodSpy.calledWith(list[name], 'path', handler)).toBe(true);
-                    const Controller = {
-                        endpoint: function () { }
-                    };
-                    builder[name]('path', Controller, 'endpoint');
-                    expect(methodSpy.calledWith(list[name], 'path', Controller, 'endpoint')).toBe(true);
-                });
-            }
-        });
+        const list = {
+            checkout: HttpMethod_1.HttpMethod.CHECKOUT,
+            copy: HttpMethod_1.HttpMethod.COPY,
+            delete: HttpMethod_1.HttpMethod.DELETE,
+            get: HttpMethod_1.HttpMethod.GET,
+            head: HttpMethod_1.HttpMethod.HEAD,
+            lock: HttpMethod_1.HttpMethod.LOCK,
+            merge: HttpMethod_1.HttpMethod.MERGE,
+            mkactivity: HttpMethod_1.HttpMethod.MKACTIVITY,
+            mkcol: HttpMethod_1.HttpMethod.MKCOL,
+            move: HttpMethod_1.HttpMethod.MOVE,
+            msearch: HttpMethod_1.HttpMethod.M_SEARCH,
+            notify: HttpMethod_1.HttpMethod.NOTIFY,
+            options: HttpMethod_1.HttpMethod.OPTIONS,
+            patch: HttpMethod_1.HttpMethod.PATCH,
+            post: HttpMethod_1.HttpMethod.POST,
+            purge: HttpMethod_1.HttpMethod.PURGE,
+            put: HttpMethod_1.HttpMethod.PUT,
+            report: HttpMethod_1.HttpMethod.REPORT,
+            search: HttpMethod_1.HttpMethod.SEARCH,
+            subscribe: HttpMethod_1.HttpMethod.SUBSCRIBE,
+            trace: HttpMethod_1.HttpMethod.TRACE,
+            unlock: HttpMethod_1.HttpMethod.UNLOCK,
+            unsubscribe: HttpMethod_1.HttpMethod.UNSUBSCRIBE
+        };
+        for (const name in list) {
+            it(name + '() calls .method() function with HttpMethod.' + list[name], function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                const methodSpy = Sinon.spy(builder, 'method');
+                builder[name]('path', 'target');
+                expect(methodSpy.calledWith(list[name], 'path', 'target')).toBe(true);
+                function handler() { }
+                builder[name]('path', handler);
+                expect(methodSpy.calledWith(list[name], 'path', handler)).toBe(true);
+                const Controller = {
+                    endpoint: function () { }
+                };
+                builder[name]('path', Controller, 'endpoint');
+                expect(methodSpy.calledWith(list[name], 'path', Controller, 'endpoint')).toBe(true);
+            });
+        }
     });
 });

@@ -2,5 +2,4 @@ import { RouteGrammarGroupChain, RouteGrammarNameChain, IRouteGrammarVerbs, IRou
 export interface IRouter extends IRouteGrammarVerbs, IRouteGrammarControl {
     group(callback: () => void): RouteGrammarGroupChain;
     name(name: string): RouteGrammarNameChain;
-    redirect(...args: Array<any>): void;
 }

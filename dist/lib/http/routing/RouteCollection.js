@@ -1,10 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+// import { IRouteData } from './interfaces/IRouteData'
 class RouteCollection {
-    static getData() {
-        return [];
-    }
-    static has() { }
 }
 RouteCollection.routes = [];
 exports.RouteCollection = RouteCollection;

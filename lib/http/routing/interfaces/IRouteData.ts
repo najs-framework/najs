@@ -12,7 +12,7 @@ export interface IRouteData {
   method: HttpMethod | string
   path: string
   prefix: string
-  controller: RouteController
-  endpoint: RouteEndpoint
+  controller?: RouteController
+  endpoint?: RouteEndpoint
   middleware: Array<RouteMiddleware>
 }

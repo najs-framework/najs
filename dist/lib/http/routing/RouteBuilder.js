@@ -11,8 +11,6 @@ class RouteBuilder {
             method: method || HttpMethod_1.HttpMethod.GET,
             path: path || '',
             prefix: '',
-            controller: '',
-            endpoint: '',
             middleware: []
         };
         this.children = [];
@@ -73,6 +71,11 @@ class RouteBuilder {
     }
     name(name) {
         this.data.name = name;
+        return this;
+    }
+    method(method, path, arg0, arg1) {
+        this.data.method = method;
+        this.data.path = path;
         return this;
     }
     checkout(arg0, arg1, arg2) {
@@ -143,9 +146,6 @@ class RouteBuilder {
     }
     unsubscribe(arg0, arg1, arg2) {
         return this.method(HttpMethod_1.HttpMethod.UNSUBSCRIBE, arg0, arg1, arg2);
-    }
-    method(method, path, arg0, arg1) {
-        return this;
     }
 }
 exports.RouteBuilder = RouteBuilder;

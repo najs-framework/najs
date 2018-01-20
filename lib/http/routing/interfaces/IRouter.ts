@@ -10,5 +10,5 @@ export interface IRouter extends IRouteGrammarVerbs, IRouteGrammarControl {
 
   name(name: string): RouteGrammarNameChain
 
-  redirect(...args: Array<any>): void
+  // redirect(...args: Array<any>): void
 }

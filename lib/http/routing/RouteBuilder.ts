@@ -28,8 +28,6 @@ export class RouteBuilder
       method: method || HttpMethod.GET,
       path: path || '',
       prefix: '',
-      controller: '',
-      endpoint: '',
       middleware: []
     }
     this.children = []
@@ -118,6 +116,15 @@ export class RouteBuilder
 
   name(name: string): RouteGrammarNameChain {
     this.data.name = name
+    return this
+  }
+
+  method(method: HttpMethod, path: string, target: string): RouteGrammarVerbChain
+  method(method: HttpMethod, path: string, endpoint: Function): RouteGrammarVerbChain
+  method<T extends Object>(method: HttpMethod, path: string, controller: T, endpoint: keyof T): RouteGrammarVerbChain
+  method(method: HttpMethod, path: string, arg0: string | Function | Object, arg1?: any): RouteGrammarVerbChain {
+    this.data.method = method
+    this.data.path = path
     return this
   }
 
@@ -280,12 +287,5 @@ export class RouteBuilder
   unsubscribe<T extends Object>(path: string, controller: T, endpoint: keyof T): RouteGrammarVerbChain
   unsubscribe(arg0: any, arg1: any, arg2?: any): RouteGrammarVerbChain {
     return this.method(HttpMethod.UNSUBSCRIBE, arg0, arg1, arg2)
-  }
-
-  method(method: HttpMethod, path: string, target: string): RouteGrammarVerbChain
-  method(method: HttpMethod, path: string, endpoint: Function): RouteGrammarVerbChain
-  method<T extends Object>(method: HttpMethod, path: string, controller: T, endpoint: keyof T): RouteGrammarVerbChain
-  method(method: HttpMethod, path: string, arg0: string | Function | Object, arg1?: any): RouteGrammarVerbChain {
-    return this
   }
 }

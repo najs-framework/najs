@@ -19,7 +19,6 @@ export declare class Router {
     middleware(...middleware: Array<string | string[] | IMiddleware | IMiddleware[] | Function | Function[]>): RouteGrammarControlChain;
     prefix(prefix: string): RouteGrammarControlChain;
     name(name: string): RouteGrammarNameChain;
-    redirect(...args: Array<any>): void;
     checkout(path: string, target: string): RouteGrammarVerbChain;
     checkout(path: string, endpoint: Function): RouteGrammarVerbChain;
     checkout<T extends Object>(path: string, controller: T, endpoint: keyof T): RouteGrammarVerbChain;

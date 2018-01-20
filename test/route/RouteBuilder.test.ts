@@ -166,17 +166,6 @@ describe('RouteBuilder', function() {
     })
   })
 
-  describe('IRouteGrammarGroup functions', function() {
-    // TODO: write test
-    describe('group()', function() {
-      it('does something', function() {
-        const builder = new RouteBuilder()
-        builder.group(function() {})
-        builder.group(function() {})
-      })
-    })
-  })
-
   describe('IRouteGrammarNamed functions', function() {
     describe('name()', function() {
       it('assign name to data.name', function() {
@@ -190,6 +179,17 @@ describe('RouteBuilder', function() {
     })
   })
 
+  describe('IRouteGrammarGroup functions', function() {
+    // TODO: write test
+    describe('group()', function() {
+      it('does something', function() {
+        const builder = new RouteBuilder()
+        builder.group(function() {})
+        builder.group(function() {})
+      })
+    })
+  })
+
   describe('IRouteGrammarVerbs functions', function() {
     describe('method()', function() {
       // TODO: write test
@@ -199,50 +199,48 @@ describe('RouteBuilder', function() {
       })
     })
 
-    describe('http method functions()', function() {
-      const list = {
-        checkout: HttpMethod.CHECKOUT,
-        copy: HttpMethod.COPY,
-        delete: HttpMethod.DELETE,
-        get: HttpMethod.GET,
-        head: HttpMethod.HEAD,
-        lock: HttpMethod.LOCK,
-        merge: HttpMethod.MERGE,
-        mkactivity: HttpMethod.MKACTIVITY,
-        mkcol: HttpMethod.MKCOL,
-        move: HttpMethod.MOVE,
-        msearch: HttpMethod.M_SEARCH,
-        notify: HttpMethod.NOTIFY,
-        options: HttpMethod.OPTIONS,
-        patch: HttpMethod.PATCH,
-        post: HttpMethod.POST,
-        purge: HttpMethod.PURGE,
-        put: HttpMethod.PUT,
-        report: HttpMethod.REPORT,
-        search: HttpMethod.SEARCH,
-        subscribe: HttpMethod.SUBSCRIBE,
-        trace: HttpMethod.TRACE,
-        unlock: HttpMethod.UNLOCK,
-        unsubscribe: HttpMethod.UNSUBSCRIBE
-      }
-      for (const name in list) {
-        it(name + '() calls .method() function with HttpMethod.' + list[name], function() {
-          const builder = new RouteBuilder()
-          const methodSpy = Sinon.spy(builder, 'method')
-          builder[name]('path', 'target')
-          expect(methodSpy.calledWith(list[name], 'path', 'target')).toBe(true)
+    const list = {
+      checkout: HttpMethod.CHECKOUT,
+      copy: HttpMethod.COPY,
+      delete: HttpMethod.DELETE,
+      get: HttpMethod.GET,
+      head: HttpMethod.HEAD,
+      lock: HttpMethod.LOCK,
+      merge: HttpMethod.MERGE,
+      mkactivity: HttpMethod.MKACTIVITY,
+      mkcol: HttpMethod.MKCOL,
+      move: HttpMethod.MOVE,
+      msearch: HttpMethod.M_SEARCH,
+      notify: HttpMethod.NOTIFY,
+      options: HttpMethod.OPTIONS,
+      patch: HttpMethod.PATCH,
+      post: HttpMethod.POST,
+      purge: HttpMethod.PURGE,
+      put: HttpMethod.PUT,
+      report: HttpMethod.REPORT,
+      search: HttpMethod.SEARCH,
+      subscribe: HttpMethod.SUBSCRIBE,
+      trace: HttpMethod.TRACE,
+      unlock: HttpMethod.UNLOCK,
+      unsubscribe: HttpMethod.UNSUBSCRIBE
+    }
+    for (const name in list) {
+      it(name + '() calls .method() function with HttpMethod.' + list[name], function() {
+        const builder = new RouteBuilder()
+        const methodSpy = Sinon.spy(builder, 'method')
+        builder[name]('path', 'target')
+        expect(methodSpy.calledWith(list[name], 'path', 'target')).toBe(true)
 
-          function handler() {}
-          builder[name]('path', handler)
-          expect(methodSpy.calledWith(list[name], 'path', handler)).toBe(true)
+        function handler() {}
+        builder[name]('path', handler)
+        expect(methodSpy.calledWith(list[name], 'path', handler)).toBe(true)
 
-          const Controller = {
-            endpoint: function() {}
-          }
-          builder[name]('path', Controller, 'endpoint')
-          expect(methodSpy.calledWith(list[name], 'path', Controller, 'endpoint')).toBe(true)
-        })
-      }
-    })
+        const Controller = {
+          endpoint: function() {}
+        }
+        builder[name]('path', Controller, 'endpoint')
+        expect(methodSpy.calledWith(list[name], 'path', Controller, 'endpoint')).toBe(true)
+      })
+    }
   })
 })

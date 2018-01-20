@@ -1,90 +1,168 @@
 import 'jest'
-// import { Route } from '../../lib/http/Route'
+import * as Sinon from 'sinon'
+import { Route } from '../../lib/http/routing/Route'
+// import { RouteCollection } from '../../lib/http/routing/RouteCollection'
+import { HttpMethod } from '../../lib/http/HttpMethod'
+import { RouteBuilder } from '../../lib/http/routing/RouteBuilder'
 
 describe('Route', function() {
   it('can route all http verbs', function() {
-    // Route.get('test').name()
-    // Route.get('/')
-    // Route.prefix('/retails').get('/')
-    // Route.middleware('Something').group(function() {
-    //   Route.prefix('/warehouses')
-    //     .middleware('CSRF')
-    //     .post('/')
-    //   Route.prefix('/warehouses').get('/')
-    //   Route.prefix('/relationship').group(function() {
-    //     Route.get('/')
-    //     Route.post('/')
-    //   })
-    // })
-    // Route.post('/')
+    Route.get('test', '').name('')
+    Route.get('/', '')
+    Route.prefix('/retails').get('/', '')
+    Route.middleware('Something').group(function() {
+      Route.prefix('/warehouses')
+        .middleware('CSRF')
+        .post('/', '')
+      Route.prefix('/warehouses').get('/', '')
+      Route.prefix('/relationship').group(function() {
+        Route.get('/', '')
+        Route.post('/', '')
+      })
+    })
+    Route.post('/', '')
     // for (const route of RouteCollection.routes) {
-    // console.log(route)
+    //   // console.log(route)
     // }
   })
+
+  describe('Register and Forward Methods', function() {
+    describe('IRouteGrammarVerbs functions', function() {
+      it('use()', function() {
+        const builder = new RouteBuilder()
+        const registerStub = Sinon.stub(Route, <any>'register')
+        registerStub.returns(builder)
+        const useSpy = Sinon.spy(builder, 'use')
+
+        function a() {}
+        const b = {}
+        Route.use(a, [b, 12], 'c')
+        expect(useSpy.calledWith(a, [b, 12], 'c')).toBe(true)
+
+        registerStub.restore()
+      })
+
+      it('middleware()', function() {
+        const builder = new RouteBuilder()
+        const registerStub = Sinon.stub(Route, <any>'register')
+        registerStub.returns(builder)
+        const middlewareSpy = Sinon.spy(builder, 'middleware')
+
+        function a() {}
+        const b = {}
+        Route.middleware(a, [b, 12], 'c')
+        expect(middlewareSpy.calledWith(a, [b, 12], 'c')).toBe(true)
+
+        registerStub.restore()
+      })
+
+      it('prefix()', function() {
+        const builder = new RouteBuilder()
+        const registerStub = Sinon.stub(Route, <any>'register')
+        registerStub.returns(builder)
+        const prefixSpy = Sinon.spy(builder, 'prefix')
+
+        Route.prefix('test')
+        expect(prefixSpy.calledWith('test')).toBe(true)
+
+        registerStub.restore()
+      })
+
+      it('name()', function() {
+        const builder = new RouteBuilder()
+        const registerStub = Sinon.stub(Route, <any>'register')
+        registerStub.returns(builder)
+        const nameSpy = Sinon.spy(builder, 'name')
+
+        Route.name('test')
+        expect(nameSpy.calledWith('test')).toBe(true)
+
+        registerStub.restore()
+      })
+
+      it('group()', function() {
+        const builder = new RouteBuilder()
+        const registerStub = Sinon.stub(Route, <any>'register')
+        registerStub.returns(builder)
+        const groupSpy = Sinon.spy(builder, 'group')
+
+        function groupFunction() {}
+        Route.group(groupFunction)
+        expect(groupSpy.calledWith(groupFunction)).toBe(true)
+
+        registerStub.restore()
+      })
+
+      it('method()', function() {
+        const builder = new RouteBuilder()
+        const registerStub = Sinon.stub(Route, <any>'register')
+        registerStub.returns(builder)
+        const methodSpy = Sinon.spy(builder, 'method')
+
+        function handler() {}
+        Route.method(HttpMethod.DELETE, 'path', handler)
+        expect(methodSpy.calledWith(HttpMethod.DELETE, 'path', handler)).toBe(true)
+
+        const Controller = {
+          endpoint: function() {}
+        }
+        Route.method(HttpMethod.M_SEARCH, 'path', Controller, 'endpoint')
+        expect(methodSpy.calledWith(HttpMethod.M_SEARCH, 'path', Controller, 'endpoint')).toBe(true)
+
+        Route.method(HttpMethod.CHECKOUT, 'path', 'Controller@endpoint')
+        expect(methodSpy.calledWith(HttpMethod.CHECKOUT, 'path', 'Controller@endpoint')).toBe(true)
+
+        registerStub.restore()
+      })
+
+      const list = {
+        checkout: HttpMethod.CHECKOUT,
+        copy: HttpMethod.COPY,
+        delete: HttpMethod.DELETE,
+        get: HttpMethod.GET,
+        head: HttpMethod.HEAD,
+        lock: HttpMethod.LOCK,
+        merge: HttpMethod.MERGE,
+        mkactivity: HttpMethod.MKACTIVITY,
+        mkcol: HttpMethod.MKCOL,
+        move: HttpMethod.MOVE,
+        msearch: HttpMethod.M_SEARCH,
+        notify: HttpMethod.NOTIFY,
+        options: HttpMethod.OPTIONS,
+        patch: HttpMethod.PATCH,
+        post: HttpMethod.POST,
+        purge: HttpMethod.PURGE,
+        put: HttpMethod.PUT,
+        report: HttpMethod.REPORT,
+        search: HttpMethod.SEARCH,
+        subscribe: HttpMethod.SUBSCRIBE,
+        trace: HttpMethod.TRACE,
+        unlock: HttpMethod.UNLOCK,
+        unsubscribe: HttpMethod.UNSUBSCRIBE
+      }
+      for (const name in list) {
+        it(name + '() registers and calls RouteBuilder.' + name + '()', function() {
+          const builder = new RouteBuilder()
+          const registerStub = Sinon.stub(Route, <any>'register')
+          registerStub.returns(builder)
+
+          const methodSpy = Sinon.spy(builder, 'method')
+          Reflect.apply(Route[name], Route, ['path', 'target'])
+          expect(methodSpy.calledWith(list[name], 'path', 'target')).toBe(true)
+
+          function handler() {}
+          Reflect.apply(Route[name], Route, ['path', handler])
+          expect(methodSpy.calledWith(list[name], 'path', handler)).toBe(true)
+
+          const Controller = {
+            endpoint: function() {}
+          }
+          Reflect.apply(Route[name], Route, ['path', Controller, 'endpoint'])
+          expect(methodSpy.calledWith(list[name], 'path', Controller, 'endpoint')).toBe(true)
+
+          registerStub.restore()
+        })
+      }
+    })
+  })
 })
-// async function middleware_before_cors(request: any) {
-//   request.cors = 'ok'
-//   console.log('middleware before cors', request)
-// }
-
-// async function middleware_before_csrf(request: any) {
-//   request.cors = 'csrf'
-//   console.log('middleware before csrf', request)
-// }
-
-// async function middleware_after_cached(request: any, response: any) {
-//   response.cached = true
-//   console.log('middleware after cached', response)
-// }
-
-// async function middleware_after_transform(request: any, response: any) {
-//   // response.transformed = true
-//   console.log(request)
-//   console.log('middleware after transform', response)
-//   return { completely: 'difference' }
-// }
-
-// async function action() {
-//   console.log('action called')
-//   return { ok: true, from: 'action' }
-// }
-
-// async function middleware_manager() {
-//   const request = { url: '/url' }
-//   const middlewareBefore = [middleware_before_csrf, middleware_before_cors]
-//   const middlewareAfter = [middleware_after_transform, middleware_after_cached]
-//   for (const middleware of middlewareBefore) {
-//     await middleware(request)
-//   }
-//   let result: any = await action()
-//   for (const middleware of middlewareAfter) {
-//     const middlewareResult = await middleware(request, result)
-//     if (typeof middlewareResult === 'undefined' || middlewareResult === result) {
-//       continue
-//     }
-//     result = middlewareResult
-//   }
-//   console.log(result)
-//   // const next = async function(error?: any) {
-//   //   console.log('trigger next')
-//   //   if (error) {
-//   //     throw error
-//   //   }
-//   //   if (!result) {
-//   //     console.log('never call action')
-//   //     result = await action()
-//   //   } else {
-//   //     console.log('already call action')
-//   //   }
-//   //   return result
-//   // }
-//   // for (const middleware of middlewareBefore) {
-//   // middleware(request, result, next)
-//   // console.log(result)
-//   // }
-//   // if (!result) {
-//   //   result = await next()
-//   // }
-//   // console.log('end of the middleware', result)
-// }
-// middleware_manager()

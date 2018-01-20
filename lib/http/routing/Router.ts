@@ -11,6 +11,8 @@ import { IMiddleware } from '../middleware/IMiddleware'
 import { HttpMethod } from '../HttpMethod'
 
 export class Router {
+  // redirect(...args: Array<any>): void {}
+
   group(callback: () => void): RouteGrammarGroupChain {
     return this.register<RouteBuilder>(new RouteBuilder('', '')).group(callback)
   }
@@ -25,7 +27,7 @@ export class Router {
     ...middleware: Array<string | string[] | IMiddleware | IMiddleware[] | Function | Function[]>
   ): RouteGrammarControlChain
   use(...list: Array<any>): RouteGrammarControlChain {
-    return this.register<RouteBuilder>(new RouteBuilder('', '')).use(...list)
+    return this.register<RouteBuilder>(new RouteBuilder()).use(...list)
   }
 
   middleware(middleware: string): RouteGrammarControlChain
@@ -38,18 +40,16 @@ export class Router {
     ...middleware: Array<string | string[] | IMiddleware | IMiddleware[] | Function | Function[]>
   ): RouteGrammarControlChain
   middleware(...list: Array<any>): RouteGrammarControlChain {
-    return this.register<RouteBuilder>(new RouteBuilder('', '')).middleware(...list)
+    return this.register<RouteBuilder>(new RouteBuilder()).middleware(...list)
   }
 
   prefix(prefix: string): RouteGrammarControlChain {
-    return this.register<RouteBuilder>(new RouteBuilder('', '')).prefix(prefix)
+    return this.register<RouteBuilder>(new RouteBuilder()).prefix(prefix)
   }
 
   name(name: string): RouteGrammarNameChain {
-    return this.register<RouteBuilder>(new RouteBuilder('', '')).name(name)
+    return this.register<RouteBuilder>(new RouteBuilder()).name(name)
   }
-
-  redirect(...args: Array<any>): void {}
 
   checkout(path: string, target: string): RouteGrammarVerbChain
   checkout(path: string, endpoint: Function): RouteGrammarVerbChain
