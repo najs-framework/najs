@@ -14,4 +14,3 @@ function get_class_name(classDefinition, allowString = true) {
     throw new TypeError('Please define "className" or "getClassName" for ' + classDefinition);
 }
 exports.get_class_name = get_class_name;
-//# sourceMappingURL=get_class_name.js.map

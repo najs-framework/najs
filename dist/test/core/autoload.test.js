@@ -98,4 +98,3 @@ describe('@autoload', function () {
         expect('should throw a Error').toEqual('');
     });
 });
-//# sourceMappingURL=autoload.test.js.map

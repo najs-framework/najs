@@ -4,4 +4,3 @@ require("jest");
 describe('Najs', function () {
     it('works', function () { });
 });
-//# sourceMappingURL=index.test.js.map

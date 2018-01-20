@@ -161,4 +161,3 @@ describe('Najs.register', function () {
         });
     });
 });
-//# sourceMappingURL=register.test.js.map

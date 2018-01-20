@@ -16,6 +16,9 @@ let ExpressHttpDriver = ExpressHttpDriver_1 = class ExpressHttpDriver {
     getDriverName() {
         return ExpressHttpDriver_1.driverName;
     }
+    getNativeDriver() {
+        return this.express;
+    }
     initialize() {
         this.express = lodash_1.isFunction(this.setupFunction) ? this.setupFunction() : this.defaultInitialize();
         if (lodash_1.isFunction(this.didSetupHandler)) {
@@ -50,4 +53,3 @@ ExpressHttpDriver = ExpressHttpDriver_1 = __decorate([
 ], ExpressHttpDriver);
 exports.ExpressHttpDriver = ExpressHttpDriver;
 var ExpressHttpDriver_1;
-//# sourceMappingURL=ExpressHttpDriver.js.map

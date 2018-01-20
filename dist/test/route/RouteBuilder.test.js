@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
+const Sinon = require("sinon");
 const HttpMethod_1 = require("../../lib/http/HttpMethod");
 const RouteBuilder_1 = require("../../lib/http/routing/RouteBuilder");
 describe('RouteBuilder', function () {
@@ -90,15 +91,51 @@ describe('RouteBuilder', function () {
         });
     });
     describe('IRouteGrammarControl functions', function () {
-        // TODO: write test
-        describe('use()', function () {
-            const builder = new RouteBuilder_1.RouteBuilder();
-            builder.use('test');
-        });
-        // TODO: write test
         describe('middleware()', function () {
-            const builder = new RouteBuilder_1.RouteBuilder();
-            builder.middleware('test');
+            it('appends middleware with multiple parameters and flatten if any param is an array', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                expect(builder['data'].middleware).toEqual([]);
+                builder.middleware('a', ['b', 'c'], 'd');
+                expect(builder['data'].middleware).toEqual(['a', 'b', 'c', 'd']);
+                builder.middleware('e', 'f');
+                expect(builder['data'].middleware).toEqual(['a', 'b', 'c', 'd', 'e', 'f']);
+            });
+            it('accepts middleware as a function', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                function a() { }
+                function b() { }
+                function c() { }
+                function d() { }
+                expect(builder['data'].middleware).toEqual([]);
+                builder.middleware([a, b, c], d, ['e', 'f']);
+                expect(builder['data'].middleware).toEqual([a, b, c, d, 'e', 'f']);
+            });
+            it('accepts middleware as an object', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                const a = {};
+                const b = {};
+                const c = {};
+                function d() { }
+                expect(builder['data'].middleware).toEqual([]);
+                builder.middleware([a], [b, c], d, ['e', 'f']);
+                expect(builder['data'].middleware).toEqual([a, b, c, d, 'e', 'f']);
+            });
+            it('removes invalid type of middleware such as number or boolean', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                const a = {};
+                function b() { }
+                expect(builder['data'].middleware).toEqual([]);
+                builder.middleware(true, a, [b, 12], 'c', 12, 'd');
+                expect(builder['data'].middleware).toEqual([a, b, 'c', 'd']);
+            });
+        });
+        describe('use()', function () {
+            it('just .middleware() alias', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                const middlewareSpy = Sinon.spy(builder, 'middleware');
+                builder.use('test', 'abc', ['a', 'b']);
+                expect(middlewareSpy.calledWith('test', 'abc', ['a', 'b'])).toBe(true);
+            });
         });
         describe('prefix()', function () {
             it('assigns parameter to data.prefix, and overrides if called again', function () {
@@ -122,11 +159,14 @@ describe('RouteBuilder', function () {
         });
     });
     describe('IRouteGrammarNamed functions', function () {
-        // TODO: write test
         describe('name()', function () {
-            it('does something', function () {
+            it('assign name to data.name', function () {
                 const builder = new RouteBuilder_1.RouteBuilder();
+                expect(builder['data'].name).toBeUndefined();
                 builder.name('test');
+                expect(builder['data'].name).toEqual('test');
+                builder.name('change');
+                expect(builder['data'].name).toEqual('change');
             });
         });
     });
@@ -135,15 +175,51 @@ describe('RouteBuilder', function () {
             // TODO: write test
             it('does something', function () {
                 const builder = new RouteBuilder_1.RouteBuilder();
-                builder.method('GET');
+                builder.method(HttpMethod_1.HttpMethod.GET, '/', '');
             });
         });
-        describe('get()', function () {
-            it('does something', function () {
-                const builder = new RouteBuilder_1.RouteBuilder();
-                builder.get('/');
-            });
+        describe('http method functions()', function () {
+            const list = {
+                checkout: HttpMethod_1.HttpMethod.CHECKOUT,
+                copy: HttpMethod_1.HttpMethod.COPY,
+                delete: HttpMethod_1.HttpMethod.DELETE,
+                get: HttpMethod_1.HttpMethod.GET,
+                head: HttpMethod_1.HttpMethod.HEAD,
+                lock: HttpMethod_1.HttpMethod.LOCK,
+                merge: HttpMethod_1.HttpMethod.MERGE,
+                mkactivity: HttpMethod_1.HttpMethod.MKACTIVITY,
+                mkcol: HttpMethod_1.HttpMethod.MKCOL,
+                move: HttpMethod_1.HttpMethod.MOVE,
+                msearch: HttpMethod_1.HttpMethod.M_SEARCH,
+                notify: HttpMethod_1.HttpMethod.NOTIFY,
+                options: HttpMethod_1.HttpMethod.OPTIONS,
+                patch: HttpMethod_1.HttpMethod.PATCH,
+                post: HttpMethod_1.HttpMethod.POST,
+                purge: HttpMethod_1.HttpMethod.PURGE,
+                put: HttpMethod_1.HttpMethod.PUT,
+                report: HttpMethod_1.HttpMethod.REPORT,
+                search: HttpMethod_1.HttpMethod.SEARCH,
+                subscribe: HttpMethod_1.HttpMethod.SUBSCRIBE,
+                trace: HttpMethod_1.HttpMethod.TRACE,
+                unlock: HttpMethod_1.HttpMethod.UNLOCK,
+                unsubscribe: HttpMethod_1.HttpMethod.UNSUBSCRIBE
+            };
+            for (const name in list) {
+                it(name + '() calls .method() function with HttpMethod.' + list[name], function () {
+                    const builder = new RouteBuilder_1.RouteBuilder();
+                    const methodSpy = Sinon.spy(builder, 'method');
+                    builder[name]('path', 'target');
+                    expect(methodSpy.calledWith(list[name], 'path', 'target')).toBe(true);
+                    function handler() { }
+                    builder[name]('path', handler);
+                    expect(methodSpy.calledWith(list[name], 'path', handler)).toBe(true);
+                    const Controller = {
+                        endpoint: function () { }
+                    };
+                    builder[name]('path', Controller, 'endpoint');
+                    expect(methodSpy.calledWith(list[name], 'path', Controller, 'endpoint')).toBe(true);
+                });
+            }
         });
     });
 });
-//# sourceMappingURL=RouteBuilder.test.js.map

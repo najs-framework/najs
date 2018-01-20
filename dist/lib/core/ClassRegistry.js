@@ -42,4 +42,3 @@ global['Najs'] = global['Najs'] || {};
 global['Najs']['classRegistry'] = global['Najs']['classRegistry'] || {};
 global['Najs']['classRegistry'] = new ClassRegistryCollection();
 exports.ClassRegistry = global['Najs']['classRegistry'];
-//# sourceMappingURL=ClassRegistry.js.map

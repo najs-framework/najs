@@ -17,4 +17,3 @@ exports.ClassRegistry = ClassRegistry_1.ClassRegistry;
 // export * from './http/Route'
 // export * from './http/RouteCollection'
 // export * from './http/Controller'
-//# sourceMappingURL=index.js.map

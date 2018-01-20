@@ -26,4 +26,3 @@ function autoload(className) {
     };
 }
 exports.autoload = autoload;
-//# sourceMappingURL=autoload.js.map

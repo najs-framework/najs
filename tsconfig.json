@@ -3,7 +3,6 @@
     "module": "commonjs",
     "target": "es2017",
     "experimentalDecorators": true,
-    "sourceMap": true,
     "moduleResolution": "node",
     "outDir": "dist",
     "types": ["node", "express"],
@@ -17,6 +16,6 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true
   },
-  "include": ["./lib/**/*.ts", "./test/**/*.ts"],
+  "include": ["./lib/**/*.ts", "./test/**/*.ts", "./syntax/**/*.ts"],
   "exclude": ["node_modules", "build"]
 }

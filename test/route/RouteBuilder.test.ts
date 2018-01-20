@@ -1,4 +1,5 @@
 import 'jest'
+import * as Sinon from 'sinon'
 import { HttpMethod } from '../../lib/http/HttpMethod'
 import { RouteBuilder } from '../../lib/http/routing/RouteBuilder'
 
@@ -102,16 +103,55 @@ describe('RouteBuilder', function() {
   })
 
   describe('IRouteGrammarControl functions', function() {
-    // TODO: write test
-    describe('use()', function() {
-      const builder = new RouteBuilder()
-      builder.use('test')
+    describe('middleware()', function() {
+      it('appends middleware with multiple parameters and flatten if any param is an array', function() {
+        const builder = new RouteBuilder()
+        expect(builder['data'].middleware).toEqual([])
+        builder.middleware('a', ['b', 'c'], 'd')
+        expect(builder['data'].middleware).toEqual(['a', 'b', 'c', 'd'])
+        builder.middleware('e', 'f')
+        expect(builder['data'].middleware).toEqual(['a', 'b', 'c', 'd', 'e', 'f'])
+      })
+
+      it('accepts middleware as a function', function() {
+        const builder = new RouteBuilder()
+        function a() {}
+        function b() {}
+        function c() {}
+        function d() {}
+        expect(builder['data'].middleware).toEqual([])
+        builder.middleware([a, b, c], d, ['e', 'f'])
+        expect(builder['data'].middleware).toEqual([a, b, c, d, 'e', 'f'])
+      })
+
+      it('accepts middleware as an object', function() {
+        const builder = new RouteBuilder()
+        const a = {}
+        const b = {}
+        const c = {}
+        function d() {}
+        expect(builder['data'].middleware).toEqual([])
+        builder.middleware([a], [b, c], d, ['e', 'f'])
+        expect(builder['data'].middleware).toEqual([a, b, c, d, 'e', 'f'])
+      })
+
+      it('removes invalid type of middleware such as number or boolean', function() {
+        const builder = new RouteBuilder()
+        const a = {}
+        function b() {}
+        expect(builder['data'].middleware).toEqual([])
+        builder.middleware(<any>true, a, [b, <any>12], 'c', <any>12, 'd')
+        expect(builder['data'].middleware).toEqual([a, b, 'c', 'd'])
+      })
     })
 
-    // TODO: write test
-    describe('middleware()', function() {
-      const builder = new RouteBuilder()
-      builder.middleware('test')
+    describe('use()', function() {
+      it('just .middleware() alias', function() {
+        const builder = new RouteBuilder()
+        const middlewareSpy = Sinon.spy(builder, 'middleware')
+        builder.use('test', 'abc', ['a', 'b'])
+        expect(middlewareSpy.calledWith('test', 'abc', ['a', 'b'])).toBe(true)
+      })
     })
 
     describe('prefix()', function() {
@@ -138,11 +178,14 @@ describe('RouteBuilder', function() {
   })
 
   describe('IRouteGrammarNamed functions', function() {
-    // TODO: write test
     describe('name()', function() {
-      it('does something', function() {
+      it('assign name to data.name', function() {
         const builder = new RouteBuilder()
+        expect(builder['data'].name).toBeUndefined()
         builder.name('test')
+        expect(builder['data'].name).toEqual('test')
+        builder.name('change')
+        expect(builder['data'].name).toEqual('change')
       })
     })
   })
@@ -152,15 +195,54 @@ describe('RouteBuilder', function() {
       // TODO: write test
       it('does something', function() {
         const builder = new RouteBuilder()
-        builder.method('GET')
+        builder.method(HttpMethod.GET, '/', '')
       })
     })
 
-    describe('get()', function() {
-      it('does something', function() {
-        const builder = new RouteBuilder()
-        builder.get('/')
-      })
+    describe('http method functions()', function() {
+      const list = {
+        checkout: HttpMethod.CHECKOUT,
+        copy: HttpMethod.COPY,
+        delete: HttpMethod.DELETE,
+        get: HttpMethod.GET,
+        head: HttpMethod.HEAD,
+        lock: HttpMethod.LOCK,
+        merge: HttpMethod.MERGE,
+        mkactivity: HttpMethod.MKACTIVITY,
+        mkcol: HttpMethod.MKCOL,
+        move: HttpMethod.MOVE,
+        msearch: HttpMethod.M_SEARCH,
+        notify: HttpMethod.NOTIFY,
+        options: HttpMethod.OPTIONS,
+        patch: HttpMethod.PATCH,
+        post: HttpMethod.POST,
+        purge: HttpMethod.PURGE,
+        put: HttpMethod.PUT,
+        report: HttpMethod.REPORT,
+        search: HttpMethod.SEARCH,
+        subscribe: HttpMethod.SUBSCRIBE,
+        trace: HttpMethod.TRACE,
+        unlock: HttpMethod.UNLOCK,
+        unsubscribe: HttpMethod.UNSUBSCRIBE
+      }
+      for (const name in list) {
+        it(name + '() calls .method() function with HttpMethod.' + list[name], function() {
+          const builder = new RouteBuilder()
+          const methodSpy = Sinon.spy(builder, 'method')
+          builder[name]('path', 'target')
+          expect(methodSpy.calledWith(list[name], 'path', 'target')).toBe(true)
+
+          function handler() {}
+          builder[name]('path', handler)
+          expect(methodSpy.calledWith(list[name], 'path', handler)).toBe(true)
+
+          const Controller = {
+            endpoint: function() {}
+          }
+          builder[name]('path', Controller, 'endpoint')
+          expect(methodSpy.calledWith(list[name], 'path', Controller, 'endpoint')).toBe(true)
+        })
+      }
     })
   })
 })

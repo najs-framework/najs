@@ -123,4 +123,3 @@ describe('Najs.bind', function () {
         });
     });
 });
-//# sourceMappingURL=bind.test.js.map

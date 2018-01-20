@@ -22,4 +22,3 @@ describe('ClassRegistry', function () {
         });
     });
 });
-//# sourceMappingURL=ClassRegistry.test.js.map

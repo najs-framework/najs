@@ -19,4 +19,3 @@ function class_registry_circular_reference_check(items) {
     return false;
 }
 exports.class_registry_circular_reference_check = class_registry_circular_reference_check;
-//# sourceMappingURL=class_registry_circular_reference_check.js.map

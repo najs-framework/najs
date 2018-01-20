@@ -45,4 +45,3 @@ class ClassRegistryItem {
     }
 }
 exports.ClassRegistryItem = ClassRegistryItem;
-//# sourceMappingURL=ClassRegistryItem.js.map

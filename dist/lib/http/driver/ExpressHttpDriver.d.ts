@@ -1,8 +1,9 @@
 /// <reference types="express" />
-import { IHttpDriver, HttpDriverSetupFunction, HttpDriverDidSetupHandler, HttpDriverStartOptions } from '../IHttpDriver';
+import { IHttpDriver, HttpDriverSetupFunction, HttpDriverDidSetupHandler, HttpDriverStartOptions } from './IHttpDriver';
 import { IAutoload } from '../../core/IAutoload';
 import { IRouteData } from '../routing/interfaces/IRouteData';
 import * as Express from 'express';
+export declare type ExpressApp = Express.Express;
 export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
     static driverName: string;
     private express;
@@ -10,6 +11,7 @@ export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
     private didSetupHandler?;
     getClassName(): string;
     getDriverName(): string;
+    getNativeDriver(): ExpressApp;
     initialize(): void;
     private defaultInitialize();
     setup(setupFunction: HttpDriverSetupFunction<Express.Express>): this;

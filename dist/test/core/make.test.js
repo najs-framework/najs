@@ -104,4 +104,3 @@ describe('Najs.make', function () {
         });
     });
 });
-//# sourceMappingURL=make.test.js.map

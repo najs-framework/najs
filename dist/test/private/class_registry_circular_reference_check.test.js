@@ -59,4 +59,3 @@ describe('class_registry_circular_reference_check()', function () {
         });
     }
 });
-//# sourceMappingURL=class_registry_circular_reference_check.test.js.map

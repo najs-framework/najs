@@ -34,4 +34,3 @@ class Najs {
 }
 Najs.options = NajsDefaultOptions;
 exports.Najs = Najs;
-//# sourceMappingURL=Najs.js.map

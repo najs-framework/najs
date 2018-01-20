@@ -9,4 +9,3 @@ class JsonResponse {
     }
 }
 exports.JsonResponse = JsonResponse;
-//# sourceMappingURL=JsonResponse.js.map

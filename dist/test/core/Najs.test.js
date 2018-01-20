@@ -88,4 +88,3 @@ describe('Najs', function () {
         });
     });
 });
-//# sourceMappingURL=Najs.test.js.map

@@ -11,4 +11,3 @@ function singleton(classDefinition, className, overridable) {
     return register_1.register(classDefinition, className, overridable, true);
 }
 exports.singleton = singleton;
-//# sourceMappingURL=singleton.js.map

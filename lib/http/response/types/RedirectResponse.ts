@@ -1,5 +1,5 @@
 import { IResponse } from '../IResponse'
-import { IHttpDriver } from '../../IHttpDriver'
+import { IHttpDriver } from '../../driver/IHttpDriver'
 
 export class RedirectResponse implements IResponse {
   private url: string

@@ -8,4 +8,3 @@ class RouteCollection {
 }
 RouteCollection.routes = [];
 exports.RouteCollection = RouteCollection;
-//# sourceMappingURL=RouteCollection.js.map

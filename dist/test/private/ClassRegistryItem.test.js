@@ -74,4 +74,3 @@ describe('ClassRegistryItem', function () {
         });
     });
 });
-//# sourceMappingURL=ClassRegistryItem.test.js.map

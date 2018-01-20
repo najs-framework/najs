@@ -14,4 +14,3 @@ function register(classDefinition, className, overridable, singleton) {
     ClassRegistry_1.ClassRegistry.register(item);
 }
 exports.register = register;
-//# sourceMappingURL=register.js.map

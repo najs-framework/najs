@@ -1,6 +1,6 @@
 {
   "name": "najs",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "scripts": {
     "build": "npm run build-ts && npm run tslint",
     "build-ts": "tsc -d",

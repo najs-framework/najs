@@ -26,4 +26,3 @@ var HttpMethod;
     HttpMethod["UNLOCK"] = "UNLOCK";
     HttpMethod["UNSUBSCRIBE"] = "UNSUBSCRIBE";
 })(HttpMethod = exports.HttpMethod || (exports.HttpMethod = {}));
-//# sourceMappingURL=HttpMethod.js.map

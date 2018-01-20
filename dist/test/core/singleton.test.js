@@ -75,4 +75,3 @@ describe('Najs.singleton', function () {
         });
     });
 });
-//# sourceMappingURL=singleton.test.js.map

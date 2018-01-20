@@ -1,10 +1,6 @@
-import { RouteGrammarVerbChain, RouteGrammarGroupChain, RouteGrammarControlChain, RouteGrammarNameChain } from './IRouteGrammars';
-export interface IRouter {
+import { RouteGrammarGroupChain, RouteGrammarNameChain, IRouteGrammarVerbs, IRouteGrammarControl } from './IRouteGrammars';
+export interface IRouter extends IRouteGrammarVerbs, IRouteGrammarControl {
     group(callback: () => void): RouteGrammarGroupChain;
-    use(middleware: string): RouteGrammarControlChain;
-    middleware(middleware: string): RouteGrammarControlChain;
-    prefix(prefix: string): RouteGrammarControlChain;
-    get(path: string, endpoint: string): RouteGrammarVerbChain;
     name(name: string): RouteGrammarNameChain;
     redirect(...args: Array<any>): void;
 }

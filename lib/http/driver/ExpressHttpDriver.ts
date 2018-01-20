@@ -1,14 +1,16 @@
-import { IHttpDriver, HttpDriverSetupFunction, HttpDriverDidSetupHandler, HttpDriverStartOptions } from '../IHttpDriver'
+import { IHttpDriver, HttpDriverSetupFunction, HttpDriverDidSetupHandler, HttpDriverStartOptions } from './IHttpDriver'
 import { IAutoload } from '../../core/IAutoload'
 import { IRouteData } from '../routing/interfaces/IRouteData'
 import { isFunction } from 'lodash'
 import { register } from '../../index'
 import * as Express from 'express'
 
+export type ExpressApp = Express.Express
+
 @register()
 export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   static driverName: string = 'express'
-  private express: Express.Express
+  private express: ExpressApp
   private setupFunction?: HttpDriverSetupFunction<Express.Express>
   private didSetupHandler?: HttpDriverDidSetupHandler<Express.Express>
 
@@ -20,6 +22,10 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     return ExpressHttpDriver.driverName
   }
 
+  getNativeDriver(): ExpressApp {
+    return this.express
+  }
+
   initialize(): void {
     this.express = isFunction(this.setupFunction) ? this.setupFunction() : this.defaultInitialize()
     if (isFunction(this.didSetupHandler)) {
@@ -27,7 +33,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     }
   }
 
-  private defaultInitialize(): Express.Express {
+  private defaultInitialize(): ExpressApp {
     const app: Express.Express = Express()
     return app
   }

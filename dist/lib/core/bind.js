@@ -32,4 +32,3 @@ function bind(abstract, concrete) {
     return ClassRegistry_1.ClassRegistry.register(item);
 }
 exports.bind = bind;
-//# sourceMappingURL=bind.js.map
