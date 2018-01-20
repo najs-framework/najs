@@ -3,7 +3,7 @@ import { Controller } from '../../controller/Controller'
 import { IMiddleware } from '../../middleware/IMiddleware'
 
 export type RouteMiddleware = string | IMiddleware | Function
-export type RouteController = string | Controller
+export type RouteController = string | Controller | Object
 export type RouteEndpoint = string | Function
 
 export interface IRouteData {

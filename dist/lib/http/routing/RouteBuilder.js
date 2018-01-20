@@ -76,7 +76,41 @@ class RouteBuilder {
     method(method, path, arg0, arg1) {
         this.data.method = method;
         this.data.path = path;
-        return this;
+        if (typeof arg1 === 'undefined') {
+            if (lodash_1.isString(arg0)) {
+                const parts = arg0.split('@');
+                if (parts.length !== 2) {
+                    throw new Error('Target "' + arg0 + '" is invalid. Correct format: ControllerName@endpointName');
+                }
+                this.data.controller = parts[0];
+                this.data.endpoint = parts[1];
+                return this;
+            }
+            if (lodash_1.isFunction(arg0)) {
+                this.data.endpoint = arg0;
+                return this;
+            }
+        }
+        if (lodash_1.isFunction(arg0)) {
+            if (!lodash_1.isFunction(Reflect.get(arg0.prototype, arg1))) {
+                throw new ReferenceError('Endpoint ' + arg1 + ' not found');
+            }
+            this.data.controller = arg0;
+            this.data.endpoint = arg1;
+            return this;
+        }
+        if (lodash_1.isObject(arg0)) {
+            if (!lodash_1.isFunction(Reflect.get(arg0, arg1))) {
+                throw new ReferenceError('Endpoint ' + arg1 + ' not found');
+            }
+            this.data.controller = arg0;
+            this.data.endpoint = arg1;
+            return this;
+        }
+        throw new TypeError('Invalid Route');
+    }
+    all(arg0, arg1, arg2) {
+        return this.method('all', arg0, arg1, arg2);
     }
     checkout(arg0, arg1, arg2) {
         return this.method(HttpMethod_1.HttpMethod.CHECKOUT, arg0, arg1, arg2);

@@ -7,20 +7,20 @@ import { RouteBuilder } from '../../lib/http/routing/RouteBuilder'
 
 describe('Route', function() {
   it('can route all http verbs', function() {
-    Route.get('test', '').name('')
-    Route.get('/', '')
-    Route.prefix('/retails').get('/', '')
+    Route.get('test', 'controller@endpoint').name('')
+    Route.get('/', 'controller@endpoint')
+    Route.prefix('/retails').get('/', 'controller@endpoint')
     Route.middleware('Something').group(function() {
       Route.prefix('/warehouses')
         .middleware('CSRF')
-        .post('/', '')
-      Route.prefix('/warehouses').get('/', '')
+        .post('/', 'controller@endpoint')
+      Route.prefix('/warehouses').get('/', 'controller@endpoint')
       Route.prefix('/relationship').group(function() {
-        Route.get('/', '')
-        Route.post('/', '')
+        Route.get('/', 'controller@endpoint')
+        Route.post('/', 'controller@endpoint')
       })
     })
-    Route.post('/', '')
+    Route.post('/', 'controller@endpoint')
     // for (const route of RouteCollection.routes) {
     //   // console.log(route)
     // }
@@ -116,6 +116,7 @@ describe('Route', function() {
       })
 
       const list = {
+        all: 'all',
         checkout: HttpMethod.CHECKOUT,
         copy: HttpMethod.COPY,
         delete: HttpMethod.DELETE,
@@ -147,8 +148,8 @@ describe('Route', function() {
           registerStub.returns(builder)
 
           const methodSpy = Sinon.spy(builder, 'method')
-          Reflect.apply(Route[name], Route, ['path', 'target'])
-          expect(methodSpy.calledWith(list[name], 'path', 'target')).toBe(true)
+          Reflect.apply(Route[name], Route, ['path', 'controller@endpoint'])
+          expect(methodSpy.calledWith(list[name], 'path', 'controller@endpoint')).toBe(true)
 
           function handler() {}
           Reflect.apply(Route[name], Route, ['path', handler])

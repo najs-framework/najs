@@ -19,6 +19,12 @@ class Router {
     name(name) {
         return this.register(new RouteBuilder_1.RouteBuilder()).name(name);
     }
+    method(arg0, arg1, arg2, arg3) {
+        return this.register(new RouteBuilder_1.RouteBuilder()).method(arg0, arg1, arg2, arg3);
+    }
+    all(arg0, arg1, arg2) {
+        return this.register(new RouteBuilder_1.RouteBuilder()).all(arg0, arg1, arg2);
+    }
     checkout(arg0, arg1, arg2) {
         return this.register(new RouteBuilder_1.RouteBuilder()).checkout(arg0, arg1, arg2);
     }
@@ -87,9 +93,6 @@ class Router {
     }
     unsubscribe(arg0, arg1, arg2) {
         return this.register(new RouteBuilder_1.RouteBuilder()).unsubscribe(arg0, arg1, arg2);
-    }
-    method(arg0, arg1, arg2, arg3) {
-        return this.register(new RouteBuilder_1.RouteBuilder()).method(arg0, arg1, arg2, arg3);
     }
     register(route) {
         if (RouteCollection_1.RouteCollection.routes.length === 0) {

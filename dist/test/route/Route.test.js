@@ -8,20 +8,20 @@ const HttpMethod_1 = require("../../lib/http/HttpMethod");
 const RouteBuilder_1 = require("../../lib/http/routing/RouteBuilder");
 describe('Route', function () {
     it('can route all http verbs', function () {
-        Route_1.Route.get('test', '').name('');
-        Route_1.Route.get('/', '');
-        Route_1.Route.prefix('/retails').get('/', '');
+        Route_1.Route.get('test', 'controller@endpoint').name('');
+        Route_1.Route.get('/', 'controller@endpoint');
+        Route_1.Route.prefix('/retails').get('/', 'controller@endpoint');
         Route_1.Route.middleware('Something').group(function () {
             Route_1.Route.prefix('/warehouses')
                 .middleware('CSRF')
-                .post('/', '');
-            Route_1.Route.prefix('/warehouses').get('/', '');
+                .post('/', 'controller@endpoint');
+            Route_1.Route.prefix('/warehouses').get('/', 'controller@endpoint');
             Route_1.Route.prefix('/relationship').group(function () {
-                Route_1.Route.get('/', '');
-                Route_1.Route.post('/', '');
+                Route_1.Route.get('/', 'controller@endpoint');
+                Route_1.Route.post('/', 'controller@endpoint');
             });
         });
-        Route_1.Route.post('/', '');
+        Route_1.Route.post('/', 'controller@endpoint');
         // for (const route of RouteCollection.routes) {
         //   // console.log(route)
         // }
@@ -96,6 +96,7 @@ describe('Route', function () {
                 registerStub.restore();
             });
             const list = {
+                all: 'all',
                 checkout: HttpMethod_1.HttpMethod.CHECKOUT,
                 copy: HttpMethod_1.HttpMethod.COPY,
                 delete: HttpMethod_1.HttpMethod.DELETE,
@@ -126,8 +127,8 @@ describe('Route', function () {
                     const registerStub = Sinon.stub(Route_1.Route, 'register');
                     registerStub.returns(builder);
                     const methodSpy = Sinon.spy(builder, 'method');
-                    Reflect.apply(Route_1.Route[name], Route_1.Route, ['path', 'target']);
-                    expect(methodSpy.calledWith(list[name], 'path', 'target')).toBe(true);
+                    Reflect.apply(Route_1.Route[name], Route_1.Route, ['path', 'controller@endpoint']);
+                    expect(methodSpy.calledWith(list[name], 'path', 'controller@endpoint')).toBe(true);
                     function handler() { }
                     Reflect.apply(Route_1.Route[name], Route_1.Route, ['path', handler]);
                     expect(methodSpy.calledWith(list[name], 'path', handler)).toBe(true);

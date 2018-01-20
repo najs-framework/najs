@@ -4,6 +4,7 @@ require("jest");
 const Sinon = require("sinon");
 const HttpMethod_1 = require("../../lib/http/HttpMethod");
 const RouteBuilder_1 = require("../../lib/http/routing/RouteBuilder");
+const Controller_1 = require("../../lib/http/controller/Controller");
 describe('RouteBuilder', function () {
     describe('constructor', function () {
         it('can create new builder without argument', function () {
@@ -172,13 +173,148 @@ describe('RouteBuilder', function () {
     });
     describe('IRouteGrammarVerbs functions', function () {
         describe('method()', function () {
-            // TODO: write test
-            it('does something', function () {
+            it('assigns method, path to data.method/data.path', function () {
                 const builder = new RouteBuilder_1.RouteBuilder();
-                builder.method(HttpMethod_1.HttpMethod.GET, '/', '');
+                builder.method(HttpMethod_1.HttpMethod.OPTIONS, '/any/:id', function () { });
+                expect(builder['data'].method).toEqual(HttpMethod_1.HttpMethod.OPTIONS);
+                expect(builder['data'].path).toEqual('/any/:id');
+            });
+            it('allows endpoint as a function', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                function endpoint() { }
+                builder.method(HttpMethod_1.HttpMethod.POST, '/path', endpoint);
+                expect(builder['data'].method).toEqual(HttpMethod_1.HttpMethod.POST);
+                expect(builder['data'].path).toEqual('/path');
+                expect(builder['data'].endpoint).toEqual(endpoint);
+                expect(builder['data'].controller).toBeUndefined;
+            });
+            it('allows endpoint with format ControllerName@endpointName', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                builder.method(HttpMethod_1.HttpMethod.POST, '/path', 'Controller@endpoint');
+                expect(builder['data'].method).toEqual(HttpMethod_1.HttpMethod.POST);
+                expect(builder['data'].path).toEqual('/path');
+                expect(builder['data'].endpoint).toEqual('endpoint');
+                expect(builder['data'].controller).toEqual('Controller');
+            });
+            it('allows 4 params format with Object and endpoint name', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                const controller = {
+                    getUsers() { }
+                };
+                builder.method(HttpMethod_1.HttpMethod.POST, '/path', controller, 'getUsers');
+                expect(builder['data'].method).toEqual(HttpMethod_1.HttpMethod.POST);
+                expect(builder['data'].path).toEqual('/path');
+                expect(builder['data'].endpoint).toEqual('getUsers');
+                expect(builder['data'].controller).toEqual(controller);
+            });
+            it('allows 4 params format with Controller instance and endpoint name', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                class UsersController extends Controller_1.Controller {
+                    getClassName() {
+                        return 'UsersController';
+                    }
+                    getUsers() { }
+                }
+                const controller = new UsersController();
+                builder.method(HttpMethod_1.HttpMethod.POST, '/path', controller, 'getUsers');
+                expect(builder['data'].method).toEqual(HttpMethod_1.HttpMethod.POST);
+                expect(builder['data'].path).toEqual('/path');
+                expect(builder['data'].endpoint).toEqual('getUsers');
+                expect(builder['data'].controller).toEqual(controller);
+            });
+            it('allows 4 params format with Controller class and endpoint name', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                class UsersController extends Controller_1.Controller {
+                    getClassName() {
+                        return 'UsersController';
+                    }
+                    getUsers() { }
+                }
+                builder.method(HttpMethod_1.HttpMethod.POST, '/path', UsersController, 'getUsers');
+                expect(builder['data'].method).toEqual(HttpMethod_1.HttpMethod.POST);
+                expect(builder['data'].path).toEqual('/path');
+                expect(builder['data'].endpoint).toEqual('getUsers');
+                expect(builder['data'].controller).toEqual(UsersController);
+            });
+            it('does not allow endpoint in Object and but endpoint name not found', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                const controller = {
+                    getUsers() { }
+                };
+                try {
+                    builder.method(HttpMethod_1.HttpMethod.POST, '/path', controller, 'getUsersNotFound');
+                }
+                catch (error) {
+                    expect(error).toBeInstanceOf(ReferenceError);
+                    expect(error.message).toEqual('Endpoint getUsersNotFound not found');
+                    return;
+                }
+                expect('should not reach here').toEqual('hmm');
+            });
+            it('does not allow endpoint with Controller instance and but endpoint name not found', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                class UsersController extends Controller_1.Controller {
+                    getClassName() {
+                        return 'UsersController';
+                    }
+                    getUsers() { }
+                }
+                const controller = new UsersController();
+                try {
+                    builder.method(HttpMethod_1.HttpMethod.POST, '/path', controller, 'getUsersNotFound');
+                }
+                catch (error) {
+                    expect(error).toBeInstanceOf(ReferenceError);
+                    expect(error.message).toEqual('Endpoint getUsersNotFound not found');
+                    return;
+                }
+                expect('should not reach here').toEqual('hmm');
+            });
+            it('does not allow endpoint with Controller class and but endpoint name not found', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                class UsersController extends Controller_1.Controller {
+                    getClassName() {
+                        return 'UsersController';
+                    }
+                    getUsers() { }
+                }
+                try {
+                    builder.method(HttpMethod_1.HttpMethod.POST, '/path', UsersController, 'getUsersNotFound');
+                }
+                catch (error) {
+                    expect(error).toBeInstanceOf(ReferenceError);
+                    expect(error.message).toEqual('Endpoint getUsersNotFound not found');
+                    return;
+                }
+                expect('should not reach here').toEqual('hmm');
+            });
+            it('throws Error if endpoint is a string but not in format ControllerName@endpointName', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                try {
+                    builder.method(HttpMethod_1.HttpMethod.POST, '/path', 'Controller/Endpoint');
+                }
+                catch (error) {
+                    expect(error).toBeInstanceOf(Error);
+                    expect(error.message).toEqual('Target "Controller/Endpoint" is invalid. Correct format: ControllerName@endpointName');
+                    return;
+                }
+                expect('should not reach here').toEqual('hmm');
+            });
+            it('throws TypeError if somehow use method in wrong way', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                try {
+                    builder.method(HttpMethod_1.HttpMethod.POST, '/path', 123);
+                }
+                catch (error) {
+                    expect(error).toBeInstanceOf(TypeError);
+                    expect(error.message).toEqual('Invalid Route');
+                    return;
+                }
+                expect('should not reach here').toEqual('hmm');
             });
         });
         const list = {
+            all: 'all',
             checkout: HttpMethod_1.HttpMethod.CHECKOUT,
             copy: HttpMethod_1.HttpMethod.COPY,
             delete: HttpMethod_1.HttpMethod.DELETE,
@@ -207,8 +343,8 @@ describe('RouteBuilder', function () {
             it(name + '() calls .method() function with HttpMethod.' + list[name], function () {
                 const builder = new RouteBuilder_1.RouteBuilder();
                 const methodSpy = Sinon.spy(builder, 'method');
-                builder[name]('path', 'target');
-                expect(methodSpy.calledWith(list[name], 'path', 'target')).toBe(true);
+                builder[name]('path', 'controller@endpoint');
+                expect(methodSpy.calledWith(list[name], 'path', 'controller@endpoint')).toBe(true);
                 function handler() { }
                 builder[name]('path', handler);
                 expect(methodSpy.calledWith(list[name], 'path', handler)).toBe(true);
