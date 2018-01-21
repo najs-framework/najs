@@ -2,7 +2,7 @@ import { IMiddleware } from '../../middleware/IMiddleware';
 import { HttpMethod } from '../../HttpMethod';
 import { Controller } from '../../controller/Controller';
 export declare type RouteGrammarControlChain = IRouteGrammarControl & IRouteGrammarGroup & IRouteGrammarVerbs & IRouteGrammarNamed;
-export declare type RouteGrammarControlNoVerbChain = IRouteGrammarControlOnly & IRouteGrammarNamedNoVerb;
+export declare type RouteGrammarControlNoVerbChain = IRouteGrammarControlNoVerb & IRouteGrammarNamedNoVerb;
 export declare type RouteGrammarGroupChain = IRouteGrammarControlOnly;
 export declare type RouteGrammarVerbChain = IRouteGrammarControlNoVerb & IRouteGrammarNamedNoVerb;
 export declare type RouteGrammarNameChain = IRouteGrammarControlOnly & IRouteGrammarVerbs;

@@ -5,7 +5,7 @@ const RouteBuilder_1 = require("./RouteBuilder");
 class Router {
     // redirect(...args: Array<any>): void {}
     group(callback) {
-        return this.register(new RouteBuilder_1.RouteBuilder('', '')).group(callback);
+        return this.register(new RouteBuilder_1.RouteBuilder()).group(callback);
     }
     use(...list) {
         return this.register(new RouteBuilder_1.RouteBuilder()).use(...list);

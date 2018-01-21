@@ -15,7 +15,7 @@ export class Router {
   // redirect(...args: Array<any>): void {}
 
   group(callback: () => void): RouteGrammarGroupChain {
-    return this.register<RouteBuilder>(new RouteBuilder('', '')).group(callback)
+    return this.register<RouteBuilder>(new RouteBuilder()).group(callback)
   }
 
   use(middleware: string): RouteGrammarControlChain

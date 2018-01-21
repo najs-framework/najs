@@ -1,26 +1,167 @@
 import 'jest'
 import * as Sinon from 'sinon'
 import { Route } from '../../lib/http/routing/Route'
-// import { RouteCollection } from '../../lib/http/routing/RouteCollection'
+import { RouteCollection } from '../../lib/http/routing/RouteCollection'
 import { HttpMethod } from '../../lib/http/HttpMethod'
 import { RouteBuilder } from '../../lib/http/routing/RouteBuilder'
 
+function clearRouteCollection() {
+  RouteCollection.routes = []
+}
+function getRouteData(
+  method: any,
+  path: any,
+  prefix: any,
+  middleware: any,
+  controller: any,
+  endpoint: any,
+  name?: any,
+  metadata?: any
+) {
+  return {
+    name,
+    metadata,
+    method,
+    path,
+    prefix,
+    middleware,
+    controller,
+    endpoint
+  }
+}
+
 describe('Route', function() {
-  it('can route all http verbs', function() {
-    Route.get('test', 'controller@endpoint').name('')
-    Route.get('/', 'controller@endpoint')
-    Route.prefix('/retails').get('/', 'controller@endpoint')
-    Route.middleware('Something').group(function() {
-      Route.prefix('/warehouses')
-        .middleware('CSRF')
-        .post('/', 'controller@endpoint')
-      Route.prefix('/warehouses').get('/', 'controller@endpoint')
-      Route.prefix('/relationship').group(function() {
-        Route.get('/', 'controller@endpoint')
-        Route.post('/', 'controller@endpoint')
-      })
+  describe('Routing Grammar', function() {
+    afterEach(function() {
+      clearRouteCollection()
     })
-    Route.post('/', 'controller@endpoint')
+
+    it('allows .middleware() before or after .[HTTP METHOD]()', function() {
+      Route.get('/test', 'Controller@endpoint').middleware('a', 'b', 'c')
+      Route.middleware('a', 'b', 'c').post('/test', 'Controller@endpoint')
+
+      expect(RouteCollection.getData()).toEqual([
+        getRouteData(HttpMethod.GET, '/test', '', ['a', 'b', 'c'], 'Controller', 'endpoint'),
+        getRouteData(HttpMethod.POST, '/test', '', ['a', 'b', 'c'], 'Controller', 'endpoint')
+      ])
+    })
+
+    it('allows .prefix() before or after .[HTTP METHOD]()', function() {
+      Route.get('/test', 'Controller@endpoint').prefix('/prefix')
+      Route.prefix('/prefix').post('/test', 'Controller@endpoint')
+
+      expect(RouteCollection.getData()).toEqual([
+        getRouteData(HttpMethod.GET, '/test', '/prefix', [], 'Controller', 'endpoint'),
+        getRouteData(HttpMethod.POST, '/test', '/prefix', [], 'Controller', 'endpoint')
+      ])
+    })
+
+    it('allows .prefix() and .middleware() chain before or after .[HTTP METHOD]()', function() {
+      Route.get('/test', 'Controller@endpoint')
+        .prefix('/prefix')
+        .middleware('a', 'b', 'c')
+      Route.prefix('/prefix')
+        .middleware('a', 'b', 'c')
+        .post('/test', 'Controller@endpoint')
+      Route.delete('/test', 'Controller@endpoint')
+        .middleware('a', 'b', 'c')
+        .prefix('/prefix')
+      Route.middleware('a', 'b', 'c')
+        .prefix('/prefix')
+        .patch('/test', 'Controller@endpoint')
+
+      expect(RouteCollection.getData()).toEqual([
+        getRouteData(HttpMethod.GET, '/test', '/prefix', ['a', 'b', 'c'], 'Controller', 'endpoint'),
+        getRouteData(HttpMethod.POST, '/test', '/prefix', ['a', 'b', 'c'], 'Controller', 'endpoint'),
+        getRouteData(HttpMethod.DELETE, '/test', '/prefix', ['a', 'b', 'c'], 'Controller', 'endpoint'),
+        getRouteData(HttpMethod.PATCH, '/test', '/prefix', ['a', 'b', 'c'], 'Controller', 'endpoint')
+      ])
+    })
+
+    it('allows .name() before or after .[HTTP METHOD]()', function() {
+      Route.get('/test', 'Controller@endpoint').name('name-get')
+      Route.name('name-post').post('/test', 'Controller@endpoint')
+
+      expect(RouteCollection.getData()).toEqual([
+        getRouteData(HttpMethod.GET, '/test', '', [], 'Controller', 'endpoint', 'name-get'),
+        getRouteData(HttpMethod.POST, '/test', '', [], 'Controller', 'endpoint', 'name-post')
+      ])
+    })
+
+    it('allows .prefix() and .middleware() with .name() before or after .[HTTP METHOD]()', function() {
+      Route.get('/test', 'Controller@endpoint')
+        .name('name-get')
+        .prefix('/prefix')
+        .middleware('a')
+      Route.prefix('/prefix')
+        .middleware('a')
+        .name('name-post')
+        .post('/test', 'Controller@endpoint')
+      Route.delete('/test', 'Controller@endpoint')
+        .prefix('/prefix')
+        .name('name-delete')
+        .middleware('a')
+      Route.put('/test', 'Controller@endpoint')
+        .prefix('/prefix')
+        .name('name-put')
+        .middleware('a')
+
+      expect(RouteCollection.getData()).toEqual([
+        getRouteData(HttpMethod.GET, '/test', '/prefix', ['a'], 'Controller', 'endpoint', 'name-get'),
+        getRouteData(HttpMethod.POST, '/test', '/prefix', ['a'], 'Controller', 'endpoint', 'name-post'),
+        getRouteData(HttpMethod.DELETE, '/test', '/prefix', ['a'], 'Controller', 'endpoint', 'name-delete'),
+        getRouteData(HttpMethod.PUT, '/test', '/prefix', ['a'], 'Controller', 'endpoint', 'name-put')
+      ])
+    })
+
+    it('allows .prefix() before or after .group()', function() {
+      Route.prefix('/a').group(function() {
+        Route.get('/test', 'Controller@endpoint').name('name-get')
+        Route.name('name-post').post('/test', 'Controller@endpoint')
+      })
+      Route.group(function() {
+        Route.get('/test', 'Controller@endpoint').name('name-get')
+        Route.name('name-post').post('/test', 'Controller@endpoint')
+      }).prefix('/b')
+
+      expect(RouteCollection.getData()).toEqual([
+        getRouteData(HttpMethod.GET, '/test', '/a', [], 'Controller', 'endpoint', 'name-get'),
+        getRouteData(HttpMethod.POST, '/test', '/a', [], 'Controller', 'endpoint', 'name-post'),
+        getRouteData(HttpMethod.GET, '/test', '/b', [], 'Controller', 'endpoint', 'name-get'),
+        getRouteData(HttpMethod.POST, '/test', '/b', [], 'Controller', 'endpoint', 'name-post')
+      ])
+    })
+
+    it('allows to use single route and group of routes', function() {
+      Route.put('/test', 'Controller@endpoint').name('name-put')
+      Route.prefix('/a').group(function() {
+        Route.get('/test', 'Controller@endpoint').name('name-get')
+        Route.name('name-post').post('/test', 'Controller@endpoint')
+      })
+
+      expect(RouteCollection.getData()).toEqual([
+        getRouteData(HttpMethod.PUT, '/test', '', [], 'Controller', 'endpoint', 'name-put'),
+        getRouteData(HttpMethod.GET, '/test', '/a', [], 'Controller', 'endpoint', 'name-get'),
+        getRouteData(HttpMethod.POST, '/test', '/a', [], 'Controller', 'endpoint', 'name-post')
+      ])
+    })
+  })
+
+  it('can route all http verbs', function() {
+    // Route.get('test', 'controller@endpoint').name('')
+    // Route.get('/', 'controller@endpoint')
+    // Route.prefix('/retails').get('/', 'controller@endpoint')
+    // Route.middleware('Something').group(function() {
+    //   Route.prefix('/warehouses')
+    //     .middleware('CSRF')
+    //     .post('/', 'controller@endpoint')
+    //   Route.prefix('/warehouses').get('/', 'controller@endpoint')
+    //   Route.prefix('/relationship').group(function() {
+    //     Route.get('/', 'controller@endpoint')
+    //     Route.post('/', 'controller@endpoint')
+    //   })
+    // })
+    // Route.post('/', 'controller@endpoint')
     // for (const route of RouteCollection.routes) {
     //   // console.log(route)
     // }

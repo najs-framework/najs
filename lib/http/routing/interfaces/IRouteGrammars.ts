@@ -16,7 +16,7 @@ export type RouteGrammarControlChain = IRouteGrammarControl &
   IRouteGrammarVerbs &
   IRouteGrammarNamed
 
-export type RouteGrammarControlNoVerbChain = IRouteGrammarControlOnly & IRouteGrammarNamedNoVerb
+export type RouteGrammarControlNoVerbChain = IRouteGrammarControlNoVerb & IRouteGrammarNamedNoVerb
 
 export type RouteGrammarGroupChain = IRouteGrammarControlOnly
 export type RouteGrammarVerbChain = IRouteGrammarControlNoVerb & IRouteGrammarNamedNoVerb

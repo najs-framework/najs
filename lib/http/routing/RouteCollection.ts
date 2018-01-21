@@ -1,12 +1,14 @@
 import { IRouteBuilder } from './interfaces/IRouteBuilder'
-// import { IRouteData } from './interfaces/IRouteData'
+import { IRouteData } from './interfaces/IRouteData'
+import { flatten } from 'lodash'
 
 export class RouteCollection {
-  static routes: Array<IRouteBuilder> = []
+  static routes: IRouteBuilder[] = []
 
-  // static getData(): Array<IRouteData> {
-  //   return []
-  // }
+  static getData(): IRouteData[] {
+    const result: IRouteData[][] = this.routes.map(route => route.getRouteData())
+    return flatten(result)
+  }
 
   // static has() {}
 }
