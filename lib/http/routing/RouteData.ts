@@ -11,6 +11,7 @@ export class RouteData implements Partial<IRouteData> {
   middleware: Array<RouteMiddleware>
   controller?: RouteController
   endpoint?: RouteEndpoint
+  isPrefixMerged: boolean = false
 
   constructor(method?: HttpMethod | 'all' | string, path?: string) {
     this.method = method
@@ -58,7 +59,10 @@ export class RouteData implements Partial<IRouteData> {
 
   mergeParentData(parent?: RouteData) {
     if (parent) {
-      this.prefix = parent.prefix + this.prefix
+      if (!this.isPrefixMerged) {
+        this.prefix = parent.prefix + this.prefix
+        this.isPrefixMerged = true
+      }
       this.middleware = Array.from(new Set(parent.middleware.concat(this.middleware)))
     }
   }

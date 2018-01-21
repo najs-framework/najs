@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = require("lodash");
 class RouteData {
     constructor(method, path) {
+        this.isPrefixMerged = false;
         this.method = method;
         this.path = path;
         this.prefix = '';
@@ -41,7 +42,10 @@ class RouteData {
     }
     mergeParentData(parent) {
         if (parent) {
-            this.prefix = parent.prefix + this.prefix;
+            if (!this.isPrefixMerged) {
+                this.prefix = parent.prefix + this.prefix;
+                this.isPrefixMerged = true;
+            }
             this.middleware = Array.from(new Set(parent.middleware.concat(this.middleware)));
         }
     }

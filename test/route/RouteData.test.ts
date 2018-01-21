@@ -180,6 +180,7 @@ describe('RouteData', function() {
         middleware: []
       })
 
+      data.isPrefixMerged = false
       data.prefix = '/test'
       result = data.getData(parent)
       expect(result === data).toBe(false)

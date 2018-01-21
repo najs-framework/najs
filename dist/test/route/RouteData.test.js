@@ -156,6 +156,7 @@ describe('RouteData', function () {
                 prefix: '/prefix',
                 middleware: []
             });
+            data.isPrefixMerged = false;
             data.prefix = '/test';
             result = data.getData(parent);
             expect(result === data).toBe(false);

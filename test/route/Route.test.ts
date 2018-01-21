@@ -145,26 +145,33 @@ describe('Route', function() {
         getRouteData(HttpMethod.POST, '/test', '/a', [], 'Controller', 'endpoint', 'name-post')
       ])
     })
-  })
 
-  it('can route all http verbs', function() {
-    // Route.get('test', 'controller@endpoint').name('')
-    // Route.get('/', 'controller@endpoint')
-    // Route.prefix('/retails').get('/', 'controller@endpoint')
-    // Route.middleware('Something').group(function() {
-    //   Route.prefix('/warehouses')
-    //     .middleware('CSRF')
-    //     .post('/', 'controller@endpoint')
-    //   Route.prefix('/warehouses').get('/', 'controller@endpoint')
-    //   Route.prefix('/relationship').group(function() {
-    //     Route.get('/', 'controller@endpoint')
-    //     Route.post('/', 'controller@endpoint')
-    //   })
-    // })
-    // Route.post('/', 'controller@endpoint')
-    // for (const route of RouteCollection.routes) {
-    //   // console.log(route)
-    // }
+    it('allows multiple .group() levels', function() {
+      Route.prefix('/a')
+        .middleware('a')
+        .group(function() {
+          Route.group(function() {
+            Route.put('/test', 'Controller@endpoint').name('name-put')
+          })
+
+          Route.middleware('b')
+            .prefix('/b')
+            .group(function() {
+              Route.get('/test', 'Controller@endpoint').name('name-get')
+              Route.group(function() {
+                Route.name('name-post').post('/test', 'Controller@endpoint')
+              })
+                .prefix('/c')
+                .middleware('c')
+            })
+        })
+
+      expect(RouteCollection.getData()).toEqual([
+        getRouteData(HttpMethod.PUT, '/test', '/a', ['a'], 'Controller', 'endpoint', 'name-put'),
+        getRouteData(HttpMethod.GET, '/test', '/a/b', ['a', 'b'], 'Controller', 'endpoint', 'name-get'),
+        getRouteData(HttpMethod.POST, '/test', '/a/b/c', ['a', 'b', 'c'], 'Controller', 'endpoint', 'name-post')
+      ])
+    })
   })
 
   describe('Register and Forward Methods', function() {

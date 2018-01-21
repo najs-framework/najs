@@ -9,6 +9,7 @@ export declare class RouteData implements Partial<IRouteData> {
     middleware: Array<RouteMiddleware>;
     controller?: RouteController;
     endpoint?: RouteEndpoint;
+    isPrefixMerged: boolean;
     constructor(method?: HttpMethod | 'all' | string, path?: string);
     isValid(): boolean;
     mergeParentData(parent?: RouteData): void;

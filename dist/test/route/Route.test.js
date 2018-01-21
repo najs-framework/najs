@@ -122,25 +122,30 @@ describe('Route', function () {
                 getRouteData(HttpMethod_1.HttpMethod.POST, '/test', '/a', [], 'Controller', 'endpoint', 'name-post')
             ]);
         });
-    });
-    it('can route all http verbs', function () {
-        // Route.get('test', 'controller@endpoint').name('')
-        // Route.get('/', 'controller@endpoint')
-        // Route.prefix('/retails').get('/', 'controller@endpoint')
-        // Route.middleware('Something').group(function() {
-        //   Route.prefix('/warehouses')
-        //     .middleware('CSRF')
-        //     .post('/', 'controller@endpoint')
-        //   Route.prefix('/warehouses').get('/', 'controller@endpoint')
-        //   Route.prefix('/relationship').group(function() {
-        //     Route.get('/', 'controller@endpoint')
-        //     Route.post('/', 'controller@endpoint')
-        //   })
-        // })
-        // Route.post('/', 'controller@endpoint')
-        // for (const route of RouteCollection.routes) {
-        //   // console.log(route)
-        // }
+        it('allows multiple .group() levels', function () {
+            Route_1.Route.prefix('/a')
+                .middleware('a')
+                .group(function () {
+                Route_1.Route.group(function () {
+                    Route_1.Route.put('/test', 'Controller@endpoint').name('name-put');
+                });
+                Route_1.Route.middleware('b')
+                    .prefix('/b')
+                    .group(function () {
+                    Route_1.Route.get('/test', 'Controller@endpoint').name('name-get');
+                    Route_1.Route.group(function () {
+                        Route_1.Route.name('name-post').post('/test', 'Controller@endpoint');
+                    })
+                        .prefix('/c')
+                        .middleware('c');
+                });
+            });
+            expect(RouteCollection_1.RouteCollection.getData()).toEqual([
+                getRouteData(HttpMethod_1.HttpMethod.PUT, '/test', '/a', ['a'], 'Controller', 'endpoint', 'name-put'),
+                getRouteData(HttpMethod_1.HttpMethod.GET, '/test', '/a/b', ['a', 'b'], 'Controller', 'endpoint', 'name-get'),
+                getRouteData(HttpMethod_1.HttpMethod.POST, '/test', '/a/b/c', ['a', 'b', 'c'], 'Controller', 'endpoint', 'name-post')
+            ]);
+        });
     });
     describe('Register and Forward Methods', function () {
         describe('IRouteGrammarVerbs functions', function () {
