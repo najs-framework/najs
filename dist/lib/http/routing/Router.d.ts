@@ -120,5 +120,4 @@ export declare class Router {
     unsubscribe(path: string, endpoint: Function): RouteGrammarVerbChain;
     unsubscribe(path: string, controller: Controller, endpoint: string): RouteGrammarVerbChain;
     unsubscribe(path: string, controller: Object, endpoint: string): RouteGrammarVerbChain;
-    private register<T>(route);
 }

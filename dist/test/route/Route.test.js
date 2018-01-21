@@ -7,7 +7,7 @@ const RouteCollection_1 = require("../../lib/http/routing/RouteCollection");
 const HttpMethod_1 = require("../../lib/http/HttpMethod");
 const RouteBuilder_1 = require("../../lib/http/routing/RouteBuilder");
 function clearRouteCollection() {
-    RouteCollection_1.RouteCollection.routes = [];
+    RouteCollection_1.RouteCollection['routes'] = [];
 }
 function getRouteData(method, path, prefix, middleware, controller, endpoint, name, metadata) {
     return {
@@ -151,7 +151,7 @@ describe('Route', function () {
         describe('IRouteGrammarVerbs functions', function () {
             it('use()', function () {
                 const builder = new RouteBuilder_1.RouteBuilder();
-                const registerStub = Sinon.stub(Route_1.Route, 'register');
+                const registerStub = Sinon.stub(RouteCollection_1.RouteCollection, 'register');
                 registerStub.returns(builder);
                 const useSpy = Sinon.spy(builder, 'use');
                 function a() { }
@@ -162,7 +162,7 @@ describe('Route', function () {
             });
             it('middleware()', function () {
                 const builder = new RouteBuilder_1.RouteBuilder();
-                const registerStub = Sinon.stub(Route_1.Route, 'register');
+                const registerStub = Sinon.stub(RouteCollection_1.RouteCollection, 'register');
                 registerStub.returns(builder);
                 const middlewareSpy = Sinon.spy(builder, 'middleware');
                 function a() { }
@@ -173,7 +173,7 @@ describe('Route', function () {
             });
             it('prefix()', function () {
                 const builder = new RouteBuilder_1.RouteBuilder();
-                const registerStub = Sinon.stub(Route_1.Route, 'register');
+                const registerStub = Sinon.stub(RouteCollection_1.RouteCollection, 'register');
                 registerStub.returns(builder);
                 const prefixSpy = Sinon.spy(builder, 'prefix');
                 Route_1.Route.prefix('test');
@@ -182,7 +182,7 @@ describe('Route', function () {
             });
             it('name()', function () {
                 const builder = new RouteBuilder_1.RouteBuilder();
-                const registerStub = Sinon.stub(Route_1.Route, 'register');
+                const registerStub = Sinon.stub(RouteCollection_1.RouteCollection, 'register');
                 registerStub.returns(builder);
                 const nameSpy = Sinon.spy(builder, 'name');
                 Route_1.Route.name('test');
@@ -191,7 +191,7 @@ describe('Route', function () {
             });
             it('group()', function () {
                 const builder = new RouteBuilder_1.RouteBuilder();
-                const registerStub = Sinon.stub(Route_1.Route, 'register');
+                const registerStub = Sinon.stub(RouteCollection_1.RouteCollection, 'register');
                 registerStub.returns(builder);
                 const groupSpy = Sinon.spy(builder, 'group');
                 function groupFunction() { }
@@ -201,7 +201,7 @@ describe('Route', function () {
             });
             it('method()', function () {
                 const builder = new RouteBuilder_1.RouteBuilder();
-                const registerStub = Sinon.stub(Route_1.Route, 'register');
+                const registerStub = Sinon.stub(RouteCollection_1.RouteCollection, 'register');
                 registerStub.returns(builder);
                 const methodSpy = Sinon.spy(builder, 'method');
                 function handler() { }
@@ -245,7 +245,7 @@ describe('Route', function () {
             for (const name in list) {
                 it(name + '() registers and calls RouteBuilder.' + name + '()', function () {
                     const builder = new RouteBuilder_1.RouteBuilder();
-                    const registerStub = Sinon.stub(Route_1.Route, 'register');
+                    const registerStub = Sinon.stub(RouteCollection_1.RouteCollection, 'register');
                     registerStub.returns(builder);
                     const methodSpy = Sinon.spy(builder, 'method');
                     Reflect.apply(Route_1.Route[name], Route_1.Route, ['path', 'controller@endpoint']);

@@ -6,7 +6,7 @@ import { HttpMethod } from '../../lib/http/HttpMethod'
 import { RouteBuilder } from '../../lib/http/routing/RouteBuilder'
 
 function clearRouteCollection() {
-  RouteCollection.routes = []
+  RouteCollection['routes'] = []
 }
 function getRouteData(
   method: any,
@@ -178,7 +178,7 @@ describe('Route', function() {
     describe('IRouteGrammarVerbs functions', function() {
       it('use()', function() {
         const builder = new RouteBuilder()
-        const registerStub = Sinon.stub(Route, <any>'register')
+        const registerStub = Sinon.stub(RouteCollection, 'register')
         registerStub.returns(builder)
         const useSpy = Sinon.spy(builder, 'use')
 
@@ -192,7 +192,7 @@ describe('Route', function() {
 
       it('middleware()', function() {
         const builder = new RouteBuilder()
-        const registerStub = Sinon.stub(Route, <any>'register')
+        const registerStub = Sinon.stub(RouteCollection, 'register')
         registerStub.returns(builder)
         const middlewareSpy = Sinon.spy(builder, 'middleware')
 
@@ -206,7 +206,7 @@ describe('Route', function() {
 
       it('prefix()', function() {
         const builder = new RouteBuilder()
-        const registerStub = Sinon.stub(Route, <any>'register')
+        const registerStub = Sinon.stub(RouteCollection, 'register')
         registerStub.returns(builder)
         const prefixSpy = Sinon.spy(builder, 'prefix')
 
@@ -218,7 +218,7 @@ describe('Route', function() {
 
       it('name()', function() {
         const builder = new RouteBuilder()
-        const registerStub = Sinon.stub(Route, <any>'register')
+        const registerStub = Sinon.stub(RouteCollection, 'register')
         registerStub.returns(builder)
         const nameSpy = Sinon.spy(builder, 'name')
 
@@ -230,7 +230,7 @@ describe('Route', function() {
 
       it('group()', function() {
         const builder = new RouteBuilder()
-        const registerStub = Sinon.stub(Route, <any>'register')
+        const registerStub = Sinon.stub(RouteCollection, 'register')
         registerStub.returns(builder)
         const groupSpy = Sinon.spy(builder, 'group')
 
@@ -243,7 +243,7 @@ describe('Route', function() {
 
       it('method()', function() {
         const builder = new RouteBuilder()
-        const registerStub = Sinon.stub(Route, <any>'register')
+        const registerStub = Sinon.stub(RouteCollection, 'register')
         registerStub.returns(builder)
         const methodSpy = Sinon.spy(builder, 'method')
 
@@ -292,7 +292,7 @@ describe('Route', function() {
       for (const name in list) {
         it(name + '() registers and calls RouteBuilder.' + name + '()', function() {
           const builder = new RouteBuilder()
-          const registerStub = Sinon.stub(Route, <any>'register')
+          const registerStub = Sinon.stub(RouteCollection, 'register')
           registerStub.returns(builder)
 
           const methodSpy = Sinon.spy(builder, 'method')
