@@ -9,8 +9,8 @@ describe('RouteBuilder', function () {
     describe('constructor', function () {
         it('can create new builder without argument', function () {
             const builder = new RouteBuilder_1.RouteBuilder();
-            expect(builder['data'].method).toEqual(HttpMethod_1.HttpMethod.GET);
-            expect(builder['data'].path).toEqual('');
+            expect(builder['data'].method).toBeUndefined();
+            expect(builder['data'].path).toBeUndefined();
             expect(builder['children']).toEqual([]);
         });
         it('can create new builder method and path', function () {
@@ -22,9 +22,89 @@ describe('RouteBuilder', function () {
     });
     describe('IRouteBuilder functions', function () {
         describe('getRouteData()', function () {
-            it('returns private.data', function () {
-                const builder = new RouteBuilder_1.RouteBuilder('GET', '/');
-                expect(builder.getRouteData() === builder['data']).toBe(true);
+            it('returns empty array if builder is not valid route', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                expect(builder.getRouteData()).toEqual([]);
+            });
+            it('returns data itself if there is no children', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                builder.get('/test', 'Controller@endpoint');
+                expect(builder.getRouteData()).toEqual([
+                    {
+                        method: 'GET',
+                        path: '/test',
+                        controller: 'Controller',
+                        endpoint: 'endpoint',
+                        prefix: '',
+                        middleware: []
+                    }
+                ]);
+            });
+            it('returns children data which already merged', function () {
+                const a = () => { };
+                const b = {};
+                const builder = new RouteBuilder_1.RouteBuilder();
+                builder['data']['prefix'] = '/prefix';
+                builder['data']['middleware'] = [a, b, 'c'];
+                const childA = new RouteBuilder_1.RouteBuilder();
+                childA.get('/test', 'Controller@endpointGet');
+                const childB = new RouteBuilder_1.RouteBuilder();
+                childB.post('/ok', 'Controller@endpointPost');
+                builder['children'].push(childA);
+                builder['children'].push(childB);
+                expect(builder.getRouteData()).toEqual([
+                    {
+                        method: 'GET',
+                        path: '/test',
+                        controller: 'Controller',
+                        endpoint: 'endpointGet',
+                        prefix: '/prefix',
+                        middleware: [a, b, 'c']
+                    },
+                    {
+                        method: 'POST',
+                        path: '/ok',
+                        controller: 'Controller',
+                        endpoint: 'endpointPost',
+                        prefix: '/prefix',
+                        middleware: [a, b, 'c']
+                    }
+                ]);
+            });
+            it('returns children data which already merged with multiple levels', function () {
+                const a = () => { };
+                const b = {};
+                const builder = new RouteBuilder_1.RouteBuilder();
+                builder['data']['prefix'] = '/prefix';
+                builder['data']['middleware'] = [a, b, 'c'];
+                const childA = new RouteBuilder_1.RouteBuilder();
+                childA.get('/test', 'Controller@endpointGet');
+                const childB = new RouteBuilder_1.RouteBuilder();
+                childB['data']['prefix'] = '/b';
+                childB['data']['middleware'] = ['d'];
+                const grantChild = new RouteBuilder_1.RouteBuilder();
+                grantChild.delete('/hum', 'Controller@endpointDelete');
+                childB['children'].push(grantChild);
+                builder['children'].push(childA);
+                builder['children'].push(childB);
+                expect(builder.getRouteData()).toEqual([
+                    {
+                        method: 'GET',
+                        path: '/test',
+                        controller: 'Controller',
+                        endpoint: 'endpointGet',
+                        prefix: '/prefix',
+                        middleware: [a, b, 'c']
+                    },
+                    {
+                        method: 'DELETE',
+                        path: '/hum',
+                        controller: 'Controller',
+                        endpoint: 'endpointDelete',
+                        prefix: '/prefix/b',
+                        middleware: [a, b, 'c', 'd']
+                    }
+                ]);
             });
         });
         describe('shouldRegisterChildRoute()', function () {
@@ -162,12 +242,22 @@ describe('RouteBuilder', function () {
         });
     });
     describe('IRouteGrammarGroup functions', function () {
-        // TODO: write test
         describe('group()', function () {
-            it('does something', function () {
+            it('creates metadata.grouped even metadata is undefined', function () {
                 const builder = new RouteBuilder_1.RouteBuilder();
-                builder.group(function () { });
-                builder.group(function () { });
+                expect(builder['data']['metadata']).toBeUndefined();
+                builder.group(() => { });
+                expect(builder['data']['metadata']).toEqual({});
+            });
+            it('set metadata.grouped and call callback, after that it deletes grouped', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                builder['data']['metadata'] = {};
+                const metadata = builder['data']['metadata'];
+                expect(metadata['grouped']).toBeUndefined();
+                builder.group(function () {
+                    expect(metadata['grouped']).toBe(true);
+                });
+                expect(metadata['grouped']).toBeUndefined();
             });
         });
     });

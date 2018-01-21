@@ -7,10 +7,10 @@ export declare type RouteEndpoint = string | Function;
 export interface IRouteData {
     metadata?: Object;
     name?: string;
-    method: HttpMethod | string;
+    method: HttpMethod | 'all' | string;
     path: string;
     prefix: string;
+    middleware: Array<RouteMiddleware>;
     controller?: RouteController;
     endpoint?: RouteEndpoint;
-    middleware: Array<RouteMiddleware>;
 }

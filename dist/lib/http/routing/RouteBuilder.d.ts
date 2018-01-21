@@ -4,16 +4,17 @@ import { IRouteData } from './interfaces/IRouteData';
 import { RouteGrammarGroupChain, RouteGrammarVerbChain, RouteGrammarNameChain, RouteGrammarControlChain, IRouteGrammarControl, IRouteGrammarGroup, IRouteGrammarNamed, IRouteGrammarVerbs } from './interfaces/IRouteGrammars';
 import { IMiddleware } from '../middleware/IMiddleware';
 import { Controller } from '../controller/Controller';
+import { RouteData } from './RouteData';
 export declare type HttpMethodTarget = string | Controller | Function | Object;
 /**
  * Route syntax implementation
  */
 export declare class RouteBuilder implements IRouteBuilder, IRouteGrammarControl, IRouteGrammarGroup, IRouteGrammarNamed, IRouteGrammarVerbs {
-    protected data: IRouteData;
+    protected data: RouteData;
     protected children: Array<IRouteBuilder>;
     constructor();
-    constructor(method: string, path: string);
-    getRouteData(): IRouteData;
+    constructor(method: HttpMethod | 'all' | string, path: string);
+    getRouteData(parent?: RouteData): IRouteData[];
     registerChildRoute(route: IRouteBuilder): void;
     shouldRegisterChildRoute(): boolean;
     hasChildRoute(): boolean;

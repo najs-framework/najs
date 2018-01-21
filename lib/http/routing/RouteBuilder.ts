@@ -12,8 +12,9 @@ import {
   IRouteGrammarVerbs
 } from './interfaces/IRouteGrammars'
 import { IMiddleware } from '../middleware/IMiddleware'
-import { isString, isFunction, isObject } from 'lodash'
+import { flatten, isString, isFunction, isObject } from 'lodash'
 import { Controller } from '../controller/Controller'
+import { RouteData } from './RouteData'
 
 export type HttpMethodTarget = string | Controller | Function | Object
 
@@ -22,24 +23,26 @@ export type HttpMethodTarget = string | Controller | Function | Object
  */
 export class RouteBuilder
   implements IRouteBuilder, IRouteGrammarControl, IRouteGrammarGroup, IRouteGrammarNamed, IRouteGrammarVerbs {
-  protected data: IRouteData
+  protected data: RouteData
   protected children: Array<IRouteBuilder>
 
   constructor()
-  constructor(method: string, path: string)
-  constructor(method?: string, path?: string) {
-    this.data = {
-      method: method || HttpMethod.GET,
-      path: path || '',
-      prefix: '',
-      middleware: []
-    }
+  constructor(method: HttpMethod | 'all' | string, path: string)
+  constructor(method?: HttpMethod | 'all' | string, path?: string) {
+    this.data = new RouteData(method, path)
     this.children = []
   }
 
-  getRouteData(): IRouteData {
-    // const result: IRouteData[] = []
-    return this.data
+  getRouteData(parent?: RouteData): IRouteData[] {
+    if (this.children.length === 0) {
+      const data: IRouteData | undefined = this.data.getData(parent)
+      return data ? [data] : []
+    }
+    const result: IRouteData[][] = this.children.map(item => {
+      this.data.mergeParentData(parent)
+      return item.getRouteData(this.data)
+    })
+    return flatten(result)
   }
 
   registerChildRoute(route: IRouteBuilder): void {

@@ -2,22 +2,25 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const HttpMethod_1 = require("./../HttpMethod");
 const lodash_1 = require("lodash");
+const RouteData_1 = require("./RouteData");
 /**
  * Route syntax implementation
  */
 class RouteBuilder {
     constructor(method, path) {
-        this.data = {
-            method: method || HttpMethod_1.HttpMethod.GET,
-            path: path || '',
-            prefix: '',
-            middleware: []
-        };
+        this.data = new RouteData_1.RouteData(method, path);
         this.children = [];
     }
-    getRouteData() {
-        // const result: IRouteData[] = []
-        return this.data;
+    getRouteData(parent) {
+        if (this.children.length === 0) {
+            const data = this.data.getData(parent);
+            return data ? [data] : [];
+        }
+        const result = this.children.map(item => {
+            this.data.mergeParentData(parent);
+            return item.getRouteData(this.data);
+        });
+        return lodash_1.flatten(result);
     }
     registerChildRoute(route) {
         if (this.children.length === 0) {
