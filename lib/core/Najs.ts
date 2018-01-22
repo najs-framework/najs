@@ -2,6 +2,7 @@ import { make } from './make'
 import { register } from './register'
 import { bind, InstanceCreator } from './bind'
 import { IHttpDriver } from '../http/driver/IHttpDriver'
+// import { IConfig } from 'config'
 
 export type NajsOptions = {
   port: number
