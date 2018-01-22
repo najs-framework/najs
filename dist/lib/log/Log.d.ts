@@ -1,2 +1,3 @@
 import { ILogger } from './ILogger';
-export declare const Log: ILogger;
+export declare let Log: ILogger;
+export declare function reload(): ILogger;

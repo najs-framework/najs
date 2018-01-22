@@ -1,63 +1,71 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const register_1 = require("../core/register");
+const constants_1 = require("../constants");
 const Winston = require("winston");
-const Config = require("config");
-let WinstonLogger = WinstonLogger_1 = class WinstonLogger {
+// import * as Config from 'config'
+class WinstonLogger {
     constructor() {
-        this.levels = {
-            emergency: 'emerg',
-            alert: 'alert',
-            critical: 'crit',
-            error: 'error',
-            warning: 'warning',
-            notice: 'notice',
-            info: 'info',
-            debug: 'debug'
-        };
-        this.logger = new Winston.Logger(Object.assign({}, {
+        this.logger = new Winston.Logger(this.getOptions());
+        this.loggerDidCreate();
+    }
+    getOptions() {
+        return Object.assign({}, {
+            level: 'info',
+            transports: [
+                new Winston.transports.Console({
+                    colorize: true,
+                    timestamp: true,
+                    stderrLevels: Object.values(WinstonLogger.levels)
+                })
+            ],
             colors: Winston.config.syslog.colors,
             levels: Winston.config.syslog.levels
-        }, Config.get(WinstonLogger_1.className)));
+        }
+        // Config.get(WinstonLogger.className)
+        );
     }
+    loggerDidCreate() { }
     emergency(message, ...meta) {
-        return this.log(this.levels.emergency, message, ...meta);
+        return this.log(WinstonLogger.levels.emergency, message, ...meta);
     }
     alert(message, ...meta) {
-        return this.log(this.levels.alert, message, ...meta);
+        return this.log(WinstonLogger.levels.alert, message, ...meta);
     }
     critical(message, ...meta) {
-        return this.log(this.levels.critical, message, ...meta);
+        return this.log(WinstonLogger.levels.critical, message, ...meta);
     }
     error(message, ...meta) {
-        return this.log(this.levels.error, message, ...meta);
+        return this.log(WinstonLogger.levels.error, message, ...meta);
     }
     warning(message, ...meta) {
-        return this.log(this.levels.warning, message, ...meta);
+        return this.log(WinstonLogger.levels.warning, message, ...meta);
     }
     notice(message, ...meta) {
-        return this.log(this.levels.notice, message, ...meta);
+        return this.log(WinstonLogger.levels.notice, message, ...meta);
     }
     info(message, ...meta) {
-        return this.log(this.levels.info, message, ...meta);
+        return this.log(WinstonLogger.levels.info, message, ...meta);
     }
     debug(message, ...meta) {
-        return this.log(this.levels.debug, message, ...meta);
+        return this.log(WinstonLogger.levels.debug, message, ...meta);
     }
     log(level, message, ...meta) {
         this.logger.log(level, message, ...meta);
         return this;
     }
-};
+}
 WinstonLogger.className = 'WinstonLogger';
-WinstonLogger = WinstonLogger_1 = __decorate([
-    register_1.register()
-], WinstonLogger);
+WinstonLogger.levels = {
+    emergency: 'emerg',
+    alert: 'alert',
+    critical: 'crit',
+    error: 'error',
+    warning: 'warning',
+    notice: 'notice',
+    info: 'info',
+    debug: 'debug'
+};
 exports.WinstonLogger = WinstonLogger;
-var WinstonLogger_1;
+register_1.register(WinstonLogger);
+register_1.register(WinstonLogger, constants_1.LoggerClass);

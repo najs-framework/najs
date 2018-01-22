@@ -1,3 +1,4 @@
+import './log/WinstonLogger';
 import { Najs } from './core/Najs';
 export default Najs;
 export { make } from './core/make';
@@ -7,3 +8,8 @@ export { singleton } from './core/singleton';
 export { autoload } from './core/autoload';
 export { ClassRegistry } from './core/ClassRegistry';
 export { IAutoload } from './core/IAutoload';
+export { Route } from './http/routing/Route';
+export { RouteCollection } from './http/routing/RouteCollection';
+export { ILogger } from './log/ILogger';
+export { Log } from './log/Log';
+export { LoggerClass } from './constants';
