@@ -143,9 +143,9 @@ I. Class Binding (In Progress - 90%)
 
 II. Model [Released] - It's developed and released in separate package [Najs Eloquent](https://www.npmjs.com/package/najs-eloquent)
 
-III. Routing [In Progress] - I'm going to use `express` as a routing framework
+III. Routing [Released] - I'm going to use `express` as a routing framework
 
-IV. Controller
+IV. Controller & Endpoint [In Progress]
 
 ## Contribute
 
