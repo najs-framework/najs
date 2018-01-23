@@ -131,3 +131,11 @@ desc('Simple route with prefix() after HTTP verb', () => {
     .prefix('test')
     .middleware('test')
 })
+
+desc('Can use .where() to validate param in path', () => {
+  Route.get('/get/:id', 'Controller@endpoint')
+    // .where('id', Joi.string().required())
+    // .where('id', function() {
+    // })
+    .name('getName')
+})
