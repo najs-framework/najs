@@ -305,7 +305,7 @@ describe('RouteBuilder', function () {
                     }
                     getUsers() { }
                 }
-                const controller = new UsersController();
+                const controller = new UsersController({}, {});
                 builder.method(HttpMethod_1.HttpMethod.POST, '/path', controller, 'getUsers');
                 expect(builder['data'].method).toEqual(HttpMethod_1.HttpMethod.POST);
                 expect(builder['data'].path).toEqual('/path');
@@ -349,7 +349,7 @@ describe('RouteBuilder', function () {
                     }
                     getUsers() { }
                 }
-                const controller = new UsersController();
+                const controller = new UsersController({}, {});
                 try {
                     builder.method(HttpMethod_1.HttpMethod.POST, '/path', controller, 'getUsersNotFound');
                 }

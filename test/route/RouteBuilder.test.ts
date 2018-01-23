@@ -344,7 +344,7 @@ describe('RouteBuilder', function() {
 
           getUsers() {}
         }
-        const controller = new UsersController()
+        const controller = new UsersController(<any>{}, <any>{})
 
         builder.method(HttpMethod.POST, '/path', controller, 'getUsers')
         expect(builder['data'].method).toEqual(HttpMethod.POST)
@@ -395,7 +395,7 @@ describe('RouteBuilder', function() {
 
           getUsers() {}
         }
-        const controller = new UsersController()
+        const controller = new UsersController(<any>{}, <any>{})
 
         try {
           builder.method(HttpMethod.POST, '/path', controller, 'getUsersNotFound')
