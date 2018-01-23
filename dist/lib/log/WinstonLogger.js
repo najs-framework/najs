@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const register_1 = require("../core/register");
 const constants_1 = require("../constants");
 const Winston = require("winston");
-// import * as Config from 'config'
 class WinstonLogger {
     constructor() {
         this.logger = new Winston.Logger(this.getOptions());
@@ -21,9 +20,7 @@ class WinstonLogger {
             ],
             colors: Winston.config.syslog.colors,
             levels: Winston.config.syslog.levels
-        }
-        // Config.get(WinstonLogger.className)
-        );
+        });
     }
     loggerDidCreate() { }
     emergency(message, ...meta) {

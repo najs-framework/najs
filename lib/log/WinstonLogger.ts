@@ -2,7 +2,6 @@ import { ILogger, LoggerLevels } from './ILogger'
 import { register } from '../core/register'
 import { LoggerClass } from '../constants'
 import * as Winston from 'winston'
-// import * as Config from 'config'
 
 export class WinstonLogger implements ILogger {
   static className = 'WinstonLogger'
@@ -39,7 +38,6 @@ export class WinstonLogger implements ILogger {
         colors: Winston.config.syslog.colors,
         levels: Winston.config.syslog.levels
       }
-      // Config.get(WinstonLogger.className)
     )
   }
 
