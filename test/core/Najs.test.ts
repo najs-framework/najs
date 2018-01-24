@@ -5,6 +5,8 @@ import * as Make from '../../lib/core/make'
 import * as Bind from '../../lib/core/bind'
 import { Najs } from '../../lib/core/Najs'
 import { IConfig } from 'config'
+import { register } from '../../lib/core/register'
+import { HttpDriverClass } from './../../lib/constants'
 
 class Test {
   static className: string = 'Test'
@@ -33,8 +35,7 @@ const config: IConfig = {
 
 const DefaultOptions = {
   port: 3000,
-  host: 'localhost',
-  httpDriver: 'ExpressHttpDriver'
+  host: 'localhost'
 }
 describe('Najs', function() {
   describe('use(options: Object)', function() {
@@ -180,20 +181,21 @@ describe('Najs', function() {
 
   describe('start(options?: Object)', function() {
     it('called use(options) if provided', function() {
+      register(FakeHttpDriver, HttpDriverClass)
       const useSpy = Sinon.spy(Najs, 'use')
       Najs.start({
-        httpDriver: FakeHttpDriver.className
+        host: 'test.com'
       })
       expect(
         useSpy.calledWith({
-          httpDriver: FakeHttpDriver.className
+          host: 'test.com'
         })
       ).toBe(true)
     })
 
     it('use Najs.options if do not pass options', function() {
       Najs.use({
-        httpDriver: FakeHttpDriver.className
+        host: 'test.com'
       })
       Najs.start()
     })

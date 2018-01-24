@@ -6,6 +6,8 @@ const Register = require("../../lib/core/register");
 const Make = require("../../lib/core/make");
 const Bind = require("../../lib/core/bind");
 const Najs_1 = require("../../lib/core/Najs");
+const register_1 = require("../../lib/core/register");
+const constants_1 = require("./../../lib/constants");
 class Test {
 }
 Test.className = 'Test';
@@ -30,8 +32,7 @@ const config = {
 };
 const DefaultOptions = {
     port: 3000,
-    host: 'localhost',
-    httpDriver: 'ExpressHttpDriver'
+    host: 'localhost'
 };
 describe('Najs', function () {
     describe('use(options: Object)', function () {
@@ -155,17 +156,18 @@ describe('Najs', function () {
     });
     describe('start(options?: Object)', function () {
         it('called use(options) if provided', function () {
+            register_1.register(FakeHttpDriver, constants_1.HttpDriverClass);
             const useSpy = Sinon.spy(Najs_1.Najs, 'use');
             Najs_1.Najs.start({
-                httpDriver: FakeHttpDriver.className
+                host: 'test.com'
             });
             expect(useSpy.calledWith({
-                httpDriver: FakeHttpDriver.className
+                host: 'test.com'
             })).toBe(true);
         });
         it('use Najs.options if do not pass options', function () {
             Najs_1.Najs.use({
-                httpDriver: FakeHttpDriver.className
+                host: 'test.com'
             });
             Najs_1.Najs.start();
         });

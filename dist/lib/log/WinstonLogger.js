@@ -64,5 +64,6 @@ WinstonLogger.levels = {
     debug: 'debug'
 };
 exports.WinstonLogger = WinstonLogger;
+// register WinstonLogger and using it as a default LoggerClass
 register_1.register(WinstonLogger);
 register_1.register(WinstonLogger, constants_1.LoggerClass);

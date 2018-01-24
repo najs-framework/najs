@@ -3,7 +3,6 @@ import { IConfig } from 'config';
 export declare type NajsOptions = {
     port: number;
     host: string;
-    httpDriver: string;
 };
 export declare class Najs {
     private static config;

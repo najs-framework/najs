@@ -1,3 +1,4 @@
+import { HttpDriverClass } from './../../constants'
 import { IHttpDriver, HttpDriverSetupFunction, HttpDriverDidSetupHandler, HttpDriverStartOptions } from './IHttpDriver'
 import { IAutoload } from '../../core/IAutoload'
 import { IRouteData } from '../routing/interfaces/IRouteData'
@@ -7,19 +8,14 @@ import * as Express from 'express'
 
 export type ExpressApp = Express.Express
 
-@register()
 export class ExpressHttpDriver implements IHttpDriver, IAutoload {
-  static driverName: string = 'express'
+  static className: string = 'ExpressHttpDriver'
   private express: ExpressApp
   private setupFunction?: HttpDriverSetupFunction<Express.Express>
   private didSetupHandler?: HttpDriverDidSetupHandler<Express.Express>
 
   getClassName() {
-    return 'ExpressHttpDriver'
-  }
-
-  getDriverName(): string {
-    return ExpressHttpDriver.driverName
+    return ExpressHttpDriver.className
   }
 
   getNativeDriver(): ExpressApp {
@@ -62,3 +58,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     response.redirect(status, url)
   }
 }
+
+// register ExpressHttpDriver and using it as a default HttpDriverClass
+register(ExpressHttpDriver)
+register(ExpressHttpDriver, HttpDriverClass)

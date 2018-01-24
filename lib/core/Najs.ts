@@ -1,21 +1,19 @@
-import { Configuration } from './../constants'
 import { make } from './make'
 import { register } from './register'
 import { bind, InstanceCreator } from './bind'
 import { IHttpDriver } from '../http/driver/IHttpDriver'
+import { Configuration, HttpDriverClass } from '../constants'
 import { IConfig } from 'config'
 import { isFunction, pickBy } from 'lodash'
 
 export type NajsOptions = {
   port: number
   host: string
-  httpDriver: string
 }
 
 const NajsDefaultOptions: NajsOptions = {
   port: 3000,
-  host: 'localhost',
-  httpDriver: 'ExpressHttpDriver'
+  host: 'localhost'
 }
 
 function assert_config_is_registered_before_using() {
@@ -98,7 +96,7 @@ export class Najs {
     if (arg) {
       this.use(<any>arg)
     }
-    const httpDriver: IHttpDriver = make(this.options.httpDriver)
+    const httpDriver: IHttpDriver = make<IHttpDriver>(HttpDriverClass)
     httpDriver.start(this.options)
   }
 }

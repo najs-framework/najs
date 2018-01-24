@@ -8,8 +8,6 @@ export type HttpDriverStartOptions = {
 }
 
 export interface IHttpDriver<T = any> {
-  getDriverName(): string
-
   getNativeDriver(): T
 
   initialize(): void

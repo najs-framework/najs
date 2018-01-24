@@ -1,3 +1,4 @@
+export const HttpDriverClass: string = 'HttpDriver'
 export const LoggerClass: string = 'Logger'
 
 export const Configuration = {

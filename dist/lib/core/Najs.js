@@ -1,14 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const constants_1 = require("./../constants");
 const make_1 = require("./make");
 const register_1 = require("./register");
 const bind_1 = require("./bind");
+const constants_1 = require("../constants");
 const lodash_1 = require("lodash");
 const NajsDefaultOptions = {
     port: 3000,
-    host: 'localhost',
-    httpDriver: 'ExpressHttpDriver'
+    host: 'localhost'
 };
 function assert_config_is_registered_before_using() {
     if (!Najs['config']) {
@@ -59,7 +58,7 @@ class Najs {
         if (arg) {
             this.use(arg);
         }
-        const httpDriver = make_1.make(this.options.httpDriver);
+        const httpDriver = make_1.make(constants_1.HttpDriverClass);
         httpDriver.start(this.options);
     }
 }

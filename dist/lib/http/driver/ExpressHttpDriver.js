@@ -1,20 +1,12 @@
 "use strict";
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
+const constants_1 = require("./../../constants");
 const lodash_1 = require("lodash");
 const index_1 = require("../../index");
 const Express = require("express");
-let ExpressHttpDriver = ExpressHttpDriver_1 = class ExpressHttpDriver {
+class ExpressHttpDriver {
     getClassName() {
-        return 'ExpressHttpDriver';
-    }
-    getDriverName() {
-        return ExpressHttpDriver_1.driverName;
+        return ExpressHttpDriver.className;
     }
     getNativeDriver() {
         return this.express;
@@ -46,10 +38,9 @@ let ExpressHttpDriver = ExpressHttpDriver_1 = class ExpressHttpDriver {
     respondRedirect(response, url, status) {
         response.redirect(status, url);
     }
-};
-ExpressHttpDriver.driverName = 'express';
-ExpressHttpDriver = ExpressHttpDriver_1 = __decorate([
-    index_1.register()
-], ExpressHttpDriver);
+}
+ExpressHttpDriver.className = 'ExpressHttpDriver';
 exports.ExpressHttpDriver = ExpressHttpDriver;
-var ExpressHttpDriver_1;
+// register ExpressHttpDriver and using it as a default HttpDriverClass
+index_1.register(ExpressHttpDriver);
+index_1.register(ExpressHttpDriver, constants_1.HttpDriverClass);

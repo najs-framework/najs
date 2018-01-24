@@ -5,12 +5,11 @@ import { IRouteData } from '../routing/interfaces/IRouteData';
 import * as Express from 'express';
 export declare type ExpressApp = Express.Express;
 export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
-    static driverName: string;
+    static className: string;
     private express;
     private setupFunction?;
     private didSetupHandler?;
     getClassName(): string;
-    getDriverName(): string;
     getNativeDriver(): ExpressApp;
     initialize(): void;
     private defaultInitialize();

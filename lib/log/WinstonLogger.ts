@@ -98,5 +98,7 @@ export class WinstonLogger implements ILogger {
     return this
   }
 }
+
+// register WinstonLogger and using it as a default LoggerClass
 register(WinstonLogger)
 register(WinstonLogger, LoggerClass)

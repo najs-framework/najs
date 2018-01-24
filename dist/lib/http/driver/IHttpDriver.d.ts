@@ -6,7 +6,6 @@ export declare type HttpDriverStartOptions = {
     host: any;
 };
 export interface IHttpDriver<T = any> {
-    getDriverName(): string;
     getNativeDriver(): T;
     initialize(): void;
     route(data: IRouteData): void;
