@@ -1,8 +1,8 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import { HttpMethod } from '../../lib/http/HttpMethod'
-import { RouteBuilder } from '../../lib/http/routing/RouteBuilder'
-import { Controller } from '../../lib/http/controller/Controller'
+import { HttpMethod } from '../../../lib/http/HttpMethod'
+import { RouteBuilder } from '../../../lib/http/routing/RouteBuilder'
+import { Controller } from '../../../lib/http/controller/Controller'
 
 describe('RouteBuilder', function() {
   describe('constructor', function() {

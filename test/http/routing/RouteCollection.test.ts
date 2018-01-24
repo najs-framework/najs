@@ -1,6 +1,6 @@
-import { Route } from './../../lib/http/routing/Route'
 import 'jest'
-import { RouteCollection } from '../../lib/http/routing/RouteCollection'
+import { Route } from '../../../lib/http/routing/Route'
+import { RouteCollection } from '../../../lib/http/routing/RouteCollection'
 
 describe('RouteCollection', function() {
   it('is initialized with isChanged = false and empty routes, routeData', function() {

@@ -1,9 +1,9 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import { Route } from '../../lib/http/routing/Route'
-import { RouteCollection } from '../../lib/http/routing/RouteCollection'
-import { HttpMethod } from '../../lib/http/HttpMethod'
-import { RouteBuilder } from '../../lib/http/routing/RouteBuilder'
+import { Route } from '../../../lib/http/routing/Route'
+import { RouteCollection } from '../../../lib/http/routing/RouteCollection'
+import { HttpMethod } from '../../../lib/http/HttpMethod'
+import { RouteBuilder } from '../../../lib/http/routing/RouteBuilder'
 
 function clearRouteCollection() {
   RouteCollection['routes'] = []

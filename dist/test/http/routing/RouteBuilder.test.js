@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
-const HttpMethod_1 = require("../../lib/http/HttpMethod");
-const RouteBuilder_1 = require("../../lib/http/routing/RouteBuilder");
-const Controller_1 = require("../../lib/http/controller/Controller");
+const HttpMethod_1 = require("../../../lib/http/HttpMethod");
+const RouteBuilder_1 = require("../../../lib/http/routing/RouteBuilder");
+const Controller_1 = require("../../../lib/http/controller/Controller");
 describe('RouteBuilder', function () {
     describe('constructor', function () {
         it('can create new builder without argument', function () {

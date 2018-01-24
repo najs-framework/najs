@@ -1,5 +1,5 @@
 import 'jest'
-import { RouteData } from '../../lib/http/routing/RouteData'
+import { RouteData } from '../../../lib/http/routing/RouteData'
 
 describe('RouteData', function() {
   describe('constructor()', function() {

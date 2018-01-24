@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
-const RouteData_1 = require("../../lib/http/routing/RouteData");
+const RouteData_1 = require("../../../lib/http/routing/RouteData");
 describe('RouteData', function () {
     describe('constructor()', function () {
         it('can be created with no param', function () {

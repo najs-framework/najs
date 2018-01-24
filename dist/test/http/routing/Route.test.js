@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
-const Route_1 = require("../../lib/http/routing/Route");
-const RouteCollection_1 = require("../../lib/http/routing/RouteCollection");
-const HttpMethod_1 = require("../../lib/http/HttpMethod");
-const RouteBuilder_1 = require("../../lib/http/routing/RouteBuilder");
+const Route_1 = require("../../../lib/http/routing/Route");
+const RouteCollection_1 = require("../../../lib/http/routing/RouteCollection");
+const HttpMethod_1 = require("../../../lib/http/HttpMethod");
+const RouteBuilder_1 = require("../../../lib/http/routing/RouteBuilder");
 function clearRouteCollection() {
     RouteCollection_1.RouteCollection['routes'] = [];
 }

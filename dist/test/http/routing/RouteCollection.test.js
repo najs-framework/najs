@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Route_1 = require("./../../lib/http/routing/Route");
 require("jest");
-const RouteCollection_1 = require("../../lib/http/routing/RouteCollection");
+const Route_1 = require("../../../lib/http/routing/Route");
+const RouteCollection_1 = require("../../../lib/http/routing/RouteCollection");
 describe('RouteCollection', function () {
     it('is initialized with isChanged = false and empty routes, routeData', function () {
         expect(RouteCollection_1.RouteCollection['isChanged']).toBe(false);
