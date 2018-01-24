@@ -109,3 +109,7 @@ desc('Simple route with prefix() after HTTP verb', () => {
         .prefix('test')
         .middleware('test');
 });
+desc('Can use .where() to validate param in path', () => {
+    Route_1.Route.get('/get/:id', 'Controller@endpoint')
+        .name('getName');
+});

@@ -13,6 +13,21 @@ class FakeHttpDriver {
     start(options) { }
 }
 FakeHttpDriver.className = 'FakeHttpDriver';
+const config = {
+    get(setting) {
+        if (setting === 'port') {
+            return 3001;
+        }
+        return undefined;
+    },
+    has(setting) {
+        if (setting === 'port') {
+            return true;
+        }
+        return false;
+    },
+    util: {}
+};
 const DefaultOptions = {
     port: 3000,
     host: 'localhost',
@@ -23,17 +38,36 @@ describe('Najs', function () {
         it('assigns default options if use is not called', function () {
             expect(Najs_1.Najs['options']).toEqual(DefaultOptions);
         });
-        it('assigns default options if options is undefined', function () {
-            Najs_1.Najs.use(undefined);
+        it('assigns default options if options is empty', function () {
+            Najs_1.Najs.use({});
             expect(Najs_1.Najs['options']).toEqual(DefaultOptions);
         });
         it('assigns default options if options is empty', function () {
             Najs_1.Najs.use({});
             expect(Najs_1.Najs['options']).toEqual(DefaultOptions);
         });
-        it('modified options by parameter', function () {
+        it('applies options if argument is Partial<NajsOptions>', function () {
             Najs_1.Najs.use({ port: 30000 });
             expect(Najs_1.Najs['options']).toEqual(Object.assign({}, DefaultOptions, { port: 30000 }));
+        });
+        it('does not accepts IConfig which missing get()', function () {
+            Najs_1.Najs.use({ has: 'any' });
+            expect(Najs_1.Najs['config'] === config).toBe(false);
+            expect(Najs_1.Najs['options']['has']).toEqual('any');
+        });
+        it('does not accepts IConfig which missing has()', function () {
+            Najs_1.Najs.use({ get: 'any' });
+            expect(Najs_1.Najs['config'] === config).toBe(false);
+            expect(Najs_1.Najs['options']['get']).toEqual('any');
+        });
+        it('applies config if argument is IConfig', function () {
+            Najs_1.Najs.use(config);
+            expect(Najs_1.Najs['config'] === config).toBe(true);
+        });
+        it('reads and applies settings when config if argument is IConfig', function () {
+            Najs_1.Najs.use(config);
+            expect(Najs_1.Najs['config'] === config).toBe(true);
+            expect(Najs_1.Najs['options']).toEqual(Object.assign({}, DefaultOptions, { port: 3001 }));
         });
     });
     describe('Najs.register()', function () {
@@ -68,6 +102,55 @@ describe('Najs', function () {
             const servicePoolInstanceCreator = function () { };
             Najs_1.Najs.bind('ServicePool', servicePoolInstanceCreator);
             expect(bindSpy.calledWith('ServicePool', servicePoolInstanceCreator)).toBe(true);
+        });
+    });
+    describe('Najs.hasConfig()', function () {
+        it('throws ReferenceError if config is not register yet', function () {
+            Najs_1.Najs['config'] = undefined;
+            try {
+                Najs_1.Najs.hasConfig('test');
+            }
+            catch (error) {
+                expect(error).toBeInstanceOf(ReferenceError);
+                expect(error.message).toEqual('Please register config instance firstly: Najs.use(require("config"))');
+                return;
+            }
+            expect('should not reach this line').toEqual('hum');
+        });
+        it('proxies Najs.config.has() function', function () {
+            const hasSpy = Sinon.spy(config, 'has');
+            expect(Najs_1.Najs.use(config).hasConfig('port')).toBe(true);
+            expect(hasSpy.calledWith('port')).toBe(true);
+            hasSpy.restore();
+        });
+    });
+    describe('Najs.getConfig()', function () {
+        it('throws ReferenceError if config is not register yet', function () {
+            Najs_1.Najs['config'] = undefined;
+            try {
+                Najs_1.Najs.getConfig('test');
+            }
+            catch (error) {
+                expect(error).toBeInstanceOf(ReferenceError);
+                expect(error.message).toEqual('Please register config instance firstly: Najs.use(require("config"))');
+                return;
+            }
+            expect('should not reach this line').toEqual('hum');
+        });
+        it('proxies Najs.config.get() directly if there is no default value', function () {
+            const getSpy = Sinon.spy(config, 'get');
+            expect(Najs_1.Najs.use(config).getConfig('port')).toBe(3001);
+            expect(getSpy.calledWith('port')).toBe(true);
+            getSpy.restore();
+        });
+        it('uses Najs.config.has() for checking key exist or not before using get', function () {
+            const hasSpy = Sinon.spy(config, 'has');
+            const getSpy = Sinon.spy(config, 'get');
+            expect(Najs_1.Najs.use(config).getConfig('httpDriver', 'test')).toEqual('test');
+            expect(hasSpy.calledWith('httpDriver')).toBe(true);
+            expect(Najs_1.Najs.getConfig('port', 3002)).toEqual(3001);
+            expect(hasSpy.calledWith('port')).toBe(true);
+            expect(getSpy.calledWith('port')).toBe(true);
         });
     });
     describe('start(options?: Object)', function () {

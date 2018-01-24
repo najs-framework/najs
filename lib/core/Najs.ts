@@ -1,8 +1,10 @@
+import { Configuration } from './../constants'
 import { make } from './make'
 import { register } from './register'
 import { bind, InstanceCreator } from './bind'
 import { IHttpDriver } from '../http/driver/IHttpDriver'
-// import { IConfig } from 'config'
+import { IConfig } from 'config'
+import { isFunction, pickBy } from 'lodash'
 
 export type NajsOptions = {
   port: number
@@ -16,11 +18,29 @@ const NajsDefaultOptions: NajsOptions = {
   httpDriver: 'ExpressHttpDriver'
 }
 
+function assert_config_is_registered_before_using() {
+  if (!Najs['config']) {
+    throw new ReferenceError('Please register config instance firstly: Najs.use(require("config"))')
+  }
+}
+
 export class Najs {
+  private static config: IConfig
   private static options: NajsOptions = NajsDefaultOptions
 
-  static use(options: Partial<NajsOptions> | undefined): typeof Najs {
-    this.options = Object.assign({}, NajsDefaultOptions, options)
+  static use(config: IConfig): typeof Najs
+  static use(options: Partial<NajsOptions>): typeof Najs
+  static use(configOrOptions: IConfig | Partial<NajsOptions>): typeof Najs {
+    if (isFunction(configOrOptions['get']) && isFunction(configOrOptions['has'])) {
+      this.config = configOrOptions as IConfig
+      const optionsInConfig = Object.keys(Configuration.NajsOptions).reduce((memo, key) => {
+        memo[key] = this.getConfig(Configuration.NajsOptions[key], undefined)
+        return memo
+      }, {})
+      this.options = Object.assign({}, NajsDefaultOptions, pickBy(optionsInConfig))
+    } else {
+      this.options = Object.assign({}, NajsDefaultOptions, configOrOptions as Partial<NajsOptions>)
+    }
     return Najs
   }
 
@@ -47,6 +67,24 @@ export class Najs {
     return this
   }
 
+  static hasConfig(setting: string): boolean {
+    assert_config_is_registered_before_using()
+    return this.config.has(setting)
+  }
+
+  static getConfig<T>(setting: string): T
+  static getConfig<T>(setting: string, defaultValue: T): T
+  static getConfig<T>(setting: string, defaultValue?: T): T {
+    assert_config_is_registered_before_using()
+    if (!defaultValue) {
+      return this.config.get<T>(setting)
+    }
+    if (this.hasConfig(setting)) {
+      return this.config.get<T>(setting)
+    }
+    return defaultValue
+  }
+
   // static loadClasses(classes: Array<any>): typeof Najs
   // static loadClasses(classes: Object): typeof Najs
   // static loadClasses(classes: Object | Array<any>): typeof Najs {
@@ -55,9 +93,10 @@ export class Najs {
 
   static start(): void
   static start(options: Partial<NajsOptions>): void
-  static start(options?: Partial<NajsOptions>): void {
-    if (options) {
-      this.use(options)
+  static start(config: IConfig): void
+  static start(arg?: IConfig | Partial<NajsOptions>): void {
+    if (arg) {
+      this.use(<any>arg)
     }
     const httpDriver: IHttpDriver = make(this.options.httpDriver)
     httpDriver.start(this.options)

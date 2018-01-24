@@ -1,16 +1,33 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const constants_1 = require("./../constants");
 const make_1 = require("./make");
 const register_1 = require("./register");
 const bind_1 = require("./bind");
+const lodash_1 = require("lodash");
 const NajsDefaultOptions = {
     port: 3000,
     host: 'localhost',
     httpDriver: 'ExpressHttpDriver'
 };
+function assert_config_is_registered_before_using() {
+    if (!Najs['config']) {
+        throw new ReferenceError('Please register config instance firstly: Najs.use(require("config"))');
+    }
+}
 class Najs {
-    static use(options) {
-        this.options = Object.assign({}, NajsDefaultOptions, options);
+    static use(configOrOptions) {
+        if (lodash_1.isFunction(configOrOptions['get']) && lodash_1.isFunction(configOrOptions['has'])) {
+            this.config = configOrOptions;
+            const optionsInConfig = Object.keys(constants_1.Configuration.NajsOptions).reduce((memo, key) => {
+                memo[key] = this.getConfig(constants_1.Configuration.NajsOptions[key], undefined);
+                return memo;
+            }, {});
+            this.options = Object.assign({}, NajsDefaultOptions, lodash_1.pickBy(optionsInConfig));
+        }
+        else {
+            this.options = Object.assign({}, NajsDefaultOptions, configOrOptions);
+        }
         return Najs;
     }
     static make(className, data) {
@@ -24,9 +41,23 @@ class Najs {
         bind_1.bind(abstract, concrete);
         return this;
     }
-    static start(options) {
-        if (options) {
-            this.use(options);
+    static hasConfig(setting) {
+        assert_config_is_registered_before_using();
+        return this.config.has(setting);
+    }
+    static getConfig(setting, defaultValue) {
+        assert_config_is_registered_before_using();
+        if (!defaultValue) {
+            return this.config.get(setting);
+        }
+        if (this.hasConfig(setting)) {
+            return this.config.get(setting);
+        }
+        return defaultValue;
+    }
+    static start(arg) {
+        if (arg) {
+            this.use(arg);
         }
         const httpDriver = make_1.make(this.options.httpDriver);
         httpDriver.start(this.options);
