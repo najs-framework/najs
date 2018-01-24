@@ -12,12 +12,12 @@ describe('WinstonLogger', function () {
         expect(ClassRegistry_1.ClassRegistry.has(constants_1.LoggerClass)).toBe(true);
         expect(ClassRegistry_1.ClassRegistry.findOrFail(constants_1.LoggerClass).instanceConstructor === WinstonLogger_1.WinstonLogger).toBe(true);
     });
-    it('calls .getOptions() and get options for Winston, and call loggerDidCreate() to customize logger', function () {
-        const getOptionsSpy = Sinon.spy(WinstonLogger_1.WinstonLogger.prototype, 'getOptions');
-        const loggerDidCreateSpy = Sinon.spy(WinstonLogger_1.WinstonLogger.prototype, 'loggerDidCreate');
+    it('calls .setup() and use .getDefaultOptions() to get options for Winston', function () {
+        const setupSpy = Sinon.spy(WinstonLogger_1.WinstonLogger.prototype, 'setup');
+        const getDefaultOptionsSpy = Sinon.spy(WinstonLogger_1.WinstonLogger.prototype, 'getDefaultOptions');
         new WinstonLogger_1.WinstonLogger();
-        expect(getOptionsSpy.called).toBe(true);
-        expect(loggerDidCreateSpy.called).toBe(true);
+        expect(setupSpy.called).toBe(true);
+        expect(getDefaultOptionsSpy.called).toBe(true);
     });
     describe('log functions', function () {
         for (const functionName in WinstonLogger_1.WinstonLogger['levels']) {

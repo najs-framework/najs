@@ -13,8 +13,10 @@ export { IAutoload } from './core/IAutoload'
 
 export { Route } from './http/routing/Route'
 export { RouteCollection } from './http/routing/RouteCollection'
+export { ExpressHttpDriver } from './http/driver/ExpressHttpDriver'
 
 export { ILogger } from './log/ILogger'
 export { Log } from './log/Log'
+export { WinstonLogger } from './log/WinstonLogger'
 
 export { LoggerClass } from './constants'

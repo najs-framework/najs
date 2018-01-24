@@ -1,33 +1,21 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("./../../constants");
-const lodash_1 = require("lodash");
 const index_1 = require("../../index");
 const Express = require("express");
 class ExpressHttpDriver {
+    constructor() {
+        this.express = this.setup();
+    }
     getClassName() {
         return ExpressHttpDriver.className;
     }
     getNativeDriver() {
         return this.express;
     }
-    initialize() {
-        this.express = lodash_1.isFunction(this.setupFunction) ? this.setupFunction() : this.defaultInitialize();
-        if (lodash_1.isFunction(this.didSetupHandler)) {
-            this.didSetupHandler(this.express);
-        }
-    }
-    defaultInitialize() {
+    setup() {
         const app = Express();
         return app;
-    }
-    setup(setupFunction) {
-        this.setupFunction = setupFunction;
-        return this;
-    }
-    driverDidSetup(handler) {
-        this.didSetupHandler = handler;
-        return this;
     }
     // -------------------------------------------------------------------------------------------------------------------
     route(route) { }

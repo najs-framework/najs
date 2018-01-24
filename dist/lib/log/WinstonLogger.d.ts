@@ -5,13 +5,13 @@ export declare class WinstonLogger implements ILogger {
     protected logger: Winston.LoggerInstance;
     private static levels;
     constructor();
-    protected getOptions(): {
+    protected setup(): Winston.LoggerInstance;
+    protected getDefaultOptions(): {
         level: string;
         transports: Winston.TransportInstance[];
         colors: Winston.SyslogConfigSetColors;
         levels: Winston.SyslogConfigSetLevels;
     };
-    protected loggerDidCreate(): void;
     emergency(message: string): this;
     emergency(message: string, ...meta: any[]): this;
     alert(message: string): this;

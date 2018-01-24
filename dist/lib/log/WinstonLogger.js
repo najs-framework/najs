@@ -5,10 +5,12 @@ const constants_1 = require("../constants");
 const Winston = require("winston");
 class WinstonLogger {
     constructor() {
-        this.logger = new Winston.Logger(this.getOptions());
-        this.loggerDidCreate();
+        this.logger = this.setup();
     }
-    getOptions() {
+    setup() {
+        return new Winston.Logger(this.getDefaultOptions());
+    }
+    getDefaultOptions() {
         return Object.assign({}, {
             level: 'info',
             transports: [
@@ -22,7 +24,6 @@ class WinstonLogger {
             levels: Winston.config.syslog.levels
         });
     }
-    loggerDidCreate() { }
     emergency(message, ...meta) {
         return this.log(WinstonLogger.levels.emergency, message, ...meta);
     }

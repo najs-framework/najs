@@ -19,11 +19,14 @@ export class WinstonLogger implements ILogger {
   }
 
   constructor() {
-    this.logger = new Winston.Logger(this.getOptions())
-    this.loggerDidCreate()
+    this.logger = this.setup()
   }
 
-  protected getOptions() {
+  protected setup() {
+    return new Winston.Logger(this.getDefaultOptions())
+  }
+
+  protected getDefaultOptions() {
     return Object.assign(
       {},
       {
@@ -40,8 +43,6 @@ export class WinstonLogger implements ILogger {
       }
     )
   }
-
-  protected loggerDidCreate() {}
 
   emergency(message: string): this
   emergency(message: string, ...meta: any[]): this
