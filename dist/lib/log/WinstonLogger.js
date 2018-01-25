@@ -20,6 +20,16 @@ class WinstonLogger {
                     timestamp: true,
                     stderrLevels: Object.values(WinstonLogger.levels)
                 })
+                // new Winston.transports.File({
+                //   name: 'info',
+                //   filename: Path.join(storage, 'najs.log'),
+                //   level: 'info'
+                // }),
+                // new Winston.transports.File({
+                //   name: 'error',
+                //   filename: Path.join(storage, 'najs-errors.log'),
+                //   level: 'error'
+                // })
             ],
             colors: Winston.config.syslog.colors,
             levels: Winston.config.syslog.levels

@@ -27,9 +27,59 @@ describe('ExpressHttpDriver', function() {
   })
 
   describe('.route()', function() {
+    it('skips if method is not supported', function() {
+      const driver = new ExpressHttpDriver()
+      const getEndpointHandlerSpy = Sinon.spy(driver, <any>'getEndpointHandler')
+      driver.route({
+        method: 'get-not-found',
+        prefix: '',
+        path: '/path',
+        middleware: []
+      })
+      expect(getEndpointHandlerSpy.called).toBe(false)
+    })
+
+    it('joins prefix and path, calls getEndpointHandler() to get endpoint handler', function() {
+      const driver = new ExpressHttpDriver()
+      const getEndpointHandlerSpy = Sinon.spy(driver, <any>'getEndpointHandler')
+      const route = {
+        method: 'GET',
+        prefix: '/',
+        path: 'path',
+        middleware: []
+      }
+      driver.route(route)
+      expect(getEndpointHandlerSpy.calledWith('get', '/path', route)).toBe(true)
+      getEndpointHandlerSpy.restore()
+    })
+
+    it('passes handler to this.express[method] with path and handler', function() {
+      const driver = new ExpressHttpDriver()
+
+      const fakeHandler = (a: any, b: any) => {}
+      const getEndpointHandlerStub = Sinon.stub(driver, <any>'getEndpointHandler')
+      getEndpointHandlerStub.returns(fakeHandler)
+
+      const postExpressStub = Sinon.stub(driver['express'], 'post')
+
+      const route = {
+        method: 'POST',
+        prefix: '/',
+        path: 'path',
+        middleware: []
+      }
+      driver.route(route)
+      expect(postExpressStub.calledWith('/path', fakeHandler)).toBe(true)
+
+      getEndpointHandlerStub.restore()
+      postExpressStub.restore()
+    })
+  })
+
+  describe('protected .getEndpointHandler()', function() {
     // TODO: write unit test
     const driver = new ExpressHttpDriver()
-    driver.route(<any>{})
+    driver['getEndpointHandler']('get', '/path', <any>{})(<any>{}, <any>{})
   })
 
   describe('.start()', function() {

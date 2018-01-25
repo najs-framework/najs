@@ -5,6 +5,7 @@ exports.LoggerClass = 'Logger';
 exports.Configuration = {
     NajsOptions: {
         port: 'port',
-        host: 'host'
+        host: 'host',
+        storage: './app/storage'
     }
 };
