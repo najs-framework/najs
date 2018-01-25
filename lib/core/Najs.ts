@@ -8,12 +8,11 @@ import { isFunction, pickBy } from 'lodash'
 
 export type NajsOptions = {
   port: number
-  host: string
+  host?: string
 }
 
 const NajsDefaultOptions: NajsOptions = {
-  port: 3000,
-  host: 'localhost'
+  port: 3000
 }
 
 function assert_config_is_registered_before_using() {
@@ -32,7 +31,7 @@ export class Najs {
     if (isFunction(configOrOptions['get']) && isFunction(configOrOptions['has'])) {
       this.config = configOrOptions as IConfig
       const optionsInConfig = Object.keys(Configuration.NajsOptions).reduce((memo, key) => {
-        memo[key] = this.getConfig(Configuration.NajsOptions[key], undefined)
+        memo[key] = this.getConfig(Configuration.NajsOptions[key], false)
         return memo
       }, {})
       this.options = Object.assign({}, NajsDefaultOptions, pickBy(optionsInConfig))
@@ -74,7 +73,7 @@ export class Najs {
   static getConfig<T>(setting: string, defaultValue: T): T
   static getConfig<T>(setting: string, defaultValue?: T): T {
     assert_config_is_registered_before_using()
-    if (!defaultValue) {
+    if (typeof defaultValue === 'undefined') {
       return this.config.get<T>(setting)
     }
     if (this.hasConfig(setting)) {

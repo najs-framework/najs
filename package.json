@@ -1,6 +1,6 @@
 {
   "name": "najs",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "scripts": {
     "build": "npm run build-ts && npm run tslint",
     "build-ts": "tsc -d",
@@ -40,7 +40,8 @@
   },
   "peerDependencies": {
     "config": "^1.29.2",
-    "express": "^4.16.2"
+    "express": "^4.16.2",
+    "winston": "^2.4.0"
   },
   "dependencies": {
     "collect.js": "^4.0.4",

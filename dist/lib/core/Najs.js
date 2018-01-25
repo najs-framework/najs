@@ -6,8 +6,7 @@ const bind_1 = require("./bind");
 const constants_1 = require("../constants");
 const lodash_1 = require("lodash");
 const NajsDefaultOptions = {
-    port: 3000,
-    host: 'localhost'
+    port: 3000
 };
 function assert_config_is_registered_before_using() {
     if (!Najs['config']) {
@@ -19,7 +18,7 @@ class Najs {
         if (lodash_1.isFunction(configOrOptions['get']) && lodash_1.isFunction(configOrOptions['has'])) {
             this.config = configOrOptions;
             const optionsInConfig = Object.keys(constants_1.Configuration.NajsOptions).reduce((memo, key) => {
-                memo[key] = this.getConfig(constants_1.Configuration.NajsOptions[key], undefined);
+                memo[key] = this.getConfig(constants_1.Configuration.NajsOptions[key], false);
                 return memo;
             }, {});
             this.options = Object.assign({}, NajsDefaultOptions, lodash_1.pickBy(optionsInConfig));
@@ -46,7 +45,7 @@ class Najs {
     }
     static getConfig(setting, defaultValue) {
         assert_config_is_registered_before_using();
-        if (!defaultValue) {
+        if (typeof defaultValue === 'undefined') {
             return this.config.get(setting);
         }
         if (this.hasConfig(setting)) {

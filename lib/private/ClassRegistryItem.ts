@@ -37,7 +37,7 @@ export class ClassRegistryItem {
       return undefined
     }
     if (isFunction(this.instanceConstructor)) {
-      return Object.create(this.instanceConstructor.prototype)
+      return Reflect.construct(this.instanceConstructor, [])
     }
     if (isFunction(this.instanceCreator)) {
       return this.instanceCreator.call(undefined)

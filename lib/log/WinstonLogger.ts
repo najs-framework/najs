@@ -22,26 +22,25 @@ export class WinstonLogger implements ILogger {
     this.logger = this.setup()
   }
 
-  protected setup() {
-    return new Winston.Logger(this.getDefaultOptions())
+  protected setup(): Winston.LoggerInstance {
+    const logger = new Winston.Logger(this.getDefaultOptions())
+    return logger
   }
 
   protected getDefaultOptions() {
-    return Object.assign(
-      {},
-      {
-        level: 'info',
-        transports: [
-          new Winston.transports.Console({
-            colorize: true,
-            timestamp: true,
-            stderrLevels: Object.values(WinstonLogger.levels)
-          })
-        ],
-        colors: Winston.config.syslog.colors,
-        levels: Winston.config.syslog.levels
-      }
-    )
+    const defaultOptions = {
+      level: 'info',
+      transports: [
+        new Winston.transports.Console({
+          colorize: true,
+          timestamp: true,
+          stderrLevels: Object.values(WinstonLogger.levels)
+        })
+      ],
+      colors: Winston.config.syslog.colors,
+      levels: Winston.config.syslog.levels
+    }
+    return Object.assign({}, defaultOptions)
   }
 
   emergency(message: string): this

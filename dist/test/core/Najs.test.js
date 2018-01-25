@@ -31,8 +31,7 @@ const config = {
     util: {}
 };
 const DefaultOptions = {
-    port: 3000,
-    host: 'localhost'
+    port: 3000
 };
 describe('Najs', function () {
     describe('use(options: Object)', function () {

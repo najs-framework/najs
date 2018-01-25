@@ -20,7 +20,7 @@ class ClassRegistryItem {
             return undefined;
         }
         if (lodash_1.isFunction(this.instanceConstructor)) {
-            return Object.create(this.instanceConstructor.prototype);
+            return Reflect.construct(this.instanceConstructor, []);
         }
         if (lodash_1.isFunction(this.instanceCreator)) {
             return this.instanceCreator.call(undefined);

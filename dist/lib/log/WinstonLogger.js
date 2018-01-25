@@ -8,10 +8,11 @@ class WinstonLogger {
         this.logger = this.setup();
     }
     setup() {
-        return new Winston.Logger(this.getDefaultOptions());
+        const logger = new Winston.Logger(this.getDefaultOptions());
+        return logger;
     }
     getDefaultOptions() {
-        return Object.assign({}, {
+        const defaultOptions = {
             level: 'info',
             transports: [
                 new Winston.transports.Console({
@@ -22,7 +23,8 @@ class WinstonLogger {
             ],
             colors: Winston.config.syslog.colors,
             levels: Winston.config.syslog.levels
-        });
+        };
+        return Object.assign({}, defaultOptions);
     }
     emergency(message, ...meta) {
         return this.log(WinstonLogger.levels.emergency, message, ...meta);

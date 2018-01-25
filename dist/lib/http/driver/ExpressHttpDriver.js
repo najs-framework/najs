@@ -2,10 +2,16 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("./../../constants");
 const index_1 = require("../../index");
+const Log_1 = require("../../log/Log");
 const Express = require("express");
+const Http = require("http");
 class ExpressHttpDriver {
     constructor() {
         this.express = this.setup();
+    }
+    setup() {
+        const app = Express();
+        return app;
     }
     getClassName() {
         return ExpressHttpDriver.className;
@@ -13,13 +19,18 @@ class ExpressHttpDriver {
     getNativeDriver() {
         return this.express;
     }
-    setup() {
-        const app = Express();
-        return app;
-    }
     // -------------------------------------------------------------------------------------------------------------------
     route(route) { }
-    start(options) { }
+    start(options) {
+        const server = Http.createServer(this.express);
+        server.listen(options.port, options.host);
+        const logs = ['Listening at port '];
+        if (options.host) {
+            logs.push(options.host + ':');
+        }
+        logs.push(options.port || 3000);
+        Log_1.Log.info(logs.join(''));
+    }
     respondJson(response, value) {
         response.json(value);
     }

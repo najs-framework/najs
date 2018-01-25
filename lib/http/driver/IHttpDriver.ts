@@ -8,7 +8,6 @@ export type HttpDriverStartOptions = {
 export interface IHttpDriver<T = any> {
   getNativeDriver(): T
 
-  setup(): any
   start(options: HttpDriverStartOptions): void
 
   route(data: IRouteData): void
