@@ -4,11 +4,14 @@ import { IAutoload } from '../../core/IAutoload'
 import { IRouteData } from '../routing/interfaces/IRouteData'
 import { register } from '../../index'
 import { Log } from '../../log/Log'
-// import { isFunction } from 'lodash'
+import { isFunction } from 'lodash'
 import * as Express from 'express'
 import * as Http from 'http'
+import { Controller } from '../controller/Controller'
 
 export type ExpressApp = Express.Express
+
+export type ExpressHandlers = Array<Express.RequestHandler | Express.ErrorRequestHandler>
 
 export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   static METHODS: string[] = [
@@ -67,12 +70,34 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     }
 
     const path: string = route.prefix + route.path
-    const handler: Function = this.getEndpointHandler(method, path, route)
-    Reflect.apply(Reflect.get(this.express, method), this.express, [path, handler])
+    const handlers: ExpressHandlers = this.getEndpointHandlers(method, path, route)
+    if (handlers.length === 0) {
+      return
+    }
+    Reflect.apply(Reflect.get(this.express, method), this.express, [path, ...handlers])
   }
 
-  protected getEndpointHandler(method: string, path: string, route: IRouteData) {
-    return function(req: Express.Request, res: Express.Response) {}
+  protected getEndpointHandlers(method: string, path: string, route: IRouteData): ExpressHandlers {
+    const handlers: ExpressHandlers = []
+
+    if (isFunction(route.endpoint)) {
+      handlers.push(this.createEndpointWrapperByFunction(route.endpoint))
+      // if endpoint is function, there is no reason to go further
+      return handlers
+    }
+
+    // create hand
+    return handlers
+  }
+
+  protected createEndpointWrapperByFunction(endpoint: Function) {
+    return (request: Express.Request, response: Express.Response) => {
+      const controller = Reflect.construct(Controller, [request, response])
+      const result = Reflect.apply(endpoint, controller, [request, response])
+      if (typeof result !== 'undefined' && isFunction(result.respond)) {
+        result.respond(response, this)
+      }
+    }
   }
 
   start(options: HttpDriverStartOptions) {

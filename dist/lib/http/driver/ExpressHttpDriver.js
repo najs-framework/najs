@@ -3,9 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("./../../constants");
 const index_1 = require("../../index");
 const Log_1 = require("../../log/Log");
-// import { isFunction } from 'lodash'
+const lodash_1 = require("lodash");
 const Express = require("express");
 const Http = require("http");
+const Controller_1 = require("../controller/Controller");
 class ExpressHttpDriver {
     constructor() {
         this.express = this.setup();
@@ -27,11 +28,30 @@ class ExpressHttpDriver {
             return;
         }
         const path = route.prefix + route.path;
-        const handler = this.getEndpointHandler(method, path, route);
-        Reflect.apply(Reflect.get(this.express, method), this.express, [path, handler]);
+        const handlers = this.getEndpointHandlers(method, path, route);
+        if (handlers.length === 0) {
+            return;
+        }
+        Reflect.apply(Reflect.get(this.express, method), this.express, [path, ...handlers]);
     }
-    getEndpointHandler(method, path, route) {
-        return function (req, res) { };
+    getEndpointHandlers(method, path, route) {
+        const handlers = [];
+        // if Endpoint is a function, there is no reason to go further
+        if (lodash_1.isFunction(route.endpoint)) {
+            handlers.push(this.createEndpointWrapperByFunction(route.endpoint));
+            return handlers;
+        }
+        // create hand
+        return handlers;
+    }
+    createEndpointWrapperByFunction(endpoint) {
+        return (request, response) => {
+            const controller = Reflect.construct(Controller_1.Controller, [request, response]);
+            const result = Reflect.apply(endpoint, controller, [request, response]);
+            if (typeof result !== 'undefined' && lodash_1.isFunction(result.respond)) {
+                result.respond(response, this);
+            }
+        };
     }
     start(options) {
         const server = Http.createServer(this.express);

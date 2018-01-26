@@ -2,11 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
+const Http = require("http");
 const ExpressHttpDriver_1 = require("../../../lib/http/driver/ExpressHttpDriver");
 const constants_1 = require("../../../lib/constants");
 const ClassRegistry_1 = require("../../../lib/core/ClassRegistry");
 const Log_1 = require("../../../lib/log/Log");
-const Http = require("http");
+const Controller_1 = require("../../../lib/http/controller/Controller");
 describe('ExpressHttpDriver', function () {
     it('registers as default HttpDriver', function () {
         expect(ClassRegistry_1.ClassRegistry.has(constants_1.HttpDriverClass)).toBe(true);
@@ -27,18 +28,18 @@ describe('ExpressHttpDriver', function () {
     describe('.route()', function () {
         it('skips if method is not supported', function () {
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
-            const getEndpointHandlerSpy = Sinon.spy(driver, 'getEndpointHandler');
+            const getEndpointHandlersSpy = Sinon.spy(driver, 'getEndpointHandlers');
             driver.route({
                 method: 'get-not-found',
                 prefix: '',
                 path: '/path',
                 middleware: []
             });
-            expect(getEndpointHandlerSpy.called).toBe(false);
+            expect(getEndpointHandlersSpy.called).toBe(false);
         });
-        it('joins prefix and path, calls getEndpointHandler() to get endpoint handler', function () {
+        it('joins prefix and path, calls getEndpointHandlers() to get endpoint handler', function () {
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
-            const getEndpointHandlerSpy = Sinon.spy(driver, 'getEndpointHandler');
+            const getEndpointHandlersSpy = Sinon.spy(driver, 'getEndpointHandlers');
             const route = {
                 method: 'GET',
                 prefix: '/',
@@ -46,14 +47,13 @@ describe('ExpressHttpDriver', function () {
                 middleware: []
             };
             driver.route(route);
-            expect(getEndpointHandlerSpy.calledWith('get', '/path', route)).toBe(true);
-            getEndpointHandlerSpy.restore();
+            expect(getEndpointHandlersSpy.calledWith('get', '/path', route)).toBe(true);
+            getEndpointHandlersSpy.restore();
         });
-        it('passes handler to this.express[method] with path and handler', function () {
+        it('does not pass handlers to this.express[method] if handler is empty', function () {
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
-            const fakeHandler = (a, b) => { };
-            const getEndpointHandlerStub = Sinon.stub(driver, 'getEndpointHandler');
-            getEndpointHandlerStub.returns(fakeHandler);
+            const getEndpointHandlersStub = Sinon.stub(driver, 'getEndpointHandlers');
+            getEndpointHandlersStub.returns([]);
             const postExpressStub = Sinon.stub(driver['express'], 'post');
             const route = {
                 method: 'POST',
@@ -62,15 +62,76 @@ describe('ExpressHttpDriver', function () {
                 middleware: []
             };
             driver.route(route);
-            expect(postExpressStub.calledWith('/path', fakeHandler)).toBe(true);
-            getEndpointHandlerStub.restore();
+            expect(postExpressStub.called).toBe(false);
+            getEndpointHandlersStub.restore();
+            postExpressStub.restore();
+        });
+        it('passes handlers to this.express[method] with path and handler', function () {
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            const fakeMiddleware = (a, b) => { };
+            const fakeHandler = (a, b) => { };
+            const getEndpointHandlersStub = Sinon.stub(driver, 'getEndpointHandlers');
+            getEndpointHandlersStub.returns([fakeMiddleware, fakeHandler]);
+            const postExpressStub = Sinon.stub(driver['express'], 'post');
+            const route = {
+                method: 'POST',
+                prefix: '/',
+                path: 'path',
+                middleware: []
+            };
+            driver.route(route);
+            expect(postExpressStub.calledWith('/path', fakeMiddleware, fakeHandler)).toBe(true);
+            getEndpointHandlersStub.restore();
             postExpressStub.restore();
         });
     });
-    describe('protected .getEndpointHandler()', function () {
-        // TODO: write unit test
-        const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
-        driver['getEndpointHandler']('get', '/path', {})({}, {});
+    describe('protected .getEndpointHandlers()', function () {
+        it('calls createEndpointWrapperByFunction and pushes result to handlers', function () {
+            function handler() { }
+            const route = {
+                endpoint: handler
+            };
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            const createEndpointWrapperByFunctionStub = Sinon.stub(driver, 'createEndpointWrapperByFunction');
+            const handlers = driver['getEndpointHandlers']('any', 'any', route);
+            expect(handlers).toHaveLength(1);
+            expect(createEndpointWrapperByFunctionStub.calledWith(handler)).toBe(true);
+            createEndpointWrapperByFunctionStub.restore();
+        });
+        // TODO: write more test
+    });
+    describe('protected .createEndpointWrapperByFunction()', function () {
+        it('returns a wrapper function for endpoint, creates new Controller with request, response', function () {
+            function handler() { }
+            const handlerSpy = Sinon.spy(handler);
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            const result = driver['createEndpointWrapperByFunction'](handlerSpy);
+            expect(typeof result).toEqual('function');
+            const request = {};
+            const response = {};
+            result(request, response);
+            expect(handlerSpy.callCount).toEqual(1);
+            const thisValue = handlerSpy.firstCall.thisValue;
+            expect(thisValue).toBeInstanceOf(Controller_1.Controller);
+            expect(thisValue.request === request).toBe(true);
+            expect(thisValue.response === response).toBe(true);
+            expect(handlerSpy.firstCall.args[0] === request).toBe(true);
+            expect(handlerSpy.firstCall.args[1] === response).toBe(true);
+        });
+        it('calls result.respond if endpoint return IResponse', function () {
+            const iResponse = {
+                respond(response, httpDriver) { }
+            };
+            function handler() {
+                return iResponse;
+            }
+            const iResponseSpy = Sinon.spy(iResponse, 'respond');
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            const result = driver['createEndpointWrapperByFunction'](handler);
+            const response = {};
+            result({}, response);
+            expect(iResponseSpy.calledWith(response, driver)).toBe(true);
+        });
     });
     describe('.start()', function () {
         it('passes this.express to http.createServer()', function () {
