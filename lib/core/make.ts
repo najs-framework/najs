@@ -23,18 +23,24 @@ export function make<T>(classDefinition: any, data: Object): T
 /**
  * `make` a class instance from registered class's name with data
  *
- * @param {class|function} classDefinition - class definition
+ * @param {string} className - the registered class name
  * @param {Object} data - filled data to instance
  */
 export function make<T>(className: string, data: Object): T
-// /**
-//  * `make` a class instance from registered class's name with args for constructor
-//  */
-// export function make(classDefinition: any, args: any[]): any
-// /**
-//  * `make` a class instance from registered class's name with args for constructor
-//  */
-// export function make<T>(classDefinition: any, args: any[]): T
-export function make(className: any, data?: Object): any {
-  return ClassRegistry.findOrFail(get_class_name(className)).make(data)
+/**
+ * `make` a class instance from class definition with args for constructor
+ *
+ * @param {class|function} classDefinition - class definition
+ * @param {Array} data - arguments list for constructor
+ */
+export function make(classDefinition: any, args: any[]): any
+/**
+ * `make` a class instance from registered class's name with args for constructor
+ *
+ * @param {string} className - the registered class name
+ * @param {Array} data - arguments list for constructor
+ */
+export function make<T>(className: any, args: any[]): T
+export function make(className: any, data?: Object | any[]): any {
+  return ClassRegistry.findOrFail(get_class_name(className)).make(<any>data)
 }

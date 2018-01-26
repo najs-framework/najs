@@ -5,10 +5,10 @@ import { IRouteData } from '../routing/interfaces/IRouteData'
 import { register } from '../../index'
 import { Log } from '../../log/Log'
 import { isFunction } from 'lodash'
-import * as Express from 'express'
-import * as Http from 'http'
 import { Controller } from '../controller/Controller'
 import { RouteCollection } from '../routing/RouteCollection'
+import * as Express from 'express'
+import * as Http from 'http'
 
 export type ExpressApp = Express.Express
 
@@ -88,12 +88,13 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
       return handlers
     }
 
-    // create hand
+    // create handlers
     return handlers
   }
 
   protected createEndpointWrapperByFunction(endpoint: Function) {
     return (request: Express.Request, response: Express.Response) => {
+      // Can not use make for default Controller
       const controller = Reflect.construct(Controller, [request, response])
       const result = Reflect.apply(endpoint, controller, [request, response])
       if (typeof result !== 'undefined' && isFunction(result.respond)) {

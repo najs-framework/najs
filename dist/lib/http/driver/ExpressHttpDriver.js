@@ -4,10 +4,10 @@ const constants_1 = require("./../../constants");
 const index_1 = require("../../index");
 const Log_1 = require("../../log/Log");
 const lodash_1 = require("lodash");
-const Express = require("express");
-const Http = require("http");
 const Controller_1 = require("../controller/Controller");
 const RouteCollection_1 = require("../routing/RouteCollection");
+const Express = require("express");
+const Http = require("http");
 class ExpressHttpDriver {
     constructor() {
         this.express = this.setup();
@@ -43,11 +43,12 @@ class ExpressHttpDriver {
             // if endpoint is function, there is no reason to go further
             return handlers;
         }
-        // create hand
+        // create handlers
         return handlers;
     }
     createEndpointWrapperByFunction(endpoint) {
         return (request, response) => {
+            // Can not use make for default Controller
             const controller = Reflect.construct(Controller_1.Controller, [request, response]);
             const result = Reflect.apply(endpoint, controller, [request, response]);
             if (typeof result !== 'undefined' && lodash_1.isFunction(result.respond)) {

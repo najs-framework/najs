@@ -103,4 +103,13 @@ describe('Najs.make', function () {
             expect(lib_1.make(TestInstanceWithData, { any: 'something' }).any).toEqual('something');
         });
     });
+    describe('<T>(nameOrDefinition: T | string, args: Array)', function () {
+        it('calls constructor with no arguments if not passed', function () {
+            expect(lib_1.make(TestInstanceWithData, []).any).toEqual('');
+        });
+        it('calls constructor with arguments in an array', function () {
+            lib_1.register(TestInstanceWithData);
+            expect(lib_1.make(TestInstanceWithData, ['argument']).any).toEqual('argument');
+        });
+    });
 });

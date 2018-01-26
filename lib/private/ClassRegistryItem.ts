@@ -29,7 +29,7 @@ export class ClassRegistryItem {
     this.singleton = singleton === true ? true : false
   }
 
-  private createInstance(): any {
+  private createInstance(args?: any[]): any {
     if (this.concreteClassName) {
       if (ClassRegistry.has(this.concreteClassName)) {
         return ClassRegistry.findOrFail(this.concreteClassName).createInstance()
@@ -37,7 +37,7 @@ export class ClassRegistryItem {
       return undefined
     }
     if (isFunction(this.instanceConstructor)) {
-      return Reflect.construct(this.instanceConstructor, [])
+      return Reflect.construct(this.instanceConstructor, args || [])
     }
     if (isFunction(this.instanceCreator)) {
       return this.instanceCreator.call(undefined)
@@ -91,15 +91,22 @@ export class ClassRegistryItem {
   //   return info
   // }
 
-  make<T>(data?: Object): T
-  make(data?: Object): any {
+  make<T>(): T
+  make<T>(data: Object): T
+  make<T>(args: any[]): T
+  make(arg?: Object | any[]): any {
     if (this.singleton && this.instance) {
       return this.instance
     }
 
-    let instance: any = this.createInstance()
-    if (typeof data !== 'undefined' && isFunction(instance['createClassInstance'])) {
-      instance = instance.createClassInstance(data)
+    let instance: any
+    if (Array.isArray(arg)) {
+      instance = this.createInstance(arg)
+    } else {
+      instance = this.createInstance()
+      if (typeof arg !== 'undefined' && isFunction(instance['createClassInstance'])) {
+        instance = instance.createClassInstance(arg)
+      }
     }
 
     if (this.singleton) {

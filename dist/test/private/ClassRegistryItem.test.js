@@ -49,6 +49,20 @@ describe('ClassRegistryItem', function () {
             ], Test);
             expect(lib_1.ClassRegistry.findOrFail('Test')['createInstance']()).toBeInstanceOf(Test);
         });
+        it('creates instance from instanceConstructor with arguments if it set', function () {
+            let TestArgs = class TestArgs {
+                constructor(value) {
+                    this.value = value;
+                }
+            };
+            TestArgs.className = 'TestArgs';
+            TestArgs = __decorate([
+                lib_1.register()
+            ], TestArgs);
+            const instance = lib_1.ClassRegistry.findOrFail('TestArgs')['createInstance']([{ arg: 'anything' }]);
+            expect(instance).toBeInstanceOf(TestArgs);
+            expect(instance.value).toEqual({ arg: 'anything' });
+        });
         it('creates instance from instanceCreator if instanceConstructor not found', function () {
             const classRegistryItem = lib_1.ClassRegistry.findOrFail('Test');
             classRegistryItem.instanceConstructor = undefined;
