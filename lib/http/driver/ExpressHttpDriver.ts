@@ -8,6 +8,7 @@ import { isFunction } from 'lodash'
 import * as Express from 'express'
 import * as Http from 'http'
 import { Controller } from '../controller/Controller'
+import { RouteCollection } from '../routing/RouteCollection'
 
 export type ExpressApp = Express.Express
 
@@ -74,6 +75,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     if (handlers.length === 0) {
       return
     }
+    Log.info('  [' + method.toUpperCase() + '] \t' + path)
     Reflect.apply(Reflect.get(this.express, method), this.express, [path, ...handlers])
   }
 
@@ -110,6 +112,8 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     }
     logs.push(options.port || 3000)
     Log.info(logs.join(''))
+    Log.info('Routes:')
+    RouteCollection.getData().map(this.route.bind(this))
   }
 
   respondJson(response: Express.Response, value: any): void {

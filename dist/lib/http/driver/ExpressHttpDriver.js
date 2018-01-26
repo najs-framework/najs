@@ -7,6 +7,7 @@ const lodash_1 = require("lodash");
 const Express = require("express");
 const Http = require("http");
 const Controller_1 = require("../controller/Controller");
+const RouteCollection_1 = require("../routing/RouteCollection");
 class ExpressHttpDriver {
     constructor() {
         this.express = this.setup();
@@ -32,6 +33,7 @@ class ExpressHttpDriver {
         if (handlers.length === 0) {
             return;
         }
+        Log_1.Log.info('  [' + method.toUpperCase() + '] \t' + path);
         Reflect.apply(Reflect.get(this.express, method), this.express, [path, ...handlers]);
     }
     getEndpointHandlers(method, path, route) {
@@ -62,6 +64,8 @@ class ExpressHttpDriver {
         }
         logs.push(options.port || 3000);
         Log_1.Log.info(logs.join(''));
+        Log_1.Log.info('Routes:');
+        RouteCollection_1.RouteCollection.getData().map(this.route.bind(this));
     }
     respondJson(response, value) {
         response.json(value);
