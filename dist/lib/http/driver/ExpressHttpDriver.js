@@ -36,9 +36,9 @@ class ExpressHttpDriver {
     }
     getEndpointHandlers(method, path, route) {
         const handlers = [];
-        // if Endpoint is a function, there is no reason to go further
         if (lodash_1.isFunction(route.endpoint)) {
             handlers.push(this.createEndpointWrapperByFunction(route.endpoint));
+            // if endpoint is function, there is no reason to go further
             return handlers;
         }
         // create hand

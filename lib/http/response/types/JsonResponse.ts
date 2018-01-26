@@ -2,7 +2,7 @@ import { IResponse } from '../IResponse'
 import { IHttpDriver } from '../../driver/IHttpDriver'
 
 export class JsonResponse implements IResponse {
-  private value: any
+  protected value: any
 
   constructor(value: any) {
     this.value = value

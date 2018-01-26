@@ -2,8 +2,8 @@ import { IResponse } from '../IResponse'
 import { IHttpDriver } from '../../driver/IHttpDriver'
 
 export class RedirectResponse implements IResponse {
-  private url: string
-  private status: number
+  protected url: string
+  protected status: number
 
   constructor(url: string, status: number = 302) {
     this.url = url
