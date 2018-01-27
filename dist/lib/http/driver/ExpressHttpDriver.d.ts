@@ -19,6 +19,8 @@ export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
     route(route: IRouteData): void;
     protected getEndpointHandlers(method: string, path: string, route: IRouteData): ExpressHandlers;
     protected createEndpointWrapper(controllerName: string, endpointName: string): (request: Express.Request, response: Express.Response) => Promise<void>;
+    protected createEndpointWrapperByObject(controllerObject: Object, endpointName: string): (request: Express.Request, response: Express.Response) => Promise<void>;
+    protected cloneControllerObject(controller: Object, request: Express.Request, response: Express.Response): Object;
     protected createEndpointWrapperByFunction(endpoint: Function): (request: Express.Request, response: Express.Response) => Promise<void>;
     protected handleEndpointResult(response: Express.Response, result: any): Promise<any>;
     start(options: HttpDriverStartOptions): void;

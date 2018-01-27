@@ -186,7 +186,94 @@ describe('ExpressHttpDriver', function() {
       expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true)
       expect(endpointSpy.called).toBe(true)
       expect(handleEndpointResultStub.calledWith(response, undefined)).toBe(true)
+
       makeSpy.restore()
+      endpointSpy.restore()
+      handleEndpointResultStub.restore()
+    })
+  })
+
+  describe('protected .createEndpointWrapperByObject()', function() {
+    it('always returns a function despite Controller or Endpoint are invalid', function() {
+      const driver = new ExpressHttpDriver()
+      const result = driver['createEndpointWrapperByObject']({}, 'invalid')
+      expect(typeof result === 'function').toBe(true)
+    })
+
+    it('calls cloneControllerObject()/make() with controller instance but do not call if endpoint not found', function() {
+      const makeSpy = Sinon.spy(Make, 'make')
+      const controller: Object = Make.make('TestControllerA')
+      const driver = new ExpressHttpDriver()
+      const cloneControllerObjectSpy = Sinon.spy(driver, <any>'cloneControllerObject')
+      const result = driver['createEndpointWrapperByObject'](controller, 'invalid')
+
+      const request = {}
+      const response = {}
+      result(<any>request, <any>response)
+      expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true)
+      expect(cloneControllerObjectSpy.called).toBe(true)
+
+      makeSpy.restore()
+      cloneControllerObjectSpy.restore()
+    })
+
+    it('calls cloneControllerObject()/make() with controller instance, calls endpoint and calls handleEndpointResult()', async function() {
+      const makeSpy = Sinon.spy(Make, 'make')
+      const controller: Object = Make.make('TestControllerA')
+
+      const driver = new ExpressHttpDriver()
+      const handleEndpointResultStub = Sinon.stub(driver, <any>'handleEndpointResult')
+      const cloneControllerObjectSpy = Sinon.spy(driver, <any>'cloneControllerObject')
+      const result = driver['createEndpointWrapperByObject'](controller, 'endpoint')
+
+      const request = {}
+      const response = {}
+      result(<any>request, <any>response)
+      expect(cloneControllerObjectSpy.called).toBe(true)
+      expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true)
+      expect(handleEndpointResultStub.calledWith(response, undefined)).toBe(true)
+
+      makeSpy.restore()
+      cloneControllerObjectSpy.restore()
+      handleEndpointResultStub.restore()
+    })
+
+    it('calls cloneControllerObject() with raw object but do not call if endpoint not found', function() {
+      const controller: Object = Make.make('TestControllerA')
+
+      const endpointSpy = Sinon.spy(controller, <any>'endpoint')
+
+      const driver = new ExpressHttpDriver()
+      const cloneControllerObjectSpy = Sinon.spy(driver, <any>'cloneControllerObject')
+      const result = driver['createEndpointWrapperByObject'](controller, 'invalid')
+
+      const request = {}
+      const response = {}
+      result(<any>request, <any>response)
+      expect(cloneControllerObjectSpy.called).toBe(true)
+      expect(endpointSpy.called).toBe(false)
+      cloneControllerObjectSpy.restore()
+      endpointSpy.restore()
+    })
+
+    it('calls cloneControllerObject() with raw object, calls endpoint and calls handleEndpointResult()', async function() {
+      const controller: Object = {
+        endpoint() {}
+      }
+      const endpointSpy = Sinon.spy(controller, <any>'endpoint')
+
+      const driver = new ExpressHttpDriver()
+      const handleEndpointResultStub = Sinon.stub(driver, <any>'handleEndpointResult')
+      const cloneControllerObjectSpy = Sinon.spy(driver, <any>'cloneControllerObject')
+      const result = driver['createEndpointWrapperByObject'](controller, 'endpoint')
+
+      const request = {}
+      const response = {}
+      await result(<any>request, <any>response)
+      expect(cloneControllerObjectSpy.called).toBe(true)
+      expect(endpointSpy.called).toBe(true)
+      expect(handleEndpointResultStub.calledWith(response, undefined)).toBe(true)
+      cloneControllerObjectSpy.restore()
       endpointSpy.restore()
       handleEndpointResultStub.restore()
     })
@@ -225,6 +312,32 @@ describe('ExpressHttpDriver', function() {
     })
   })
 
+  describe('protected .cloneControllerObject()', function() {
+    it('clones controller object by Object.assign with request, response', function() {
+      const request = {}
+      const response = {}
+      const origin = { prop: 'anything', endpoint() {} }
+      const driver = new ExpressHttpDriver()
+      const clone = driver['cloneControllerObject'](origin, <any>request, <any>response)
+
+      expect(clone === origin).toBe(false)
+      expect(clone['prop']).toEqual('anything')
+      expect(clone['endpoint'] === origin.endpoint).toBe(true)
+      expect(clone['request'] === request).toBe(true)
+      expect(clone['response'] === response).toBe(true)
+    })
+
+    it('does not do deep clone', function() {
+      const request = {}
+      const response = {}
+      const ref = {}
+      const origin = { ref, prop: 'anything', endpoint() {} }
+      const driver = new ExpressHttpDriver()
+      const clone = driver['cloneControllerObject'](origin, <any>request, <any>response)
+
+      expect(clone['ref'] === origin.ref).toBe(true)
+    })
+  })
   describe('protected .handleEndpointResult()', function() {
     it('does nothing if result is undefined', function() {
       const response = {}

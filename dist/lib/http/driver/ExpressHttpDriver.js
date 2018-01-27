@@ -48,8 +48,10 @@ class ExpressHttpDriver {
         }
         // if (isString(route.controller) && isString(route.endpoint)) {
         handlers.push(this.createEndpointWrapper(route.controller, route.endpoint));
-        // }
         return handlers;
+        // }
+        // handlers.push(this.createEndpointWrapperByObject(<Object>route.controller, <string>route.endpoint))
+        // return handlers
     }
     createEndpointWrapper(controllerName, endpointName) {
         return async (request, response) => {
@@ -60,6 +62,22 @@ class ExpressHttpDriver {
                 await this.handleEndpointResult(response, result);
             }
         };
+    }
+    createEndpointWrapperByObject(controllerObject, endpointName) {
+        return async (request, response) => {
+            const controller = this.cloneControllerObject(controllerObject, request, response);
+            const endpoint = Reflect.get(controller, endpointName);
+            if (lodash_1.isFunction(endpoint)) {
+                const result = Reflect.apply(endpoint, controller, [request, response]);
+                await this.handleEndpointResult(response, result);
+            }
+        };
+    }
+    cloneControllerObject(controller, request, response) {
+        if (controller instanceof Controller_1.Controller) {
+            return make_1.make(controller.getClassName(), [request, response]);
+        }
+        return Object.assign({}, controller, { request, response });
     }
     createEndpointWrapperByFunction(endpoint) {
         return async (request, response) => {

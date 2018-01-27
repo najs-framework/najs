@@ -93,8 +93,11 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
 
     // if (isString(route.controller) && isString(route.endpoint)) {
     handlers.push(this.createEndpointWrapper(<string>route.controller, <string>route.endpoint))
-    // }
     return handlers
+    // }
+
+    // handlers.push(this.createEndpointWrapperByObject(<Object>route.controller, <string>route.endpoint))
+    // return handlers
   }
 
   protected createEndpointWrapper(controllerName: string, endpointName: string) {
@@ -106,6 +109,24 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
         await this.handleEndpointResult(response, result)
       }
     }
+  }
+
+  protected createEndpointWrapperByObject(controllerObject: Object, endpointName: string) {
+    return async (request: Express.Request, response: Express.Response) => {
+      const controller: Object = this.cloneControllerObject(controllerObject, request, response)
+      const endpoint: any = Reflect.get(controller, endpointName)
+      if (isFunction(endpoint)) {
+        const result = Reflect.apply(endpoint, controller, [request, response])
+        await this.handleEndpointResult(response, result)
+      }
+    }
+  }
+
+  protected cloneControllerObject(controller: Object, request: Express.Request, response: Express.Response): Object {
+    if (controller instanceof Controller) {
+      return make(controller.getClassName(), [request, response])
+    }
+    return Object.assign({}, controller, { request, response })
   }
 
   protected createEndpointWrapperByFunction(endpoint: Function) {
