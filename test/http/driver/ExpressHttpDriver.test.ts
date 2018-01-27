@@ -33,6 +33,7 @@ describe('ExpressHttpDriver', function() {
     it('skips if method is not supported', function() {
       const driver = new ExpressHttpDriver()
       const getEndpointHandlersSpy = Sinon.spy(driver, <any>'getEndpointHandlers')
+
       driver.route({
         method: 'get-not-found',
         prefix: '',
@@ -45,6 +46,7 @@ describe('ExpressHttpDriver', function() {
     it('joins prefix and path, calls getEndpointHandlers() to get endpoint handler', function() {
       const driver = new ExpressHttpDriver()
       const getEndpointHandlersSpy = Sinon.spy(driver, <any>'getEndpointHandlers')
+      const logStub = Sinon.stub(Log, 'info')
       const route = {
         method: 'GET',
         prefix: '/',
@@ -54,6 +56,7 @@ describe('ExpressHttpDriver', function() {
       driver.route(route)
       expect(getEndpointHandlersSpy.calledWith('get', '/path', route)).toBe(true)
       getEndpointHandlersSpy.restore()
+      logStub.restore()
     })
 
     it('does not pass handlers to this.express[method] if handler is empty', function() {
@@ -63,7 +66,7 @@ describe('ExpressHttpDriver', function() {
       getEndpointHandlersStub.returns([])
 
       const postExpressStub = Sinon.stub(driver['express'], 'post')
-
+      const logStub = Sinon.stub(Log, 'info')
       const route = {
         method: 'POST',
         prefix: '/',
@@ -75,6 +78,7 @@ describe('ExpressHttpDriver', function() {
 
       getEndpointHandlersStub.restore()
       postExpressStub.restore()
+      logStub.restore()
     })
 
     it('passes handlers to this.express[method] with path and handler', function() {
@@ -85,6 +89,7 @@ describe('ExpressHttpDriver', function() {
       const getEndpointHandlersStub = Sinon.stub(driver, <any>'getEndpointHandlers')
       getEndpointHandlersStub.returns([fakeMiddleware, fakeHandler])
 
+      const logStub = Sinon.stub(Log, 'info')
       const postExpressStub = Sinon.stub(driver['express'], 'post')
 
       const route = {
@@ -98,6 +103,7 @@ describe('ExpressHttpDriver', function() {
 
       getEndpointHandlersStub.restore()
       postExpressStub.restore()
+      logStub.restore()
     })
   })
 
@@ -139,12 +145,12 @@ describe('ExpressHttpDriver', function() {
       expect(typeof result === 'function').toBe(true)
     })
 
-    it('calls make() and make() throws an error if Controller not found', function() {
+    it('calls make() and make() throws an error if Controller not found', async function() {
       const driver = new ExpressHttpDriver()
       const result = driver['createEndpointWrapper']('NotFound', 'invalid')
       expect(typeof result === 'function').toBe(true)
       try {
-        result(<any>{}, <any>{})
+        await result(<any>{}, <any>{})
       } catch (error) {
         expect(error).toBeInstanceOf(ReferenceError)
         return
@@ -224,6 +230,21 @@ describe('ExpressHttpDriver', function() {
       const response = {}
       const driver = new ExpressHttpDriver()
       driver['handleEndpointResult'](<any>response, undefined)
+    })
+
+    it('calls await if result is a Promise like', async function() {
+      const iResponse = {
+        respond(response: any, httpDriver: any) {}
+      }
+      const iResponseSpy = Sinon.spy(iResponse, 'respond')
+      const promise = new Promise(function(resolve) {
+        resolve(iResponse)
+      })
+
+      const response = {}
+      const driver = new ExpressHttpDriver()
+      await driver['handleEndpointResult'](<any>response, promise)
+      expect(iResponseSpy.calledWith(response, driver)).toBe(true)
     })
 
     it('calls result.respond if result is IResponse', function() {

@@ -11,6 +11,7 @@ import { make } from '../../core/make'
 import { isIResponse } from '../response/IResponse'
 import * as Express from 'express'
 import * as Http from 'http'
+import { isPromise } from '../../private/isPromise'
 
 export type ExpressApp = Express.Express
 
@@ -97,28 +98,29 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   }
 
   protected createEndpointWrapper(controllerName: string, endpointName: string) {
-    return (request: Express.Request, response: Express.Response) => {
+    return async (request: Express.Request, response: Express.Response) => {
       const controller = make<Controller>(controllerName, [request, response])
       const endpoint: any = Reflect.get(controller, endpointName)
       if (isFunction(endpoint)) {
         const result = Reflect.apply(endpoint, controller, [request, response])
-        this.handleEndpointResult(response, result)
+        await this.handleEndpointResult(response, result)
       }
     }
   }
 
   protected createEndpointWrapperByFunction(endpoint: Function) {
-    return (request: Express.Request, response: Express.Response) => {
+    return async (request: Express.Request, response: Express.Response) => {
       // Can not use make for default Controller
       const controller = Reflect.construct(Controller, [request, response])
       const result = Reflect.apply(endpoint, controller, [request, response])
-      this.handleEndpointResult(response, result)
+      await this.handleEndpointResult(response, result)
     }
   }
 
-  protected handleEndpointResult(response: Express.Response, result: any) {
-    if (isIResponse(result)) {
-      return result.respond(response, this)
+  protected async handleEndpointResult(response: Express.Response, result: any) {
+    const value: any = isPromise(result) ? await (result as Promise<any>) : result
+    if (isIResponse(value)) {
+      return value.respond(response, this)
     }
   }
 

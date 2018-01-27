@@ -10,6 +10,7 @@ const make_1 = require("../../core/make");
 const IResponse_1 = require("../response/IResponse");
 const Express = require("express");
 const Http = require("http");
+const isPromise_1 = require("../../private/isPromise");
 class ExpressHttpDriver {
     constructor() {
         this.express = this.setup();
@@ -51,26 +52,27 @@ class ExpressHttpDriver {
         return handlers;
     }
     createEndpointWrapper(controllerName, endpointName) {
-        return (request, response) => {
+        return async (request, response) => {
             const controller = make_1.make(controllerName, [request, response]);
             const endpoint = Reflect.get(controller, endpointName);
             if (lodash_1.isFunction(endpoint)) {
                 const result = Reflect.apply(endpoint, controller, [request, response]);
-                this.handleEndpointResult(response, result);
+                await this.handleEndpointResult(response, result);
             }
         };
     }
     createEndpointWrapperByFunction(endpoint) {
-        return (request, response) => {
+        return async (request, response) => {
             // Can not use make for default Controller
             const controller = Reflect.construct(Controller_1.Controller, [request, response]);
             const result = Reflect.apply(endpoint, controller, [request, response]);
-            this.handleEndpointResult(response, result);
+            await this.handleEndpointResult(response, result);
         };
     }
-    handleEndpointResult(response, result) {
-        if (IResponse_1.isIResponse(result)) {
-            return result.respond(response, this);
+    async handleEndpointResult(response, result) {
+        const value = isPromise_1.isPromise(result) ? await result : result;
+        if (IResponse_1.isIResponse(value)) {
+            return value.respond(response, this);
         }
     }
     start(options) {

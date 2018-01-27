@@ -1,1 +1,1 @@
-export declare function isPromise(arg: any): void;
+export declare function isPromise(obj: any): boolean;
