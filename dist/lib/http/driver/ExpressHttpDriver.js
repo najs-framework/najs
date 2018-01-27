@@ -6,6 +6,8 @@ const Log_1 = require("../../log/Log");
 const lodash_1 = require("lodash");
 const Controller_1 = require("../controller/Controller");
 const RouteCollection_1 = require("../routing/RouteCollection");
+const make_1 = require("../../core/make");
+const IResponse_1 = require("../response/IResponse");
 const Express = require("express");
 const Http = require("http");
 class ExpressHttpDriver {
@@ -38,23 +40,38 @@ class ExpressHttpDriver {
     }
     getEndpointHandlers(method, path, route) {
         const handlers = [];
+        // create middleware handlers
         if (lodash_1.isFunction(route.endpoint)) {
             handlers.push(this.createEndpointWrapperByFunction(route.endpoint));
-            // if endpoint is function, there is no reason to go further
             return handlers;
         }
-        // create handlers
+        // if (isString(route.controller) && isString(route.endpoint)) {
+        handlers.push(this.createEndpointWrapper(route.controller, route.endpoint));
+        // }
         return handlers;
+    }
+    createEndpointWrapper(controllerName, endpointName) {
+        return (request, response) => {
+            const controller = make_1.make(controllerName, [request, response]);
+            const endpoint = Reflect.get(controller, endpointName);
+            if (lodash_1.isFunction(endpoint)) {
+                const result = Reflect.apply(endpoint, controller, [request, response]);
+                this.handleEndpointResult(response, result);
+            }
+        };
     }
     createEndpointWrapperByFunction(endpoint) {
         return (request, response) => {
             // Can not use make for default Controller
             const controller = Reflect.construct(Controller_1.Controller, [request, response]);
             const result = Reflect.apply(endpoint, controller, [request, response]);
-            if (typeof result !== 'undefined' && lodash_1.isFunction(result.respond)) {
-                result.respond(response, this);
-            }
+            this.handleEndpointResult(response, result);
         };
+    }
+    handleEndpointResult(response, result) {
+        if (IResponse_1.isIResponse(result)) {
+            return result.respond(response, this);
+        }
     }
     start(options) {
         const server = Http.createServer(this.express);

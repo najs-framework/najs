@@ -1,11 +1,13 @@
 import 'jest'
 import * as Sinon from 'sinon'
 import * as Http from 'http'
+import * as Make from '../../../lib/core/make'
 import { ExpressHttpDriver } from '../../../lib/http/driver/ExpressHttpDriver'
 import { HttpDriverClass } from '../../../lib/constants'
 import { ClassRegistry } from '../../../lib/core/ClassRegistry'
 import { Log } from '../../../lib/log/Log'
 import { Controller } from '../../../lib/http/controller/Controller'
+import { register } from '../../../lib/core/register'
 
 describe('ExpressHttpDriver', function() {
   it('registers as default HttpDriver', function() {
@@ -119,45 +121,120 @@ describe('ExpressHttpDriver', function() {
     // TODO: write more test
   })
 
-  describe('protected .createEndpointWrapperByFunction()', function() {
-    it('returns a wrapper function for endpoint, creates new Controller with request, response', function() {
-      function handler() {}
-      const handlerSpy = Sinon.spy(handler)
+  describe('protected .createEndpointWrapper()', function() {
+    class TestControllerA extends Controller {
+      static className: string = 'TestControllerA'
 
+      getClassName() {
+        return TestControllerA.className
+      }
+
+      endpoint() {}
+    }
+    register(TestControllerA)
+
+    it('always returns a function despite Controller or Endpoint are invalid', function() {
       const driver = new ExpressHttpDriver()
-      const result = driver['createEndpointWrapperByFunction'](handlerSpy)
-      expect(typeof result).toEqual('function')
+      const result = driver['createEndpointWrapper']('NotFound', 'invalid')
+      expect(typeof result === 'function').toBe(true)
+    })
+
+    it('calls make() and make() throws an error if Controller not found', function() {
+      const driver = new ExpressHttpDriver()
+      const result = driver['createEndpointWrapper']('NotFound', 'invalid')
+      expect(typeof result === 'function').toBe(true)
+      try {
+        result(<any>{}, <any>{})
+      } catch (error) {
+        expect(error).toBeInstanceOf(ReferenceError)
+        return
+      }
+      expect('shout not reach this line').toEqual('hum')
+    })
+
+    it('creates instance of Controller via make but do not call if endpoint not found', function() {
+      const makeSpy = Sinon.spy(Make, 'make')
+      const endpointSpy = Sinon.spy(TestControllerA.prototype, 'endpoint')
+      const driver = new ExpressHttpDriver()
+      const result = driver['createEndpointWrapper']('TestControllerA', 'invalid')
 
       const request = {}
       const response = {}
       result(<any>request, <any>response)
+      expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true)
+      expect(endpointSpy.called).toBe(false)
+      makeSpy.restore()
+      endpointSpy.restore()
+    })
+
+    it('creates instance of Controller via make, calls endpoint and calls handleEndpointResult()', function() {
+      const makeSpy = Sinon.spy(Make, 'make')
+      const endpointSpy = Sinon.spy(TestControllerA.prototype, 'endpoint')
+      const driver = new ExpressHttpDriver()
+      const handleEndpointResultStub = Sinon.stub(driver, <any>'handleEndpointResult')
+
+      const result = driver['createEndpointWrapper']('TestControllerA', 'endpoint')
+      const request = {}
+      const response = {}
+      result(<any>request, <any>response)
+      expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true)
+      expect(endpointSpy.called).toBe(true)
+      expect(handleEndpointResultStub.calledWith(response, undefined)).toBe(true)
+      makeSpy.restore()
+      endpointSpy.restore()
+      handleEndpointResultStub.restore()
+    })
+  })
+
+  describe('protected .createEndpointWrapperByFunction()', function() {
+    function handler() {}
+    const handlerSpy = Sinon.spy(handler)
+
+    const driver = new ExpressHttpDriver()
+    const result = driver['createEndpointWrapperByFunction'](handlerSpy)
+    const handleEndpointResultStub = Sinon.stub(driver, <any>'handleEndpointResult')
+    const request = {}
+    const response = {}
+
+    it('returns a wrapper function for endpoint', function() {
+      expect(typeof result).toEqual('function')
+    })
+
+    it('creates new Controller with request, response', function() {
+      result(<any>request, <any>response)
 
       expect(handlerSpy.callCount).toEqual(1)
-
       const thisValue = handlerSpy.firstCall.thisValue
       expect(thisValue).toBeInstanceOf(Controller)
       expect(thisValue.request === request).toBe(true)
       expect(thisValue.response === response).toBe(true)
-
-      expect(handlerSpy.firstCall.args[0] === request).toBe(true)
-      expect(handlerSpy.firstCall.args[1] === response).toBe(true)
     })
 
-    it('calls result.respond if endpoint return IResponse', function() {
+    it("calls handleEndpointResult and passes response, endpoint's result", function() {
+      expect(handlerSpy.firstCall.args[0] === request).toBe(true)
+      expect(handlerSpy.firstCall.args[1] === response).toBe(true)
+
+      expect(handleEndpointResultStub.calledWith(response, undefined)).toBe(true)
+      handleEndpointResultStub.restore()
+    })
+  })
+
+  describe('protected .handleEndpointResult()', function() {
+    it('does nothing if result is undefined', function() {
+      const response = {}
+      const driver = new ExpressHttpDriver()
+      driver['handleEndpointResult'](<any>response, undefined)
+    })
+
+    it('calls result.respond if result is IResponse', function() {
       const iResponse = {
         respond(response: any, httpDriver: any) {}
       }
-      function handler() {
-        return iResponse
-      }
-
       const iResponseSpy = Sinon.spy(iResponse, 'respond')
 
-      const driver = new ExpressHttpDriver()
-      const result = driver['createEndpointWrapperByFunction'](handler)
-
       const response = {}
-      result(<any>{}, <any>response)
+      const driver = new ExpressHttpDriver()
+      driver['handleEndpointResult'](<any>response, iResponse)
       expect(iResponseSpy.calledWith(response, driver)).toBe(true)
     })
   })

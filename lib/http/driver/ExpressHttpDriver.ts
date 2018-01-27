@@ -7,6 +7,8 @@ import { Log } from '../../log/Log'
 import { isFunction } from 'lodash'
 import { Controller } from '../controller/Controller'
 import { RouteCollection } from '../routing/RouteCollection'
+import { make } from '../../core/make'
+import { isIResponse } from '../response/IResponse'
 import * as Express from 'express'
 import * as Http from 'http'
 
@@ -81,15 +83,28 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
 
   protected getEndpointHandlers(method: string, path: string, route: IRouteData): ExpressHandlers {
     const handlers: ExpressHandlers = []
+    // create middleware handlers
 
     if (isFunction(route.endpoint)) {
       handlers.push(this.createEndpointWrapperByFunction(route.endpoint))
-      // if endpoint is function, there is no reason to go further
       return handlers
     }
 
-    // create handlers
+    // if (isString(route.controller) && isString(route.endpoint)) {
+    handlers.push(this.createEndpointWrapper(<string>route.controller, <string>route.endpoint))
+    // }
     return handlers
+  }
+
+  protected createEndpointWrapper(controllerName: string, endpointName: string) {
+    return (request: Express.Request, response: Express.Response) => {
+      const controller = make<Controller>(controllerName, [request, response])
+      const endpoint: any = Reflect.get(controller, endpointName)
+      if (isFunction(endpoint)) {
+        const result = Reflect.apply(endpoint, controller, [request, response])
+        this.handleEndpointResult(response, result)
+      }
+    }
   }
 
   protected createEndpointWrapperByFunction(endpoint: Function) {
@@ -97,9 +112,13 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
       // Can not use make for default Controller
       const controller = Reflect.construct(Controller, [request, response])
       const result = Reflect.apply(endpoint, controller, [request, response])
-      if (typeof result !== 'undefined' && isFunction(result.respond)) {
-        result.respond(response, this)
-      }
+      this.handleEndpointResult(response, result)
+    }
+  }
+
+  protected handleEndpointResult(response: Express.Response, result: any) {
+    if (isIResponse(result)) {
+      return result.respond(response, this)
     }
   }
 
