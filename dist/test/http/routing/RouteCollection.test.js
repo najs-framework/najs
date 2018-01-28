@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
-const Route_1 = require("../../../lib/http/routing/Route");
+const RouteFacade_1 = require("../../../lib/http/routing/RouteFacade");
 const RouteCollection_1 = require("../../../lib/http/routing/RouteCollection");
 describe('RouteCollection', function () {
     it('is initialized with isChanged = false and empty routes, routeData', function () {
@@ -11,7 +11,7 @@ describe('RouteCollection', function () {
     });
     it('sets isChanged to true whenever register() get called', function () {
         expect(RouteCollection_1.RouteCollection['isChanged']).toBe(false);
-        Route_1.Route.group(function () { });
+        RouteFacade_1.RouteFacade.group(function () { });
         expect(RouteCollection_1.RouteCollection['isChanged']).toBe(true);
     });
     it('sets isChanged to false whenever getData() get called', function () {
@@ -20,7 +20,7 @@ describe('RouteCollection', function () {
         expect(RouteCollection_1.RouteCollection['isChanged']).toBe(false);
     });
     it('rebuilds fresh instance of data if isChanged = true', function () {
-        Route_1.Route.get('/test', 'Controller@endpoint');
+        RouteFacade_1.RouteFacade.get('/test', 'Controller@endpoint');
         const dataFirstCall = RouteCollection_1.RouteCollection.getData();
         const routeDataPointerFirstCall = RouteCollection_1.RouteCollection['routeData'];
         const routeDataNamedPointerFirstCall = RouteCollection_1.RouteCollection['routeDataNamed'];
@@ -33,7 +33,7 @@ describe('RouteCollection', function () {
         expect(routeDataNamedPointerFirstCall === routeDataNamedPointerSecondCall).toBe(false);
     });
     it('never rebuilds data if isChanged = false', function () {
-        Route_1.Route.get('/test', 'Controller@endpoint');
+        RouteFacade_1.RouteFacade.get('/test', 'Controller@endpoint');
         const dataFirstCall = RouteCollection_1.RouteCollection.getData();
         const routeDataPointerFirstCall = RouteCollection_1.RouteCollection['routeData'];
         const routeDataNamedPointerFirstCall = RouteCollection_1.RouteCollection['routeDataNamed'];
@@ -47,8 +47,8 @@ describe('RouteCollection', function () {
     it('created routeDataNamed hash object for named routes, .hasName() use for check the named route exists or not', function () {
         RouteCollection_1.RouteCollection['routes'] = [];
         expect(RouteCollection_1.RouteCollection.hasName('named')).toBe(false);
-        Route_1.Route.get('/test', 'Controller@endpoint');
-        Route_1.Route.post('/test', 'Controller@endpoint').name('named');
+        RouteFacade_1.RouteFacade.get('/test', 'Controller@endpoint');
+        RouteFacade_1.RouteFacade.post('/test', 'Controller@endpoint').name('named');
         expect(RouteCollection_1.RouteCollection.getData()).toHaveLength(2);
         expect(RouteCollection_1.RouteCollection['routeDataNamed']).toEqual({
             named: {

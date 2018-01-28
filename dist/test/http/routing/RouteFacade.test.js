@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
-const Route_1 = require("../../../lib/http/routing/Route");
+const RouteFacade_1 = require("../../../lib/http/routing/RouteFacade");
 const RouteCollection_1 = require("../../../lib/http/routing/RouteCollection");
 const HttpMethod_1 = require("../../../lib/http/HttpMethod");
 const RouteBuilder_1 = require("../../../lib/http/routing/RouteBuilder");
@@ -27,32 +27,32 @@ describe('Route', function () {
             clearRouteCollection();
         });
         it('allows .middleware() before or after .[HTTP METHOD]()', function () {
-            Route_1.Route.get('/test', 'Controller@endpoint').middleware('a', 'b', 'c');
-            Route_1.Route.middleware('a', 'b', 'c').post('/test', 'Controller@endpoint');
+            RouteFacade_1.RouteFacade.get('/test', 'Controller@endpoint').middleware('a', 'b', 'c');
+            RouteFacade_1.RouteFacade.middleware('a', 'b', 'c').post('/test', 'Controller@endpoint');
             expect(RouteCollection_1.RouteCollection.getData()).toEqual([
                 getRouteData(HttpMethod_1.HttpMethod.GET, '/test', '', ['a', 'b', 'c'], 'Controller', 'endpoint'),
                 getRouteData(HttpMethod_1.HttpMethod.POST, '/test', '', ['a', 'b', 'c'], 'Controller', 'endpoint')
             ]);
         });
         it('allows .prefix() before or after .[HTTP METHOD]()', function () {
-            Route_1.Route.get('/test', 'Controller@endpoint').prefix('/prefix');
-            Route_1.Route.prefix('/prefix').post('/test', 'Controller@endpoint');
+            RouteFacade_1.RouteFacade.get('/test', 'Controller@endpoint').prefix('/prefix');
+            RouteFacade_1.RouteFacade.prefix('/prefix').post('/test', 'Controller@endpoint');
             expect(RouteCollection_1.RouteCollection.getData()).toEqual([
                 getRouteData(HttpMethod_1.HttpMethod.GET, '/test', '/prefix', [], 'Controller', 'endpoint'),
                 getRouteData(HttpMethod_1.HttpMethod.POST, '/test', '/prefix', [], 'Controller', 'endpoint')
             ]);
         });
         it('allows .prefix() and .middleware() chain before or after .[HTTP METHOD]()', function () {
-            Route_1.Route.get('/test', 'Controller@endpoint')
+            RouteFacade_1.RouteFacade.get('/test', 'Controller@endpoint')
                 .prefix('/prefix')
                 .middleware('a', 'b', 'c');
-            Route_1.Route.prefix('/prefix')
+            RouteFacade_1.RouteFacade.prefix('/prefix')
                 .middleware('a', 'b', 'c')
                 .post('/test', 'Controller@endpoint');
-            Route_1.Route.delete('/test', 'Controller@endpoint')
+            RouteFacade_1.RouteFacade.delete('/test', 'Controller@endpoint')
                 .middleware('a', 'b', 'c')
                 .prefix('/prefix');
-            Route_1.Route.middleware('a', 'b', 'c')
+            RouteFacade_1.RouteFacade.middleware('a', 'b', 'c')
                 .prefix('/prefix')
                 .patch('/test', 'Controller@endpoint');
             expect(RouteCollection_1.RouteCollection.getData()).toEqual([
@@ -63,27 +63,27 @@ describe('Route', function () {
             ]);
         });
         it('allows .name() before or after .[HTTP METHOD]()', function () {
-            Route_1.Route.get('/test', 'Controller@endpoint').name('name-get');
-            Route_1.Route.name('name-post').post('/test', 'Controller@endpoint');
+            RouteFacade_1.RouteFacade.get('/test', 'Controller@endpoint').name('name-get');
+            RouteFacade_1.RouteFacade.name('name-post').post('/test', 'Controller@endpoint');
             expect(RouteCollection_1.RouteCollection.getData()).toEqual([
                 getRouteData(HttpMethod_1.HttpMethod.GET, '/test', '', [], 'Controller', 'endpoint', 'name-get'),
                 getRouteData(HttpMethod_1.HttpMethod.POST, '/test', '', [], 'Controller', 'endpoint', 'name-post')
             ]);
         });
         it('allows .prefix() and .middleware() with .name() before or after .[HTTP METHOD]()', function () {
-            Route_1.Route.get('/test', 'Controller@endpoint')
+            RouteFacade_1.RouteFacade.get('/test', 'Controller@endpoint')
                 .name('name-get')
                 .prefix('/prefix')
                 .middleware('a');
-            Route_1.Route.prefix('/prefix')
+            RouteFacade_1.RouteFacade.prefix('/prefix')
                 .middleware('a')
                 .name('name-post')
                 .post('/test', 'Controller@endpoint');
-            Route_1.Route.delete('/test', 'Controller@endpoint')
+            RouteFacade_1.RouteFacade.delete('/test', 'Controller@endpoint')
                 .prefix('/prefix')
                 .name('name-delete')
                 .middleware('a');
-            Route_1.Route.put('/test', 'Controller@endpoint')
+            RouteFacade_1.RouteFacade.put('/test', 'Controller@endpoint')
                 .prefix('/prefix')
                 .name('name-put')
                 .middleware('a');
@@ -95,13 +95,13 @@ describe('Route', function () {
             ]);
         });
         it('allows .prefix() before or after .group()', function () {
-            Route_1.Route.prefix('/a').group(function () {
-                Route_1.Route.get('/test', 'Controller@endpoint').name('name-get');
-                Route_1.Route.name('name-post').post('/test', 'Controller@endpoint');
+            RouteFacade_1.RouteFacade.prefix('/a').group(function () {
+                RouteFacade_1.RouteFacade.get('/test', 'Controller@endpoint').name('name-get');
+                RouteFacade_1.RouteFacade.name('name-post').post('/test', 'Controller@endpoint');
             });
-            Route_1.Route.group(function () {
-                Route_1.Route.get('/test', 'Controller@endpoint').name('name-get');
-                Route_1.Route.name('name-post').post('/test', 'Controller@endpoint');
+            RouteFacade_1.RouteFacade.group(function () {
+                RouteFacade_1.RouteFacade.get('/test', 'Controller@endpoint').name('name-get');
+                RouteFacade_1.RouteFacade.name('name-post').post('/test', 'Controller@endpoint');
             }).prefix('/b');
             expect(RouteCollection_1.RouteCollection.getData()).toEqual([
                 getRouteData(HttpMethod_1.HttpMethod.GET, '/test', '/a', [], 'Controller', 'endpoint', 'name-get'),
@@ -111,10 +111,10 @@ describe('Route', function () {
             ]);
         });
         it('allows to use single route and group of routes', function () {
-            Route_1.Route.put('/test', 'Controller@endpoint').name('name-put');
-            Route_1.Route.prefix('/a').group(function () {
-                Route_1.Route.get('/test', 'Controller@endpoint').name('name-get');
-                Route_1.Route.name('name-post').post('/test', 'Controller@endpoint');
+            RouteFacade_1.RouteFacade.put('/test', 'Controller@endpoint').name('name-put');
+            RouteFacade_1.RouteFacade.prefix('/a').group(function () {
+                RouteFacade_1.RouteFacade.get('/test', 'Controller@endpoint').name('name-get');
+                RouteFacade_1.RouteFacade.name('name-post').post('/test', 'Controller@endpoint');
             });
             expect(RouteCollection_1.RouteCollection.getData()).toEqual([
                 getRouteData(HttpMethod_1.HttpMethod.PUT, '/test', '', [], 'Controller', 'endpoint', 'name-put'),
@@ -123,18 +123,18 @@ describe('Route', function () {
             ]);
         });
         it('allows multiple .group() levels', function () {
-            Route_1.Route.prefix('/a')
+            RouteFacade_1.RouteFacade.prefix('/a')
                 .middleware('a')
                 .group(function () {
-                Route_1.Route.group(function () {
-                    Route_1.Route.put('/test', 'Controller@endpoint').name('name-put');
+                RouteFacade_1.RouteFacade.group(function () {
+                    RouteFacade_1.RouteFacade.put('/test', 'Controller@endpoint').name('name-put');
                 });
-                Route_1.Route.middleware('b')
+                RouteFacade_1.RouteFacade.middleware('b')
                     .prefix('/b')
                     .group(function () {
-                    Route_1.Route.get('/test', 'Controller@endpoint').name('name-get');
-                    Route_1.Route.group(function () {
-                        Route_1.Route.name('name-post').post('/test', 'Controller@endpoint');
+                    RouteFacade_1.RouteFacade.get('/test', 'Controller@endpoint').name('name-get');
+                    RouteFacade_1.RouteFacade.group(function () {
+                        RouteFacade_1.RouteFacade.name('name-post').post('/test', 'Controller@endpoint');
                     })
                         .prefix('/c')
                         .middleware('c');
@@ -156,7 +156,7 @@ describe('Route', function () {
                 const useSpy = Sinon.spy(builder, 'use');
                 function a() { }
                 const b = {};
-                Route_1.Route.use(a, [b, 12], 'c');
+                RouteFacade_1.RouteFacade.use(a, [b, 12], 'c');
                 expect(useSpy.calledWith(a, [b, 12], 'c')).toBe(true);
                 registerStub.restore();
             });
@@ -167,7 +167,7 @@ describe('Route', function () {
                 const middlewareSpy = Sinon.spy(builder, 'middleware');
                 function a() { }
                 const b = {};
-                Route_1.Route.middleware(a, [b, 12], 'c');
+                RouteFacade_1.RouteFacade.middleware(a, [b, 12], 'c');
                 expect(middlewareSpy.calledWith(a, [b, 12], 'c')).toBe(true);
                 registerStub.restore();
             });
@@ -176,7 +176,7 @@ describe('Route', function () {
                 const registerStub = Sinon.stub(RouteCollection_1.RouteCollection, 'register');
                 registerStub.returns(builder);
                 const prefixSpy = Sinon.spy(builder, 'prefix');
-                Route_1.Route.prefix('test');
+                RouteFacade_1.RouteFacade.prefix('test');
                 expect(prefixSpy.calledWith('test')).toBe(true);
                 registerStub.restore();
             });
@@ -185,7 +185,7 @@ describe('Route', function () {
                 const registerStub = Sinon.stub(RouteCollection_1.RouteCollection, 'register');
                 registerStub.returns(builder);
                 const nameSpy = Sinon.spy(builder, 'name');
-                Route_1.Route.name('test');
+                RouteFacade_1.RouteFacade.name('test');
                 expect(nameSpy.calledWith('test')).toBe(true);
                 registerStub.restore();
             });
@@ -195,7 +195,7 @@ describe('Route', function () {
                 registerStub.returns(builder);
                 const groupSpy = Sinon.spy(builder, 'group');
                 function groupFunction() { }
-                Route_1.Route.group(groupFunction);
+                RouteFacade_1.RouteFacade.group(groupFunction);
                 expect(groupSpy.calledWith(groupFunction)).toBe(true);
                 registerStub.restore();
             });
@@ -205,14 +205,14 @@ describe('Route', function () {
                 registerStub.returns(builder);
                 const methodSpy = Sinon.spy(builder, 'method');
                 function handler() { }
-                Route_1.Route.method(HttpMethod_1.HttpMethod.DELETE, 'path', handler);
+                RouteFacade_1.RouteFacade.method(HttpMethod_1.HttpMethod.DELETE, 'path', handler);
                 expect(methodSpy.calledWith(HttpMethod_1.HttpMethod.DELETE, 'path', handler)).toBe(true);
                 const Controller = {
                     endpoint: function () { }
                 };
-                Route_1.Route.method(HttpMethod_1.HttpMethod.M_SEARCH, 'path', Controller, 'endpoint');
+                RouteFacade_1.RouteFacade.method(HttpMethod_1.HttpMethod.M_SEARCH, 'path', Controller, 'endpoint');
                 expect(methodSpy.calledWith(HttpMethod_1.HttpMethod.M_SEARCH, 'path', Controller, 'endpoint')).toBe(true);
-                Route_1.Route.method(HttpMethod_1.HttpMethod.CHECKOUT, 'path', 'Controller@endpoint');
+                RouteFacade_1.RouteFacade.method(HttpMethod_1.HttpMethod.CHECKOUT, 'path', 'Controller@endpoint');
                 expect(methodSpy.calledWith(HttpMethod_1.HttpMethod.CHECKOUT, 'path', 'Controller@endpoint')).toBe(true);
                 registerStub.restore();
             });
@@ -248,15 +248,15 @@ describe('Route', function () {
                     const registerStub = Sinon.stub(RouteCollection_1.RouteCollection, 'register');
                     registerStub.returns(builder);
                     const methodSpy = Sinon.spy(builder, 'method');
-                    Reflect.apply(Route_1.Route[name], Route_1.Route, ['path', 'controller@endpoint']);
+                    Reflect.apply(RouteFacade_1.RouteFacade[name], RouteFacade_1.RouteFacade, ['path', 'controller@endpoint']);
                     expect(methodSpy.calledWith(list[name], 'path', 'controller@endpoint')).toBe(true);
                     function handler() { }
-                    Reflect.apply(Route_1.Route[name], Route_1.Route, ['path', handler]);
+                    Reflect.apply(RouteFacade_1.RouteFacade[name], RouteFacade_1.RouteFacade, ['path', handler]);
                     expect(methodSpy.calledWith(list[name], 'path', handler)).toBe(true);
                     const Controller = {
                         endpoint: function () { }
                     };
-                    Reflect.apply(Route_1.Route[name], Route_1.Route, ['path', Controller, 'endpoint']);
+                    Reflect.apply(RouteFacade_1.RouteFacade[name], RouteFacade_1.RouteFacade, ['path', Controller, 'endpoint']);
                     expect(methodSpy.calledWith(list[name], 'path', Controller, 'endpoint')).toBe(true);
                     registerStub.restore();
                 });

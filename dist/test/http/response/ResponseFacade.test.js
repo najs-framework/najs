@@ -8,18 +8,18 @@ const RedirectResponse_1 = require("../../../lib/http/response/types/RedirectRes
 describe('ResponseFacade', function () {
     describe('json', function () {
         it('creates new instance of JsonResponse', function () {
-            const result = ResponseFacade_1.Response.json('test');
+            const result = ResponseFacade_1.ResponseFacade.json('test');
             expect(result).toBeInstanceOf(JsonResponse_1.JsonResponse);
             expect(result['value']).toEqual('test');
         });
     });
     describe('redirect', function () {
         it('creates new instance of RedirectResponse', function () {
-            let result = ResponseFacade_1.Response.redirect('/path');
+            let result = ResponseFacade_1.ResponseFacade.redirect('/path');
             expect(result).toBeInstanceOf(RedirectResponse_1.RedirectResponse);
             expect(result['url']).toEqual('/path');
             expect(result['status']).toEqual(302);
-            result = ResponseFacade_1.Response.redirect('/path', 301);
+            result = ResponseFacade_1.ResponseFacade.redirect('/path', 301);
             expect(result).toBeInstanceOf(RedirectResponse_1.RedirectResponse);
             expect(result['url']).toEqual('/path');
             expect(result['status']).toEqual(301);

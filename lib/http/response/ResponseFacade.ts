@@ -3,7 +3,7 @@ import { IResponseFacade } from './IResponseFacade'
 import { JsonResponse } from './types/JsonResponse'
 import { RedirectResponse } from './types/RedirectResponse'
 
-class ResponseFacade implements IResponseFacade {
+class Response implements IResponseFacade {
   json(value: any): IResponse {
     return new JsonResponse(value)
   }
@@ -15,4 +15,4 @@ class ResponseFacade implements IResponseFacade {
   }
 }
 
-export const Response: IResponseFacade = new ResponseFacade()
+export const ResponseFacade: IResponseFacade = new Response()

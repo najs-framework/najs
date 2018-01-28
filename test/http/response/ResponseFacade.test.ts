@@ -1,6 +1,6 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import { Response } from '../../../lib/http/response/ResponseFacade'
+import { ResponseFacade as Response } from '../../../lib/http/response/ResponseFacade'
 import { JsonResponse } from '../../../lib/http/response/types/JsonResponse'
 import { RedirectResponse } from '../../../lib/http/response/types/RedirectResponse'
 
