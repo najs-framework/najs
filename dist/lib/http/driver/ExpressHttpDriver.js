@@ -46,12 +46,12 @@ class ExpressHttpDriver {
             handlers.push(this.createEndpointWrapperByFunction(route.endpoint));
             return handlers;
         }
-        // if (isString(route.controller) && isString(route.endpoint)) {
-        handlers.push(this.createEndpointWrapper(route.controller, route.endpoint));
+        if (lodash_1.isFunction(route.controller) || lodash_1.isString(route.controller)) {
+            handlers.push(this.createEndpointWrapper(route.controller, route.endpoint));
+            return handlers;
+        }
+        handlers.push(this.createEndpointWrapperByObject(route.controller, route.endpoint));
         return handlers;
-        // }
-        // handlers.push(this.createEndpointWrapperByObject(<Object>route.controller, <string>route.endpoint))
-        // return handlers
     }
     createEndpointWrapper(controllerName, endpointName) {
         return async (request, response) => {

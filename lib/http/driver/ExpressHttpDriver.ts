@@ -4,7 +4,7 @@ import { IAutoload } from '../../core/IAutoload'
 import { IRouteData } from '../routing/interfaces/IRouteData'
 import { register } from '../../index'
 import { Log } from '../../log/Log'
-import { isFunction } from 'lodash'
+import { isFunction, isString } from 'lodash'
 import { Controller } from '../controller/Controller'
 import { RouteCollection } from '../routing/RouteCollection'
 import { make } from '../../core/make'
@@ -91,13 +91,13 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
       return handlers
     }
 
-    // if (isString(route.controller) && isString(route.endpoint)) {
-    handlers.push(this.createEndpointWrapper(<string>route.controller, <string>route.endpoint))
-    return handlers
-    // }
+    if (isFunction(route.controller) || isString(route.controller)) {
+      handlers.push(this.createEndpointWrapper(<any>route.controller, <string>route.endpoint))
+      return handlers
+    }
 
-    // handlers.push(this.createEndpointWrapperByObject(<Object>route.controller, <string>route.endpoint))
-    // return handlers
+    handlers.push(this.createEndpointWrapperByObject(<Object>route.controller, <string>route.endpoint))
+    return handlers
   }
 
   protected createEndpointWrapper(controllerName: string, endpointName: string) {

@@ -106,7 +106,44 @@ describe('ExpressHttpDriver', function () {
             expect(createEndpointWrapperByFunctionStub.calledWith(handler)).toBe(true);
             createEndpointWrapperByFunctionStub.restore();
         });
-        // TODO: write more test
+        it('calls createEndpointWrapper and pushes result to handlers if controller is string', function () {
+            const route = {
+                controller: 'Test',
+                endpoint: 'endpoint'
+            };
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            const createEndpointWrapperStub = Sinon.stub(driver, 'createEndpointWrapper');
+            const handlers = driver['getEndpointHandlers']('any', 'any', route);
+            expect(handlers).toHaveLength(1);
+            expect(createEndpointWrapperStub.calledWith('Test', 'endpoint')).toBe(true);
+            createEndpointWrapperStub.restore();
+        });
+        it('calls createEndpointWrapper and pushes result to handlers if controller is Function', function () {
+            const classDefinition = () => { };
+            const route = {
+                controller: classDefinition,
+                endpoint: 'endpoint'
+            };
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            const createEndpointWrapperStub = Sinon.stub(driver, 'createEndpointWrapper');
+            const handlers = driver['getEndpointHandlers']('any', 'any', route);
+            expect(handlers).toHaveLength(1);
+            expect(createEndpointWrapperStub.calledWith(classDefinition, 'endpoint')).toBe(true);
+            createEndpointWrapperStub.restore();
+        });
+        it('calls createEndpointWrapperByObject and pushes result to handlers if controller is Object', function () {
+            const controllerObject = {};
+            const route = {
+                controller: controllerObject,
+                endpoint: 'endpoint'
+            };
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            const createEndpointWrapperByObjectStub = Sinon.stub(driver, 'createEndpointWrapperByObject');
+            const handlers = driver['getEndpointHandlers']('any', 'any', route);
+            expect(handlers).toHaveLength(1);
+            expect(createEndpointWrapperByObjectStub.calledWith(controllerObject, 'endpoint')).toBe(true);
+            createEndpointWrapperByObjectStub.restore();
+        });
     });
     describe('protected .createEndpointWrapper()', function () {
         class TestControllerA extends Controller_1.Controller {
