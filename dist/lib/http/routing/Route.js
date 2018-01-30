@@ -2,7 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const RouteCollection_1 = require("./RouteCollection");
 const RouteBuilder_1 = require("./RouteBuilder");
+const PathToRegex = require("path-to-regexp");
 class Route {
+    createByName(name, param, options) {
+        const route = RouteCollection_1.RouteCollection.findOrFail(name);
+        const toPath = PathToRegex.compile(route.prefix + route.path);
+        return toPath(param, options);
+    }
     // redirect(...args: Array<any>): void {}
     group(callback) {
         return RouteCollection_1.RouteCollection.register(new RouteBuilder_1.RouteBuilder()).group(callback);

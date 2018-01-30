@@ -64,4 +64,44 @@ describe('RouteCollection', function () {
         expect(RouteCollection_1.RouteCollection.hasName('named')).toBe(true);
         expect(RouteCollection_1.RouteCollection.hasName('not-found')).toBe(false);
     });
+    describe('hasName()', function () {
+        it('can be used to check named route exists or not after building data', function () {
+            RouteCollection_1.RouteCollection['routes'] = [];
+            RouteFacade_1.RouteFacade.get('/test', 'Controller@endpoint');
+            RouteFacade_1.RouteFacade.post('/test', 'Controller@endpoint').name('named');
+            expect(RouteCollection_1.RouteCollection.hasName('named')).toBe(true);
+            expect(RouteCollection_1.RouteCollection.hasName('not-found')).toBe(false);
+        });
+    });
+    describe('findOrFail()', function () {
+        it('builds data by calls getData() and uses hasName() for checking', function () {
+            RouteCollection_1.RouteCollection['routes'] = [];
+            RouteFacade_1.RouteFacade.post('/test', 'Controller@endpoint').name('named');
+            RouteCollection_1.RouteCollection['isChanged'] = true;
+            RouteCollection_1.RouteCollection['routeData'] = [];
+            RouteCollection_1.RouteCollection['routeDataNamed'] = {};
+            expect(RouteCollection_1.RouteCollection.findOrFail('named')).toEqual({
+                name: 'named',
+                method: 'POST',
+                path: '/test',
+                prefix: '',
+                middleware: [],
+                controller: 'Controller',
+                endpoint: 'endpoint'
+            });
+        });
+        it('throws an Error if route not found', function () {
+            RouteCollection_1.RouteCollection['routes'] = [];
+            RouteCollection_1.RouteCollection['routeData'] = [];
+            RouteCollection_1.RouteCollection['routeDataNamed'] = {};
+            try {
+                RouteCollection_1.RouteCollection.findOrFail('named');
+            }
+            catch (error) {
+                expect(error).toBeInstanceOf(Error);
+                return;
+            }
+            expect('should not reach this line').toEqual('hum');
+        });
+    });
 });

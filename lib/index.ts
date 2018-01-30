@@ -27,3 +27,5 @@ export { WinstonLogger } from './log/WinstonLogger'
 
 export { LoggerClass } from './constants'
 export { HttpDriverClass } from './constants'
+
+export { route } from './helpers/route'

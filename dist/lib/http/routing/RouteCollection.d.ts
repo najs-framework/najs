@@ -8,4 +8,5 @@ export declare class RouteCollection {
     static getData(): IRouteData[];
     static register<T extends IRouteBuilder>(route: T): T;
     static hasName(name: string): boolean;
+    static findOrFail(name: string): IRouteData;
 }

@@ -1,4 +1,4 @@
-import { ClassRegistryItem } from './../private/ClassRegistryItem';
+import { ClassRegistryItem } from '../private/ClassRegistryItem';
 export declare class ClassRegistryCollection {
     private items;
     register(item: ClassRegistryItem): void;

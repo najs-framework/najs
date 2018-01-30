@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const lodash_1 = require("lodash");
 const class_registry_circular_reference_check_1 = require("../private/class_registry_circular_reference_check");
+const lodash_1 = require("lodash");
 class ClassRegistryCollection {
     constructor() {
         this.items = {};

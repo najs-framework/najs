@@ -6,11 +6,23 @@ import {
   RouteGrammarControlChain,
   RouteGrammarNameChain
 } from './interfaces/IRouteGrammars'
+import { IRouteGenerateUrl } from './interfaces/IRouteGenerateUrl'
 import { IMiddleware } from '../middleware/IMiddleware'
 import { HttpMethod } from '../HttpMethod'
 import { Controller } from '../controller/Controller'
+import { IRouteData } from './interfaces/IRouteData'
+import * as PathToRegex from 'path-to-regexp'
 
-export class Route {
+export class Route implements IRouteGenerateUrl {
+  createByName(name: string): string
+  createByName(name: string, param: Object): string
+  createByName(name: string, param: Object, options: { encode: (value: string) => string }): string
+  createByName(name: string, param?: Object, options?: { encode: (value: string) => string }): string {
+    const route: IRouteData = RouteCollection.findOrFail(name)
+    const toPath = PathToRegex.compile(route.prefix + route.path)
+    return toPath(param, options)
+  }
+
   // redirect(...args: Array<any>): void {}
 
   group(callback: () => void): RouteGrammarGroupChain {

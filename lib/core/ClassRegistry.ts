@@ -1,6 +1,6 @@
-import { ClassRegistryItem } from './../private/ClassRegistryItem'
-import { mapValues } from 'lodash'
+import { ClassRegistryItem } from '../private/ClassRegistryItem'
 import { class_registry_circular_reference_check } from '../private/class_registry_circular_reference_check'
+import { mapValues } from 'lodash'
 
 export class ClassRegistryCollection {
   private items: {

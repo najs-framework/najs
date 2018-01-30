@@ -1,4 +1,3 @@
-/// <reference types="express" />
 /// <reference types="node" />
 import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver';
 import { IAutoload } from '../../core/IAutoload';

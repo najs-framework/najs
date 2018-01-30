@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
+const PathToRegex = require("path-to-regexp");
 const RouteFacade_1 = require("../../../lib/http/routing/RouteFacade");
 const RouteCollection_1 = require("../../../lib/http/routing/RouteCollection");
 const HttpMethod_1 = require("../../../lib/http/HttpMethod");
@@ -22,6 +23,34 @@ function getRouteData(method, path, prefix, middleware, controller, endpoint, na
     };
 }
 describe('Route', function () {
+    describe('IRouteGenerateUrl', function () {
+        it('calls "path-to-regex".compile() and passes params to generate url', function () {
+            const toPath = function () {
+                return 'any';
+            };
+            const toPathSpy = Sinon.spy(toPath);
+            const compileStub = Sinon.stub(PathToRegex, 'compile').returns(toPathSpy);
+            const routeCollectionFindOrFailStub = Sinon.stub(RouteCollection_1.RouteCollection, 'findOrFail').returns({
+                prefix: '/prefix',
+                path: '/path'
+            });
+            RouteFacade_1.RouteFacade['createByName']('test');
+            expect(routeCollectionFindOrFailStub.called).toBe(true);
+            expect(compileStub.calledWith('/prefix/path')).toBe(true);
+            expect(toPathSpy.calledWith(undefined, undefined)).toBe(true);
+            RouteFacade_1.RouteFacade['createByName']('test', { id: 123, abc: 'string' });
+            expect(routeCollectionFindOrFailStub.called).toBe(true);
+            expect(compileStub.calledWith('/prefix/path')).toBe(true);
+            expect(toPathSpy.calledWith({ id: 123, abc: 'string' }, undefined)).toBe(true);
+            const option = { encode: (v) => v };
+            RouteFacade_1.RouteFacade['createByName']('test', { id: 123, abc: 'string' }, option);
+            expect(routeCollectionFindOrFailStub.called).toBe(true);
+            expect(compileStub.calledWith('/prefix/path')).toBe(true);
+            expect(toPathSpy.calledWith({ id: 123, abc: 'string' }, option)).toBe(true);
+            compileStub.restore();
+            routeCollectionFindOrFailStub.restore();
+        });
+    });
     describe('Routing Grammar', function () {
         afterEach(function () {
             clearRouteCollection();

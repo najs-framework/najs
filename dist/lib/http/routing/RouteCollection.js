@@ -42,6 +42,13 @@ class RouteCollection {
     static hasName(name) {
         return typeof this.routeDataNamed[name] !== 'undefined';
     }
+    static findOrFail(name) {
+        this.getData();
+        if (!this.hasName(name)) {
+            throw new Error('Route "' + name + '" not found');
+        }
+        return this.routeDataNamed[name];
+    }
 }
 // private static options: RoutingOptions = DEFAULT_ROUTING_OPTIONS
 RouteCollection.isChanged = false;

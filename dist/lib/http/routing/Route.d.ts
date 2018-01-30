@@ -1,8 +1,14 @@
 import { RouteGrammarVerbChain, RouteGrammarGroupChain, RouteGrammarControlChain, RouteGrammarNameChain } from './interfaces/IRouteGrammars';
+import { IRouteGenerateUrl } from './interfaces/IRouteGenerateUrl';
 import { IMiddleware } from '../middleware/IMiddleware';
 import { HttpMethod } from '../HttpMethod';
 import { Controller } from '../controller/Controller';
-export declare class Route {
+export declare class Route implements IRouteGenerateUrl {
+    createByName(name: string): string;
+    createByName(name: string, param: Object): string;
+    createByName(name: string, param: Object, options: {
+        encode: (value: string) => string;
+    }): string;
     group(callback: () => void): RouteGrammarGroupChain;
     use(middleware: string): RouteGrammarControlChain;
     use(middleware: IMiddleware): RouteGrammarControlChain;

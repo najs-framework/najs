@@ -73,4 +73,46 @@ describe('RouteCollection', function() {
     expect(RouteCollection.hasName('named')).toBe(true)
     expect(RouteCollection.hasName('not-found')).toBe(false)
   })
+
+  describe('hasName()', function() {
+    it('can be used to check named route exists or not after building data', function() {
+      RouteCollection['routes'] = []
+      Route.get('/test', 'Controller@endpoint')
+      Route.post('/test', 'Controller@endpoint').name('named')
+      expect(RouteCollection.hasName('named')).toBe(true)
+      expect(RouteCollection.hasName('not-found')).toBe(false)
+    })
+  })
+
+  describe('findOrFail()', function() {
+    it('builds data by calls getData() and uses hasName() for checking', function() {
+      RouteCollection['routes'] = []
+      Route.post('/test', 'Controller@endpoint').name('named')
+      RouteCollection['isChanged'] = true
+      RouteCollection['routeData'] = []
+      RouteCollection['routeDataNamed'] = {}
+      expect(RouteCollection.findOrFail('named')).toEqual({
+        name: 'named',
+        method: 'POST',
+        path: '/test',
+        prefix: '',
+        middleware: [],
+        controller: 'Controller',
+        endpoint: 'endpoint'
+      })
+    })
+
+    it('throws an Error if route not found', function() {
+      RouteCollection['routes'] = []
+      RouteCollection['routeData'] = []
+      RouteCollection['routeDataNamed'] = {}
+      try {
+        RouteCollection.findOrFail('named')
+      } catch (error) {
+        expect(error).toBeInstanceOf(Error)
+        return
+      }
+      expect('should not reach this line').toEqual('hum')
+    })
+  })
 })

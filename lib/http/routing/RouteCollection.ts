@@ -58,6 +58,14 @@ export class RouteCollection {
     return typeof this.routeDataNamed[name] !== 'undefined'
   }
 
+  static findOrFail(name: string): IRouteData {
+    this.getData()
+    if (!this.hasName(name)) {
+      throw new Error('Route "' + name + '" not found')
+    }
+    return this.routeDataNamed[name]
+  }
+
   // static setOptions(options: Partial<RoutingOptions>) {
   //   this.options = Object.assign({}, DEFAULT_ROUTING_OPTIONS, options)
   // }

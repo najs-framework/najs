@@ -34,3 +34,5 @@ var constants_1 = require("./constants");
 exports.LoggerClass = constants_1.LoggerClass;
 var constants_2 = require("./constants");
 exports.HttpDriverClass = constants_2.HttpDriverClass;
+var route_1 = require("./helpers/route");
+exports.route = route_1.route;

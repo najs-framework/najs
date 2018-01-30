@@ -1,5 +1,6 @@
 import 'jest'
 import * as Sinon from 'sinon'
+import * as PathToRegex from 'path-to-regexp'
 import { RouteFacade as Route } from '../../../lib/http/routing/RouteFacade'
 import { RouteCollection } from '../../../lib/http/routing/RouteCollection'
 import { HttpMethod } from '../../../lib/http/HttpMethod'
@@ -31,6 +32,39 @@ function getRouteData(
 }
 
 describe('Route', function() {
+  describe('IRouteGenerateUrl', function() {
+    it('calls "path-to-regex".compile() and passes params to generate url', function() {
+      const toPath = function() {
+        return 'any'
+      }
+      const toPathSpy = Sinon.spy(toPath)
+      const compileStub = Sinon.stub(PathToRegex, 'compile').returns(toPathSpy)
+      const routeCollectionFindOrFailStub = Sinon.stub(RouteCollection, 'findOrFail').returns({
+        prefix: '/prefix',
+        path: '/path'
+      })
+
+      Route['createByName']('test')
+      expect(routeCollectionFindOrFailStub.called).toBe(true)
+      expect(compileStub.calledWith('/prefix/path')).toBe(true)
+      expect(toPathSpy.calledWith(undefined, undefined)).toBe(true)
+
+      Route['createByName']('test', { id: 123, abc: 'string' })
+      expect(routeCollectionFindOrFailStub.called).toBe(true)
+      expect(compileStub.calledWith('/prefix/path')).toBe(true)
+      expect(toPathSpy.calledWith({ id: 123, abc: 'string' }, undefined)).toBe(true)
+
+      const option = { encode: (v: string) => v }
+      Route['createByName']('test', { id: 123, abc: 'string' }, option)
+      expect(routeCollectionFindOrFailStub.called).toBe(true)
+      expect(compileStub.calledWith('/prefix/path')).toBe(true)
+      expect(toPathSpy.calledWith({ id: 123, abc: 'string' }, option)).toBe(true)
+
+      compileStub.restore()
+      routeCollectionFindOrFailStub.restore()
+    })
+  })
+
   describe('Routing Grammar', function() {
     afterEach(function() {
       clearRouteCollection()
