@@ -13,5 +13,6 @@ export interface IHttpDriver<T = any> {
   route(data: IRouteData): void
 
   respondJson(response: any, value: any): void
+  respondJsonp(response: any, value: any): void
   respondRedirect(response: any, path: string, code: number): void
 }

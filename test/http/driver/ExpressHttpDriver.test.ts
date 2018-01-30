@@ -477,7 +477,29 @@ describe('ExpressHttpDriver', function() {
     })
   })
 
-  describe('.responseJson()', function() {
+  describe('.responseJsonp()', function() {
+    it('calls response.jsonp()', function() {
+      const response = {
+        jsonp: function() {}
+      }
+      const jsonpSpy = Sinon.spy(response, 'jsonp')
+      const driver = new ExpressHttpDriver()
+
+      driver.respondJsonp(<any>response, 123)
+      expect(jsonpSpy.calledWith(123)).toBe(true)
+
+      driver.respondJsonp(<any>response, '123')
+      expect(jsonpSpy.calledWith('123')).toBe(true)
+
+      driver.respondJsonp(<any>response, [1, 2, 3])
+      expect(jsonpSpy.calledWith([1, 2, 3])).toBe(true)
+
+      driver.respondJsonp(<any>response, { any: 'thing' })
+      expect(jsonpSpy.calledWith({ any: 'thing' })).toBe(true)
+    })
+  })
+
+  describe('.responseRedirect()', function() {
     it('calls response.redirect() with swapped params', function() {
       const response = {
         redirect: function() {}

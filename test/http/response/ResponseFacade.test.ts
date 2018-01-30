@@ -3,12 +3,21 @@ import * as Sinon from 'sinon'
 import { ResponseFacade as Response } from '../../../lib/http/response/ResponseFacade'
 import { JsonResponse } from '../../../lib/http/response/types/JsonResponse'
 import { RedirectResponse } from '../../../lib/http/response/types/RedirectResponse'
+import { JsonpResponse } from '../../../lib/http/response/types/JsonpResponse'
 
 describe('ResponseFacade', function() {
   describe('json', function() {
     it('creates new instance of JsonResponse', function() {
       const result = Response.json('test')
       expect(result).toBeInstanceOf(JsonResponse)
+      expect(result['value']).toEqual('test')
+    })
+  })
+
+  describe('jsonp', function() {
+    it('creates new instance of JsonpResponse', function() {
+      const result = Response.jsonp('test')
+      expect(result).toBeInstanceOf(JsonpResponse)
       expect(result['value']).toEqual('test')
     })
   })
@@ -40,6 +49,23 @@ describe('JsonResponse', function() {
     const respondJsonSpy = Sinon.spy(driver, 'respondJson')
 
     const redirect = new JsonResponse('any')
+    redirect.respond(response, <any>driver)
+    expect(respondJsonSpy.calledWith(response, 'any')).toBe(true)
+  })
+})
+
+describe('JsonpResponse', function() {
+  it('can be created with any value', function() {
+    const redirect = new JsonpResponse({ ok: true })
+    expect(redirect['value']).toEqual({ ok: true })
+  })
+
+  it('calls IHttpDriver.respondJson and passes response, this.value', function() {
+    const response = {}
+    const driver = { respondJsonp(response: any, url: any, status: any) {} }
+    const respondJsonSpy = Sinon.spy(driver, 'respondJsonp')
+
+    const redirect = new JsonpResponse('any')
     redirect.respond(response, <any>driver)
     expect(respondJsonSpy.calledWith(response, 'any')).toBe(true)
   })

@@ -163,6 +163,10 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     response.json(value)
   }
 
+  respondJsonp(response: Express.Response, value: any): void {
+    response.jsonp(value)
+  }
+
   respondRedirect(response: Express.Response, url: string, status: number): void {
     response.redirect(status, url)
   }

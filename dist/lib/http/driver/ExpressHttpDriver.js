@@ -108,6 +108,9 @@ class ExpressHttpDriver {
     respondJson(response, value) {
         response.json(value);
     }
+    respondJsonp(response, value) {
+        response.jsonp(value);
+    }
     respondRedirect(response, url, status) {
         response.redirect(status, url);
     }

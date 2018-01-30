@@ -5,11 +5,19 @@ const Sinon = require("sinon");
 const ResponseFacade_1 = require("../../../lib/http/response/ResponseFacade");
 const JsonResponse_1 = require("../../../lib/http/response/types/JsonResponse");
 const RedirectResponse_1 = require("../../../lib/http/response/types/RedirectResponse");
+const JsonpResponse_1 = require("../../../lib/http/response/types/JsonpResponse");
 describe('ResponseFacade', function () {
     describe('json', function () {
         it('creates new instance of JsonResponse', function () {
             const result = ResponseFacade_1.ResponseFacade.json('test');
             expect(result).toBeInstanceOf(JsonResponse_1.JsonResponse);
+            expect(result['value']).toEqual('test');
+        });
+    });
+    describe('jsonp', function () {
+        it('creates new instance of JsonpResponse', function () {
+            const result = ResponseFacade_1.ResponseFacade.jsonp('test');
+            expect(result).toBeInstanceOf(JsonpResponse_1.JsonpResponse);
             expect(result['value']).toEqual('test');
         });
     });
@@ -36,6 +44,20 @@ describe('JsonResponse', function () {
         const driver = { respondJson(response, url, status) { } };
         const respondJsonSpy = Sinon.spy(driver, 'respondJson');
         const redirect = new JsonResponse_1.JsonResponse('any');
+        redirect.respond(response, driver);
+        expect(respondJsonSpy.calledWith(response, 'any')).toBe(true);
+    });
+});
+describe('JsonpResponse', function () {
+    it('can be created with any value', function () {
+        const redirect = new JsonpResponse_1.JsonpResponse({ ok: true });
+        expect(redirect['value']).toEqual({ ok: true });
+    });
+    it('calls IHttpDriver.respondJson and passes response, this.value', function () {
+        const response = {};
+        const driver = { respondJsonp(response, url, status) { } };
+        const respondJsonSpy = Sinon.spy(driver, 'respondJsonp');
+        const redirect = new JsonpResponse_1.JsonpResponse('any');
         redirect.respond(response, driver);
         expect(respondJsonSpy.calledWith(response, 'any')).toBe(true);
     });
