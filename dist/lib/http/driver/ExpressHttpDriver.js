@@ -42,6 +42,12 @@ class ExpressHttpDriver {
     getEndpointHandlers(method, path, route) {
         const handlers = [];
         // create middleware handlers
+        for (const middleware of route.middleware) {
+            if (lodash_1.isFunction(middleware)) {
+                handlers.push(middleware);
+                continue;
+            }
+        }
         if (lodash_1.isFunction(route.endpoint)) {
             handlers.push(this.createEndpointWrapperByFunction(route.endpoint));
             return handlers;

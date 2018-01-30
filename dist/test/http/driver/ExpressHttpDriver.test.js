@@ -94,9 +94,22 @@ describe('ExpressHttpDriver', function () {
         });
     });
     describe('protected .getEndpointHandlers()', function () {
+        it('pushes middleware to handlers if middleware is a function', function () {
+            function handler() { }
+            function middleware() { }
+            const route = {
+                middleware: ['something', middleware],
+                endpoint: handler
+            };
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            const handlers = driver['getEndpointHandlers']('any', 'any', route);
+            expect(handlers).toHaveLength(2);
+            expect(handlers[0] === middleware).toBe(true);
+        });
         it('calls createEndpointWrapperByFunction and pushes result to handlers', function () {
             function handler() { }
             const route = {
+                middleware: [],
                 endpoint: handler
             };
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
@@ -108,6 +121,7 @@ describe('ExpressHttpDriver', function () {
         });
         it('calls createEndpointWrapper and pushes result to handlers if controller is string', function () {
             const route = {
+                middleware: [],
                 controller: 'Test',
                 endpoint: 'endpoint'
             };
@@ -121,6 +135,7 @@ describe('ExpressHttpDriver', function () {
         it('calls createEndpointWrapper and pushes result to handlers if controller is Function', function () {
             const classDefinition = () => { };
             const route = {
+                middleware: [],
                 controller: classDefinition,
                 endpoint: 'endpoint'
             };
@@ -134,6 +149,7 @@ describe('ExpressHttpDriver', function () {
         it('calls createEndpointWrapperByObject and pushes result to handlers if controller is Object', function () {
             const controllerObject = {};
             const route = {
+                middleware: [],
                 controller: controllerObject,
                 endpoint: 'endpoint'
             };

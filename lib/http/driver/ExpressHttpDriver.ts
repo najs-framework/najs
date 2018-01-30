@@ -85,6 +85,12 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   protected getEndpointHandlers(method: string, path: string, route: IRouteData): ExpressHandlers {
     const handlers: ExpressHandlers = []
     // create middleware handlers
+    for (const middleware of route.middleware) {
+      if (isFunction(middleware)) {
+        handlers.push(middleware)
+        continue
+      }
+    }
 
     if (isFunction(route.endpoint)) {
       handlers.push(this.createEndpointWrapperByFunction(route.endpoint))
