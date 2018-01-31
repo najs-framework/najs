@@ -161,6 +161,32 @@ describe('ExpressHttpDriver', function () {
             createEndpointWrapperByObjectStub.restore();
         });
     });
+    describe('protected .createBeforeMiddlewareWrapper()', function () {
+        it('returns an async function', function () {
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            expect(typeof driver['createBeforeMiddlewareWrapper']([]) === 'function').toBe(true);
+        });
+        it('skipped if the middleware does not have .before() function', async function () {
+            const hasBeforeMiddleware = {
+                async before(request) { }
+            };
+            const hasNoBeforeMiddleware = {
+                async after(request, response) { }
+            };
+            const next = function () { };
+            const beforeSpy = Sinon.spy(hasBeforeMiddleware, 'before');
+            const afterSpy = Sinon.spy(hasNoBeforeMiddleware, 'after');
+            const nextSpy = Sinon.spy(next);
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            const wrapper = driver['createBeforeMiddlewareWrapper']([hasBeforeMiddleware, hasNoBeforeMiddleware]);
+            const request = {};
+            await wrapper(request, {}, nextSpy);
+            expect(beforeSpy.calledWith(request)).toBe(true);
+            expect(beforeSpy.firstCall.thisValue === hasBeforeMiddleware).toBe(true);
+            expect(afterSpy.called).toBe(false);
+            expect(nextSpy.called).toBe(true);
+        });
+    });
     describe('protected .createEndpointWrapper()', function () {
         class TestControllerA extends Controller_1.Controller {
             getClassName() {

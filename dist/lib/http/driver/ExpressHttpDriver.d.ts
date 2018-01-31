@@ -4,6 +4,7 @@ import { IAutoload } from '../../core/IAutoload';
 import { IRouteData } from '../routing/interfaces/IRouteData';
 import * as Express from 'express';
 import * as Http from 'http';
+import { IMiddleware } from '../middleware/IMiddleware';
 export declare type ExpressApp = Express.Express;
 export declare type ExpressHandlers = Array<Express.RequestHandler | Express.ErrorRequestHandler>;
 export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
@@ -17,6 +18,7 @@ export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
     getNativeDriver(): ExpressApp;
     route(route: IRouteData): void;
     protected getEndpointHandlers(method: string, path: string, route: IRouteData): ExpressHandlers;
+    protected createBeforeMiddlewareWrapper(middlewareList: IMiddleware[]): (request: Express.Request, response: Express.Response, next: Express.NextFunction) => Promise<void>;
     protected createEndpointWrapper(controllerName: string, endpointName: string): (request: Express.Request, response: Express.Response) => Promise<void>;
     protected createEndpointWrapperByObject(controllerObject: Object, endpointName: string): (request: Express.Request, response: Express.Response) => Promise<void>;
     protected cloneControllerObject(controller: Object, request: Express.Request, response: Express.Response): Object;

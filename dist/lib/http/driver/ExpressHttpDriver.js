@@ -48,6 +48,7 @@ class ExpressHttpDriver {
                 continue;
             }
         }
+        // handlers.push(this.createBeforeMiddlewareWrapper(middleware))
         if (lodash_1.isFunction(route.endpoint)) {
             handlers.push(this.createEndpointWrapperByFunction(route.endpoint));
             return handlers;
@@ -58,6 +59,16 @@ class ExpressHttpDriver {
         }
         handlers.push(this.createEndpointWrapperByObject(route.controller, route.endpoint));
         return handlers;
+    }
+    createBeforeMiddlewareWrapper(middlewareList) {
+        return async (request, response, next) => {
+            for (const middleware of middlewareList) {
+                if (lodash_1.isFunction(middleware.before)) {
+                    await Reflect.apply(middleware.before, middleware, [request]);
+                }
+            }
+            next();
+        };
     }
     createEndpointWrapper(controllerName, endpointName) {
         return async (request, response) => {

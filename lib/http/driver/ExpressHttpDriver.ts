@@ -12,6 +12,7 @@ import { isIResponse } from '../response/IResponse'
 import * as Express from 'express'
 import * as Http from 'http'
 import { isPromise } from '../../private/isPromise'
+import { IMiddleware } from '../middleware/IMiddleware'
 
 export type ExpressApp = Express.Express
 
@@ -92,6 +93,8 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
       }
     }
 
+    // handlers.push(this.createBeforeMiddlewareWrapper(middleware))
+
     if (isFunction(route.endpoint)) {
       handlers.push(this.createEndpointWrapperByFunction(route.endpoint))
       return handlers
@@ -104,6 +107,17 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
 
     handlers.push(this.createEndpointWrapperByObject(<Object>route.controller, <string>route.endpoint))
     return handlers
+  }
+
+  protected createBeforeMiddlewareWrapper(middlewareList: IMiddleware[]) {
+    return async (request: Express.Request, response: Express.Response, next: Express.NextFunction) => {
+      for (const middleware of middlewareList) {
+        if (isFunction(middleware.before)) {
+          await Reflect.apply(middleware.before, middleware, [request])
+        }
+      }
+      next()
+    }
   }
 
   protected createEndpointWrapper(controllerName: string, endpointName: string) {

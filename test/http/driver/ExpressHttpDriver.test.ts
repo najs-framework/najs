@@ -193,6 +193,37 @@ describe('ExpressHttpDriver', function() {
     })
   })
 
+  describe('protected .createBeforeMiddlewareWrapper()', function() {
+    it('returns an async function', function() {
+      const driver = new ExpressHttpDriver()
+      expect(typeof driver['createBeforeMiddlewareWrapper']([]) === 'function').toBe(true)
+    })
+
+    it('skipped if the middleware does not have .before() function', async function() {
+      const hasBeforeMiddleware = {
+        async before(request: any): Promise<any> {}
+      }
+      const hasNoBeforeMiddleware = {
+        async after(request: any, response: any): Promise<any> {}
+      }
+      const next = function() {}
+
+      const beforeSpy = Sinon.spy(hasBeforeMiddleware, 'before')
+      const afterSpy = Sinon.spy(hasNoBeforeMiddleware, 'after')
+      const nextSpy = Sinon.spy(next)
+
+      const driver = new ExpressHttpDriver()
+      const wrapper = driver['createBeforeMiddlewareWrapper']([hasBeforeMiddleware, hasNoBeforeMiddleware])
+
+      const request = {}
+      await wrapper(<any>request, <any>{}, nextSpy)
+      expect(beforeSpy.calledWith(request)).toBe(true)
+      expect(beforeSpy.firstCall.thisValue === hasBeforeMiddleware).toBe(true)
+      expect(afterSpy.called).toBe(false)
+      expect(nextSpy.called).toBe(true)
+    })
+  })
+
   describe('protected .createEndpointWrapper()', function() {
     class TestControllerA extends Controller {
       static className: string = 'TestControllerA'
