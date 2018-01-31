@@ -17,6 +17,7 @@ export { IResponse } from './http/response/IResponse';
 export { IResponseFacade } from './http/response/IResponseFacade';
 export { IHttpDriver } from './http/driver/IHttpDriver';
 export { HttpDriverStartOptions } from './http/driver/IHttpDriver';
+export { HttpKernel } from './http/HttpKernel';
 export { ILogger } from './log/ILogger';
 export { Log, reload as reloadLog } from './log/Log';
 export { WinstonLogger } from './log/WinstonLogger';

@@ -1,10 +1,10 @@
+import { IAutoload } from '../core/IAutoload';
 import { IMiddleware } from './middleware/IMiddleware';
-export declare class HttpKernel {
-    protected middlewareGroups: {
-        [key: string]: string[];
-    };
+export declare class HttpKernel implements IAutoload {
+    static className: string;
     protected middleware: {
-        [key: string]: string;
+        [key: string]: string | string[];
     };
-    getMiddleware(name: string): IMiddleware | IMiddleware[] | undefined;
+    getClassName(): string;
+    getMiddleware(name: string): IMiddleware[];
 }
