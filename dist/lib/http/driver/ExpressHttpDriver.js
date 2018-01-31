@@ -111,6 +111,9 @@ class ExpressHttpDriver {
         Log_1.Log.info('Routes:');
         RouteCollection_1.RouteCollection.getData().map(this.route.bind(this));
     }
+    respondView(response, view, variables) {
+        response.render(view, variables);
+    }
     respondJson(response, value) {
         response.json(value);
     }

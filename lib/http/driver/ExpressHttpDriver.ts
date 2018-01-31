@@ -165,6 +165,10 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     RouteCollection.getData().map(this.route.bind(this))
   }
 
+  respondView(response: Express.Response, view: string, variables: Object): void {
+    response.render(view, variables)
+  }
+
   respondJson(response: Express.Response, value: any): void {
     response.json(value)
   }

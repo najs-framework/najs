@@ -1,11 +1,21 @@
 import 'jest'
 import * as Sinon from 'sinon'
 import { ResponseFacade as Response } from '../../../lib/http/response/ResponseFacade'
+import { ViewResponse } from '../../../lib/http/response/types/ViewResponse'
 import { JsonResponse } from '../../../lib/http/response/types/JsonResponse'
 import { RedirectResponse } from '../../../lib/http/response/types/RedirectResponse'
 import { JsonpResponse } from '../../../lib/http/response/types/JsonpResponse'
 
 describe('ResponseFacade', function() {
+  describe('view', function() {
+    it('creates new instance of ViewResponse', function() {
+      const result = Response.view('test')
+      expect(result).toBeInstanceOf(ViewResponse)
+      expect(result['view']).toEqual('test')
+      expect(result['variables']).toEqual({})
+    })
+  })
+
   describe('json', function() {
     it('creates new instance of JsonResponse', function() {
       const result = Response.json('test')
@@ -37,19 +47,65 @@ describe('ResponseFacade', function() {
   })
 })
 
+describe('ViewResponse', function() {
+  it('can be created with view only', function() {
+    const view = new ViewResponse('view')
+    expect(view['view']).toEqual('view')
+    expect(view['variables']).toEqual({})
+  })
+
+  it('can be created with any view and variables', function() {
+    const view = new ViewResponse('view', { any: 'thing' })
+    expect(view['view']).toEqual('view')
+    expect(view['variables']).toEqual({ any: 'thing' })
+  })
+
+  it('calls IHttpDriver.respondView and passes response, this.view, this.variables', function() {
+    const response = {}
+    const driver = { respondView() {} }
+    const respondViewSpy = Sinon.spy(driver, 'respondView')
+
+    const view = new ViewResponse('view', { any: 'thing' })
+    view.respond(response, <any>driver)
+    expect(respondViewSpy.calledWith(response, 'view', { any: 'thing' })).toBe(true)
+  })
+
+  describe('getVariables()', function() {
+    it('returns variables property', function() {
+      const view = new ViewResponse('view', { any: 'thing' })
+      expect(view['variables'] === view.getVariables()).toBe(true)
+    })
+  })
+
+  describe('with(name, value)', function() {
+    it('sets name, value to variables', function() {
+      const view = new ViewResponse('view')
+      view.with('name', 123)
+      view.with('test', 'something')
+      view.with('undefined', undefined)
+      view.with('name', 456)
+      expect(view.getVariables()).toEqual({
+        name: 456,
+        test: 'something',
+        undefined: undefined
+      })
+    })
+  })
+})
+
 describe('JsonResponse', function() {
   it('can be created with any value', function() {
-    const redirect = new JsonResponse({ ok: true })
-    expect(redirect['value']).toEqual({ ok: true })
+    const json = new JsonResponse({ ok: true })
+    expect(json['value']).toEqual({ ok: true })
   })
 
   it('calls IHttpDriver.respondJson and passes response, this.value', function() {
     const response = {}
-    const driver = { respondJson(response: any, url: any, status: any) {} }
+    const driver = { respondJson() {} }
     const respondJsonSpy = Sinon.spy(driver, 'respondJson')
 
-    const redirect = new JsonResponse('any')
-    redirect.respond(response, <any>driver)
+    const json = new JsonResponse('any')
+    json.respond(response, <any>driver)
     expect(respondJsonSpy.calledWith(response, 'any')).toBe(true)
   })
 })

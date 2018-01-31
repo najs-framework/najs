@@ -473,6 +473,21 @@ describe('ExpressHttpDriver', function() {
     })
   })
 
+  describe('.respondView()', function() {
+    it('calls response.render()', function() {
+      const response = {
+        render: function() {}
+      }
+      const renderSpy = Sinon.spy(response, 'render')
+      const driver = new ExpressHttpDriver()
+
+      const variables = { any: 'thing' }
+
+      driver.respondView(<any>response, 'test', variables)
+      expect(renderSpy.calledWith('test', variables)).toBe(true)
+    })
+  })
+
   describe('.responseJson()', function() {
     it('calls response.json()', function() {
       const response = {

@@ -394,6 +394,18 @@ describe('ExpressHttpDriver', function () {
             logStub.restore();
         });
     });
+    describe('.respondView()', function () {
+        it('calls response.render()', function () {
+            const response = {
+                render: function () { }
+            };
+            const renderSpy = Sinon.spy(response, 'render');
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            const variables = { any: 'thing' };
+            driver.respondView(response, 'test', variables);
+            expect(renderSpy.calledWith('test', variables)).toBe(true);
+        });
+    });
     describe('.responseJson()', function () {
         it('calls response.json()', function () {
             const response = {
