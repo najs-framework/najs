@@ -2,9 +2,10 @@ import { make } from './make'
 import { register } from './register'
 import { bind, InstanceCreator } from './bind'
 import { IHttpDriver } from '../http/driver/IHttpDriver'
-import { Configuration, HttpDriverClass } from '../constants'
+import { ConfigurationKeys, HttpDriverClass } from '../constants'
 import { IConfig } from 'config'
 import { isFunction, pickBy } from 'lodash'
+import * as Config from 'config'
 
 export type NajsOptions = {
   port: number
@@ -22,7 +23,7 @@ function assert_config_is_registered_before_using() {
 }
 
 export class Najs {
-  private static config: IConfig
+  private static config: IConfig = Config
   private static options: NajsOptions = NajsDefaultOptions
 
   static use(config: IConfig): typeof Najs
@@ -30,8 +31,8 @@ export class Najs {
   static use(configOrOptions: IConfig | Partial<NajsOptions>): typeof Najs {
     if (isFunction(configOrOptions['get']) && isFunction(configOrOptions['has'])) {
       this.config = configOrOptions as IConfig
-      const optionsInConfig = Object.keys(Configuration.NajsOptions).reduce((memo, key) => {
-        memo[key] = this.getConfig(Configuration.NajsOptions[key], false)
+      const optionsInConfig = Object.keys(ConfigurationKeys.NajsOptions).reduce((memo, key) => {
+        memo[key] = this.getConfig(ConfigurationKeys.NajsOptions[key], false)
         return memo
       }, {})
       this.options = Object.assign({}, NajsDefaultOptions, pickBy(optionsInConfig))

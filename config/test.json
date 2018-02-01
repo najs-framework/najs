@@ -1,0 +1,13 @@
+{
+  "cwd": "",
+  "port": 3000,
+  "paths": {
+    "app": "app",
+    "public": "public",
+    "resource": "resources",
+    "view": "resources/view",
+    "layout": "resources/view",
+    "route": "routes",
+    "storage": "app/storage"
+  }
+}

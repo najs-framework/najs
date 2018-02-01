@@ -5,6 +5,7 @@ const register_1 = require("./register");
 const bind_1 = require("./bind");
 const constants_1 = require("../constants");
 const lodash_1 = require("lodash");
+const Config = require("config");
 const NajsDefaultOptions = {
     port: 3000
 };
@@ -17,8 +18,8 @@ class Najs {
     static use(configOrOptions) {
         if (lodash_1.isFunction(configOrOptions['get']) && lodash_1.isFunction(configOrOptions['has'])) {
             this.config = configOrOptions;
-            const optionsInConfig = Object.keys(constants_1.Configuration.NajsOptions).reduce((memo, key) => {
-                memo[key] = this.getConfig(constants_1.Configuration.NajsOptions[key], false);
+            const optionsInConfig = Object.keys(constants_1.ConfigurationKeys.NajsOptions).reduce((memo, key) => {
+                memo[key] = this.getConfig(constants_1.ConfigurationKeys.NajsOptions[key], false);
                 return memo;
             }, {});
             this.options = Object.assign({}, NajsDefaultOptions, lodash_1.pickBy(optionsInConfig));
@@ -61,5 +62,6 @@ class Najs {
         httpDriver.start(this.options);
     }
 }
+Najs.config = Config;
 Najs.options = NajsDefaultOptions;
 exports.Najs = Najs;
