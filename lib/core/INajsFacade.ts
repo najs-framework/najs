@@ -6,6 +6,18 @@ export type NajsOptions = {
   host?: string
 }
 
+export enum NajsPath {
+  App = 'app',
+  Base = 'base',
+  Config = 'config',
+  Layout = 'layout',
+  Public = 'public',
+  Resource = 'resource',
+  Route = 'route',
+  Storage = 'storage',
+  View = 'view'
+}
+
 export interface INajsFacade {
   use(config: IConfig): INajsFacade
   use(options: Partial<NajsOptions>): INajsFacade
@@ -21,6 +33,10 @@ export interface INajsFacade {
 
   bind(className: string, instanceCreator: InstanceCreator): INajsFacade
   bind(className: string, concrete: string): INajsFacade
+
+  path(): string
+  path(...args: string[]): string
+  path(type: NajsPath, ...args: string[]): string
 
   hasConfig(setting: string): boolean
 

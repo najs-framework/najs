@@ -5,7 +5,8 @@ import { IHttpDriver } from '../http/driver/IHttpDriver'
 import { ConfigurationKeys, HttpDriverClass } from '../constants'
 import { IConfig } from 'config'
 import { isFunction, pickBy } from 'lodash'
-import { NajsOptions, INajsFacade } from './INajsFacade'
+import { NajsOptions, NajsPath, INajsFacade } from './INajsFacade'
+import * as Path from 'path'
 import * as Config from 'config'
 
 const NajsDefaultOptions: NajsOptions = {
@@ -84,6 +85,53 @@ class Najs implements INajsFacade {
   // loadClasses(classes: Object | Array<any>): this {
   //   return this
   // }
+
+  path(): string
+  path(...args: string[]): string
+  path(type: NajsPath, ...args: string[]): string
+  path(...args: any[]): string {
+    // given that najs installed in node_modules so the path to this file is
+    //   ~/node_modules/najs/dist/lib/core/NajsFacade.js
+    const cwd = this.getConfig(ConfigurationKeys.CWD, Path.join(__dirname, '..', '..', '..', '..'))
+    if (arguments.length === 0) {
+      return cwd
+    }
+    const [firstPath, ...paths] = args
+    let based: string = ''
+    switch (firstPath) {
+      case NajsPath.App:
+        based = Path.join(cwd, this.getConfig(ConfigurationKeys.Paths.app, 'app'))
+        break
+      case NajsPath.Base:
+        based = Path.join(cwd, this.getConfig(ConfigurationKeys.Paths.base, ''))
+        break
+      case NajsPath.Config:
+        based = Path.join(cwd, this.getConfig(ConfigurationKeys.Paths.config, 'config'))
+        break
+      case NajsPath.Layout:
+        based = Path.join(cwd, this.getConfig(ConfigurationKeys.Paths.layout, Path.join('resources', 'view', 'layout')))
+        break
+      case NajsPath.Public:
+        based = Path.join(cwd, this.getConfig(ConfigurationKeys.Paths.public, 'public'))
+        break
+      case NajsPath.Resource:
+        based = Path.join(cwd, this.getConfig(ConfigurationKeys.Paths.resource, 'resources'))
+        break
+      case NajsPath.Route:
+        based = Path.join(cwd, this.getConfig(ConfigurationKeys.Paths.route, 'routes'))
+        break
+      case NajsPath.Storage:
+        based = Path.join(cwd, this.getConfig(ConfigurationKeys.Paths.storage, Path.join('app', 'storage')))
+        break
+      case NajsPath.View:
+        based = Path.join(cwd, this.getConfig(ConfigurationKeys.Paths.view, Path.join('resources', 'view')))
+        break
+      default:
+        based = Path.join(cwd, firstPath)
+        break
+    }
+    return Path.join(based, ...paths)
+  }
 
   start(): void
   start(options: Partial<NajsOptions>): void

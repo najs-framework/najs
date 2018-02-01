@@ -5,6 +5,7 @@ const Sinon = require("sinon");
 const Register = require("../../lib/core/register");
 const Make = require("../../lib/core/make");
 const Bind = require("../../lib/core/bind");
+const Path = require("path");
 const NajsFacade_1 = require("../../lib/core/NajsFacade");
 const register_1 = require("../../lib/core/register");
 const constants_1 = require("./../../lib/constants");
@@ -34,7 +35,7 @@ const DefaultOptions = {
     port: 3000
 };
 describe('Najs', function () {
-    describe('use(options: Object)', function () {
+    describe('.use(options: Object)', function () {
         it('assigns default options if use is not called', function () {
             expect(NajsFacade_1.NajsFacade['options']).toEqual(DefaultOptions);
         });
@@ -70,7 +71,7 @@ describe('Najs', function () {
             expect(NajsFacade_1.NajsFacade['options']).toEqual(Object.assign({}, DefaultOptions, { port: 3001 }));
         });
     });
-    describe('Najs.register()', function () {
+    describe('.register()', function () {
         it('proxies register() function', function () {
             const registerSpy = Sinon.spy(Register, 'register');
             NajsFacade_1.NajsFacade.register(FakeHttpDriver);
@@ -83,7 +84,7 @@ describe('Najs', function () {
             expect(registerSpy.calledWith(Test, 'SomethingNew', true, false)).toBe(true);
         });
     });
-    describe('Najs.make()', function () {
+    describe('.make()', function () {
         it('proxies make() function', function () {
             const makeSpy = Sinon.spy(Make, 'make');
             NajsFacade_1.NajsFacade.make(Test);
@@ -94,7 +95,7 @@ describe('Najs', function () {
             expect(makeSpy.calledWith('Something', { data: 'any' })).toBe(true);
         });
     });
-    describe('Najs.bind()', function () {
+    describe('.bind()', function () {
         it('proxies bind() function', function () {
             const bindSpy = Sinon.spy(Bind, 'bind');
             NajsFacade_1.NajsFacade.bind('Cache', 'RedisCached');
@@ -104,7 +105,7 @@ describe('Najs', function () {
             expect(bindSpy.calledWith('ServicePool', servicePoolInstanceCreator)).toBe(true);
         });
     });
-    describe('Najs.hasConfig()', function () {
+    describe('.hasConfig()', function () {
         it('throws ReferenceError if config is not register yet', function () {
             NajsFacade_1.NajsFacade['config'] = undefined;
             try {
@@ -124,7 +125,7 @@ describe('Najs', function () {
             hasSpy.restore();
         });
     });
-    describe('Najs.getConfig()', function () {
+    describe('.getConfig()', function () {
         it('throws ReferenceError if config is not register yet', function () {
             NajsFacade_1.NajsFacade['config'] = undefined;
             try {
@@ -153,7 +154,59 @@ describe('Najs', function () {
             expect(getSpy.calledWith('port')).toBe(true);
         });
     });
-    describe('start(options?: Object)', function () {
+    describe('.path()', function () {
+        it('returns "cwd" in config file if there are no parameters', function () {
+            const getConfigStub = Sinon.stub(NajsFacade_1.NajsFacade, 'getConfig');
+            NajsFacade_1.NajsFacade.path();
+            // Directory structure of the project
+            //   + najs/dist
+            //     - lib
+            //       - core
+            //         . NajsFacade
+            //     - test
+            //       - core
+            //         . NajsFacade.test.js
+            // => path will be the same path in implementation
+            expect(getConfigStub.calledWith(constants_1.ConfigurationKeys.CWD, Path.join(__dirname, '..', '..', '..', '..'))).toBe(true);
+            getConfigStub.restore();
+        });
+        const systemPaths = {
+            app: 'app',
+            base: '',
+            config: 'config',
+            layout: Path.join('resources', 'view', 'layout'),
+            public: 'public',
+            resource: 'resources',
+            route: 'routes',
+            storage: Path.join('app', 'storage'),
+            view: Path.join('resources', 'view')
+        };
+        for (const name in systemPaths) {
+            it('allows to solve System Path "' + name + '" with paths since 2nd param', function () {
+                const cwd = Path.join(__dirname, '..', '..', '..', '..');
+                const getConfigStub = Sinon.stub(NajsFacade_1.NajsFacade, 'getConfig');
+                getConfigStub.withArgs(constants_1.ConfigurationKeys.CWD, cwd).returns('/');
+                getConfigStub.returns(systemPaths[name]);
+                expect(NajsFacade_1.NajsFacade.path(name)).toEqual(Path.join('/', systemPaths[name]));
+                const calls = getConfigStub.getCalls();
+                expect(calls[1].args).toEqual([constants_1.ConfigurationKeys.Paths[name], systemPaths[name]]);
+                expect(NajsFacade_1.NajsFacade.path(name, 'test')).toEqual(Path.join('/', systemPaths[name], 'test'));
+                expect(NajsFacade_1.NajsFacade.path(name, 'test', 'any', 'thing')).toEqual(Path.join('/', systemPaths[name], 'test', 'any', 'thing'));
+                expect(NajsFacade_1.NajsFacade.path(name, 'test', 'any', 'thing/else')).toEqual(Path.join('/', systemPaths[name], 'test', 'any', 'thing/else'));
+                getConfigStub.restore();
+            });
+        }
+        it('allows to solve paths since 1st param if the param is not system path', function () {
+            const cwd = Path.join(__dirname, '..', '..', '..', '..');
+            const getConfigStub = Sinon.stub(NajsFacade_1.NajsFacade, 'getConfig');
+            getConfigStub.withArgs(constants_1.ConfigurationKeys.CWD, cwd).returns('/');
+            expect(NajsFacade_1.NajsFacade.path('any')).toEqual(Path.join('/', 'any'));
+            expect(NajsFacade_1.NajsFacade.path('any', 'thing')).toEqual(Path.join('/', 'any', 'thing'));
+            expect(NajsFacade_1.NajsFacade.path('any', 'thing/else')).toEqual(Path.join('/', 'any', 'thing/else'));
+            getConfigStub.restore();
+        });
+    });
+    describe('.start(options?: Object)', function () {
         it('called use(options) if provided', function () {
             register_1.register(FakeHttpDriver, constants_1.HttpDriverClass);
             const useSpy = Sinon.spy(NajsFacade_1.NajsFacade, 'use');

@@ -3,10 +3,11 @@ import * as Sinon from 'sinon'
 import * as Register from '../../lib/core/register'
 import * as Make from '../../lib/core/make'
 import * as Bind from '../../lib/core/bind'
+import * as Path from 'path'
 import { NajsFacade as Najs } from '../../lib/core/NajsFacade'
 import { IConfig } from 'config'
 import { register } from '../../lib/core/register'
-import { HttpDriverClass } from './../../lib/constants'
+import { HttpDriverClass, ConfigurationKeys } from './../../lib/constants'
 
 class Test {
   static className: string = 'Test'
@@ -37,7 +38,7 @@ const DefaultOptions = {
   port: 3000
 }
 describe('Najs', function() {
-  describe('use(options: Object)', function() {
+  describe('.use(options: Object)', function() {
     it('assigns default options if use is not called', function() {
       expect(Najs['options']).toEqual(DefaultOptions)
     })
@@ -81,7 +82,7 @@ describe('Najs', function() {
     })
   })
 
-  describe('Najs.register()', function() {
+  describe('.register()', function() {
     it('proxies register() function', function() {
       const registerSpy = Sinon.spy(Register, 'register')
 
@@ -99,7 +100,7 @@ describe('Najs', function() {
     })
   })
 
-  describe('Najs.make()', function() {
+  describe('.make()', function() {
     it('proxies make() function', function() {
       const makeSpy = Sinon.spy(Make, 'make')
       Najs.make(Test)
@@ -113,7 +114,7 @@ describe('Najs', function() {
     })
   })
 
-  describe('Najs.bind()', function() {
+  describe('.bind()', function() {
     it('proxies bind() function', function() {
       const bindSpy = Sinon.spy(Bind, 'bind')
       Najs.bind('Cache', 'RedisCached')
@@ -125,7 +126,7 @@ describe('Najs', function() {
     })
   })
 
-  describe('Najs.hasConfig()', function() {
+  describe('.hasConfig()', function() {
     it('throws ReferenceError if config is not register yet', function() {
       Najs['config'] = <any>undefined
       try {
@@ -146,7 +147,7 @@ describe('Najs', function() {
     })
   })
 
-  describe('Najs.getConfig()', function() {
+  describe('.getConfig()', function() {
     it('throws ReferenceError if config is not register yet', function() {
       Najs['config'] = <any>undefined
       try {
@@ -178,7 +179,70 @@ describe('Najs', function() {
     })
   })
 
-  describe('start(options?: Object)', function() {
+  describe('.path()', function() {
+    it('returns "cwd" in config file if there are no parameters', function() {
+      const getConfigStub = Sinon.stub(Najs, 'getConfig')
+      Najs.path()
+      // Directory structure of the project
+      //   + najs/dist
+      //     - lib
+      //       - core
+      //         . NajsFacade
+      //     - test
+      //       - core
+      //         . NajsFacade.test.js
+      // => path will be the same path in implementation
+      expect(getConfigStub.calledWith(ConfigurationKeys.CWD, Path.join(__dirname, '..', '..', '..', '..'))).toBe(true)
+      getConfigStub.restore()
+    })
+
+    const systemPaths = {
+      app: 'app',
+      base: '',
+      config: 'config',
+      layout: Path.join('resources', 'view', 'layout'),
+      public: 'public',
+      resource: 'resources',
+      route: 'routes',
+      storage: Path.join('app', 'storage'),
+      view: Path.join('resources', 'view')
+    }
+    for (const name in systemPaths) {
+      it('allows to solve System Path "' + name + '" with paths since 2nd param', function() {
+        const cwd = Path.join(__dirname, '..', '..', '..', '..')
+
+        const getConfigStub = Sinon.stub(Najs, 'getConfig')
+        getConfigStub.withArgs(ConfigurationKeys.CWD, cwd).returns('/')
+        getConfigStub.returns(systemPaths[name])
+
+        expect(Najs.path(name)).toEqual(Path.join('/', systemPaths[name]))
+        const calls = getConfigStub.getCalls()
+        expect(calls[1].args).toEqual([ConfigurationKeys.Paths[name], systemPaths[name]])
+
+        expect(Najs.path(name, 'test')).toEqual(Path.join('/', systemPaths[name], 'test'))
+        expect(Najs.path(name, 'test', 'any', 'thing')).toEqual(
+          Path.join('/', systemPaths[name], 'test', 'any', 'thing')
+        )
+        expect(Najs.path(name, 'test', 'any', 'thing/else')).toEqual(
+          Path.join('/', systemPaths[name], 'test', 'any', 'thing/else')
+        )
+        getConfigStub.restore()
+      })
+    }
+
+    it('allows to solve paths since 1st param if the param is not system path', function() {
+      const cwd = Path.join(__dirname, '..', '..', '..', '..')
+      const getConfigStub = Sinon.stub(Najs, 'getConfig')
+      getConfigStub.withArgs(ConfigurationKeys.CWD, cwd).returns('/')
+
+      expect(Najs.path('any')).toEqual(Path.join('/', 'any'))
+      expect(Najs.path('any', 'thing')).toEqual(Path.join('/', 'any', 'thing'))
+      expect(Najs.path('any', 'thing/else')).toEqual(Path.join('/', 'any', 'thing/else'))
+      getConfigStub.restore()
+    })
+  })
+
+  describe('.start(options?: Object)', function() {
     it('called use(options) if provided', function() {
       register(FakeHttpDriver, HttpDriverClass)
       const useSpy = Sinon.spy(Najs, 'use')
