@@ -1,4 +1,4 @@
-import { Najs } from '../lib/core/Najs'
+import { NajsFacade as Najs } from '../lib/core/NajsFacade'
 
 Najs.use({})
   // .loadClasses()

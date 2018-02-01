@@ -13,7 +13,6 @@ import * as Express from 'express'
 import * as Http from 'http'
 import { isPromise } from '../../private/isPromise'
 import { IMiddleware } from '../middleware/IMiddleware'
-// import { Najs } from '../../core/Najs'
 
 export type ExpressApp = Express.Express
 

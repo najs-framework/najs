@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./log/WinstonLogger");
-const Najs_1 = require("./core/Najs");
-exports.default = Najs_1.Najs;
+const NajsFacade_1 = require("./core/NajsFacade");
+exports.default = NajsFacade_1.NajsFacade;
 var make_1 = require("./core/make");
 exports.make = make_1.make;
 var bind_1 = require("./core/bind");

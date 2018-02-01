@@ -1,5 +1,5 @@
 import './log/WinstonLogger'
-import { Najs } from './core/Najs'
+import { NajsFacade as Najs } from './core/NajsFacade'
 
 export default Najs
 

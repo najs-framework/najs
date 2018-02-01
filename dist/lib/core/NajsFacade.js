@@ -9,13 +9,17 @@ const Config = require("config");
 const NajsDefaultOptions = {
     port: 3000
 };
-function assert_config_is_registered_before_using() {
-    if (!Najs['config']) {
-        throw new ReferenceError('Please register config instance firstly: Najs.use(require("config"))');
-    }
-}
 class Najs {
-    static use(configOrOptions) {
+    constructor() {
+        this.config = Config;
+        this.options = NajsDefaultOptions;
+    }
+    assert_config_is_registered_before_using() {
+        if (!this.config) {
+            throw new ReferenceError('Please register config instance firstly: Najs.use(require("config"))');
+        }
+    }
+    use(configOrOptions) {
         if (lodash_1.isFunction(configOrOptions['get']) && lodash_1.isFunction(configOrOptions['has'])) {
             this.config = configOrOptions;
             const optionsInConfig = Object.keys(constants_1.ConfigurationKeys.NajsOptions).reduce((memo, key) => {
@@ -27,25 +31,25 @@ class Najs {
         else {
             this.options = Object.assign({}, NajsDefaultOptions, configOrOptions);
         }
-        return Najs;
+        return this;
     }
-    static make(className, data) {
+    make(className, data) {
         return make_1.make(className, data);
     }
-    static register(classDefinition, className, overridable, singleton) {
+    register(classDefinition, className, overridable, singleton) {
         register_1.register(classDefinition, className, overridable, singleton);
         return this;
     }
-    static bind(abstract, concrete) {
+    bind(abstract, concrete) {
         bind_1.bind(abstract, concrete);
         return this;
     }
-    static hasConfig(setting) {
-        assert_config_is_registered_before_using();
+    hasConfig(setting) {
+        this.assert_config_is_registered_before_using();
         return this.config.has(setting);
     }
-    static getConfig(setting, defaultValue) {
-        assert_config_is_registered_before_using();
+    getConfig(setting, defaultValue) {
+        this.assert_config_is_registered_before_using();
         if (typeof defaultValue === 'undefined') {
             return this.config.get(setting);
         }
@@ -54,7 +58,7 @@ class Najs {
         }
         return defaultValue;
     }
-    static start(arg) {
+    start(arg) {
         if (arg) {
             this.use(arg);
         }
@@ -62,6 +66,4 @@ class Najs {
         httpDriver.start(this.options);
     }
 }
-Najs.config = Config;
-Najs.options = NajsDefaultOptions;
-exports.Najs = Najs;
+exports.NajsFacade = new Najs();
