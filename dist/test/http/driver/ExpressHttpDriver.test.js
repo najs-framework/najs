@@ -394,6 +394,18 @@ describe('ExpressHttpDriver', function () {
             expect(iResponseSpy.calledWith(response, driver)).toBe(true);
         });
     });
+    describe('.setup()', function () {
+        it('is called by constructor', function () {
+            const setupSpy = Sinon.spy(ExpressHttpDriver_1.ExpressHttpDriver.prototype, 'setup');
+            new ExpressHttpDriver_1.ExpressHttpDriver();
+            expect(setupSpy.called).toBe(true);
+        });
+        it('calls .setupViewEngine() for setting up the view engine', function () {
+            const setupViewEngine = Sinon.spy(ExpressHttpDriver_1.ExpressHttpDriver.prototype, 'setupViewEngine');
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            expect(setupViewEngine.calledWith(driver['express'])).toBe(true);
+        });
+    });
     describe('.start()', function () {
         it('passes this.express to http.createServer()', function () {
             const fakeServer = {

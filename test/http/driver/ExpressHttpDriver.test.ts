@@ -470,6 +470,20 @@ describe('ExpressHttpDriver', function() {
     })
   })
 
+  describe('.setup()', function() {
+    it('is called by constructor', function() {
+      const setupSpy = Sinon.spy(ExpressHttpDriver.prototype, <any>'setup')
+      new ExpressHttpDriver()
+      expect(setupSpy.called).toBe(true)
+    })
+
+    it('calls .setupViewEngine() for setting up the view engine', function() {
+      const setupViewEngine = Sinon.spy(ExpressHttpDriver.prototype, <any>'setupViewEngine')
+      const driver = new ExpressHttpDriver()
+      expect(setupViewEngine.calledWith(driver['express'])).toBe(true)
+    })
+  })
+
   describe('.start()', function() {
     it('passes this.express to http.createServer()', function() {
       const fakeServer = {

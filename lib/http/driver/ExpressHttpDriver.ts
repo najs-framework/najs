@@ -1,4 +1,4 @@
-import { HttpDriverClass } from './../../constants'
+import { HttpDriverClass, ConfigurationKeys } from '../../constants'
 import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver'
 import { IAutoload } from '../../core/IAutoload'
 import { IRouteData } from '../routing/interfaces/IRouteData'
@@ -9,10 +9,13 @@ import { Controller } from '../controller/Controller'
 import { RouteCollection } from '../routing/RouteCollection'
 import { make } from '../../core/make'
 import { isIResponse } from '../response/IResponse'
-import * as Express from 'express'
-import * as Http from 'http'
 import { isPromise } from '../../private/isPromise'
 import { IMiddleware } from '../middleware/IMiddleware'
+import { NajsFacade as Najs } from '../../core/NajsFacade'
+import { NajsPath } from '../../core/INajsFacade'
+import * as Express from 'express'
+import * as Http from 'http'
+import * as ExpressHandlerBars from 'express-handlebars'
 
 export type ExpressApp = Express.Express
 
@@ -55,7 +58,24 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
 
   protected setup(): ExpressApp {
     const app: ExpressApp = Express()
+    this.setupViewEngine(app)
     return app
+  }
+
+  protected setupViewEngine(app: ExpressApp) {
+    const viewEngine: string = Najs.getConfig(ConfigurationKeys.ViewEngineName, 'hbs')
+    app.engine(
+      viewEngine,
+      ExpressHandlerBars(
+        Najs.getConfig(ConfigurationKeys.HandlerBarsOptions, {
+          layoutsDir: Najs.path(NajsPath.Layout),
+          extname: '.hbs',
+          defaultLayout: 'default'
+        })
+      )
+    )
+    app.set('view engine', viewEngine)
+    app.set('views', Najs.path(NajsPath.View))
   }
 
   getClassName() {

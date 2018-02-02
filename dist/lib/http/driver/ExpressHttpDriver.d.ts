@@ -2,9 +2,9 @@
 import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver';
 import { IAutoload } from '../../core/IAutoload';
 import { IRouteData } from '../routing/interfaces/IRouteData';
+import { IMiddleware } from '../middleware/IMiddleware';
 import * as Express from 'express';
 import * as Http from 'http';
-import { IMiddleware } from '../middleware/IMiddleware';
 export declare type ExpressApp = Express.Express;
 export declare type ExpressHandlers = Array<Express.RequestHandler | Express.ErrorRequestHandler>;
 export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
@@ -14,6 +14,7 @@ export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
     protected server: Http.Server;
     constructor();
     protected setup(): ExpressApp;
+    protected setupViewEngine(app: ExpressApp): void;
     getClassName(): string;
     getNativeDriver(): ExpressApp;
     route(route: IRouteData): void;

@@ -6,6 +6,8 @@ export const LoggerClass: string = 'Logger'
  */
 export const ConfigurationKeys = {
   CWD: 'cwd',
+  ViewEngineName: 'view.engine',
+  HandlerBarsOptions: 'view.handlebars',
   Paths: {
     app: 'path.app',
     base: 'cwd',

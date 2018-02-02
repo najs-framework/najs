@@ -7,6 +7,8 @@ exports.LoggerClass = 'Logger';
  */
 exports.ConfigurationKeys = {
     CWD: 'cwd',
+    ViewEngineName: 'view.engine',
+    HandlerBarsOptions: 'view.handlebars',
     Paths: {
         app: 'path.app',
         base: 'cwd',

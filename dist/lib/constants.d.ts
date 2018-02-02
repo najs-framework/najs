@@ -5,6 +5,8 @@ export declare const LoggerClass: string;
  */
 export declare const ConfigurationKeys: {
     CWD: string;
+    ViewEngineName: string;
+    HandlerBarsOptions: string;
     Paths: {
         app: string;
         base: string;

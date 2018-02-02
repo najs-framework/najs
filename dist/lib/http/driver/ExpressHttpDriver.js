@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const constants_1 = require("./../../constants");
+const constants_1 = require("../../constants");
 const index_1 = require("../../index");
 const Log_1 = require("../../log/Log");
 const lodash_1 = require("lodash");
@@ -8,16 +8,30 @@ const Controller_1 = require("../controller/Controller");
 const RouteCollection_1 = require("../routing/RouteCollection");
 const make_1 = require("../../core/make");
 const IResponse_1 = require("../response/IResponse");
+const isPromise_1 = require("../../private/isPromise");
+const NajsFacade_1 = require("../../core/NajsFacade");
+const INajsFacade_1 = require("../../core/INajsFacade");
 const Express = require("express");
 const Http = require("http");
-const isPromise_1 = require("../../private/isPromise");
+const ExpressHandlerBars = require("express-handlebars");
 class ExpressHttpDriver {
     constructor() {
         this.express = this.setup();
     }
     setup() {
         const app = Express();
+        this.setupViewEngine(app);
         return app;
+    }
+    setupViewEngine(app) {
+        const viewEngine = NajsFacade_1.NajsFacade.getConfig(constants_1.ConfigurationKeys.ViewEngineName, 'hbs');
+        app.engine(viewEngine, ExpressHandlerBars(NajsFacade_1.NajsFacade.getConfig(constants_1.ConfigurationKeys.HandlerBarsOptions, {
+            layoutsDir: NajsFacade_1.NajsFacade.path(INajsFacade_1.NajsPath.Layout),
+            extname: '.hbs',
+            defaultLayout: 'default'
+        })));
+        app.set('view engine', viewEngine);
+        app.set('views', NajsFacade_1.NajsFacade.path(INajsFacade_1.NajsPath.View));
     }
     getClassName() {
         return ExpressHttpDriver.className;
