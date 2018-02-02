@@ -400,10 +400,15 @@ describe('ExpressHttpDriver', function () {
             new ExpressHttpDriver_1.ExpressHttpDriver();
             expect(setupSpy.called).toBe(true);
         });
-        it('calls .setupBodyParser() for setting up the view engine', function () {
+        it('calls .setupBodyParser()', function () {
             const setupBodyParser = Sinon.spy(ExpressHttpDriver_1.ExpressHttpDriver.prototype, 'setupBodyParser');
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             expect(setupBodyParser.calledWith(driver['express'])).toBe(true);
+        });
+        it('calls .setupCookieParser()', function () {
+            const setupCookieParser = Sinon.spy(ExpressHttpDriver_1.ExpressHttpDriver.prototype, 'setupCookieParser');
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            expect(setupCookieParser.calledWith(driver['express'])).toBe(true);
         });
         it('calls .setupViewEngine() for setting up the view engine', function () {
             const setupViewEngine = Sinon.spy(ExpressHttpDriver_1.ExpressHttpDriver.prototype, 'setupViewEngine');

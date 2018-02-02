@@ -477,10 +477,16 @@ describe('ExpressHttpDriver', function() {
       expect(setupSpy.called).toBe(true)
     })
 
-    it('calls .setupBodyParser() for setting up the view engine', function() {
+    it('calls .setupBodyParser()', function() {
       const setupBodyParser = Sinon.spy(ExpressHttpDriver.prototype, <any>'setupBodyParser')
       const driver = new ExpressHttpDriver()
       expect(setupBodyParser.calledWith(driver['express'])).toBe(true)
+    })
+
+    it('calls .setupCookieParser()', function() {
+      const setupCookieParser = Sinon.spy(ExpressHttpDriver.prototype, <any>'setupCookieParser')
+      const driver = new ExpressHttpDriver()
+      expect(setupCookieParser.calledWith(driver['express'])).toBe(true)
     })
 
     it('calls .setupViewEngine() for setting up the view engine', function() {

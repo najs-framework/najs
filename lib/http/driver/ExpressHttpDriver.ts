@@ -16,6 +16,7 @@ import { NajsPath } from '../../core/INajsFacade'
 import * as Express from 'express'
 import * as Http from 'http'
 import * as BodyParser from 'body-parser'
+import * as CookieParser from 'cookie-parser'
 import * as ExpressHandlerBars from 'express-handlebars'
 
 export type ExpressApp = Express.Express
@@ -60,6 +61,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   protected setup(): ExpressApp {
     const app: ExpressApp = Express()
     this.setupBodyParser(app)
+    this.setupCookieParser(app)
     this.setupViewEngine(app)
     return app
   }
@@ -67,6 +69,10 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   protected setupBodyParser(app: ExpressApp) {
     app.use(BodyParser.json())
     app.use(BodyParser.urlencoded({ extended: true }))
+  }
+
+  protected setupCookieParser(app: ExpressApp) {
+    app.use(CookieParser())
   }
 
   protected setupViewEngine(app: ExpressApp) {

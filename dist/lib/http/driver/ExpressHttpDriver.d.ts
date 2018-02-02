@@ -15,6 +15,7 @@ export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
     constructor();
     protected setup(): ExpressApp;
     protected setupBodyParser(app: ExpressApp): void;
+    protected setupCookieParser(app: ExpressApp): void;
     protected setupViewEngine(app: ExpressApp): void;
     getClassName(): string;
     getNativeDriver(): ExpressApp;
