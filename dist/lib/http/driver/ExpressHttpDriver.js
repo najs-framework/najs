@@ -13,6 +13,7 @@ const NajsFacade_1 = require("../../core/NajsFacade");
 const INajsFacade_1 = require("../../core/INajsFacade");
 const Express = require("express");
 const Http = require("http");
+const BodyParser = require("body-parser");
 const ExpressHandlerBars = require("express-handlebars");
 class ExpressHttpDriver {
     constructor() {
@@ -20,8 +21,13 @@ class ExpressHttpDriver {
     }
     setup() {
         const app = Express();
+        this.setupBodyParser(app);
         this.setupViewEngine(app);
         return app;
+    }
+    setupBodyParser(app) {
+        app.use(BodyParser.json());
+        app.use(BodyParser.urlencoded({ extended: true }));
     }
     setupViewEngine(app) {
         const viewEngine = NajsFacade_1.NajsFacade.getConfig(constants_1.ConfigurationKeys.ViewEngineName, 'hbs');

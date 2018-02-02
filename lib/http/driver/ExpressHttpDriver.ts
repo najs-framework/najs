@@ -15,6 +15,7 @@ import { NajsFacade as Najs } from '../../core/NajsFacade'
 import { NajsPath } from '../../core/INajsFacade'
 import * as Express from 'express'
 import * as Http from 'http'
+import * as BodyParser from 'body-parser'
 import * as ExpressHandlerBars from 'express-handlebars'
 
 export type ExpressApp = Express.Express
@@ -58,8 +59,14 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
 
   protected setup(): ExpressApp {
     const app: ExpressApp = Express()
+    this.setupBodyParser(app)
     this.setupViewEngine(app)
     return app
+  }
+
+  protected setupBodyParser(app: ExpressApp) {
+    app.use(BodyParser.json())
+    app.use(BodyParser.urlencoded({ extended: true }))
   }
 
   protected setupViewEngine(app: ExpressApp) {

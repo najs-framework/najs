@@ -477,6 +477,12 @@ describe('ExpressHttpDriver', function() {
       expect(setupSpy.called).toBe(true)
     })
 
+    it('calls .setupBodyParser() for setting up the view engine', function() {
+      const setupBodyParser = Sinon.spy(ExpressHttpDriver.prototype, <any>'setupBodyParser')
+      const driver = new ExpressHttpDriver()
+      expect(setupBodyParser.calledWith(driver['express'])).toBe(true)
+    })
+
     it('calls .setupViewEngine() for setting up the view engine', function() {
       const setupViewEngine = Sinon.spy(ExpressHttpDriver.prototype, <any>'setupViewEngine')
       const driver = new ExpressHttpDriver()
