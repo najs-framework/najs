@@ -1,4 +1,5 @@
 /// <reference types="node" />
+import { HttpKernel } from './../HttpKernel';
 import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver';
 import { IAutoload } from '../../core/IAutoload';
 import { IRouteData } from '../routing/interfaces/IRouteData';
@@ -12,6 +13,7 @@ export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
     static className: string;
     protected express: ExpressApp;
     protected server: Http.Server;
+    protected httpKernel: HttpKernel;
     constructor();
     protected setup(): ExpressApp;
     protected setupBodyParser(app: ExpressApp): void;
@@ -22,7 +24,9 @@ export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
     getNativeDriver(): ExpressApp;
     route(route: IRouteData): void;
     protected getEndpointHandlers(method: string, path: string, route: IRouteData): ExpressHandlers;
+    protected getMiddlewareList(middleware: any): IMiddleware[];
     protected createBeforeMiddlewareWrapper(middlewareList: IMiddleware[]): (request: Express.Request, response: Express.Response, next: Express.NextFunction) => Promise<void>;
+    protected createNativeMiddlewareWrapper(middlewareList: IMiddleware[]): void;
     protected createEndpointWrapper(controllerName: string, endpointName: string, middleware: IMiddleware[]): (request: Express.Request, response: Express.Response) => Promise<void>;
     protected createEndpointWrapperByObject(controllerObject: Object, endpointName: string, middleware: IMiddleware[]): (request: Express.Request, response: Express.Response) => Promise<void>;
     protected cloneControllerObject(controller: Object, request: Express.Request, response: Express.Response): Object;

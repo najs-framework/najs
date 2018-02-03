@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HttpDriverClass = 'HttpDriver';
 exports.LoggerClass = 'Logger';
+exports.HttpKernelClass = 'HttpKernel';
 /**
  * This Object Configuration's key
  */

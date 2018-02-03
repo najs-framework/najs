@@ -3,12 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const make_1 = require("../core/make");
 const lodash_1 = require("lodash");
 const register_1 = require("../core/register");
+const constants_1 = require("../constants");
 class HttpKernel {
     constructor() {
         this.middleware = {};
     }
     getClassName() {
-        return HttpKernel.className;
+        return constants_1.HttpKernelClass;
     }
     getMiddleware(name) {
         const result = [];
@@ -30,6 +31,5 @@ class HttpKernel {
         return result;
     }
 }
-HttpKernel.className = 'HttpKernel';
 exports.HttpKernel = HttpKernel;
 register_1.register(HttpKernel);

@@ -19,6 +19,7 @@ const ExpressHandlerBars = require("express-handlebars");
 class ExpressHttpDriver {
     constructor() {
         this.express = this.setup();
+        this.httpKernel = make_1.make(constants_1.HttpKernelClass);
     }
     setup() {
         const app = Express();
@@ -71,23 +72,38 @@ class ExpressHttpDriver {
     getEndpointHandlers(method, path, route) {
         const handlers = [];
         // create middleware handlers
+        const middlewareListBucket = [];
         for (const middleware of route.middleware) {
             if (lodash_1.isFunction(middleware)) {
                 handlers.push(middleware);
                 continue;
             }
+            middlewareListBucket.push(this.getMiddlewareList(middleware));
         }
-        // handlers.push(this.createBeforeMiddlewareWrapper(middleware))
+        const middlewareList = Array.from(new Set(lodash_1.flatten(middlewareListBucket)));
+        if (middlewareList.length > 0) {
+            this.createNativeMiddlewareWrapper(middlewareList);
+            handlers.push(this.createBeforeMiddlewareWrapper(middlewareList));
+        }
         if (lodash_1.isFunction(route.endpoint)) {
-            handlers.push(this.createEndpointWrapperByFunction(route.endpoint, []));
+            handlers.push(this.createEndpointWrapperByFunction(route.endpoint, middlewareList));
             return handlers;
         }
         if (lodash_1.isFunction(route.controller) || lodash_1.isString(route.controller)) {
-            handlers.push(this.createEndpointWrapper(route.controller, route.endpoint, []));
+            handlers.push(this.createEndpointWrapper(route.controller, route.endpoint, middlewareList));
             return handlers;
         }
-        handlers.push(this.createEndpointWrapperByObject(route.controller, route.endpoint, []));
+        handlers.push(this.createEndpointWrapperByObject(route.controller, route.endpoint, middlewareList));
         return handlers;
+    }
+    getMiddlewareList(middleware) {
+        if (lodash_1.isString(middleware)) {
+            return this.httpKernel.getMiddleware(middleware);
+        }
+        if (lodash_1.isObject(middleware)) {
+            return [middleware];
+        }
+        return [];
     }
     createBeforeMiddlewareWrapper(middlewareList) {
         return async (request, response, next) => {
@@ -98,6 +114,13 @@ class ExpressHttpDriver {
             }
             next();
         };
+    }
+    createNativeMiddlewareWrapper(middlewareList) {
+        for (const middleware of middlewareList) {
+            if (lodash_1.isFunction(middleware.native)) {
+                Reflect.apply(middleware.native, middleware, [this]);
+            }
+        }
     }
     createEndpointWrapper(controllerName, endpointName, middleware) {
         return async (request, response) => {

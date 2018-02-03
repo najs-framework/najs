@@ -3,16 +3,15 @@ import { IMiddleware } from './middleware/IMiddleware'
 import { make } from '../core/make'
 import { isString } from 'lodash'
 import { register } from '../core/register'
+import { HttpKernelClass } from '../constants'
 
 export class HttpKernel implements IAutoload {
-  static className: string = 'HttpKernel'
-
   protected middleware: {
     [key: string]: string | string[]
   } = {}
 
   getClassName(): string {
-    return HttpKernel.className
+    return HttpKernelClass
   }
 
   getMiddleware(name: string): IMiddleware[] {

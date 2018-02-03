@@ -5,12 +5,13 @@ const Sinon = require("sinon");
 const Make = require("../../lib/core/make");
 const ClassRegistry_1 = require("../../lib/core/ClassRegistry");
 const HttpKernel_1 = require("../../lib/http/HttpKernel");
+const constants_1 = require("../../lib/constants");
 describe('HttpKernel', function () {
     it('is a base class which contains middleware configuration', function () { });
     it('auto register to ClassRegistry with name HttpKernel', function () {
-        expect(ClassRegistry_1.ClassRegistry.has(HttpKernel_1.HttpKernel.className)).toBe(true);
+        expect(ClassRegistry_1.ClassRegistry.has(constants_1.HttpKernelClass)).toBe(true);
         const instance = new HttpKernel_1.HttpKernel();
-        expect(instance.getClassName() === HttpKernel_1.HttpKernel.className);
+        expect(instance.getClassName() === constants_1.HttpKernelClass);
     });
     describe('getMiddleware()', function () {
         it('returns empty array if middleware not found', function () {

@@ -123,6 +123,30 @@ describe('ExpressHttpDriver', function() {
       expect(handlers[0] === middleware).toBe(true)
     })
 
+    it('creates middlewareList and calls createNativeMiddlewareWrapper(), createBeforeMiddlewareWrapper() if the list not empty', function() {
+      function handler() {}
+      const middleware = {}
+      const route = {
+        middleware: ['something'],
+        endpoint: handler
+      }
+
+      const driver = new ExpressHttpDriver()
+
+      const getMiddlewareStub = Sinon.stub(driver['httpKernel'], 'getMiddleware')
+      // no worries, it remove duplicated middleware
+      getMiddlewareStub.returns([middleware, middleware, middleware, middleware])
+
+      const createNativeMiddlewareWrapperSpy = Sinon.spy(driver, <any>'createNativeMiddlewareWrapper')
+      const createBeforeMiddlewareWrapperSpy = Sinon.spy(driver, <any>'createBeforeMiddlewareWrapper')
+
+      const handlers = driver['getEndpointHandlers']('any', 'any', <any>route)
+      expect(handlers).toHaveLength(2)
+      expect(createNativeMiddlewareWrapperSpy.calledWith([middleware])).toBe(true)
+      expect(createBeforeMiddlewareWrapperSpy.calledWith([middleware])).toBe(true)
+      getMiddlewareStub.restore()
+    })
+
     it('calls createEndpointWrapperByFunction and pushes result to handlers', function() {
       function handler() {}
       const route = {
@@ -194,6 +218,33 @@ describe('ExpressHttpDriver', function() {
     })
   })
 
+  describe('protected .getMiddlewareList()', function() {
+    it('returns an empty array if middleware is not Object or String', function() {
+      const driver = new ExpressHttpDriver()
+      expect(driver['getMiddlewareList'](12345)).toHaveLength(0)
+      expect(driver['getMiddlewareList'](true)).toHaveLength(0)
+      expect(driver['getMiddlewareList'](undefined)).toHaveLength(0)
+    })
+
+    it('returns an array wrap middleware if it is an Object', function() {
+      const driver = new ExpressHttpDriver()
+      const middleware = {}
+      const list = driver['getMiddlewareList'](middleware)
+      expect(list).toHaveLength(1)
+      expect(list[0] === middleware).toBe(true)
+    })
+
+    it('calls HttpKernel.getMiddleware() if middleware is a string', function() {
+      const driver = new ExpressHttpDriver()
+      const getMiddlewareStub = Sinon.stub(driver['httpKernel'], 'getMiddleware')
+      getMiddlewareStub.returns([1, 2, 3])
+      const list = driver['getMiddlewareList']('test')
+      expect(list).toHaveLength(3)
+      expect(getMiddlewareStub.calledWith('test')).toBe(true)
+      getMiddlewareStub.restore()
+    })
+  })
+
   describe('protected .createBeforeMiddlewareWrapper()', function() {
     it('returns an async function', function() {
       const driver = new ExpressHttpDriver()
@@ -223,6 +274,32 @@ describe('ExpressHttpDriver', function() {
       expect(beforeSpy.firstCall.thisValue === hasBeforeMiddleware).toBe(true)
       expect(afterSpy.called).toBe(false)
       expect(nextSpy.called).toBe(true)
+    })
+  })
+
+  describe('protected .createNativeMiddlewareWrapper()', function() {
+    it('returns undefined', function() {
+      const driver = new ExpressHttpDriver()
+      expect(typeof driver['createNativeMiddlewareWrapper']([]) === 'undefined').toBe(true)
+    })
+
+    it('skipped if the middleware does not have .native() function', async function() {
+      const hasNativeMiddleware = {
+        native(httpDriver: any): void {}
+      }
+      const hasNoNativeMiddleware = {
+        async after(request: any, response: any): Promise<any> {}
+      }
+
+      const nativeSpy = Sinon.spy(hasNativeMiddleware, 'native')
+      const afterSpy = Sinon.spy(hasNoNativeMiddleware, 'after')
+
+      const driver = new ExpressHttpDriver()
+      driver['createNativeMiddlewareWrapper']([hasNativeMiddleware, hasNoNativeMiddleware])
+
+      expect(nativeSpy.calledWith(driver)).toBe(true)
+      expect(nativeSpy.firstCall.thisValue === hasNativeMiddleware).toBe(true)
+      expect(afterSpy.called).toBe(false)
     })
   })
 

@@ -1,5 +1,6 @@
 export const HttpDriverClass: string = 'HttpDriver'
 export const LoggerClass: string = 'Logger'
+export const HttpKernelClass: string = 'HttpKernel'
 
 /**
  * This Object Configuration's key

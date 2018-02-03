@@ -1,5 +1,6 @@
 export declare const HttpDriverClass: string;
 export declare const LoggerClass: string;
+export declare const HttpKernelClass: string;
 /**
  * This Object Configuration's key
  */
