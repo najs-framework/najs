@@ -63,6 +63,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     this.setupBodyParser(app)
     this.setupCookieParser(app)
     this.setupViewEngine(app)
+    this.setupStaticAssets(app)
     return app
   }
 
@@ -89,6 +90,10 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     )
     app.set('view engine', viewEngine)
     app.set('views', Najs.path(NajsPath.View))
+  }
+
+  protected setupStaticAssets(app: ExpressApp) {
+    app.use(Express.static(Najs.path(NajsPath.Public)))
   }
 
   getClassName() {

@@ -25,6 +25,7 @@ class ExpressHttpDriver {
         this.setupBodyParser(app);
         this.setupCookieParser(app);
         this.setupViewEngine(app);
+        this.setupStaticAssets(app);
         return app;
     }
     setupBodyParser(app) {
@@ -43,6 +44,9 @@ class ExpressHttpDriver {
         })));
         app.set('view engine', viewEngine);
         app.set('views', NajsFacade_1.NajsFacade.path(INajsFacade_1.NajsPath.View));
+    }
+    setupStaticAssets(app) {
+        app.use(Express.static(NajsFacade_1.NajsFacade.path(INajsFacade_1.NajsPath.Public)));
     }
     getClassName() {
         return ExpressHttpDriver.className;

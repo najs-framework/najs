@@ -415,6 +415,11 @@ describe('ExpressHttpDriver', function () {
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             expect(setupViewEngine.calledWith(driver['express'])).toBe(true);
         });
+        it('calls .setupStaticAssets() for setting up the view engine', function () {
+            const setupStaticAssets = Sinon.spy(ExpressHttpDriver_1.ExpressHttpDriver.prototype, 'setupStaticAssets');
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            expect(setupStaticAssets.calledWith(driver['express'])).toBe(true);
+        });
     });
     describe('.start()', function () {
         it('passes this.express to http.createServer()', function () {
