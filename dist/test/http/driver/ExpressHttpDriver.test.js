@@ -10,6 +10,7 @@ const ClassRegistry_1 = require("../../../lib/core/ClassRegistry");
 const Log_1 = require("../../../lib/log/Log");
 const Controller_1 = require("../../../lib/http/controller/Controller");
 const register_1 = require("../../../lib/core/register");
+const isPromise_1 = require("../../../lib/private/isPromise");
 describe('ExpressHttpDriver', function () {
     it('registers as default HttpDriver', function () {
         expect(ClassRegistry_1.ClassRegistry.has(constants_1.HttpDriverClass)).toBe(true);
@@ -180,8 +181,9 @@ describe('ExpressHttpDriver', function () {
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             const wrapper = driver['createBeforeMiddlewareWrapper']([hasBeforeMiddleware, hasNoBeforeMiddleware]);
             const request = {};
-            await wrapper(request, {}, nextSpy);
-            expect(beforeSpy.calledWith(request)).toBe(true);
+            const response = {};
+            await wrapper(request, response, nextSpy);
+            expect(beforeSpy.calledWith(request, response)).toBe(true);
             expect(beforeSpy.firstCall.thisValue === hasBeforeMiddleware).toBe(true);
             expect(afterSpy.called).toBe(false);
             expect(nextSpy.called).toBe(true);
@@ -198,12 +200,12 @@ describe('ExpressHttpDriver', function () {
         register_1.register(TestControllerA);
         it('always returns a function despite Controller or Endpoint are invalid', function () {
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
-            const result = driver['createEndpointWrapper']('NotFound', 'invalid');
+            const result = driver['createEndpointWrapper']('NotFound', 'invalid', []);
             expect(typeof result === 'function').toBe(true);
         });
         it('calls make() and make() throws an error if Controller not found', async function () {
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
-            const result = driver['createEndpointWrapper']('NotFound', 'invalid');
+            const result = driver['createEndpointWrapper']('NotFound', 'invalid', []);
             expect(typeof result === 'function').toBe(true);
             try {
                 await result({}, {});
@@ -218,7 +220,7 @@ describe('ExpressHttpDriver', function () {
             const makeSpy = Sinon.spy(Make, 'make');
             const endpointSpy = Sinon.spy(TestControllerA.prototype, 'endpoint');
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
-            const result = driver['createEndpointWrapper']('TestControllerA', 'invalid');
+            const result = driver['createEndpointWrapper']('TestControllerA', 'invalid', []);
             const request = {};
             const response = {};
             result(request, response);
@@ -232,13 +234,13 @@ describe('ExpressHttpDriver', function () {
             const endpointSpy = Sinon.spy(TestControllerA.prototype, 'endpoint');
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             const handleEndpointResultStub = Sinon.stub(driver, 'handleEndpointResult');
-            const result = driver['createEndpointWrapper']('TestControllerA', 'endpoint');
+            const result = driver['createEndpointWrapper']('TestControllerA', 'endpoint', []);
             const request = {};
             const response = {};
             result(request, response);
             expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true);
             expect(endpointSpy.called).toBe(true);
-            expect(handleEndpointResultStub.calledWith(response, undefined)).toBe(true);
+            expect(handleEndpointResultStub.calledWith(request, response, undefined, [])).toBe(true);
             makeSpy.restore();
             endpointSpy.restore();
             handleEndpointResultStub.restore();
@@ -247,7 +249,7 @@ describe('ExpressHttpDriver', function () {
     describe('protected .createEndpointWrapperByObject()', function () {
         it('always returns a function despite Controller or Endpoint are invalid', function () {
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
-            const result = driver['createEndpointWrapperByObject']({}, 'invalid');
+            const result = driver['createEndpointWrapperByObject']({}, 'invalid', []);
             expect(typeof result === 'function').toBe(true);
         });
         it('calls cloneControllerObject()/make() with controller instance but do not call if endpoint not found', function () {
@@ -255,7 +257,7 @@ describe('ExpressHttpDriver', function () {
             const controller = Make.make('TestControllerA');
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             const cloneControllerObjectSpy = Sinon.spy(driver, 'cloneControllerObject');
-            const result = driver['createEndpointWrapperByObject'](controller, 'invalid');
+            const result = driver['createEndpointWrapperByObject'](controller, 'invalid', []);
             const request = {};
             const response = {};
             result(request, response);
@@ -270,13 +272,13 @@ describe('ExpressHttpDriver', function () {
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             const handleEndpointResultStub = Sinon.stub(driver, 'handleEndpointResult');
             const cloneControllerObjectSpy = Sinon.spy(driver, 'cloneControllerObject');
-            const result = driver['createEndpointWrapperByObject'](controller, 'endpoint');
+            const result = driver['createEndpointWrapperByObject'](controller, 'endpoint', []);
             const request = {};
             const response = {};
             result(request, response);
             expect(cloneControllerObjectSpy.called).toBe(true);
             expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true);
-            expect(handleEndpointResultStub.calledWith(response, undefined)).toBe(true);
+            expect(handleEndpointResultStub.calledWith(request, response, undefined, [])).toBe(true);
             makeSpy.restore();
             cloneControllerObjectSpy.restore();
             handleEndpointResultStub.restore();
@@ -286,7 +288,7 @@ describe('ExpressHttpDriver', function () {
             const endpointSpy = Sinon.spy(controller, 'endpoint');
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             const cloneControllerObjectSpy = Sinon.spy(driver, 'cloneControllerObject');
-            const result = driver['createEndpointWrapperByObject'](controller, 'invalid');
+            const result = driver['createEndpointWrapperByObject'](controller, 'invalid', []);
             const request = {};
             const response = {};
             result(request, response);
@@ -303,13 +305,13 @@ describe('ExpressHttpDriver', function () {
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             const handleEndpointResultStub = Sinon.stub(driver, 'handleEndpointResult');
             const cloneControllerObjectSpy = Sinon.spy(driver, 'cloneControllerObject');
-            const result = driver['createEndpointWrapperByObject'](controller, 'endpoint');
+            const result = driver['createEndpointWrapperByObject'](controller, 'endpoint', []);
             const request = {};
             const response = {};
             await result(request, response);
             expect(cloneControllerObjectSpy.called).toBe(true);
             expect(endpointSpy.called).toBe(true);
-            expect(handleEndpointResultStub.calledWith(response, undefined)).toBe(true);
+            expect(handleEndpointResultStub.calledWith(request, response, undefined, [])).toBe(true);
             cloneControllerObjectSpy.restore();
             endpointSpy.restore();
             handleEndpointResultStub.restore();
@@ -319,7 +321,7 @@ describe('ExpressHttpDriver', function () {
         function handler() { }
         const handlerSpy = Sinon.spy(handler);
         const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
-        const result = driver['createEndpointWrapperByFunction'](handlerSpy);
+        const result = driver['createEndpointWrapperByFunction'](handlerSpy, []);
         const handleEndpointResultStub = Sinon.stub(driver, 'handleEndpointResult');
         const request = {};
         const response = {};
@@ -337,7 +339,7 @@ describe('ExpressHttpDriver', function () {
         it("calls handleEndpointResult and passes response, endpoint's result", function () {
             expect(handlerSpy.firstCall.args[0] === request).toBe(true);
             expect(handlerSpy.firstCall.args[1] === response).toBe(true);
-            expect(handleEndpointResultStub.calledWith(response, undefined)).toBe(true);
+            expect(handleEndpointResultStub.calledWith(request, response, undefined, [])).toBe(true);
             handleEndpointResultStub.restore();
         });
     });
@@ -366,9 +368,10 @@ describe('ExpressHttpDriver', function () {
     });
     describe('protected .handleEndpointResult()', function () {
         it('does nothing if result is undefined', function () {
+            const request = {};
             const response = {};
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
-            driver['handleEndpointResult'](response, undefined);
+            driver['handleEndpointResult'](request, response, undefined, []);
         });
         it('calls await if result is a Promise like', async function () {
             const iResponse = {
@@ -378,20 +381,68 @@ describe('ExpressHttpDriver', function () {
             const promise = new Promise(function (resolve) {
                 resolve(iResponse);
             });
+            const request = {};
             const response = {};
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
-            await driver['handleEndpointResult'](response, promise);
+            await driver['handleEndpointResult'](request, response, promise, []);
             expect(iResponseSpy.calledWith(response, driver)).toBe(true);
         });
-        it('calls result.respond if result is IResponse', function () {
+        it('calls result.respond if result is IResponse', async function () {
             const iResponse = {
                 respond(response, httpDriver) { }
             };
             const iResponseSpy = Sinon.spy(iResponse, 'respond');
+            const request = {};
             const response = {};
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
-            driver['handleEndpointResult'](response, iResponse);
+            await driver['handleEndpointResult'](request, response, iResponse, []);
             expect(iResponseSpy.calledWith(response, driver)).toBe(true);
+        });
+    });
+    describe('protected .applyAfterMiddlewareWrapper()', function () {
+        it('returns a promise', function () {
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            expect(isPromise_1.isPromise(driver['applyAfterMiddlewareWrapper']([], {}, {}, undefined))).toBe(true);
+        });
+        it('returns value if middleware list is empty', async function () {
+            const value = {};
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            expect((await driver['applyAfterMiddlewareWrapper']([], {}, {}, value)) === value).toBe(true);
+        });
+        it('skips if middleware has no .after() function, can receive new instance of result', async function () {
+            const freshResult = {};
+            const hasAfterMiddleware = {
+                async after(request, response, result) {
+                    return freshResult;
+                }
+            };
+            const hasNoAfterMiddleware = {
+                async before(request, response) { }
+            };
+            const afterSpy = Sinon.spy(hasAfterMiddleware, 'after');
+            const beforeSpy = Sinon.spy(hasNoAfterMiddleware, 'before');
+            const request = {};
+            const response = {};
+            const result = {};
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            const received = await driver['applyAfterMiddlewareWrapper']([hasAfterMiddleware, hasNoAfterMiddleware], request, response, result);
+            expect(afterSpy.calledWith(request, response, result)).toBe(true);
+            expect(afterSpy.firstCall.thisValue === hasAfterMiddleware).toBe(true);
+            expect(beforeSpy.called).toBe(false);
+            expect(received === freshResult).toBe(true);
+        });
+        it('skips if middleware has no .after() function, can receive same instance of result', async function () {
+            const hasAfterMiddleware = {
+                async after(request, response, result) {
+                    return result;
+                }
+            };
+            const request = {};
+            const response = {};
+            const result = {};
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            const received = await driver['applyAfterMiddlewareWrapper']([hasAfterMiddleware], request, response, result);
+            expect(received === result).toBe(true);
         });
     });
     describe('.setup()', function () {

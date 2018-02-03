@@ -20,6 +20,8 @@ export { IResponseFacade } from './http/response/IResponseFacade';
 export { IHttpDriver } from './http/driver/IHttpDriver';
 export { HttpDriverStartOptions } from './http/driver/IHttpDriver';
 export { HttpKernel } from './http/HttpKernel';
+export { IMiddleware } from './http/middleware/IMiddleware';
+export { IExpressMiddleware } from './http/middleware/IExpressMiddleware';
 export { ILogger } from './log/ILogger';
 export { Log, reload as reloadLog } from './log/Log';
 export { WinstonLogger } from './log/WinstonLogger';

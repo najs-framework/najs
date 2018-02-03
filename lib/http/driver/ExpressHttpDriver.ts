@@ -134,16 +134,16 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     // handlers.push(this.createBeforeMiddlewareWrapper(middleware))
 
     if (isFunction(route.endpoint)) {
-      handlers.push(this.createEndpointWrapperByFunction(route.endpoint))
+      handlers.push(this.createEndpointWrapperByFunction(route.endpoint, []))
       return handlers
     }
 
     if (isFunction(route.controller) || isString(route.controller)) {
-      handlers.push(this.createEndpointWrapper(<any>route.controller, <string>route.endpoint))
+      handlers.push(this.createEndpointWrapper(<any>route.controller, <string>route.endpoint, []))
       return handlers
     }
 
-    handlers.push(this.createEndpointWrapperByObject(<Object>route.controller, <string>route.endpoint))
+    handlers.push(this.createEndpointWrapperByObject(<Object>route.controller, <string>route.endpoint, []))
     return handlers
   }
 
@@ -151,31 +151,31 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     return async (request: Express.Request, response: Express.Response, next: Express.NextFunction) => {
       for (const middleware of middlewareList) {
         if (isFunction(middleware.before)) {
-          await Reflect.apply(middleware.before, middleware, [request])
+          await Reflect.apply(middleware.before, middleware, [request, response])
         }
       }
       next()
     }
   }
 
-  protected createEndpointWrapper(controllerName: string, endpointName: string) {
+  protected createEndpointWrapper(controllerName: string, endpointName: string, middleware: IMiddleware[]) {
     return async (request: Express.Request, response: Express.Response) => {
       const controller = make<Controller>(controllerName, [request, response])
       const endpoint: any = Reflect.get(controller, endpointName)
       if (isFunction(endpoint)) {
         const result = Reflect.apply(endpoint, controller, [request, response])
-        await this.handleEndpointResult(response, result)
+        await this.handleEndpointResult(request, response, result, middleware)
       }
     }
   }
 
-  protected createEndpointWrapperByObject(controllerObject: Object, endpointName: string) {
+  protected createEndpointWrapperByObject(controllerObject: Object, endpointName: string, middleware: IMiddleware[]) {
     return async (request: Express.Request, response: Express.Response) => {
       const controller: Object = this.cloneControllerObject(controllerObject, request, response)
       const endpoint: any = Reflect.get(controller, endpointName)
       if (isFunction(endpoint)) {
         const result = Reflect.apply(endpoint, controller, [request, response])
-        await this.handleEndpointResult(response, result)
+        await this.handleEndpointResult(request, response, result, middleware)
       }
     }
   }
@@ -187,17 +187,42 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     return Object.assign({}, controller, { request, response })
   }
 
-  protected createEndpointWrapperByFunction(endpoint: Function) {
+  protected createEndpointWrapperByFunction(endpoint: Function, middleware: IMiddleware[]) {
     return async (request: Express.Request, response: Express.Response) => {
       // Can not use make for default Controller
       const controller = Reflect.construct(Controller, [request, response])
       const result = Reflect.apply(endpoint, controller, [request, response])
-      await this.handleEndpointResult(response, result)
+      await this.handleEndpointResult(request, response, result, middleware)
     }
   }
 
-  protected async handleEndpointResult(response: Express.Response, result: any) {
-    const value: any = isPromise(result) ? await (result as Promise<any>) : result
+  protected async applyAfterMiddlewareWrapper(
+    middlewareList: IMiddleware[],
+    request: Express.Request,
+    response: Express.Response,
+    value: any
+  ): Promise<any> {
+    if (middlewareList.length === 0) {
+      return value
+    }
+
+    let result: any = value
+    for (const middleware of middlewareList) {
+      if (isFunction(middleware.after)) {
+        result = await Reflect.apply(middleware.after, middleware, [request, response, result])
+      }
+    }
+    return result
+  }
+
+  protected async handleEndpointResult(
+    request: Express.Request,
+    response: Express.Response,
+    result: any,
+    middleware: IMiddleware[]
+  ) {
+    const rawValue: any = isPromise(result) ? await (result as Promise<any>) : result
+    const value: any = await this.applyAfterMiddlewareWrapper(middleware, request, response, rawValue)
     if (isIResponse(value)) {
       return value.respond(response, this)
     }
