@@ -1,3 +1,4 @@
+/// <reference types="express" />
 import { ExpressHttpDriver } from '../driver/ExpressHttpDriver';
 import { IMiddleware } from './IMiddleware';
 import * as Express from 'express';

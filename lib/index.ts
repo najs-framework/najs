@@ -25,6 +25,7 @@ export { HttpDriverStartOptions } from './http/driver/IHttpDriver'
 export { HttpKernel } from './http/HttpKernel'
 export { IMiddleware } from './http/middleware/IMiddleware'
 export { IExpressMiddleware } from './http/middleware/IExpressMiddleware'
+export { ExpressCsurfMiddleware } from './http/middleware/ExpressCsurfMiddleware'
 
 export { ILogger } from './log/ILogger'
 export { Log, reload as reloadLog } from './log/Log'

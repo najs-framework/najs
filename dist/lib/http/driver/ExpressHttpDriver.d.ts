@@ -1,3 +1,4 @@
+/// <reference types="express" />
 /// <reference types="node" />
 import { HttpKernel } from './../HttpKernel';
 import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver';
