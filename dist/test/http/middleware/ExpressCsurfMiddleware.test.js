@@ -70,9 +70,15 @@ describe('ExpressCsurfMiddleware', function () {
             const result = new ViewResponse_1.ViewResponse('any');
             const instance = new Middleware.ExpressCsurfMiddleware();
             expect(result['variables']['csrfToken']).toBeUndefined();
+            expect(result['variables']['CsrfToken']).toBeUndefined();
+            expect(result['variables']['csrf_token']).toBeUndefined();
+            expect(result['variables']['CSRF_TOKEN']).toBeUndefined();
             const value = await instance.after(request, response, result);
             expect(value === result).toBe(true);
             expect(result['variables']['csrfToken']).toEqual('test-csrf-token');
+            expect(result['variables']['CsrfToken']).toEqual('test-csrf-token');
+            expect(result['variables']['csrf_token']).toEqual('test-csrf-token');
+            expect(result['variables']['CSRF_TOKEN']).toEqual('test-csrf-token');
         });
     });
 });

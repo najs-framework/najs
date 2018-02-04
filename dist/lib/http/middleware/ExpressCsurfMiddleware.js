@@ -22,7 +22,12 @@ class ExpressCsurfMiddleware {
     }
     async after(request, response, result) {
         if (result instanceof ViewResponse_1.ViewResponse) {
-            result.with('csrfToken', request.csrfToken());
+            const token = request.csrfToken();
+            result
+                .with('csrfToken', token)
+                .with('CsrfToken', token)
+                .with('csrf_token', token)
+                .with('CSRF_TOKEN', token);
         }
         return result;
     }
