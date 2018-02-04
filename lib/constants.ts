@@ -23,7 +23,7 @@ export const ConfigurationKeys = {
   },
   Cache: {
     engine: 'cache.engine',
-    options: 'cache.options'
+    redis: 'cache.redis'
   },
   NajsOptions: {
     port: 'port',

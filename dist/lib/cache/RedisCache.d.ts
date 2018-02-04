@@ -1,9 +1,9 @@
-import { RedisClient } from 'redis';
 import { ICache, CacheFallback } from './ICache';
 import { IAutoload } from '../core/IAutoload';
-export default class RedisCache implements ICache, IAutoload {
+import * as Redis from 'redis';
+export declare class RedisCache implements ICache, IAutoload {
     static className: string;
-    redis: RedisClient;
+    redis: Redis.RedisClient;
     constructor();
     getClassName(): string;
     get(key: string): Promise<any>;

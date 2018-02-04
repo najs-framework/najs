@@ -5,6 +5,6 @@ import { ConfigurationKeys, CacheClass } from '../constants'
 
 export let CacheFacade: ICache = make<ICache>(NajsFacade.getConfig(ConfigurationKeys.Cache.engine, CacheClass))
 export function reload(): ICache {
-  CacheFacade = make<ICache>(NajsFacade.getConfig(ConfigurationKeys.Cache.engine))
+  CacheFacade = make<ICache>(CacheClass)
   return CacheFacade
 }

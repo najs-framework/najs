@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const NajsFacade_1 = require("../core/NajsFacade");
 const register_1 = require("../core/register");
 const constants_1 = require("../constants");
+const Redis = require("redis");
 function get_tag_manage_key(tagName) {
     return `tag:${tagName}`;
 }
@@ -10,10 +12,10 @@ function get_tag_value_key(tagName, key) {
 }
 class RedisCache {
     constructor() {
-        // this.redis = App.makeRedis()
-        // if (!this.redis) {
-        //   throw Error('Please register Redis client firstly, use App.registerRedis(...)')
-        // }
+        this.redis = Redis.createClient(NajsFacade_1.NajsFacade.getConfig(constants_1.ConfigurationKeys.Cache.redis, {
+            host: 'localhost',
+            port: 6379
+        }));
     }
     getClassName() {
         return RedisCache.className;
@@ -120,6 +122,6 @@ class RedisCache {
     }
 }
 RedisCache.className = 'RedisCache';
-exports.default = RedisCache;
+exports.RedisCache = RedisCache;
 register_1.register(RedisCache);
 register_1.register(RedisCache, constants_1.CacheClass);

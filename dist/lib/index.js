@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+require("./cache/RedisCache");
 require("./log/WinstonLogger");
 const NajsFacade_1 = require("./core/NajsFacade");
 exports.default = NajsFacade_1.NajsFacade;
@@ -33,6 +34,11 @@ var HttpKernel_1 = require("./http/HttpKernel");
 exports.HttpKernel = HttpKernel_1.HttpKernel;
 var ExpressCsurfMiddleware_1 = require("./http/middleware/ExpressCsurfMiddleware");
 exports.ExpressCsurfMiddleware = ExpressCsurfMiddleware_1.ExpressCsurfMiddleware;
+var CacheFacade_1 = require("./cache/CacheFacade");
+exports.Cache = CacheFacade_1.CacheFacade;
+exports.reloadCache = CacheFacade_1.reload;
+var RedisCache_1 = require("./cache/RedisCache");
+exports.RedisCache = RedisCache_1.RedisCache;
 var Log_1 = require("./log/Log");
 exports.Log = Log_1.Log;
 exports.reloadLog = Log_1.reload;

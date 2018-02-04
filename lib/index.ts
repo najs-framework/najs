@@ -1,3 +1,4 @@
+import './cache/RedisCache'
 import './log/WinstonLogger'
 import { NajsFacade as Najs } from './core/NajsFacade'
 
@@ -26,6 +27,10 @@ export { HttpKernel } from './http/HttpKernel'
 export { IMiddleware } from './http/middleware/IMiddleware'
 export { IExpressMiddleware } from './http/middleware/IExpressMiddleware'
 export { ExpressCsurfMiddleware } from './http/middleware/ExpressCsurfMiddleware'
+
+export { ICache, CacheFallback } from './cache/ICache'
+export { CacheFacade as Cache, reload as reloadCache } from './cache/CacheFacade'
+export { RedisCache } from './cache/RedisCache'
 
 export { ILogger } from './log/ILogger'
 export { Log, reload as reloadLog } from './log/Log'

@@ -1,8 +1,9 @@
-import { RedisClient } from 'redis'
+import { NajsFacade } from '../core/NajsFacade'
 import { ICache, CacheFallback } from './ICache'
 import { IAutoload } from '../core/IAutoload'
 import { register } from '../core/register'
-import { CacheClass } from '../constants'
+import { CacheClass, ConfigurationKeys } from '../constants'
+import * as Redis from 'redis'
 
 function get_tag_manage_key(tagName: string): string {
   return `tag:${tagName}`
@@ -12,15 +13,17 @@ function get_tag_value_key(tagName: string, key: string): string {
   return `tag:${tagName}|${key}`
 }
 
-export default class RedisCache implements ICache, IAutoload {
+export class RedisCache implements ICache, IAutoload {
   static className: string = 'RedisCache'
-  redis: RedisClient
+  redis: Redis.RedisClient
 
   constructor() {
-    // this.redis = App.makeRedis()
-    // if (!this.redis) {
-    //   throw Error('Please register Redis client firstly, use App.registerRedis(...)')
-    // }
+    this.redis = Redis.createClient(
+      NajsFacade.getConfig(ConfigurationKeys.Cache.redis, {
+        host: 'localhost',
+        port: 6379
+      })
+    )
   }
 
   getClassName(): string {

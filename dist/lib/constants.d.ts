@@ -22,7 +22,7 @@ export declare const ConfigurationKeys: {
     };
     Cache: {
         engine: string;
-        options: string;
+        redis: string;
     };
     NajsOptions: {
         port: string;
