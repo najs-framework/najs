@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.HttpDriverClass = 'HttpDriver';
 exports.LoggerClass = 'Logger';
 exports.HttpKernelClass = 'HttpKernel';
+exports.CacheClass = 'Cache';
 /**
  * This Object Configuration's key
  */
@@ -20,6 +21,10 @@ exports.ConfigurationKeys = {
         route: 'path.route',
         storage: 'path.storage',
         view: 'path.view'
+    },
+    Cache: {
+        engine: 'cache.engine',
+        options: 'cache.options'
     },
     NajsOptions: {
         port: 'port',

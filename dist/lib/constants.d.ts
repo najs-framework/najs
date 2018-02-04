@@ -1,6 +1,7 @@
 export declare const HttpDriverClass: string;
 export declare const LoggerClass: string;
 export declare const HttpKernelClass: string;
+export declare const CacheClass: string;
 /**
  * This Object Configuration's key
  */
@@ -18,6 +19,10 @@ export declare const ConfigurationKeys: {
         route: string;
         storage: string;
         view: string;
+    };
+    Cache: {
+        engine: string;
+        options: string;
     };
     NajsOptions: {
         port: string;

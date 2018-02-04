@@ -1,6 +1,7 @@
 export const HttpDriverClass: string = 'HttpDriver'
 export const LoggerClass: string = 'Logger'
 export const HttpKernelClass: string = 'HttpKernel'
+export const CacheClass: string = 'Cache'
 
 /**
  * This Object Configuration's key
@@ -19,6 +20,10 @@ export const ConfigurationKeys = {
     route: 'path.route',
     storage: 'path.storage',
     view: 'path.view'
+  },
+  Cache: {
+    engine: 'cache.engine',
+    options: 'cache.options'
   },
   NajsOptions: {
     port: 'port',
