@@ -21,6 +21,9 @@ export const ConfigurationKeys = {
     storage: 'path.storage',
     view: 'path.view'
   },
+  Middleware: {
+    csurfOptions: 'middleware.csurf'
+  },
   Cache: {
     engine: 'cache.engine',
     redis: 'cache.redis'

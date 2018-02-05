@@ -20,6 +20,9 @@ export declare const ConfigurationKeys: {
         storage: string;
         view: string;
     };
+    Middleware: {
+        csurfOptions: string;
+    };
     Cache: {
         engine: string;
         redis: string;

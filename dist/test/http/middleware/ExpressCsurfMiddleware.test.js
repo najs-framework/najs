@@ -34,13 +34,30 @@ describe('ExpressCsurfMiddleware', function () {
                 done();
             }
             const csurfProtectionStub = Sinon.stub(Middleware, 'CsurfProtection');
-            csurfProtectionStub.returned(fakeCsurfProtection);
+            csurfProtectionStub.callsFake(fakeCsurfProtection);
             const result = instance.before(request, response);
             expect(isPromise_1.isPromise(result)).toBe(true);
             expect(csurfProtectionStub.firstCall.args[0] === request).toBe(true);
             expect(csurfProtectionStub.firstCall.args[1] === response).toBe(true);
             expect(typeof csurfProtectionStub.firstCall.args[2] === 'function').toBe(true);
             csurfProtectionStub.restore();
+        });
+        it('sets promise to Rejected if there is an error', async function () {
+            const instance = new Middleware.ExpressCsurfMiddleware();
+            function fakeCsurfProtection(request, response, done) {
+                done(new Error('Test'));
+            }
+            const csurfProtectionStub = Sinon.stub(Middleware, 'CsurfProtection');
+            csurfProtectionStub.callsFake(fakeCsurfProtection);
+            try {
+                await instance.before({}, {});
+            }
+            catch (error) {
+                expect(error.message).toEqual('Test');
+                csurfProtectionStub.restore();
+                return;
+            }
+            expect('should not reach this line').toEqual('hmm');
         });
     });
     describe('.after()', function () {

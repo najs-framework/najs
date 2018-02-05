@@ -5,7 +5,7 @@
     "build": "npm run build-ts && npm run tslint",
     "build-ts": "tsc -d",
     "coverage": "npm run build && jest ./dist/test --coverage --forceExit",
-    "test": "jest --forceExit",
+    "test": "jest ./dist/test --forceExit",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "prepublishOnly": "tsc -d -p ./ --outDir dist"
   },

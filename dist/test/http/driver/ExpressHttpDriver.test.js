@@ -231,6 +231,30 @@ describe('ExpressHttpDriver', function () {
             expect(afterSpy.called).toBe(false);
             expect(nextSpy.called).toBe(true);
         });
+        it('calls next() with error if there is any error in middleware', async function () {
+            const error = new Error();
+            const beforeOneMiddleware = {
+                async before(request) {
+                    throw error;
+                }
+            };
+            const beforeTwoMiddleware = {
+                async before(request) { }
+            };
+            const next = function () { };
+            const beforeOneSpy = Sinon.spy(beforeOneMiddleware, 'before');
+            const beforeTwoSpy = Sinon.spy(beforeTwoMiddleware, 'before');
+            const nextSpy = Sinon.spy(next);
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            const wrapper = driver['createBeforeMiddlewareWrapper']([beforeOneMiddleware, beforeTwoMiddleware]);
+            const request = {};
+            const response = {};
+            await wrapper(request, response, nextSpy);
+            expect(beforeOneSpy.calledWith(request, response)).toBe(true);
+            expect(beforeOneSpy.firstCall.thisValue === beforeOneMiddleware).toBe(true);
+            expect(beforeTwoSpy.called).toBe(false);
+            expect(nextSpy.calledWith(error)).toBe(true);
+        });
     });
     describe('protected .createNativeMiddlewareWrapper()', function () {
         it('returns undefined', function () {

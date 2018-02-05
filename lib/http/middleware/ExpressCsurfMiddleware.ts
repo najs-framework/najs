@@ -1,9 +1,11 @@
+import { ConfigurationKeys } from './../../constants'
 import { IAutoload } from '../../core/IAutoload'
 import { IExpressMiddleware } from './IExpressMiddleware'
 import { ViewResponse } from '../response/types/ViewResponse'
 import { register } from '../../core/register'
 import * as Csurf from 'csurf'
 import * as Express from 'express'
+import { NajsFacade } from '../../core/NajsFacade'
 
 export let CsurfProtection: Express.RequestHandler
 
@@ -17,7 +19,7 @@ export class ExpressCsurfMiddleware implements IExpressMiddleware, IAutoload {
   }
 
   getOptions() {
-    return { cookie: true }
+    return NajsFacade.getConfig(ConfigurationKeys.Middleware.csurfOptions, { cookie: true })
   }
 
   getClassName() {
@@ -25,8 +27,13 @@ export class ExpressCsurfMiddleware implements IExpressMiddleware, IAutoload {
   }
 
   before(request: Express.Request, response: Express.Response) {
-    return new Promise(function(resolve: any) {
-      CsurfProtection(request, response, resolve)
+    return new Promise(function(resolve: any, reject: any) {
+      CsurfProtection(request, response, function(error: any) {
+        if (error) {
+          return reject(error)
+        }
+        return resolve()
+      })
     })
   }
 

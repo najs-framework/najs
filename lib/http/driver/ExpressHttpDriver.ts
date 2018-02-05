@@ -170,7 +170,11 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     return async (request: Express.Request, response: Express.Response, next: Express.NextFunction) => {
       for (const middleware of middlewareList) {
         if (isFunction(middleware.before)) {
-          await Reflect.apply(middleware.before, middleware, [request, response])
+          try {
+            await Reflect.apply(middleware.before, middleware, [request, response])
+          } catch (error) {
+            return next(error)
+          }
         }
       }
       next()

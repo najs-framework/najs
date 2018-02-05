@@ -109,7 +109,12 @@ class ExpressHttpDriver {
         return async (request, response, next) => {
             for (const middleware of middlewareList) {
                 if (lodash_1.isFunction(middleware.before)) {
-                    await Reflect.apply(middleware.before, middleware, [request, response]);
+                    try {
+                        await Reflect.apply(middleware.before, middleware, [request, response]);
+                    }
+                    catch (error) {
+                        return next(error);
+                    }
                 }
             }
             next();
