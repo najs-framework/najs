@@ -1,9 +1,9 @@
-import { ViewResponse } from './../../../lib/http/response/types/ViewResponse'
 import 'jest'
 import * as Sinon from 'sinon'
 import * as Middleware from '../../../lib/http/middleware/ExpressCsurfMiddleware'
 import { make } from '../../../lib/core/make'
 import { isPromise } from '../../../lib/private/isPromise'
+import { ViewResponse } from './../../../lib/http/response/types/ViewResponse'
 
 describe('ExpressCsurfMiddleware', function() {
   it('has shared Express.RequestHandler called CsurfProtection which not init by default', function() {

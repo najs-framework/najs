@@ -1,11 +1,11 @@
+import { NajsFacade } from '../../core/NajsFacade'
 import { ConfigurationKeys } from './../../constants'
 import { IAutoload } from '../../core/IAutoload'
 import { IExpressMiddleware } from './IExpressMiddleware'
-import { ViewResponse } from '../response/types/ViewResponse'
 import { register } from '../../core/register'
+import { ViewResponse } from '../response/types/ViewResponse'
 import * as Csurf from 'csurf'
 import * as Express from 'express'
-import { NajsFacade } from '../../core/NajsFacade'
 
 export let CsurfProtection: Express.RequestHandler
 

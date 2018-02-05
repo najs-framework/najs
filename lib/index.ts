@@ -24,9 +24,11 @@ export { IResponseFacade } from './http/response/IResponseFacade'
 export { IHttpDriver } from './http/driver/IHttpDriver'
 export { HttpDriverStartOptions } from './http/driver/IHttpDriver'
 export { HttpKernel } from './http/HttpKernel'
+
 export { IMiddleware } from './http/middleware/IMiddleware'
 export { IExpressMiddleware } from './http/middleware/IExpressMiddleware'
 export { ExpressCsurfMiddleware } from './http/middleware/ExpressCsurfMiddleware'
+export { ExpressCorsMiddleware } from './http/middleware/ExpressCorsMiddleware'
 
 export { ICache, CacheFallback } from './cache/ICache'
 export { CacheFacade as Cache, reload as reloadCache } from './cache/CacheFacade'

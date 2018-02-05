@@ -23,7 +23,8 @@ exports.ConfigurationKeys = {
         view: 'path.view'
     },
     Middleware: {
-        csurfOptions: 'middleware.csurf'
+        csurfOptions: 'middleware.csurf',
+        corsOptions: 'middleware.cors'
     },
     Cache: {
         engine: 'cache.engine',

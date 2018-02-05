@@ -22,6 +22,7 @@ export declare const ConfigurationKeys: {
     };
     Middleware: {
         csurfOptions: string;
+        corsOptions: string;
     };
     Cache: {
         engine: string;

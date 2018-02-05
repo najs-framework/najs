@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const constants_1 = require("./../../constants");
-const ViewResponse_1 = require("../response/types/ViewResponse");
-const register_1 = require("../../core/register");
-const Csurf = require("csurf");
 const NajsFacade_1 = require("../../core/NajsFacade");
+const constants_1 = require("./../../constants");
+const register_1 = require("../../core/register");
+const ViewResponse_1 = require("../response/types/ViewResponse");
+const Csurf = require("csurf");
 class ExpressCsurfMiddleware {
     constructor() {
         if (!exports.CsurfProtection) {
