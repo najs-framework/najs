@@ -6,4 +6,6 @@ export declare abstract class ExpressController extends Controller<Request, Resp
     protected body: IRequestRetriever;
     protected query: IRequestRetriever;
     protected params: IRequestRetriever;
+    constructor(request: Request, response: Response);
+    protected createInputFromRequest(): IRequestRetriever;
 }

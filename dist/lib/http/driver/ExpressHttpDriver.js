@@ -5,6 +5,7 @@ const index_1 = require("../../index");
 const Log_1 = require("../../log/Log");
 const lodash_1 = require("lodash");
 const Controller_1 = require("../controller/Controller");
+const ExpressController_1 = require("../controller/ExpressController");
 const RouteCollection_1 = require("../routing/RouteCollection");
 const make_1 = require("../../core/make");
 const IResponse_1 = require("../response/IResponse");
@@ -21,12 +22,19 @@ class ExpressHttpDriver {
         this.express = this.setup();
         this.httpKernel = make_1.make(constants_1.HttpKernelClass);
     }
+    static setXPoweredByMiddleware(poweredBy = 'Najs/Express') {
+        return function (request, response, next) {
+            response.setHeader('X-Powered-By', poweredBy);
+            next();
+        };
+    }
     setup() {
         const app = Express();
         this.setupBodyParser(app);
         this.setupCookieParser(app);
         this.setupViewEngine(app);
         this.setupStaticAssets(app);
+        app.use(ExpressHttpDriver.setXPoweredByMiddleware());
         return app;
     }
     setupBodyParser(app) {
@@ -155,8 +163,8 @@ class ExpressHttpDriver {
     }
     createEndpointWrapperByFunction(endpoint, middleware) {
         return async (request, response) => {
-            // Can not use make for default Controller
-            const controller = Reflect.construct(Controller_1.Controller, [request, response]);
+            // Can not use make for default ExpressController
+            const controller = Reflect.construct(ExpressController_1.ExpressController, [request, response]);
             const result = Reflect.apply(endpoint, controller, [request, response]);
             await this.handleEndpointResult(request, response, result, middleware);
         };

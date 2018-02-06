@@ -7,6 +7,7 @@ import { HttpDriverClass } from '../../../lib/constants'
 import { ClassRegistry } from '../../../lib/core/ClassRegistry'
 import { Log } from '../../../lib/log/Log'
 import { Controller } from '../../../lib/http/controller/Controller'
+import { ExpressController } from '../../../lib/http/controller/ExpressController'
 import { register } from '../../../lib/core/register'
 import { isPromise } from '../../../lib/private/isPromise'
 
@@ -14,6 +15,37 @@ describe('ExpressHttpDriver', function() {
   it('registers as default HttpDriver', function() {
     expect(ClassRegistry.has(HttpDriverClass)).toBe(true)
     expect(ClassRegistry.findOrFail(HttpDriverClass).instanceConstructor === ExpressHttpDriver).toBe(true)
+  })
+
+  describe('static .setXPoweredByMiddleware()', function() {
+    it('returns a middleware that sets X-Powered-By header', function() {
+      const middleware = ExpressHttpDriver.setXPoweredByMiddleware()
+      expect(typeof middleware === 'function').toBe(true)
+    })
+
+    it('has default value is Najs/Express', function() {
+      const response = {
+        setHeader() {}
+      }
+      function next() {}
+      const setHeaderStub = Sinon.stub(response, 'setHeader')
+
+      const middleware = ExpressHttpDriver.setXPoweredByMiddleware()
+      middleware.call(undefined, {}, response, next)
+      expect(setHeaderStub.calledWith('X-Powered-By', 'Najs/Express'))
+    })
+
+    it('can be used with custom name', function() {
+      const response = {
+        setHeader() {}
+      }
+      function next() {}
+      const setHeaderStub = Sinon.stub(response, 'setHeader')
+
+      const middleware = ExpressHttpDriver.setXPoweredByMiddleware('Any name')
+      middleware.call(undefined, {}, response, next)
+      expect(setHeaderStub.calledWith('X-Powered-By', 'Any name'))
+    })
   })
 
   describe('.getClassName()', function() {
@@ -490,7 +522,7 @@ describe('ExpressHttpDriver', function() {
     const driver = new ExpressHttpDriver()
     const result = driver['createEndpointWrapperByFunction'](handlerSpy, [])
     const handleEndpointResultStub = Sinon.stub(driver, <any>'handleEndpointResult')
-    const request = {}
+    const request = { method: 'GET' }
     const response = {}
 
     it('returns a wrapper function for endpoint', function() {
@@ -503,6 +535,7 @@ describe('ExpressHttpDriver', function() {
       expect(handlerSpy.callCount).toEqual(1)
       const thisValue = handlerSpy.firstCall.thisValue
       expect(thisValue).toBeInstanceOf(Controller)
+      expect(thisValue).toBeInstanceOf(ExpressController)
       expect(thisValue.request === request).toBe(true)
       expect(thisValue.response === response).toBe(true)
     })

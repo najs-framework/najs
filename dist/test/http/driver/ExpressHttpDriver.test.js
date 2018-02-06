@@ -9,12 +9,39 @@ const constants_1 = require("../../../lib/constants");
 const ClassRegistry_1 = require("../../../lib/core/ClassRegistry");
 const Log_1 = require("../../../lib/log/Log");
 const Controller_1 = require("../../../lib/http/controller/Controller");
+const ExpressController_1 = require("../../../lib/http/controller/ExpressController");
 const register_1 = require("../../../lib/core/register");
 const isPromise_1 = require("../../../lib/private/isPromise");
 describe('ExpressHttpDriver', function () {
     it('registers as default HttpDriver', function () {
         expect(ClassRegistry_1.ClassRegistry.has(constants_1.HttpDriverClass)).toBe(true);
         expect(ClassRegistry_1.ClassRegistry.findOrFail(constants_1.HttpDriverClass).instanceConstructor === ExpressHttpDriver_1.ExpressHttpDriver).toBe(true);
+    });
+    describe('static .setXPoweredByMiddleware()', function () {
+        it('returns a middleware that sets X-Powered-By header', function () {
+            const middleware = ExpressHttpDriver_1.ExpressHttpDriver.setXPoweredByMiddleware();
+            expect(typeof middleware === 'function').toBe(true);
+        });
+        it('has default value is Najs/Express', function () {
+            const response = {
+                setHeader() { }
+            };
+            function next() { }
+            const setHeaderStub = Sinon.stub(response, 'setHeader');
+            const middleware = ExpressHttpDriver_1.ExpressHttpDriver.setXPoweredByMiddleware();
+            middleware.call(undefined, {}, response, next);
+            expect(setHeaderStub.calledWith('X-Powered-By', 'Najs/Express'));
+        });
+        it('can be used with custom name', function () {
+            const response = {
+                setHeader() { }
+            };
+            function next() { }
+            const setHeaderStub = Sinon.stub(response, 'setHeader');
+            const middleware = ExpressHttpDriver_1.ExpressHttpDriver.setXPoweredByMiddleware('Any name');
+            middleware.call(undefined, {}, response, next);
+            expect(setHeaderStub.calledWith('X-Powered-By', 'Any name'));
+        });
     });
     describe('.getClassName()', function () {
         it('returns ExpressHttpDriver', function () {
@@ -411,7 +438,7 @@ describe('ExpressHttpDriver', function () {
         const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
         const result = driver['createEndpointWrapperByFunction'](handlerSpy, []);
         const handleEndpointResultStub = Sinon.stub(driver, 'handleEndpointResult');
-        const request = {};
+        const request = { method: 'GET' };
         const response = {};
         it('returns a wrapper function for endpoint', function () {
             expect(typeof result).toEqual('function');
@@ -421,6 +448,7 @@ describe('ExpressHttpDriver', function () {
             expect(handlerSpy.callCount).toEqual(1);
             const thisValue = handlerSpy.firstCall.thisValue;
             expect(thisValue).toBeInstanceOf(Controller_1.Controller);
+            expect(thisValue).toBeInstanceOf(ExpressController_1.ExpressController);
             expect(thisValue.request === request).toBe(true);
             expect(thisValue.response === response).toBe(true);
         });

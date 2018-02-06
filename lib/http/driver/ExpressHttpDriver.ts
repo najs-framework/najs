@@ -7,6 +7,7 @@ import { register } from '../../index'
 import { Log } from '../../log/Log'
 import { flatten, isFunction, isString, isObject } from 'lodash'
 import { Controller } from '../controller/Controller'
+import { ExpressController } from '../controller/ExpressController'
 import { RouteCollection } from '../routing/RouteCollection'
 import { make } from '../../core/make'
 import { isIResponse } from '../response/IResponse'
@@ -52,6 +53,14 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     'unsubscribe'
   ]
   static className: string = 'ExpressHttpDriver'
+
+  static setXPoweredByMiddleware(poweredBy: string = 'Najs/Express') {
+    return function(request: Express.Request, response: Express.Response, next: Express.NextFunction) {
+      response.setHeader('X-Powered-By', poweredBy)
+      next()
+    }
+  }
+
   protected express: ExpressApp
   protected server: Http.Server
   protected httpKernel: HttpKernel
@@ -67,6 +76,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     this.setupCookieParser(app)
     this.setupViewEngine(app)
     this.setupStaticAssets(app)
+    app.use(ExpressHttpDriver.setXPoweredByMiddleware())
     return app
   }
 
@@ -220,8 +230,8 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
 
   protected createEndpointWrapperByFunction(endpoint: Function, middleware: IMiddleware[]) {
     return async (request: Express.Request, response: Express.Response) => {
-      // Can not use make for default Controller
-      const controller = Reflect.construct(Controller, [request, response])
+      // Can not use make for default ExpressController
+      const controller = Reflect.construct(ExpressController, [request, response])
       const result = Reflect.apply(endpoint, controller, [request, response])
       await this.handleEndpointResult(request, response, result, middleware)
     }
