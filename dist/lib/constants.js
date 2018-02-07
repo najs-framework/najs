@@ -4,6 +4,7 @@ exports.HttpDriverClass = 'HttpDriver';
 exports.LoggerClass = 'Logger';
 exports.HttpKernelClass = 'HttpKernel';
 exports.CacheClass = 'Cache';
+exports.SchemaValidatorClass = 'SchemaValidator';
 /**
  * This Object Configuration's key
  */

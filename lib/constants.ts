@@ -2,6 +2,7 @@ export const HttpDriverClass: string = 'HttpDriver'
 export const LoggerClass: string = 'Logger'
 export const HttpKernelClass: string = 'HttpKernel'
 export const CacheClass: string = 'Cache'
+export const SchemaValidatorClass: string = 'SchemaValidator'
 
 /**
  * This Object Configuration's key

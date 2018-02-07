@@ -1,10 +1,17 @@
-export interface ISchemaValidator {
+import { ISchemaValidator } from './ISchemaValidator';
+import { IAutoload } from '../core/IAutoload';
+import * as Ajv from 'ajv';
+export declare class AjvSchemaValidator implements ISchemaValidator, IAutoload {
+    static className: string;
+    protected ajv: Ajv.Ajv;
+    constructor();
+    getClassName(): string;
     getSchema<T extends any>(schemaId: string): T;
     addSchema<T extends any>(schemaId: string, schema: T): this;
     removeSchema(schemaId: string): this;
-    getKeyword<T extends any>(keyword: string): T;
-    addKeyword<T extends any>(keyword: string, definition: T): this;
-    removeKeyword(keyword: string): this;
+    getKeyword<T extends any>(name: string): T;
+    addKeyword<T extends any>(name: string, definition: T): this;
+    removeKeyword(name: string): this;
     addFormat<T extends any>(name: string, formatter: T): this;
     /**
      * Gets a schema by schema id, an alias of .getSchema()
