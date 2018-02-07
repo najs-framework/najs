@@ -139,3 +139,42 @@ desc('Can use .where() to validate param in path', () => {
     // })
     .name('getName')
 })
+
+desc('Can use Joi Validation Middleware with prettier ignore flag', () => {
+  // {
+  //   something: test.do().something().awesome().by().using().chain().functions(),
+  //   somethingElse: test.do().something().awesome().by().using().chain().functions()
+  // }
+  const test: any = {}
+  const AjvValidator: any = {}
+  const JoiValidation: any = {}
+
+  // prettier-ignore
+  // const template = {
+  //   something: test.do().something().awesome().by().using().chain().functions(),
+  //   somethingElse: test.do().something().awesome().by().using().chain().functions()
+  // }
+
+  // prettier-ignore
+  Route.get('/get/:id', 'Controller@endpoint')
+    .use(JoiValidation({
+      something: test.do().something().awesome().by().using().chain().functions(),
+      somethingElse: test.do().something().awesome().by().using().chain().functions()
+    }))
+
+  Route.get('/get/:id', 'Controller@endpoint').use(
+    AjvValidator({
+      properties: {
+        something: { type: 'string' }
+      },
+      required: 'something'
+    })
+  )
+
+  // prettier-ignore
+  Route.get('/get/:id', 'Controller@endpoint')
+    .use(JoiValidation({
+      something: test.do().something().awesome().by().using().chain().functions(),
+      somethingElse: test.do().something().awesome().by().using().chain().functions()
+    }))
+})
