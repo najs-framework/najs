@@ -1,11 +1,18 @@
-import { AppOptions, IApplication } from './IApplication';
+import { IDispatcher } from '../event/IDispatcher';
+import { IEventEmitter } from '../event/IEventEmitter';
+import { IApplication } from './IApplication';
 import { ServiceProvider } from './ServiceProvider';
-export interface INajs {
-    rootPath: string;
+export declare class NajsContainer {
+    cwd: string;
     app: IApplication;
-    cwd(cwd: string): this;
+    event: IEventEmitter & IDispatcher;
+    workingDirectory(cwd: string): this;
+    classes(path: string): this;
     providers(providers: ServiceProvider[]): this;
-    start(): void;
-    start(options: Partial<AppOptions>): void;
+    on(event: 'crash', callback: (error: Error) => void): this;
+    on(event: 'crashed', callback: (error: Error) => void): this;
+    on(event: 'registered', callback: (classProvider: ServiceProvider) => void): this;
+    on(event: 'booted', callback: (classProvider: ServiceProvider) => void): this;
+    start(): this;
 }
-export declare const Najs: INajs;
+export declare const Najs: NajsContainer;

@@ -1,37 +1,27 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const make_1 = require("./make");
-const constants_1 = require("../constants");
-exports.Najs = {
-    rootPath: '',
-    app: undefined,
-    cwd(cwd) {
-        this.rootPath = cwd;
+class NajsContainer {
+    // config: IConfig
+    // response: IResponse
+    // logger: ILogger
+    // schemaValidator: ISchemaValidator
+    // cache: ICache
+    workingDirectory(cwd) {
+        this.cwd = cwd;
         return this;
-    },
+    }
+    classes(path) {
+        return this;
+    }
     providers(providers) {
         return this;
-    },
-    start(arg) {
-        const httpDriver = make_1.make(constants_1.HttpDriverClass);
-        httpDriver.start({});
     }
-};
-exports.Najs.cwd(__dirname)
-    .providers([])
-    .start();
-const Test = {};
-Test.workingDirectory(__dirname)
-    .classes(require('autoload.ts'))
-    .providers([
-    'CacheProvider',
-    'RedisProvider',
-    'MongooseProvider',
-    'ValidationProvider',
-    'LoggerProvider',
-    'HttpDriverProvider'
-])
-    .on('booting', function () { })
-    .on('booted', function () { })
-    .on('crashed', function () { })
-    .start();
+    on(event, callback) {
+        return this;
+    }
+    start() {
+        return this;
+    }
+}
+exports.NajsContainer = NajsContainer;
+exports.Najs = new NajsContainer();

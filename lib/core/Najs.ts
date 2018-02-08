@@ -1,58 +1,42 @@
-import { make } from './make'
-import { IHttpDriver } from '../http/driver/IHttpDriver'
-import { AppOptions, IApplication } from './IApplication'
+import { IDispatcher } from '../event/IDispatcher'
+import { IEventEmitter } from '../event/IEventEmitter'
+import { IApplication } from './IApplication'
 import { ServiceProvider } from './ServiceProvider'
-import { HttpDriverClass } from '../constants'
 
-export interface INajs {
-  rootPath: string
-
+export class NajsContainer {
+  cwd: string
   app: IApplication
+  event: IEventEmitter & IDispatcher
+  // config: IConfig
+  // response: IResponse
+  // logger: ILogger
+  // schemaValidator: ISchemaValidator
+  // cache: ICache
 
-  cwd(cwd: string): this
-
-  providers(providers: ServiceProvider[]): this
-
-  start(): void
-  start(options: Partial<AppOptions>): void
-}
-
-export const Najs: INajs = {
-  rootPath: '',
-  app: <any>undefined,
-
-  cwd(cwd: string): INajs {
-    this.rootPath = cwd
+  workingDirectory(cwd: string): this {
+    this.cwd = cwd
     return this
-  },
+  }
 
-  providers(providers: ServiceProvider[]): INajs {
+  classes(path: string): this {
     return this
-  },
+  }
 
-  start(arg?: Partial<AppOptions>): void {
-    const httpDriver: IHttpDriver = make<IHttpDriver>(HttpDriverClass)
-    httpDriver.start({})
+  providers(providers: ServiceProvider[]): this {
+    return this
+  }
+
+  on(event: 'crash', callback: (error: Error) => void): this
+  on(event: 'crashed', callback: (error: Error) => void): this
+  on(event: 'registered', callback: (classProvider: ServiceProvider) => void): this
+  on(event: 'booted', callback: (classProvider: ServiceProvider) => void): this
+  on(event: string, callback: Function): this {
+    return this
+  }
+
+  start(): this {
+    return this
   }
 }
 
-Najs.cwd(__dirname)
-  .providers([])
-  .start()
-
-const Test = <any>{}
-
-Test.workingDirectory(__dirname)
-  .classes(require('autoload.ts'))
-  .providers([
-    'CacheProvider',
-    'RedisProvider',
-    'MongooseProvider',
-    'ValidationProvider',
-    'LoggerProvider',
-    'HttpDriverProvider'
-  ])
-  .on('booting', function() {})
-  .on('booted', function() {})
-  .on('crashed', function() {})
-  .start()
+export const Najs: NajsContainer = new NajsContainer()
