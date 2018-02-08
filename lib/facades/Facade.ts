@@ -1,3 +1,5 @@
 export class Facade {
-  constructor() {}
+  protected constructor(instance: any) {
+    // this.instance = instance
+  }
 }

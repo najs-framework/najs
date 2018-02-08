@@ -1,3 +1,3 @@
 export declare class Facade {
-    constructor();
+    protected constructor(instance: any);
 }

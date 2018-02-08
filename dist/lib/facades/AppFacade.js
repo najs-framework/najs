@@ -1,2 +1,2 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+// import { IAppFacade } from './interfaces/IAppFacade'
+// export let AppFacade: IAppFacade

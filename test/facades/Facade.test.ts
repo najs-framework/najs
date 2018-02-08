@@ -46,5 +46,21 @@ describe('Facade', function() {
     facade.spy()
     console.log(facade instanceof Facade)
     console.log(facade instanceof WrapperClass)
+
+    class ChildClass extends Facade implements IWrapperClass {
+      doSomething(...args: any[]) {
+        this.test()
+        console.log('do something', args)
+      }
+
+      test() {
+        console.log('test')
+      }
+    }
+    const childFacade = new ChildClass({})
+    childFacade.doSomething('any thing')
+    childFacade.spy()
+    console.log(childFacade instanceof Facade)
+    console.log(childFacade instanceof ChildClass)
   })
 })

@@ -1,3 +1,3 @@
-import { IAppFacade } from './interfaces/IAppFacade'
+// import { IAppFacade } from './interfaces/IAppFacade'
 
-export let AppFacade: IAppFacade
+// export let AppFacade: IAppFacade
