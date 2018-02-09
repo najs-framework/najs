@@ -1,7 +1,2 @@
-declare function facade(): any;
-declare const FacadeClass: {
-    (): boolean;
-    new (): any;
-};
-declare const App: any;
-declare const Auth: any;
+import { FacadeSpecs } from './interfaces/IFacadeGrammar';
+export declare const Facade: FacadeSpecs;

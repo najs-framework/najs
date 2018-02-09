@@ -1,5 +1,55 @@
+import {
+  IContextualFacadeVerbOf,
+  IContextualFacadeVerbWith,
+  FacadeSpecs
+} from '../../lib/facades/interfaces/IFacadeGrammar'
+
 describe('Facade', function() {
-  it('is a concept of Facade', function() {
+  it('proof of concept that Facade can be use as a base class and factory function', function() {
+    class ContextualFacade {
+      of(context: any): any {}
+      with(context: any): any {}
+    }
+    // ----------------------------------------------------------------------
+    class ContextualFacadeMatcher {
+      with(context: any) {
+        console.log('running ContextualFacadeMatcher for context', context)
+        return this
+      }
+
+      spy(method: string) {
+        console.log('spy method from matcher', method)
+      }
+    }
+    // ----------------------------------------------------------------------
+    function facade(this: any, arg: ContextualFacade | Object | undefined): any {
+      if (arg instanceof ContextualFacade) {
+        // make a ContextualFacadeMatcher
+        return new ContextualFacadeMatcher()
+      }
+      this.container = arg || {}
+    }
+    facade.prototype = {
+      spy(method: string) {
+        console.log('spy method', method)
+      }
+    }
+    const Facade: FacadeSpecs = <any>facade
+
+    // ----------------------------------------------------------------------
+    class AppFacade extends Facade {}
+    const App = new AppFacade()
+    App.spy('any')
+
+    class AuthContextualFacade extends ContextualFacade {}
+    const Auth: IContextualFacadeVerbWith<any, any> & IContextualFacadeVerbOf<any, any> = new AuthContextualFacade()
+
+    Facade(Auth)
+      .with('Context')
+      .spy('any')
+  })
+
+  it.skip('is a concept of Facade', function() {
     interface IWrapperClass {
       doSomething(...args: any[]): void
     }

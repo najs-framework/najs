@@ -1,5 +1,48 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
 describe('Facade', function () {
-    it('is a concept of Facade', function () {
+    it('proof of concept that Facade can be use as a base class and factory function', function () {
+        class ContextualFacade {
+            of(context) { }
+            with(context) { }
+        }
+        // ----------------------------------------------------------------------
+        class ContextualFacadeMatcher {
+            with(context) {
+                console.log('running ContextualFacadeMatcher for context', context);
+                return this;
+            }
+            spy(method) {
+                console.log('spy method from matcher', method);
+            }
+        }
+        // ----------------------------------------------------------------------
+        function facade(arg) {
+            if (arg instanceof ContextualFacade) {
+                // make a ContextualFacadeMatcher
+                return new ContextualFacadeMatcher();
+            }
+            this.container = arg || {};
+        }
+        facade.prototype = {
+            spy(method) {
+                console.log('spy method', method);
+            }
+        };
+        const Facade = facade;
+        // ----------------------------------------------------------------------
+        class AppFacade extends Facade {
+        }
+        const App = new AppFacade();
+        App.spy('any');
+        class AuthContextualFacade extends ContextualFacade {
+        }
+        const Auth = new AuthContextualFacade();
+        Facade(Auth)
+            .with('Context')
+            .spy('any');
+    });
+    it.skip('is a concept of Facade', function () {
         class WrapperClass {
             doSomething(...args) {
                 this.test();
