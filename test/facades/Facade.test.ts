@@ -41,11 +41,11 @@ describe('Facade', function() {
       }
     }
 
-    const facade = Facade.create<IFacade & IWrapperClass>(new WrapperClass())
-    facade.doSomething('any thing')
-    facade.spy()
-    console.log(facade instanceof Facade)
-    console.log(facade instanceof WrapperClass)
+    const facadeInstance = Facade.create<IFacade & IWrapperClass>(new WrapperClass())
+    facadeInstance.doSomething('any thing')
+    facadeInstance.spy()
+    console.log(facadeInstance instanceof Facade)
+    console.log(facadeInstance instanceof WrapperClass)
 
     class ChildClass extends Facade implements IWrapperClass {
       doSomething(...args: any[]) {
@@ -62,5 +62,29 @@ describe('Facade', function() {
     childFacade.spy()
     console.log(childFacade instanceof Facade)
     console.log(childFacade instanceof ChildClass)
+
+    // class ContextualFacade<T, F> {
+    //   constructor() {}
+
+    //   of(context: T): F {
+    //     return <F>{}
+    //   }
+
+    //   protected facade(): Facade {
+    //     return <Facade>{}
+    //   }
+    // }
+    // const Auth = new ContextualFacade<any, IWrapperClass>()
+    // Auth.of({}).doSomething()
+    // ;(Auth['facade']() as Facade).spy()
+
+    // function facade(contextualFacade: ContextualFacade<any, any>): ContextualFacade<any, any> {
+    //   return contextualFacade
+    // }
+    // facade(Auth).
+    // const Auth = <any>{}
+    // Auth.of({}).user()
+
+    // facade(Auth).withAny().shouldReceive('get')
   })
 })

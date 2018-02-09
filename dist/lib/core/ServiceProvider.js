@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class ServiceProvider {
-    constructor(application) {
-        this.app = application;
+    constructor(app) {
+        this.app = app;
     }
-    register() { }
-    boot() { }
+    async register() { }
+    async boot() { }
 }
 exports.ServiceProvider = ServiceProvider;

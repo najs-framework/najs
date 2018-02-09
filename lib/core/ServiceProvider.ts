@@ -6,11 +6,11 @@ export abstract class ServiceProvider implements IAutoload {
 
   protected app: IApplication
 
-  constructor(application: IApplication) {
-    this.app = application
+  constructor(app: IApplication) {
+    this.app = app
   }
 
-  public register(): void {}
+  async register() {}
 
-  public boot(): void {}
+  async boot() {}
 }

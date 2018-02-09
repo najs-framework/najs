@@ -1,22 +1,5 @@
 import { InstanceCreator } from './bind'
 
-export type AppOptions = {
-  port: number
-  host?: string
-}
-
-export enum AppPath {
-  App = 'app',
-  Base = 'base',
-  Config = 'config',
-  Layout = 'layout',
-  Public = 'public',
-  Resource = 'resource',
-  Route = 'route',
-  Storage = 'storage',
-  View = 'view'
-}
-
 export interface IApplication {
   make<T>(classDefinition: any): T
   make<T>(className: string): T
@@ -29,8 +12,4 @@ export interface IApplication {
 
   bind(className: string, instanceCreator: InstanceCreator): IApplication
   bind(className: string, concrete: string): IApplication
-
-  path(): string
-  path(...args: string[]): string
-  path(type: AppPath, ...args: string[]): string
 }
