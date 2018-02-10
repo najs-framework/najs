@@ -1,0 +1,20 @@
+import { Facade } from '../facades/Facade'
+import { IConfig } from './IConfig'
+import * as ConfigLib from 'config'
+
+export class Config extends Facade implements IConfig {
+  protected config: ConfigLib.IConfig = ConfigLib
+
+  get<T>(setting: string): T | undefined
+  get<T>(setting: string, defaultValue: T): T
+  get<T>(setting: string, defaultValue?: T): T | undefined {
+    if (typeof defaultValue !== 'undefined' && !this.config.has(setting)) {
+      return defaultValue
+    }
+    return this.config.get<T>(setting)
+  }
+
+  has(setting: string): boolean {
+    return this.config.has(setting)
+  }
+}
