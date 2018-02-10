@@ -2,10 +2,9 @@ import { FacadeSpecs } from './interfaces/IFacadeGrammar'
 import { ContextualFacade } from './ContextualFacade'
 
 function facade(this: any, arg: ContextualFacade<any> | Object | undefined): any {
-  if (arg instanceof ContextualFacade) {
-    // make a ContextualFacadeMatcher
-    return 'ContextualFacadeMatcher'
-  }
+  // if (arg instanceof ContextualFacade) {
+  // make a ContextualFacadeMatcher
+  // }
   this.container = arg || {}
 }
 // facade.prototype = {

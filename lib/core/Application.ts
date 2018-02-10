@@ -2,8 +2,9 @@ import { make } from './make'
 import { register } from './register'
 import { bind, InstanceCreator } from './bind'
 import { IApplication } from './IApplication'
+import { Facade } from '../facades/Facade'
 
-export class Application implements IApplication {
+export class Application extends Facade implements IApplication {
   make<T>(classDefinition: any): T
   make<T>(className: string): T
   make<T>(className: string, data: Object): T

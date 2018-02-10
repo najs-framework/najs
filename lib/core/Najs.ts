@@ -1,12 +1,14 @@
-import { INajsFramework } from './INajsFramework'
+import { INajs } from './INajs'
 import { EventEmitter } from 'events'
 import { IDispatcher } from '../event/IDispatcher'
 import { IEventEmitter } from '../event/IEventEmitter'
 import { IApplication } from './IApplication'
 import { ServiceProvider } from './ServiceProvider'
+import { Application } from './Application'
 import { make } from './make'
+import * as Path from 'path'
 
-class NajsFramework implements INajsFramework {
+class NajsFramework implements INajs {
   private internalEventEmitter: EventEmitter
   protected cwd: string
   protected serviceProviders: ServiceProvider[]
@@ -19,8 +21,10 @@ class NajsFramework implements INajsFramework {
   // cache: ICache
 
   constructor() {
+    this.cwd = Path.resolve(__dirname, '..', '..', '..', '..')
     this.internalEventEmitter = new EventEmitter()
     this.serviceProviders = []
+    this.app = new Application()
   }
 
   workingDirectory(cwd: string): this {
@@ -29,8 +33,8 @@ class NajsFramework implements INajsFramework {
   }
 
   classes(...args: string[]): this {
-    for (const path in args) {
-      require(path)
+    for (const path of args) {
+      require(Path.resolve(this.cwd, path))
     }
     return this
   }
@@ -46,13 +50,6 @@ class NajsFramework implements INajsFramework {
     return this
   }
 
-  protected resolveProvider(provider: string | typeof ServiceProvider): ServiceProvider | undefined {
-    if (typeof provider === 'string') {
-      return make<ServiceProvider>(provider, [this.app])
-    }
-    return Reflect.construct(provider, [this.app])
-  }
-
   on(event: string, listener: any): this {
     this.internalEventEmitter.on(event, listener)
     return this
@@ -61,20 +58,35 @@ class NajsFramework implements INajsFramework {
   async start() {
     try {
       this.fireEventIfNeeded('start', this)
-      this.registerServiceProviders()
+      await this.registerServiceProviders()
       await this.bootServiceProviders()
       this.fireEventIfNeeded('started', this)
     } catch (error) {
-      if (this.fireEventIfNeeded('crash', error)) {
-        return
-      }
-
-      if (this.fireEventIfNeeded('crashed', error)) {
-        return
-      }
-
-      throw error
+      this.handleError(error)
     }
+  }
+
+  protected handleError(error: any) {
+    if (this.fireEventIfNeeded('crash', error)) {
+      return
+    }
+
+    if (this.fireEventIfNeeded('crashed', error)) {
+      return
+    }
+
+    throw error
+  }
+
+  protected setFacadeRoot(name: string, instance: any) {
+    this[name] = instance
+  }
+
+  protected resolveProvider(provider: string | typeof ServiceProvider): ServiceProvider | undefined {
+    if (typeof provider === 'string') {
+      return make<ServiceProvider>(provider, [this.app, this.setFacadeRoot.bind(this)])
+    }
+    return Reflect.construct(provider, [this.app, this.setFacadeRoot.bind(this)])
   }
 
   protected async registerServiceProviders() {
@@ -100,4 +112,4 @@ class NajsFramework implements INajsFramework {
   }
 }
 
-export const Najs: INajsFramework = new NajsFramework()
+export const Najs: INajs = new NajsFramework()

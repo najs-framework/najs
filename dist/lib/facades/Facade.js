@@ -1,11 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ContextualFacade_1 = require("./ContextualFacade");
 function facade(arg) {
-    if (arg instanceof ContextualFacade_1.ContextualFacade) {
-        // make a ContextualFacadeMatcher
-        return 'ContextualFacadeMatcher';
-    }
+    // if (arg instanceof ContextualFacade) {
+    // make a ContextualFacadeMatcher
+    // }
     this.container = arg || {};
 }
 // facade.prototype = {

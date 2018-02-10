@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
+const Application_1 = require("./Application");
 const make_1 = require("./make");
+const Path = require("path");
 class NajsFramework {
     // config: IConfig
     // response: IResponse
@@ -9,16 +11,18 @@ class NajsFramework {
     // schemaValidator: ISchemaValidator
     // cache: ICache
     constructor() {
+        this.cwd = Path.resolve(__dirname, '..', '..', '..', '..');
         this.internalEventEmitter = new events_1.EventEmitter();
         this.serviceProviders = [];
+        this.app = new Application_1.Application();
     }
     workingDirectory(cwd) {
         this.cwd = cwd;
         return this;
     }
     classes(...args) {
-        for (const path in args) {
-            require(path);
+        for (const path of args) {
+            require(Path.resolve(this.cwd, path));
         }
         return this;
     }
@@ -32,12 +36,6 @@ class NajsFramework {
         }
         return this;
     }
-    resolveProvider(provider) {
-        if (typeof provider === 'string') {
-            return make_1.make(provider, [this.app]);
-        }
-        return Reflect.construct(provider, [this.app]);
-    }
     on(event, listener) {
         this.internalEventEmitter.on(event, listener);
         return this;
@@ -45,19 +43,31 @@ class NajsFramework {
     async start() {
         try {
             this.fireEventIfNeeded('start', this);
-            this.registerServiceProviders();
+            await this.registerServiceProviders();
             await this.bootServiceProviders();
             this.fireEventIfNeeded('started', this);
         }
         catch (error) {
-            if (this.fireEventIfNeeded('crash', error)) {
-                return;
-            }
-            if (this.fireEventIfNeeded('crashed', error)) {
-                return;
-            }
-            throw error;
+            this.handleError(error);
         }
+    }
+    handleError(error) {
+        if (this.fireEventIfNeeded('crash', error)) {
+            return;
+        }
+        if (this.fireEventIfNeeded('crashed', error)) {
+            return;
+        }
+        throw error;
+    }
+    setFacadeRoot(name, instance) {
+        this[name] = instance;
+    }
+    resolveProvider(provider) {
+        if (typeof provider === 'string') {
+            return make_1.make(provider, [this.app, this.setFacadeRoot.bind(this)]);
+        }
+        return Reflect.construct(provider, [this.app, this.setFacadeRoot.bind(this)]);
     }
     async registerServiceProviders() {
         for (const provider of this.serviceProviders) {

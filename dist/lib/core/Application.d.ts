@@ -1,6 +1,7 @@
 import { InstanceCreator } from './bind';
 import { IApplication } from './IApplication';
-export declare class Application implements IApplication {
+import { Facade } from '../facades/Facade';
+export declare class Application extends Facade implements IApplication {
     make<T>(classDefinition: any): T;
     make<T>(className: string): T;
     make<T>(className: string, data: Object): T;
