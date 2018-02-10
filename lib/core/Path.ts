@@ -1,17 +1,77 @@
-// import { IPath } from './IPath';
-// export class Path implements IPath {
-//   get(...args: string[]): string {}
+import { IPath } from './IPath'
+import { ConfigFacade } from '../facades/global/ConfigFacade'
+import { ConfigurationKeys } from '../constants'
+import * as SystemPath from 'path'
+import { Najs } from './Najs'
 
-//   cwd(...args: string[]): string {}
+export class Path implements IPath {
+  protected workingDirectory: string
 
-//   app(...args: string[]): string {}
+  constructor() {
+    this.workingDirectory = Najs['cwd'] || ''
+  }
 
-//   config(...args: string[]): string {}
+  get(...args: string[]): string {
+    return SystemPath.resolve(this.workingDirectory, ...args)
+  }
 
-//   layout(...args: string[]): string {}
-//   public(...args: string[]): string {}
-//   resource(...args: string[]): string {}
-//   route(...args: string[]): string {}
-//   storage(...args: string[]): string {}
-//   view(...args: string[]): string {}
-// }
+  cwd(...args: string[]): string {
+    return SystemPath.resolve(this.workingDirectory, ...args)
+  }
+
+  app(...args: string[]): string {
+    return SystemPath.resolve(this.workingDirectory, ConfigFacade.get(ConfigurationKeys.Paths.app, 'app'), ...args)
+  }
+
+  config(...args: string[]): string {
+    return SystemPath.resolve(
+      this.workingDirectory,
+      ConfigFacade.get(ConfigurationKeys.Paths.config, 'config'),
+      ...args
+    )
+  }
+
+  layout(...args: string[]): string {
+    return SystemPath.resolve(
+      this.workingDirectory,
+      ConfigFacade.get(ConfigurationKeys.Paths.layout, SystemPath.join('resources', 'view', 'layout')),
+      ...args
+    )
+  }
+
+  public(...args: string[]): string {
+    return SystemPath.resolve(
+      this.workingDirectory,
+      ConfigFacade.get(ConfigurationKeys.Paths.public, 'public'),
+      ...args
+    )
+  }
+
+  resource(...args: string[]): string {
+    return SystemPath.resolve(
+      this.workingDirectory,
+      ConfigFacade.get(ConfigurationKeys.Paths.resource, 'resources'),
+      ...args
+    )
+  }
+
+  route(...args: string[]): string {
+    return SystemPath.resolve(this.workingDirectory, ConfigFacade.get(ConfigurationKeys.Paths.route, 'routes'), ...args)
+  }
+
+  storage(...args: string[]): string {
+    return SystemPath.resolve(
+      this.workingDirectory,
+      ConfigFacade.get(ConfigurationKeys.Paths.storage, SystemPath.join('app', 'storage')),
+      ...args
+    )
+  }
+
+  view(...args: string[]): string {
+    return SystemPath.resolve(
+      this.workingDirectory,
+      ConfigFacade.get(ConfigurationKeys.Paths.view, SystemPath.join('resources', 'view')),
+      ...args
+    )
+  }
+}

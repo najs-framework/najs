@@ -60,14 +60,11 @@ class NajsFramework {
         }
         throw error;
     }
-    setFacadeRoot(name, instance) {
-        this[name] = instance;
-    }
     resolveProvider(provider) {
         if (typeof provider === 'string') {
-            return make_1.make(provider, [this.app, this.setFacadeRoot.bind(this)]);
+            return make_1.make(provider, [this.app]);
         }
-        return Reflect.construct(provider, [this.app, this.setFacadeRoot.bind(this)]);
+        return Reflect.construct(provider, [this.app]);
     }
     async registerServiceProviders() {
         for (const provider of this.serviceProviders) {

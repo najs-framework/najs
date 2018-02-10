@@ -8,7 +8,6 @@ export type NajsOptions = {
 
 export enum NajsPath {
   App = 'app',
-  Base = 'base',
   Config = 'config',
   Layout = 'layout',
   Public = 'public',

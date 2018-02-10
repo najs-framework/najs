@@ -172,7 +172,6 @@ describe('Najs', function () {
         });
         const systemPaths = {
             app: 'app',
-            base: '',
             config: 'config',
             layout: Path.join('resources', 'view', 'layout'),
             public: 'public',

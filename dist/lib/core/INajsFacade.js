@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var NajsPath;
 (function (NajsPath) {
     NajsPath["App"] = "app";
-    NajsPath["Base"] = "base";
     NajsPath["Config"] = "config";
     NajsPath["Layout"] = "layout";
     NajsPath["Public"] = "public";

@@ -78,15 +78,11 @@ class NajsFramework implements INajs {
     throw error
   }
 
-  protected setFacadeRoot(name: string, instance: any) {
-    this[name] = instance
-  }
-
   protected resolveProvider(provider: string | typeof ServiceProvider): ServiceProvider | undefined {
     if (typeof provider === 'string') {
-      return make<ServiceProvider>(provider, [this.app, this.setFacadeRoot.bind(this)])
+      return make<ServiceProvider>(provider, [this.app])
     }
-    return Reflect.construct(provider, [this.app, this.setFacadeRoot.bind(this)])
+    return Reflect.construct(provider, [this.app])
   }
 
   protected async registerServiceProviders() {

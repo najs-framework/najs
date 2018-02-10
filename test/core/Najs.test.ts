@@ -162,15 +162,6 @@ describe('Najs', function() {
       })
     })
 
-    describe('protected .setFacadeRoot()', function() {
-      it('simply assigns instance to Najs with name', function() {
-        const instance = {}
-        expect(Najs['something']).toBeUndefined()
-        Najs['setFacadeRoot']('something', instance)
-        expect(Najs['something'] === instance).toBe(true)
-      })
-    })
-
     describe('protected .resolveProvider()', function() {
       it('calls make() if provider is a string', function() {
         const makeStub = Sinon.stub(Make, 'make')
@@ -178,7 +169,6 @@ describe('Najs', function() {
         const call = makeStub.getCalls()[0]
         expect(call.args[0] === 'ClassName').toBe(true)
         expect(call.args[1][0] === Najs['app']).toBe(true)
-        expect(typeof call.args[1][1] === 'function').toBe(true)
         makeStub.restore()
       })
 
@@ -189,7 +179,6 @@ describe('Najs', function() {
         const call = constructStub.getCalls()[0]
         expect(call.args[0] === fakeServiceProvider).toBe(true)
         expect(call.args[1][0] === Najs['app']).toBe(true)
-        expect(typeof call.args[1][1] === 'function').toBe(true)
         constructStub.restore()
       })
     })

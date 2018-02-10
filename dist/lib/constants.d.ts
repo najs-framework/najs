@@ -12,7 +12,6 @@ export declare const ConfigurationKeys: {
     HandlerBarsOptions: string;
     Paths: {
         app: string;
-        base: string;
         config: string;
         layout: string;
         public: string;

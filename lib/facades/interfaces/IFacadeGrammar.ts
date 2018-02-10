@@ -1,3 +1,5 @@
+import * as Sinon from 'sinon'
+
 export interface FacadeSpecs {
   (contextualFacade: IContextualFacade): IContextualFacadeMatcher<any>
   <T>(contextualFacade: IContextualFacade): IContextualFacadeMatcher<T>
@@ -7,7 +9,11 @@ export interface FacadeSpecs {
 }
 
 export interface IFacade {
-  spy(method: string): any
+  spy(method: string): Sinon.SinonSpy
+
+  createStub(method: string): Sinon.SinonStub
+
+  restoreFacade(): this
 }
 
 export interface IContextualFacade {}

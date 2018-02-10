@@ -6,7 +6,6 @@ export declare type NajsOptions = {
 };
 export declare enum NajsPath {
     App = "app",
-    Base = "base",
     Config = "config",
     Layout = "layout",
     Public = "public",

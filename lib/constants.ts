@@ -13,7 +13,6 @@ export const ConfigurationKeys = {
   HandlerBarsOptions: 'view.handlebars',
   Paths: {
     app: 'path.app',
-    base: 'cwd',
     config: 'path.config',
     layout: 'path.layout',
     public: 'path.public',

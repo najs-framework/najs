@@ -73,9 +73,6 @@ class Najs {
             case INajsFacade_1.NajsPath.App:
                 based = Path.join(cwd, this.getConfig(constants_1.ConfigurationKeys.Paths.app, 'app'));
                 break;
-            case INajsFacade_1.NajsPath.Base:
-                based = Path.join(cwd, this.getConfig(constants_1.ConfigurationKeys.Paths.base, ''));
-                break;
             case INajsFacade_1.NajsPath.Config:
                 based = Path.join(cwd, this.getConfig(constants_1.ConfigurationKeys.Paths.config, 'config'));
                 break;

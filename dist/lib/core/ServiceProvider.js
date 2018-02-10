@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class ServiceProvider {
-    constructor(app, setFacadeRoot) {
+    constructor(app) {
         this.app = app;
-        this.setFacadeRoot = setFacadeRoot;
     }
     async register() { }
     async boot() { }

@@ -102,9 +102,6 @@ class Najs implements INajsFacade {
       case NajsPath.App:
         based = Path.join(cwd, this.getConfig(ConfigurationKeys.Paths.app, 'app'))
         break
-      case NajsPath.Base:
-        based = Path.join(cwd, this.getConfig(ConfigurationKeys.Paths.base, ''))
-        break
       case NajsPath.Config:
         based = Path.join(cwd, this.getConfig(ConfigurationKeys.Paths.config, 'config'))
         break
