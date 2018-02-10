@@ -5,43 +5,19 @@ function facade(this: any, arg: ContextualFacade<any> | Object | undefined): any
   // if (arg instanceof ContextualFacade) {
   // make a ContextualFacadeMatcher
   // }
-  this.container = arg || {}
+  this.container = undefined
+  this.accessorKey = undefined
+  this.facadeInstanceCreator = undefined
 }
-// facade.prototype = {
-//   spy() {
-//     console.log('spy method')
-//   }
-// }
+
+facade['create'] = function(this: any, container: Object, key: string, facadeInstanceCreator: () => void) {
+  if (typeof container[key] === 'undefined') {
+    container[key] = facadeInstanceCreator()
+  }
+  container[key].container = container
+  container[key].accessorKey = key
+  container[key].facadeInstanceCreator = facadeInstanceCreator
+  return container[key]
+}
 
 export const Facade: FacadeSpecs = <any>facade
-
-// class App extends Facade {}
-// class AuthContextualFacade extends ContextualFacade {}
-// const Auth: IContextualFacadeVerbWith<T> = new AuthContextualFacade()
-// // const app = new App()
-// // app.spy()
-
-// Facade(Auth)
-//   .with({})
-//   .spy('test')
-
-// class Test extends FacadeClass {
-// constructor(context: any) {}
-// }
-
-// this is a Facade
-// class AppFacade extends Facade { ... }
-// App = new AppFacade()
-// const App: any = {}
-
-// this is a ContextualFacade
-// class AuthContextualFacade extends ContextualFacade { ... }
-// Auth = new AuthContextualFacade()
-// const Auth: any = {}
-
-// How to test a Facade
-// App.shouldReceive('register').once()
-
-// How to test a ContextualFacade
-// YES: I'm using this is base class Facade
-// Facade(Auth).withAny().shouldReceive('user').once()

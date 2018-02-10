@@ -1,4 +1,4 @@
-// import { IPath } from './IPath'
+// import { IPath } from './IPath';
 // export class Path implements IPath {
 //   get(...args: string[]): string {}
 //   cwd(...args: string[]): string {}

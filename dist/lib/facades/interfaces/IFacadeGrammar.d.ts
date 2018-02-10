@@ -1,7 +1,8 @@
 export interface FacadeSpecs {
     (contextualFacade: IContextualFacade): IContextualFacadeMatcher<any>;
     <T>(contextualFacade: IContextualFacade): IContextualFacadeMatcher<T>;
-    new (container?: Object): IFacade;
+    new (): IFacade;
+    create<T>(container: Object, key: string, facadeInstanceCreator: () => void): IFacade & T;
 }
 export interface IFacade {
     spy(method: string): any;
