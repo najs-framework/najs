@@ -1,11 +1,20 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
+const SystemPath = require("path");
 const ConfigFacade_1 = require("../../lib/facades/global/ConfigFacade");
 const Path_1 = require("../../lib/core/Path");
-const SystemPath = require("path");
 const Najs_1 = require("../../lib/core/Najs");
+const Facade_1 = require("../../lib/facades/Facade");
+const constants_1 = require("../../lib/constants");
+const ClassRegistry_1 = require("../../lib/core/ClassRegistry");
 describe('Path', function () {
+    it('extends from Facade so it definitely a FacadeClass', function () {
+        const path = new Path_1.Path();
+        expect(path).toBeInstanceOf(Facade_1.Facade);
+        expect(path.getClassName()).toEqual(constants_1.GlobalFacade.Path);
+        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacade.Path)).toBe(true);
+    });
     describe('constructor()', function () {
         it('gets workingDirectory from Najs["cwd"]', function () {
             Najs_1.Najs['cwd'] = 'test';

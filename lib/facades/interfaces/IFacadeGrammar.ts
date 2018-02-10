@@ -14,6 +14,8 @@ export interface IFacade {
   createStub(method: string): Sinon.SinonStub
 
   restoreFacade(): this
+
+  reloadFacadeRoot(): this
 }
 
 export interface IContextualFacade {}

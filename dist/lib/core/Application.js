@@ -4,7 +4,11 @@ const make_1 = require("./make");
 const register_1 = require("./register");
 const bind_1 = require("./bind");
 const Facade_1 = require("../facades/Facade");
+const constants_1 = require("../constants");
 class Application extends Facade_1.Facade {
+    getClassName() {
+        return Application.className;
+    }
     make(className, data) {
         return make_1.make(className, data);
     }
@@ -17,4 +21,6 @@ class Application extends Facade_1.Facade {
         return this;
     }
 }
+Application.className = constants_1.GlobalFacade.Application;
 exports.Application = Application;
+register_1.register(Application, constants_1.GlobalFacade.Application);

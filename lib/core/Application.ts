@@ -1,10 +1,17 @@
+import { IAutoload } from './IAutoload'
 import { make } from './make'
 import { register } from './register'
 import { bind, InstanceCreator } from './bind'
 import { IApplication } from './IApplication'
 import { Facade } from '../facades/Facade'
+import { GlobalFacade } from '../constants'
 
-export class Application extends Facade implements IApplication {
+export class Application extends Facade implements IApplication, IAutoload {
+  static className: string = GlobalFacade.Application
+  getClassName(): string {
+    return Application.className
+  }
+
   make<T>(classDefinition: any): T
   make<T>(className: string): T
   make<T>(className: string, data: Object): T
@@ -28,3 +35,4 @@ export class Application extends Facade implements IApplication {
     return this
   }
 }
+register(Application, GlobalFacade.Application)

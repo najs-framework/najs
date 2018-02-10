@@ -1,27 +1,18 @@
 import { INajs } from './INajs'
 import { EventEmitter } from 'events'
-import { IDispatcher } from '../event/IDispatcher'
-import { IEventEmitter } from '../event/IEventEmitter'
-import { IApplication } from './IApplication'
 import { ServiceProvider } from './ServiceProvider'
 import { Application } from './Application'
 import { make } from './make'
-import * as Path from 'path'
+import * as SystemPath from 'path'
 
 class NajsFramework implements INajs {
   private internalEventEmitter: EventEmitter
   protected cwd: string
   protected serviceProviders: ServiceProvider[]
-  protected app: IApplication
-  protected event: IEventEmitter & IDispatcher
-  // config: IConfig
-  // response: IResponse
-  // logger: ILogger
-  // schemaValidator: ISchemaValidator
-  // cache: ICache
+  protected app: Application
 
   constructor() {
-    this.cwd = Path.resolve(__dirname, '..', '..', '..', '..')
+    this.cwd = SystemPath.resolve(__dirname, '..', '..', '..', '..')
     this.internalEventEmitter = new EventEmitter()
     this.serviceProviders = []
     this.app = new Application()
@@ -34,7 +25,7 @@ class NajsFramework implements INajs {
 
   classes(...args: string[]): this {
     for (const path of args) {
-      require(Path.resolve(this.cwd, path))
+      require(SystemPath.resolve(this.cwd, path))
     }
     return this
   }

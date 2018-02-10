@@ -5,6 +5,12 @@ exports.LoggerClass = 'Logger';
 exports.HttpKernelClass = 'HttpKernel';
 exports.CacheClass = 'Cache';
 exports.SchemaValidatorClass = 'SchemaValidator';
+exports.GlobalFacade = {
+    Application: 'Najs.Application',
+    Cache: 'Najs.Cache',
+    Config: 'Najs.Config',
+    Path: 'Najs.Path'
+};
 /**
  * This Object Configuration's key
  */

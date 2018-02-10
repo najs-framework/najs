@@ -3,15 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
 const Application_1 = require("./Application");
 const make_1 = require("./make");
-const Path = require("path");
+const SystemPath = require("path");
 class NajsFramework {
-    // config: IConfig
-    // response: IResponse
-    // logger: ILogger
-    // schemaValidator: ISchemaValidator
-    // cache: ICache
     constructor() {
-        this.cwd = Path.resolve(__dirname, '..', '..', '..', '..');
+        this.cwd = SystemPath.resolve(__dirname, '..', '..', '..', '..');
         this.internalEventEmitter = new events_1.EventEmitter();
         this.serviceProviders = [];
         this.app = new Application_1.Application();
@@ -22,7 +17,7 @@ class NajsFramework {
     }
     classes(...args) {
         for (const path of args) {
-            require(Path.resolve(this.cwd, path));
+            require(SystemPath.resolve(this.cwd, path));
         }
         return this;
     }

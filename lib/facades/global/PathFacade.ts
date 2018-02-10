@@ -1,11 +1,11 @@
-import '../../../lib/config/Config'
+import '../../../lib/core/Path'
 import { Facade } from '../Facade'
 import { IFacade } from '../interfaces/IFacadeGrammar'
-import { IConfig } from '../../../lib/config/IConfig'
+import { IPath } from '../../../lib/core/IPath'
 import { Najs } from '../../../lib/core/Najs'
 import { make } from '../../../lib/core/make'
 import { GlobalFacade } from '../../constants'
 
-export const ConfigFacade: IConfig & IFacade = Facade.create<IConfig>(Najs, 'config', function() {
-  return make<IConfig>(GlobalFacade.Config)
+export const PathFacade: IPath & IFacade = Facade.create<IPath>(Najs, 'path', function() {
+  return make<IPath>(GlobalFacade.Path)
 })

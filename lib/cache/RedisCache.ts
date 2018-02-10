@@ -1,8 +1,9 @@
+import { Facade } from '../facades/Facade'
 import { NajsFacade } from '../core/NajsFacade'
 import { ICache, CacheFallback } from './ICache'
 import { IAutoload } from '../core/IAutoload'
 import { register } from '../core/register'
-import { CacheClass, ConfigurationKeys } from '../constants'
+import { GlobalFacade, ConfigurationKeys } from '../constants'
 import * as Redis from 'redis'
 
 function get_tag_manage_key(tagName: string): string {
@@ -13,11 +14,12 @@ function get_tag_value_key(tagName: string, key: string): string {
   return `tag:${tagName}|${key}`
 }
 
-export class RedisCache implements ICache, IAutoload {
+export class RedisCache extends Facade implements ICache, IAutoload {
   static className: string = 'RedisCache'
   redis: Redis.RedisClient
 
   constructor() {
+    super()
     this.redis = Redis.createClient(
       NajsFacade.getConfig(ConfigurationKeys.Cache.redis, {
         host: 'localhost',
@@ -173,4 +175,4 @@ export class RedisCache implements ICache, IAutoload {
   }
 }
 register(RedisCache)
-register(RedisCache, CacheClass)
+register(RedisCache, GlobalFacade.Cache)

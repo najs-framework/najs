@@ -1,13 +1,24 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
-const RedisCache_1 = require("../../lib/cache/RedisCache");
 const Redis = require("redis");
+const RedisCache_1 = require("../../lib/cache/RedisCache");
+const Facade_1 = require("../../lib/facades/Facade");
+const constants_1 = require("../../lib/constants");
+const ClassRegistry_1 = require("../../lib/core/ClassRegistry");
+const make_1 = require("../../lib/core/make");
 const PREVENT_FLAKY_PADDING = 10;
 describe('RedisCache', function () {
     const redis = Redis.createClient({
         host: 'localhost',
         port: 6379
+    });
+    it('extends from Facade so it definitely a FacadeClass', function () {
+        const redisCache = new RedisCache_1.RedisCache();
+        expect(redisCache).toBeInstanceOf(Facade_1.Facade);
+        expect(redisCache.getClassName()).toEqual(RedisCache_1.RedisCache.className);
+        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacade.Cache)).toBe(true);
+        expect(make_1.make(constants_1.GlobalFacade.Cache)).toBeInstanceOf(RedisCache_1.RedisCache);
     });
     describe('.getClassName()', function () {
         it('implements IAutoload interface', function () {

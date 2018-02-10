@@ -1,7 +1,8 @@
+import { Facade } from '../facades/Facade';
 import { ICache, CacheFallback } from './ICache';
 import { IAutoload } from '../core/IAutoload';
 import * as Redis from 'redis';
-export declare class RedisCache implements ICache, IAutoload {
+export declare class RedisCache extends Facade implements ICache, IAutoload {
     static className: string;
     redis: Redis.RedisClient;
     constructor();

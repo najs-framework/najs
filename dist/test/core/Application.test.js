@@ -7,6 +7,8 @@ const Make = require("../../lib/core/make");
 const Bind = require("../../lib/core/bind");
 const Application_1 = require("../../lib/core/Application");
 const Facade_1 = require("../../lib/facades/Facade");
+const constants_1 = require("../../lib/constants");
+const ClassRegistry_1 = require("../../lib/core/ClassRegistry");
 class Test {
 }
 Test.className = 'Test';
@@ -18,6 +20,8 @@ describe('Application', function () {
     it('extends from Facade so it definitely a FacadeClass', function () {
         const app = new Application_1.Application();
         expect(app).toBeInstanceOf(Facade_1.Facade);
+        expect(app.getClassName()).toEqual(constants_1.GlobalFacade.Application);
+        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacade.Application)).toBe(true);
     });
     describe('.register()', function () {
         it('proxies register() function', function () {

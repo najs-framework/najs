@@ -1,14 +1,23 @@
+import { IAutoload } from './IAutoload'
+import { Facade } from '../facades/Facade'
 import { IPath } from './IPath'
+import { register } from './register'
 import { ConfigFacade } from '../facades/global/ConfigFacade'
-import { ConfigurationKeys } from '../constants'
+import { ConfigurationKeys, GlobalFacade } from '../constants'
 import * as SystemPath from 'path'
 import { Najs } from './Najs'
 
-export class Path implements IPath {
+export class Path extends Facade implements IPath, IAutoload {
+  static className: string = GlobalFacade.Path
   protected workingDirectory: string
 
   constructor() {
+    super()
     this.workingDirectory = Najs['cwd'] || ''
+  }
+
+  getClassName() {
+    return Path.className
   }
 
   get(...args: string[]): string {
@@ -75,3 +84,4 @@ export class Path implements IPath {
     )
   }
 }
+register(Path, GlobalFacade.Path)

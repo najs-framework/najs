@@ -98,4 +98,20 @@ describe('Facade', function () {
             expect(facade['methodStub'].name).toEqual(FacadeClass.prototype.methodStub.name);
         });
     });
+    describe('.reloadFacadeRoot()', function () {
+        it('calls facadeInstanceCreator() and assigns to container with key', function () {
+            class FacadeClass extends Facade_1.Facade {
+            }
+            const instance = new FacadeClass();
+            const container = { key: instance };
+            const key = 'key';
+            const instanceCreator = () => {
+                return new FacadeClass();
+            };
+            const facade = Facade_1.Facade.create(container, key, instanceCreator);
+            expect(container.key === instance).toBe(true);
+            facade.reloadFacadeRoot();
+            expect(container.key === instance).toBe(false);
+        });
+    });
 });

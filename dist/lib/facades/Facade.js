@@ -38,6 +38,10 @@ facade.prototype = {
         for (const method in this.createdStubs) {
             this.createdStubs[method].restore();
         }
+    },
+    reloadFacadeRoot() {
+        this.container[this.accessorKey] = this.facadeInstanceCreator();
+        return this;
     }
 };
 exports.Facade = facade;

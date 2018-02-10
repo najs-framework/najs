@@ -1,13 +1,26 @@
 import 'jest'
+import * as Redis from 'redis'
 import { CacheFallback } from '../../lib/cache/ICache'
 import { RedisCache } from '../../lib/cache/RedisCache'
-import * as Redis from 'redis'
+import { Facade } from '../../lib/facades/Facade'
+import { GlobalFacade } from '../../lib/constants'
+import { ClassRegistry } from '../../lib/core/ClassRegistry'
+import { make } from '../../lib/core/make'
+
 const PREVENT_FLAKY_PADDING = 10
 
 describe('RedisCache', function() {
   const redis: Redis.RedisClient = Redis.createClient({
     host: 'localhost',
     port: 6379
+  })
+
+  it('extends from Facade so it definitely a FacadeClass', function() {
+    const redisCache: RedisCache = new RedisCache()
+    expect(redisCache).toBeInstanceOf(Facade)
+    expect(redisCache.getClassName()).toEqual(RedisCache.className)
+    expect(ClassRegistry.has(GlobalFacade.Cache)).toBe(true)
+    expect(make(GlobalFacade.Cache)).toBeInstanceOf(RedisCache)
   })
 
   describe('.getClassName()', function() {

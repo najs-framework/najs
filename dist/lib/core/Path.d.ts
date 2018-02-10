@@ -1,7 +1,11 @@
+import { IAutoload } from './IAutoload';
+import { Facade } from '../facades/Facade';
 import { IPath } from './IPath';
-export declare class Path implements IPath {
+export declare class Path extends Facade implements IPath, IAutoload {
+    static className: string;
     protected workingDirectory: string;
     constructor();
+    getClassName(): string;
     get(...args: string[]): string;
     cwd(...args: string[]): string;
     app(...args: string[]): string;

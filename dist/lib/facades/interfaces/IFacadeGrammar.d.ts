@@ -9,6 +9,7 @@ export interface IFacade {
     spy(method: string): Sinon.SinonSpy;
     createStub(method: string): Sinon.SinonStub;
     restoreFacade(): this;
+    reloadFacadeRoot(): this;
 }
 export interface IContextualFacade {
 }

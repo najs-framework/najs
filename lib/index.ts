@@ -43,9 +43,14 @@ export { IExpressMiddleware } from './http/middleware/IExpressMiddleware'
 export { ExpressCsurfMiddleware } from './http/middleware/ExpressCsurfMiddleware'
 export { ExpressCorsMiddleware } from './http/middleware/ExpressCorsMiddleware'
 
+// facade package
+export { AppFacade as App } from './facades/global/AppFacade'
+export { CacheFacade as Cache } from './facades/global/CacheFacade'
+export { ConfigFacade as Config } from './facades/global/ConfigFacade'
+export { PathFacade as Path } from './facades/global/PathFacade'
+
 // cache package
 export { ICache, CacheFallback } from './cache/ICache'
-export { CacheFacade as Cache, reload as reloadCache } from './cache/CacheFacade'
 export { RedisCache } from './cache/RedisCache'
 
 // log package

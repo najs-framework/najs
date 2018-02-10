@@ -49,9 +49,15 @@ var ExpressCsurfMiddleware_1 = require("./http/middleware/ExpressCsurfMiddleware
 exports.ExpressCsurfMiddleware = ExpressCsurfMiddleware_1.ExpressCsurfMiddleware;
 var ExpressCorsMiddleware_1 = require("./http/middleware/ExpressCorsMiddleware");
 exports.ExpressCorsMiddleware = ExpressCorsMiddleware_1.ExpressCorsMiddleware;
-var CacheFacade_1 = require("./cache/CacheFacade");
+// facade package
+var AppFacade_1 = require("./facades/global/AppFacade");
+exports.App = AppFacade_1.AppFacade;
+var CacheFacade_1 = require("./facades/global/CacheFacade");
 exports.Cache = CacheFacade_1.CacheFacade;
-exports.reloadCache = CacheFacade_1.reload;
+var ConfigFacade_1 = require("./facades/global/ConfigFacade");
+exports.Config = ConfigFacade_1.ConfigFacade;
+var PathFacade_1 = require("./facades/global/PathFacade");
+exports.Path = PathFacade_1.PathFacade;
 var RedisCache_1 = require("./cache/RedisCache");
 exports.RedisCache = RedisCache_1.RedisCache;
 var Log_1 = require("./log/Log");

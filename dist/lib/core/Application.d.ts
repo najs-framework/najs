@@ -1,7 +1,10 @@
+import { IAutoload } from './IAutoload';
 import { InstanceCreator } from './bind';
 import { IApplication } from './IApplication';
 import { Facade } from '../facades/Facade';
-export declare class Application extends Facade implements IApplication {
+export declare class Application extends Facade implements IApplication, IAutoload {
+    static className: string;
+    getClassName(): string;
     make<T>(classDefinition: any): T;
     make<T>(className: string): T;
     make<T>(className: string, data: Object): T;

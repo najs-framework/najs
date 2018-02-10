@@ -4,6 +4,13 @@ export const HttpKernelClass: string = 'HttpKernel'
 export const CacheClass: string = 'Cache'
 export const SchemaValidatorClass: string = 'SchemaValidator'
 
+export const GlobalFacade = {
+  Application: 'Najs.Application',
+  Cache: 'Najs.Cache',
+  Config: 'Najs.Config',
+  Path: 'Najs.Path'
+}
+
 /**
  * This Object Configuration's key
  */

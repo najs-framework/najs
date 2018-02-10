@@ -1,10 +1,20 @@
 import 'jest'
+import * as SystemPath from 'path'
 import { ConfigFacade } from '../../lib/facades/global/ConfigFacade'
 import { Path } from '../../lib/core/Path'
-import * as SystemPath from 'path'
 import { Najs } from '../../lib/core/Najs'
+import { Facade } from '../../lib/facades/Facade'
+import { GlobalFacade } from '../../lib/constants'
+import { ClassRegistry } from '../../lib/core/ClassRegistry'
 
 describe('Path', function() {
+  it('extends from Facade so it definitely a FacadeClass', function() {
+    const path = new Path()
+    expect(path).toBeInstanceOf(Facade)
+    expect(path.getClassName()).toEqual(GlobalFacade.Path)
+    expect(ClassRegistry.has(GlobalFacade.Path)).toBe(true)
+  })
+
   describe('constructor()', function() {
     it('gets workingDirectory from Najs["cwd"]', function() {
       Najs['cwd'] = 'test'

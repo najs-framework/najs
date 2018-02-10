@@ -2,11 +2,15 @@ import 'jest'
 import * as Sinon from 'sinon'
 import { Config } from '../../lib/config/Config'
 import { Facade } from '../../lib/facades/Facade'
+import { GlobalFacade } from '../../lib/constants'
+import { ClassRegistry } from '../../lib/core/ClassRegistry'
 
 describe('Config', function() {
   it('extends from Facade so it definitely a FacadeClass', function() {
     const config = new Config()
     expect(config).toBeInstanceOf(Facade)
+    expect(config.getClassName()).toEqual(GlobalFacade.Config)
+    expect(ClassRegistry.has(GlobalFacade.Config)).toBe(true)
   })
 
   describe('.get()', function() {
