@@ -9,9 +9,9 @@ const constants_1 = require("../../lib/constants");
 describe('HttpKernel', function () {
     it('is a base class which contains middleware configuration', function () { });
     it('auto register to ClassRegistry with name HttpKernel', function () {
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.HttpKernelClass)).toBe(true);
+        expect(ClassRegistry_1.ClassRegistry.has(constants_1.SystemClass.HttpKernel)).toBe(true);
         const instance = new HttpKernel_1.HttpKernel();
-        expect(instance.getClassName() === constants_1.HttpKernelClass);
+        expect(instance.getClassName() === constants_1.SystemClass.HttpKernel);
     });
     describe('getMiddleware()', function () {
         it('returns empty array if middleware not found', function () {

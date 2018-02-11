@@ -18,6 +18,12 @@ var autoload_1 = require("./core/autoload");
 exports.autoload = autoload_1.autoload;
 var ClassRegistry_1 = require("./core/ClassRegistry");
 exports.ClassRegistry = ClassRegistry_1.ClassRegistry;
+var ServiceProvider_1 = require("./core/ServiceProvider");
+exports.ServiceProvider = ServiceProvider_1.ServiceProvider;
+// constants
+var constants_1 = require("./constants");
+exports.SystemClass = constants_1.SystemClass;
+exports.GlobalFacade = constants_1.GlobalFacade;
 var HttpKernel_1 = require("./http/HttpKernel");
 exports.HttpKernel = HttpKernel_1.HttpKernel;
 var RouteFacade_1 = require("./http/routing/RouteFacade");
@@ -61,8 +67,9 @@ var RedisCache_1 = require("./cache/RedisCache");
 exports.RedisCache = RedisCache_1.RedisCache;
 var WinstonLogger_1 = require("./log/WinstonLogger");
 exports.WinstonLogger = WinstonLogger_1.WinstonLogger;
-var constants_1 = require("./constants");
-exports.HttpDriverClass = constants_1.HttpDriverClass;
 // helpers package
 var route_1 = require("./helpers/route");
 exports.route = route_1.route;
+// internal service providers
+var ExpressHttpDriverServiceProvider_1 = require("./service-providers/ExpressHttpDriverServiceProvider");
+exports.ExpressHttpDriverServiceProvider = ExpressHttpDriverServiceProvider_1.ExpressHttpDriverServiceProvider;

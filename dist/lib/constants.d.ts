@@ -1,6 +1,8 @@
-export declare const HttpDriverClass: string;
-export declare const HttpKernelClass: string;
 export declare const SchemaValidatorClass: string;
+export declare const SystemClass: {
+    HttpKernel: string;
+    HttpDriver: string;
+};
 export declare const GlobalFacade: {
     Application: string;
     Cache: string;
@@ -12,7 +14,8 @@ export declare const GlobalFacade: {
  * This Object Configuration's key
  */
 export declare const ConfigurationKeys: {
-    CWD: string;
+    Port: string;
+    Host: string;
     ViewEngineName: string;
     HandlerBarsOptions: string;
     Paths: {
@@ -32,9 +35,5 @@ export declare const ConfigurationKeys: {
     Cache: {
         engine: string;
         redis: string;
-    };
-    NajsOptions: {
-        port: string;
-        host: string;
     };
 };

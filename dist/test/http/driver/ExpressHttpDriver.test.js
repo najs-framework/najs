@@ -5,18 +5,12 @@ const Sinon = require("sinon");
 const Http = require("http");
 const Make = require("../../../lib/core/make");
 const ExpressHttpDriver_1 = require("../../../lib/http/driver/ExpressHttpDriver");
-const constants_1 = require("../../../lib/constants");
-const ClassRegistry_1 = require("../../../lib/core/ClassRegistry");
 const LogFacade_1 = require("../../../lib/facades/global/LogFacade");
 const Controller_1 = require("../../../lib/http/controller/Controller");
 const ExpressController_1 = require("../../../lib/http/controller/ExpressController");
 const register_1 = require("../../../lib/core/register");
 const isPromise_1 = require("../../../lib/private/isPromise");
 describe('ExpressHttpDriver', function () {
-    it('registers as default HttpDriver', function () {
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.HttpDriverClass)).toBe(true);
-        expect(ClassRegistry_1.ClassRegistry.findOrFail(constants_1.HttpDriverClass).instanceConstructor === ExpressHttpDriver_1.ExpressHttpDriver).toBe(true);
-    });
     describe('static .setXPoweredByMiddleware()', function () {
         it('returns a middleware that sets X-Powered-By header', function () {
             const middleware = ExpressHttpDriver_1.ExpressHttpDriver.setXPoweredByMiddleware();
@@ -589,29 +583,30 @@ describe('ExpressHttpDriver', function () {
         });
     });
     describe('.start()', function () {
-        it('passes this.express to http.createServer()', function () {
+        it('passes this.express to http.createServer() with default host=localhost, port=3000', function () {
             const fakeServer = {
                 listen(port, host) { }
             };
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             const listenSpy = Sinon.spy(fakeServer, 'listen');
-            const logStub = Sinon.stub(LogFacade_1.LogFacade, 'info');
+            const logStub = LogFacade_1.LogFacade.createStub('info');
             const httpStub = Sinon.stub(Http, 'createServer');
             httpStub.returns(fakeServer);
-            driver.start({});
+            driver.start();
             expect(httpStub.calledWith(driver['express'])).toBe(true);
-            expect(logStub.calledWith('Listening at port 3000')).toBe(true);
+            expect(logStub.calledWith('Listening at localhost:3000')).toBe(true);
             driver.start({ port: 3333 });
-            expect(listenSpy.calledWith(3333, undefined)).toBe(true);
-            expect(logStub.calledWith('Listening at port 3333')).toBe(true);
+            expect(listenSpy.calledWith(3333, 'localhost')).toBe(true);
+            expect(logStub.calledWith('Listening at localhost:3333')).toBe(true);
             driver.start({ host: '0.0.0.0' });
-            expect(listenSpy.calledWith(undefined, '0.0.0.0')).toBe(true);
-            expect(logStub.calledWith('Listening at port 0.0.0.0:3000')).toBe(true);
+            expect(listenSpy.calledWith(3000, '0.0.0.0')).toBe(true);
+            expect(logStub.calledWith('Listening at 0.0.0.0:3000')).toBe(true);
             driver.start({ port: 4444, host: '0.0.0.0' });
             expect(listenSpy.calledWith(4444, '0.0.0.0')).toBe(true);
-            expect(logStub.calledWith('Listening at port 0.0.0.0:4444')).toBe(true);
+            expect(logStub.calledWith('Listening at 0.0.0.0:4444')).toBe(true);
+            listenSpy.restore();
             httpStub.restore();
-            logStub.restore();
+            LogFacade_1.LogFacade.restoreFacade();
         });
     });
     describe('.respondView()', function () {

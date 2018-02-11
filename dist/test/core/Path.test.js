@@ -15,29 +15,17 @@ describe('Path', function () {
         expect(path.getClassName()).toEqual(constants_1.GlobalFacade.Path);
         expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacade.Path)).toBe(true);
     });
-    describe('constructor()', function () {
-        it('gets workingDirectory from Najs["cwd"]', function () {
-            Najs_1.Najs['cwd'] = 'test';
-            const path = new Path_1.Path();
-            expect(path['workingDirectory']).toEqual('test');
-        });
-        it('sets workingDirectory to "" in case Najs["cwd"] is not set', function () {
-            Najs_1.Najs['cwd'] = undefined;
-            const path = new Path_1.Path();
-            expect(path['workingDirectory']).toEqual('');
-        });
-    });
     describe('.get()', function () {
         it('resolve path based on this.workingDirectory', function () {
             const path = new Path_1.Path();
-            path['workingDirectory'] = 'root';
+            Najs_1.Najs['cwd'] = 'root';
             expect(path.get('any', 'thing')).toEqual(SystemPath.resolve('root', 'any', 'thing'));
         });
     });
     describe('.cwd()', function () {
         it('resolve path based on this.workingDirectory', function () {
             const path = new Path_1.Path();
-            path['workingDirectory'] = 'root';
+            Najs_1.Najs['cwd'] = 'root';
             expect(path.cwd('any', 'thing')).toEqual(SystemPath.resolve('root', 'any', 'thing'));
         });
     });
@@ -55,7 +43,7 @@ describe('Path', function () {
         describe('.' + name + '()', function () {
             it('resolve path based on this.workingDirectory + config("ConfigurationKeys.Paths.' + name + '")', function () {
                 const path = new Path_1.Path();
-                path['workingDirectory'] = 'root';
+                Najs_1.Najs['cwd'] = 'root';
                 ConfigFacade_1.ConfigFacade.createStub('get').returns('test');
                 expect(path[name]('any')).toEqual(SystemPath.resolve('root', 'test', 'any'));
                 expect(path[name]('any', 'thing')).toEqual(SystemPath.resolve('root', 'test', 'any', 'thing'));

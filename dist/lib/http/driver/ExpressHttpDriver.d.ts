@@ -35,7 +35,7 @@ export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
     protected createEndpointWrapperByFunction(endpoint: Function, middleware: IMiddleware[]): (request: Express.Request, response: Express.Response) => Promise<void>;
     protected applyAfterMiddlewareWrapper(middlewareList: IMiddleware[], request: Express.Request, response: Express.Response, value: any): Promise<any>;
     protected handleEndpointResult(request: Express.Request, response: Express.Response, result: any, middleware: IMiddleware[]): Promise<any>;
-    start(options: HttpDriverStartOptions): void;
+    start(options?: HttpDriverStartOptions): void;
     respondView(response: Express.Response, view: string, variables: Object): void;
     respondJson(response: Express.Response, value: any): void;
     respondJsonp(response: Express.Response, value: any): void;

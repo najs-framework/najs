@@ -1,6 +1,9 @@
-export const HttpDriverClass: string = 'HttpDriver'
-export const HttpKernelClass: string = 'HttpKernel'
 export const SchemaValidatorClass: string = 'SchemaValidator'
+
+export const SystemClass = {
+  HttpKernel: 'Najs.HttpKernel',
+  HttpDriver: 'Najs.HttpDriver'
+}
 
 export const GlobalFacade = {
   Application: 'Najs.Application',
@@ -14,7 +17,8 @@ export const GlobalFacade = {
  * This Object Configuration's key
  */
 export const ConfigurationKeys = {
-  CWD: 'cwd',
+  Port: 'port',
+  Host: 'host',
   ViewEngineName: 'view.engine',
   HandlerBarsOptions: 'view.handlebars',
   Paths: {
@@ -34,9 +38,5 @@ export const ConfigurationKeys = {
   Cache: {
     engine: 'cache.engine',
     redis: 'cache.redis'
-  },
-  NajsOptions: {
-    port: 'port',
-    host: 'host'
   }
 }

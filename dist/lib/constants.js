@@ -1,8 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.HttpDriverClass = 'HttpDriver';
-exports.HttpKernelClass = 'HttpKernel';
 exports.SchemaValidatorClass = 'SchemaValidator';
+exports.SystemClass = {
+    HttpKernel: 'Najs.HttpKernel',
+    HttpDriver: 'Najs.HttpDriver'
+};
 exports.GlobalFacade = {
     Application: 'Najs.Application',
     Cache: 'Najs.Cache',
@@ -14,7 +16,8 @@ exports.GlobalFacade = {
  * This Object Configuration's key
  */
 exports.ConfigurationKeys = {
-    CWD: 'cwd',
+    Port: 'port',
+    Host: 'host',
     ViewEngineName: 'view.engine',
     HandlerBarsOptions: 'view.handlebars',
     Paths: {
@@ -34,9 +37,5 @@ exports.ConfigurationKeys = {
     Cache: {
         engine: 'cache.engine',
         redis: 'cache.redis'
-    },
-    NajsOptions: {
-        port: 'port',
-        host: 'host'
     }
 };

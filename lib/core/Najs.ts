@@ -3,6 +3,8 @@ import { EventEmitter } from 'events'
 import { ServiceProvider } from './ServiceProvider'
 import { Application } from './Application'
 import { make } from './make'
+import { SystemClass } from '../constants'
+import { IHttpDriver } from '../http/driver/IHttpDriver'
 import * as SystemPath from 'path'
 
 class NajsFramework implements INajs {
@@ -10,6 +12,7 @@ class NajsFramework implements INajs {
   protected cwd: string
   protected serviceProviders: ServiceProvider[]
   protected app: Application
+  protected httpDriver: IHttpDriver
 
   constructor() {
     this.cwd = SystemPath.resolve(__dirname, '..', '..', '..', '..')
@@ -31,7 +34,7 @@ class NajsFramework implements INajs {
   }
 
   providers(providers: any[]): this {
-    for (const name in providers) {
+    for (const name of providers) {
       const provider = this.resolveProvider(name)
       if (!provider) {
         continue
@@ -51,6 +54,8 @@ class NajsFramework implements INajs {
       this.fireEventIfNeeded('start', this)
       await this.registerServiceProviders()
       await this.bootServiceProviders()
+      this.httpDriver = this.app.make<IHttpDriver>(SystemClass.HttpDriver)
+      this.httpDriver.start()
       this.fireEventIfNeeded('started', this)
     } catch (error) {
       this.handleError(error)

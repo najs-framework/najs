@@ -13,6 +13,10 @@ export { singleton } from './core/singleton'
 export { autoload } from './core/autoload'
 export { ClassRegistry } from './core/ClassRegistry'
 export { IAutoload } from './core/IAutoload'
+export { ServiceProvider } from './core/ServiceProvider'
+
+// constants
+export { SystemClass, GlobalFacade } from './constants'
 
 // http package
 export { IHttpDriver } from './http/driver/IHttpDriver'
@@ -57,7 +61,8 @@ export { RedisCache } from './cache/RedisCache'
 export { ILogger } from './log/ILogger'
 export { WinstonLogger } from './log/WinstonLogger'
 
-export { HttpDriverClass } from './constants'
-
 // helpers package
 export { route } from './helpers/route'
+
+// internal service providers
+export { ExpressHttpDriverServiceProvider } from './service-providers/ExpressHttpDriverServiceProvider'

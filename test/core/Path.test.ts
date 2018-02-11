@@ -15,24 +15,10 @@ describe('Path', function() {
     expect(ClassRegistry.has(GlobalFacade.Path)).toBe(true)
   })
 
-  describe('constructor()', function() {
-    it('gets workingDirectory from Najs["cwd"]', function() {
-      Najs['cwd'] = 'test'
-      const path = new Path()
-      expect(path['workingDirectory']).toEqual('test')
-    })
-
-    it('sets workingDirectory to "" in case Najs["cwd"] is not set', function() {
-      Najs['cwd'] = undefined
-      const path = new Path()
-      expect(path['workingDirectory']).toEqual('')
-    })
-  })
-
   describe('.get()', function() {
     it('resolve path based on this.workingDirectory', function() {
       const path = new Path()
-      path['workingDirectory'] = 'root'
+      Najs['cwd'] = 'root'
       expect(path.get('any', 'thing')).toEqual(SystemPath.resolve('root', 'any', 'thing'))
     })
   })
@@ -40,7 +26,7 @@ describe('Path', function() {
   describe('.cwd()', function() {
     it('resolve path based on this.workingDirectory', function() {
       const path = new Path()
-      path['workingDirectory'] = 'root'
+      Najs['cwd'] = 'root'
       expect(path.cwd('any', 'thing')).toEqual(SystemPath.resolve('root', 'any', 'thing'))
     })
   })
@@ -59,7 +45,7 @@ describe('Path', function() {
     describe('.' + name + '()', function() {
       it('resolve path based on this.workingDirectory + config("ConfigurationKeys.Paths.' + name + '")', function() {
         const path = new Path()
-        path['workingDirectory'] = 'root'
+        Najs['cwd'] = 'root'
 
         ConfigFacade.createStub('get').returns('test')
         expect(path[name]('any')).toEqual(SystemPath.resolve('root', 'test', 'any'))

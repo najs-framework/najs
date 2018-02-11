@@ -3,16 +3,16 @@ import * as Sinon from 'sinon'
 import * as Make from '../../lib/core/make'
 import { ClassRegistry } from '../../lib/core/ClassRegistry'
 import { HttpKernel } from '../../lib/http/HttpKernel'
-import { HttpKernelClass } from '../../lib/constants'
+import { SystemClass } from '../../lib/constants'
 
 describe('HttpKernel', function() {
   it('is a base class which contains middleware configuration', function() {})
 
   it('auto register to ClassRegistry with name HttpKernel', function() {
-    expect(ClassRegistry.has(HttpKernelClass)).toBe(true)
+    expect(ClassRegistry.has(SystemClass.HttpKernel)).toBe(true)
 
     const instance = new HttpKernel()
-    expect(instance.getClassName() === HttpKernelClass)
+    expect(instance.getClassName() === SystemClass.HttpKernel)
   })
 
   describe('getMiddleware()', function() {

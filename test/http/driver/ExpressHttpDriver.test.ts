@@ -3,8 +3,6 @@ import * as Sinon from 'sinon'
 import * as Http from 'http'
 import * as Make from '../../../lib/core/make'
 import { ExpressHttpDriver } from '../../../lib/http/driver/ExpressHttpDriver'
-import { HttpDriverClass } from '../../../lib/constants'
-import { ClassRegistry } from '../../../lib/core/ClassRegistry'
 import { LogFacade as Log } from '../../../lib/facades/global/LogFacade'
 import { Controller } from '../../../lib/http/controller/Controller'
 import { ExpressController } from '../../../lib/http/controller/ExpressController'
@@ -12,11 +10,6 @@ import { register } from '../../../lib/core/register'
 import { isPromise } from '../../../lib/private/isPromise'
 
 describe('ExpressHttpDriver', function() {
-  it('registers as default HttpDriver', function() {
-    expect(ClassRegistry.has(HttpDriverClass)).toBe(true)
-    expect(ClassRegistry.findOrFail(HttpDriverClass).instanceConstructor === ExpressHttpDriver).toBe(true)
-  })
-
   describe('static .setXPoweredByMiddleware()', function() {
     it('returns a middleware that sets X-Powered-By header', function() {
       const middleware = ExpressHttpDriver.setXPoweredByMiddleware()
@@ -712,7 +705,7 @@ describe('ExpressHttpDriver', function() {
   })
 
   describe('.start()', function() {
-    it('passes this.express to http.createServer()', function() {
+    it('passes this.express to http.createServer() with default host=localhost, port=3000', function() {
       const fakeServer = {
         listen(port: any, host: any) {}
       }
@@ -720,28 +713,29 @@ describe('ExpressHttpDriver', function() {
 
       const listenSpy = Sinon.spy(fakeServer, 'listen')
 
-      const logStub = Sinon.stub(Log, 'info')
+      const logStub = Log.createStub('info')
       const httpStub = Sinon.stub(Http, 'createServer')
       httpStub.returns(fakeServer)
 
-      driver.start({})
+      driver.start()
       expect(httpStub.calledWith(driver['express'])).toBe(true)
-      expect(logStub.calledWith('Listening at port 3000')).toBe(true)
+      expect(logStub.calledWith('Listening at localhost:3000')).toBe(true)
 
       driver.start({ port: 3333 })
-      expect(listenSpy.calledWith(3333, undefined)).toBe(true)
-      expect(logStub.calledWith('Listening at port 3333')).toBe(true)
+      expect(listenSpy.calledWith(3333, 'localhost')).toBe(true)
+      expect(logStub.calledWith('Listening at localhost:3333')).toBe(true)
 
       driver.start({ host: '0.0.0.0' })
-      expect(listenSpy.calledWith(undefined, '0.0.0.0')).toBe(true)
-      expect(logStub.calledWith('Listening at port 0.0.0.0:3000')).toBe(true)
+      expect(listenSpy.calledWith(3000, '0.0.0.0')).toBe(true)
+      expect(logStub.calledWith('Listening at 0.0.0.0:3000')).toBe(true)
 
       driver.start({ port: 4444, host: '0.0.0.0' })
       expect(listenSpy.calledWith(4444, '0.0.0.0')).toBe(true)
-      expect(logStub.calledWith('Listening at port 0.0.0.0:4444')).toBe(true)
+      expect(logStub.calledWith('Listening at 0.0.0.0:4444')).toBe(true)
 
+      listenSpy.restore()
       httpStub.restore()
-      logStub.restore()
+      Log.restoreFacade()
     })
   })
 

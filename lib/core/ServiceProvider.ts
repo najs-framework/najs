@@ -6,7 +6,7 @@ export abstract class ServiceProvider implements IAutoload {
 
   protected app: IApplication
 
-  private constructor(app: IApplication) {
+  constructor(app: IApplication) {
     this.app = app
   }
 

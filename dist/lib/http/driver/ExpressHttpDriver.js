@@ -20,7 +20,7 @@ const ExpressHandlerBars = require("express-handlebars");
 class ExpressHttpDriver {
     constructor() {
         this.express = this.setup();
-        this.httpKernel = make_1.make(constants_1.HttpKernelClass);
+        this.httpKernel = make_1.make(constants_1.SystemClass.HttpKernel);
     }
     static setXPoweredByMiddleware(poweredBy = 'Najs/Express') {
         return function (request, response, next) {
@@ -189,13 +189,15 @@ class ExpressHttpDriver {
         }
     }
     start(options) {
+        const opts = Object.assign({}, {
+            port: ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Port, 3000),
+            host: ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Host, 'localhost')
+        }, options);
         const server = Http.createServer(this.express);
-        server.listen(options.port, options.host);
-        const logs = ['Listening at port '];
-        if (options.host) {
-            logs.push(options.host + ':');
-        }
-        logs.push(options.port || 3000);
+        server.listen(opts.port, opts.host);
+        const logs = ['Listening at '];
+        logs.push(opts.host + ':');
+        logs.push(opts.port);
         LogFacade_1.LogFacade.info(logs.join(''));
         LogFacade_1.LogFacade.info('Routes:');
         RouteCollection_1.RouteCollection.getData().map(this.route.bind(this));
@@ -241,6 +243,4 @@ ExpressHttpDriver.METHODS = [
 ];
 ExpressHttpDriver.className = 'ExpressHttpDriver';
 exports.ExpressHttpDriver = ExpressHttpDriver;
-// register ExpressHttpDriver and using it as a default HttpDriverClass
 index_1.register(ExpressHttpDriver);
-index_1.register(ExpressHttpDriver, constants_1.HttpDriverClass);

@@ -5,10 +5,16 @@ import * as Path from 'path'
 import { Application } from '../../lib/core/Application'
 import { Najs } from '../../lib/core/Najs'
 import { EventEmitter } from 'events'
+import { SystemClass } from '../../lib'
 
 describe('Najs', function() {
   it('is an instance of NajsFramework class which is not a public class', function() {
     expect(typeof Najs === 'object').toBe(true)
+    class FakeHttpDriver {
+      static className = SystemClass.HttpDriver
+      start() {}
+    }
+    Najs['app'].register(FakeHttpDriver)
   })
 
   describe('NajsFramework', function() {

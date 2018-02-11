@@ -7,9 +7,15 @@ const Path = require("path");
 const Application_1 = require("../../lib/core/Application");
 const Najs_1 = require("../../lib/core/Najs");
 const events_1 = require("events");
+const lib_1 = require("../../lib");
 describe('Najs', function () {
     it('is an instance of NajsFramework class which is not a public class', function () {
         expect(typeof Najs_1.Najs === 'object').toBe(true);
+        class FakeHttpDriver {
+            start() { }
+        }
+        FakeHttpDriver.className = lib_1.SystemClass.HttpDriver;
+        Najs_1.Najs['app'].register(FakeHttpDriver);
     });
     describe('NajsFramework', function () {
         describe('constructor()', function () {

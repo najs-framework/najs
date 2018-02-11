@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
 const Application_1 = require("./Application");
 const make_1 = require("./make");
+const constants_1 = require("../constants");
 const SystemPath = require("path");
 class NajsFramework {
     constructor() {
@@ -22,7 +23,7 @@ class NajsFramework {
         return this;
     }
     providers(providers) {
-        for (const name in providers) {
+        for (const name of providers) {
             const provider = this.resolveProvider(name);
             if (!provider) {
                 continue;
@@ -40,6 +41,8 @@ class NajsFramework {
             this.fireEventIfNeeded('start', this);
             await this.registerServiceProviders();
             await this.bootServiceProviders();
+            this.httpDriver = this.app.make(constants_1.SystemClass.HttpDriver);
+            this.httpDriver.start();
             this.fireEventIfNeeded('started', this);
         }
         catch (error) {

@@ -1,5 +1,5 @@
 import { HttpKernel } from './../HttpKernel'
-import { HttpKernelClass, HttpDriverClass, ConfigurationKeys } from '../../constants'
+import { SystemClass, ConfigurationKeys } from '../../constants'
 import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver'
 import { IAutoload } from '../../core/IAutoload'
 import { IRouteData } from '../routing/interfaces/IRouteData'
@@ -67,7 +67,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
 
   constructor() {
     this.express = this.setup()
-    this.httpKernel = make<HttpKernel>(HttpKernelClass)
+    this.httpKernel = make<HttpKernel>(SystemClass.HttpKernel)
   }
 
   protected setup(): ExpressApp {
@@ -269,15 +269,21 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     }
   }
 
-  start(options: HttpDriverStartOptions) {
+  start(options?: HttpDriverStartOptions) {
+    const opts: HttpDriverStartOptions = Object.assign(
+      {},
+      {
+        port: ConfigFacade.get(ConfigurationKeys.Port, 3000),
+        host: ConfigFacade.get(ConfigurationKeys.Host, 'localhost')
+      },
+      options
+    )
     const server = Http.createServer(this.express)
-    server.listen(options.port, options.host)
+    server.listen(opts.port, opts.host)
 
-    const logs: any[] = ['Listening at port ']
-    if (options.host) {
-      logs.push(options.host + ':')
-    }
-    logs.push(options.port || 3000)
+    const logs: any[] = ['Listening at ']
+    logs.push(opts.host + ':')
+    logs.push(opts.port)
     Log.info(logs.join(''))
     Log.info('Routes:')
     RouteCollection.getData().map(this.route.bind(this))
@@ -299,7 +305,4 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     response.redirect(status, url)
   }
 }
-
-// register ExpressHttpDriver and using it as a default HttpDriverClass
 register(ExpressHttpDriver)
-register(ExpressHttpDriver, HttpDriverClass)

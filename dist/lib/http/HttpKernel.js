@@ -9,7 +9,7 @@ class HttpKernel {
         this.middleware = {};
     }
     getClassName() {
-        return constants_1.HttpKernelClass;
+        return constants_1.SystemClass.HttpKernel;
     }
     getMiddleware(name) {
         const result = [];
