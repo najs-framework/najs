@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Facade_1 = require("../facades/Facade");
-const NajsFacade_1 = require("../core/NajsFacade");
+const ConfigFacade_1 = require("../facades/global/ConfigFacade");
 const register_1 = require("../core/register");
 const constants_1 = require("../constants");
 const Redis = require("redis");
@@ -14,7 +14,7 @@ function get_tag_value_key(tagName, key) {
 class RedisCache extends Facade_1.Facade {
     constructor() {
         super();
-        this.redis = Redis.createClient(NajsFacade_1.NajsFacade.getConfig(constants_1.ConfigurationKeys.Cache.redis, {
+        this.redis = Redis.createClient(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Cache.redis, {
             host: 'localhost',
             port: 6379
         }));

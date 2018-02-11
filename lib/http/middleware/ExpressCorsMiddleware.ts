@@ -1,4 +1,4 @@
-import { NajsFacade } from '../../core/NajsFacade'
+import { ConfigFacade } from '../../facades/global/ConfigFacade'
 import { ConfigurationKeys } from '../../constants'
 import { IAutoload } from '../../core/IAutoload'
 import { IExpressMiddleware } from './IExpressMiddleware'
@@ -18,7 +18,7 @@ export class ExpressCorsMiddleware implements IExpressMiddleware, IAutoload {
   }
 
   getOptions() {
-    return NajsFacade.getConfig(ConfigurationKeys.Middleware.corsOptions, {})
+    return ConfigFacade.get(ConfigurationKeys.Middleware.corsOptions, {})
   }
 
   getClassName() {

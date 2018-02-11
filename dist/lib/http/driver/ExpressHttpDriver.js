@@ -10,8 +10,8 @@ const RouteCollection_1 = require("../routing/RouteCollection");
 const make_1 = require("../../core/make");
 const IResponse_1 = require("../response/IResponse");
 const isPromise_1 = require("../../private/isPromise");
-const NajsFacade_1 = require("../../core/NajsFacade");
-const INajsFacade_1 = require("../../core/INajsFacade");
+const ConfigFacade_1 = require("../../facades/global/ConfigFacade");
+const PathFacade_1 = require("../../facades/global/PathFacade");
 const Express = require("express");
 const Http = require("http");
 const BodyParser = require("body-parser");
@@ -45,17 +45,17 @@ class ExpressHttpDriver {
         app.use(CookieParser());
     }
     setupViewEngine(app) {
-        const viewEngine = NajsFacade_1.NajsFacade.getConfig(constants_1.ConfigurationKeys.ViewEngineName, 'hbs');
-        app.engine(viewEngine, ExpressHandlerBars(NajsFacade_1.NajsFacade.getConfig(constants_1.ConfigurationKeys.HandlerBarsOptions, {
-            layoutsDir: NajsFacade_1.NajsFacade.path(INajsFacade_1.NajsPath.Layout),
+        const viewEngine = ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.ViewEngineName, 'hbs');
+        app.engine(viewEngine, ExpressHandlerBars(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.HandlerBarsOptions, {
+            layoutsDir: PathFacade_1.PathFacade.layout(),
             extname: '.hbs',
             defaultLayout: 'default'
         })));
         app.set('view engine', viewEngine);
-        app.set('views', NajsFacade_1.NajsFacade.path(INajsFacade_1.NajsPath.View));
+        app.set('views', PathFacade_1.PathFacade.view());
     }
     setupStaticAssets(app) {
-        app.use(Express.static(NajsFacade_1.NajsFacade.path(INajsFacade_1.NajsPath.Public)));
+        app.use(Express.static(PathFacade_1.PathFacade.public()));
     }
     getClassName() {
         return ExpressHttpDriver.className;

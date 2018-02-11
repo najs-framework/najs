@@ -13,8 +13,8 @@ import { make } from '../../core/make'
 import { isIResponse } from '../response/IResponse'
 import { isPromise } from '../../private/isPromise'
 import { IMiddleware } from '../middleware/IMiddleware'
-import { NajsFacade as Najs } from '../../core/NajsFacade'
-import { NajsPath } from '../../core/INajsFacade'
+import { ConfigFacade } from '../../facades/global/ConfigFacade'
+import { PathFacade } from '../../facades/global/PathFacade'
 import * as Express from 'express'
 import * as Http from 'http'
 import * as BodyParser from 'body-parser'
@@ -90,23 +90,23 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   }
 
   protected setupViewEngine(app: ExpressApp) {
-    const viewEngine: string = Najs.getConfig(ConfigurationKeys.ViewEngineName, 'hbs')
+    const viewEngine: string = ConfigFacade.get(ConfigurationKeys.ViewEngineName, 'hbs')
     app.engine(
       viewEngine,
       ExpressHandlerBars(
-        Najs.getConfig(ConfigurationKeys.HandlerBarsOptions, {
-          layoutsDir: Najs.path(NajsPath.Layout),
+        ConfigFacade.get(ConfigurationKeys.HandlerBarsOptions, {
+          layoutsDir: PathFacade.layout(),
           extname: '.hbs',
           defaultLayout: 'default'
         })
       )
     )
     app.set('view engine', viewEngine)
-    app.set('views', Najs.path(NajsPath.View))
+    app.set('views', PathFacade.view())
   }
 
   protected setupStaticAssets(app: ExpressApp) {
-    app.use(Express.static(Najs.path(NajsPath.Public)))
+    app.use(Express.static(PathFacade.public()))
   }
 
   getClassName() {

@@ -1,4 +1,4 @@
-import { NajsFacade } from '../../core/NajsFacade'
+import { ConfigFacade } from '../../facades/global/ConfigFacade'
 import { ConfigurationKeys } from './../../constants'
 import { IAutoload } from '../../core/IAutoload'
 import { IExpressMiddleware } from './IExpressMiddleware'
@@ -19,7 +19,7 @@ export class ExpressCsurfMiddleware implements IExpressMiddleware, IAutoload {
   }
 
   getOptions() {
-    return NajsFacade.getConfig(ConfigurationKeys.Middleware.csurfOptions, { cookie: true })
+    return ConfigFacade.get(ConfigurationKeys.Middleware.csurfOptions, { cookie: true })
   }
 
   getClassName() {

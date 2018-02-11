@@ -2,10 +2,9 @@ import './cache/RedisCache'
 import './log/WinstonLogger'
 
 // core package
-import { NajsFacade as Najs } from './core/NajsFacade'
+import { Najs } from './core/Najs'
+export { Najs }
 export default Najs
-export { NajsFacade as Najs } from './core/NajsFacade'
-export { NajsOptions, NajsPath } from './core/INajsFacade'
 
 export { make } from './core/make'
 export { bind } from './core/bind'

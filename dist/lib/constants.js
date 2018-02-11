@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.HttpDriverClass = 'HttpDriver';
 exports.LoggerClass = 'Logger';
 exports.HttpKernelClass = 'HttpKernel';
-exports.CacheClass = 'Cache';
 exports.SchemaValidatorClass = 'SchemaValidator';
 exports.GlobalFacade = {
     Application: 'Najs.Application',

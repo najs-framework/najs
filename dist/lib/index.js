@@ -3,12 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("./cache/RedisCache");
 require("./log/WinstonLogger");
 // core package
-const NajsFacade_1 = require("./core/NajsFacade");
-exports.default = NajsFacade_1.NajsFacade;
-var NajsFacade_2 = require("./core/NajsFacade");
-exports.Najs = NajsFacade_2.NajsFacade;
-var INajsFacade_1 = require("./core/INajsFacade");
-exports.NajsPath = INajsFacade_1.NajsPath;
+const Najs_1 = require("./core/Najs");
+exports.Najs = Najs_1.Najs;
+exports.default = Najs_1.Najs;
 var make_1 = require("./core/make");
 exports.make = make_1.make;
 var bind_1 = require("./core/bind");

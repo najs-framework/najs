@@ -1,5 +1,5 @@
 import { Facade } from '../facades/Facade'
-import { NajsFacade } from '../core/NajsFacade'
+import { ConfigFacade } from '../facades/global/ConfigFacade'
 import { ICache, CacheFallback } from './ICache'
 import { IAutoload } from '../core/IAutoload'
 import { register } from '../core/register'
@@ -21,7 +21,7 @@ export class RedisCache extends Facade implements ICache, IAutoload {
   constructor() {
     super()
     this.redis = Redis.createClient(
-      NajsFacade.getConfig(ConfigurationKeys.Cache.redis, {
+      ConfigFacade.get(ConfigurationKeys.Cache.redis, {
         host: 'localhost',
         port: 6379
       })

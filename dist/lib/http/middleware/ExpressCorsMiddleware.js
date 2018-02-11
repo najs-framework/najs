@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const NajsFacade_1 = require("../../core/NajsFacade");
+const ConfigFacade_1 = require("../../facades/global/ConfigFacade");
 const constants_1 = require("../../constants");
 const register_1 = require("../../core/register");
 const CORS = require("cors");
@@ -11,7 +11,7 @@ class ExpressCorsMiddleware {
         }
     }
     getOptions() {
-        return NajsFacade_1.NajsFacade.getConfig(constants_1.ConfigurationKeys.Middleware.corsOptions, {});
+        return ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Middleware.corsOptions, {});
     }
     getClassName() {
         return ExpressCorsMiddleware.className;
