@@ -1,10 +1,13 @@
+import { IAutoload } from './../core/IAutoload';
 import { ILogger } from './ILogger';
+import { Facade } from '../facades/Facade';
 import * as Winston from 'winston';
-export declare class WinstonLogger implements ILogger {
+export declare class WinstonLogger extends Facade implements ILogger, IAutoload {
     static className: string;
     protected logger: Winston.LoggerInstance;
     private static levels;
     constructor();
+    getClassName(): string;
     protected setup(): Winston.LoggerInstance;
     protected getDefaultOptions(): {
         level: string;

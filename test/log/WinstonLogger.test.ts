@@ -1,15 +1,22 @@
 import 'jest'
 import * as Sinon from 'sinon'
 import * as Winston from 'winston'
-import { ClassRegistry } from './../../lib/core/ClassRegistry'
+import { ClassRegistry } from '../../lib/core/ClassRegistry'
 import { WinstonLogger } from '../../lib/log/WinstonLogger'
-import { LoggerClass } from './../../lib/constants'
+import { Facade } from '../../lib/facades/Facade'
+import { GlobalFacade } from '../../lib/constants'
 
 describe('WinstonLogger', function() {
-  it('implements ILogger and registers to LoggerClass by default', function() {
+  it('extends from Facade so it definitely a FacadeClass', function() {
+    const logger = new WinstonLogger()
+    expect(logger).toBeInstanceOf(Facade)
+    expect(logger.getClassName()).toEqual(WinstonLogger.className)
+  })
+
+  it('implements ILogger and registers to GlobalFacade.Log by default', function() {
     expect(ClassRegistry.has(WinstonLogger.className)).toBe(true)
-    expect(ClassRegistry.has(LoggerClass)).toBe(true)
-    expect(ClassRegistry.findOrFail(LoggerClass).instanceConstructor === WinstonLogger).toBe(true)
+    expect(ClassRegistry.has(GlobalFacade.Log)).toBe(true)
+    expect(ClassRegistry.findOrFail(GlobalFacade.Log).instanceConstructor === WinstonLogger).toBe(true)
   })
 
   it('calls .setup() and use .getDefaultOptions() to get options for Winston', function() {

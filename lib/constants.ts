@@ -1,5 +1,4 @@
 export const HttpDriverClass: string = 'HttpDriver'
-export const LoggerClass: string = 'Logger'
 export const HttpKernelClass: string = 'HttpKernel'
 export const SchemaValidatorClass: string = 'SchemaValidator'
 
@@ -7,7 +6,8 @@ export const GlobalFacade = {
   Application: 'Najs.Application',
   Cache: 'Najs.Cache',
   Config: 'Najs.Config',
-  Path: 'Najs.Path'
+  Path: 'Najs.Path',
+  Log: 'Najs.Log'
 }
 
 /**

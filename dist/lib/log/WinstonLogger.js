@@ -1,11 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const register_1 = require("../core/register");
 const constants_1 = require("../constants");
+const register_1 = require("../core/register");
+const Facade_1 = require("../facades/Facade");
 const Winston = require("winston");
-class WinstonLogger {
+class WinstonLogger extends Facade_1.Facade {
     constructor() {
+        super();
         this.logger = this.setup();
+    }
+    getClassName() {
+        return WinstonLogger.className;
     }
     setup() {
         const logger = new Winston.Logger(this.getDefaultOptions());
@@ -77,6 +82,5 @@ WinstonLogger.levels = {
     debug: 'debug'
 };
 exports.WinstonLogger = WinstonLogger;
-// register WinstonLogger and using it as a default LoggerClass
 register_1.register(WinstonLogger);
-register_1.register(WinstonLogger, constants_1.LoggerClass);
+register_1.register(WinstonLogger, constants_1.GlobalFacade.Log);

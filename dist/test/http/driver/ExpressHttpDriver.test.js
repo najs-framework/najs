@@ -7,7 +7,7 @@ const Make = require("../../../lib/core/make");
 const ExpressHttpDriver_1 = require("../../../lib/http/driver/ExpressHttpDriver");
 const constants_1 = require("../../../lib/constants");
 const ClassRegistry_1 = require("../../../lib/core/ClassRegistry");
-const Log_1 = require("../../../lib/log/Log");
+const LogFacade_1 = require("../../../lib/facades/global/LogFacade");
 const Controller_1 = require("../../../lib/http/controller/Controller");
 const ExpressController_1 = require("../../../lib/http/controller/ExpressController");
 const register_1 = require("../../../lib/core/register");
@@ -70,7 +70,7 @@ describe('ExpressHttpDriver', function () {
         it('joins prefix and path, calls getEndpointHandlers() to get endpoint handler', function () {
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             const getEndpointHandlersSpy = Sinon.spy(driver, 'getEndpointHandlers');
-            const logStub = Sinon.stub(Log_1.Log, 'info');
+            const logStub = Sinon.stub(LogFacade_1.LogFacade, 'info');
             const route = {
                 method: 'GET',
                 prefix: '/',
@@ -87,7 +87,7 @@ describe('ExpressHttpDriver', function () {
             const getEndpointHandlersStub = Sinon.stub(driver, 'getEndpointHandlers');
             getEndpointHandlersStub.returns([]);
             const postExpressStub = Sinon.stub(driver['express'], 'post');
-            const logStub = Sinon.stub(Log_1.Log, 'info');
+            const logStub = Sinon.stub(LogFacade_1.LogFacade, 'info');
             const route = {
                 method: 'POST',
                 prefix: '/',
@@ -106,7 +106,7 @@ describe('ExpressHttpDriver', function () {
             const fakeHandler = (a, b) => { };
             const getEndpointHandlersStub = Sinon.stub(driver, 'getEndpointHandlers');
             getEndpointHandlersStub.returns([fakeMiddleware, fakeHandler]);
-            const logStub = Sinon.stub(Log_1.Log, 'info');
+            const logStub = Sinon.stub(LogFacade_1.LogFacade, 'info');
             const postExpressStub = Sinon.stub(driver['express'], 'post');
             const route = {
                 method: 'POST',
@@ -595,7 +595,7 @@ describe('ExpressHttpDriver', function () {
             };
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             const listenSpy = Sinon.spy(fakeServer, 'listen');
-            const logStub = Sinon.stub(Log_1.Log, 'info');
+            const logStub = Sinon.stub(LogFacade_1.LogFacade, 'info');
             const httpStub = Sinon.stub(Http, 'createServer');
             httpStub.returns(fakeServer);
             driver.start({});

@@ -3,14 +3,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
 const Winston = require("winston");
-const ClassRegistry_1 = require("./../../lib/core/ClassRegistry");
+const ClassRegistry_1 = require("../../lib/core/ClassRegistry");
 const WinstonLogger_1 = require("../../lib/log/WinstonLogger");
-const constants_1 = require("./../../lib/constants");
+const Facade_1 = require("../../lib/facades/Facade");
+const constants_1 = require("../../lib/constants");
 describe('WinstonLogger', function () {
-    it('implements ILogger and registers to LoggerClass by default', function () {
+    it('extends from Facade so it definitely a FacadeClass', function () {
+        const logger = new WinstonLogger_1.WinstonLogger();
+        expect(logger).toBeInstanceOf(Facade_1.Facade);
+        expect(logger.getClassName()).toEqual(WinstonLogger_1.WinstonLogger.className);
+    });
+    it('implements ILogger and registers to GlobalFacade.Log by default', function () {
         expect(ClassRegistry_1.ClassRegistry.has(WinstonLogger_1.WinstonLogger.className)).toBe(true);
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.LoggerClass)).toBe(true);
-        expect(ClassRegistry_1.ClassRegistry.findOrFail(constants_1.LoggerClass).instanceConstructor === WinstonLogger_1.WinstonLogger).toBe(true);
+        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacade.Log)).toBe(true);
+        expect(ClassRegistry_1.ClassRegistry.findOrFail(constants_1.GlobalFacade.Log).instanceConstructor === WinstonLogger_1.WinstonLogger).toBe(true);
     });
     it('calls .setup() and use .getDefaultOptions() to get options for Winston', function () {
         const setupSpy = Sinon.spy(WinstonLogger_1.WinstonLogger.prototype, 'setup');

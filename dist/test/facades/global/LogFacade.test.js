@@ -4,12 +4,12 @@ require("jest");
 const Make = require("../../../lib/core/make");
 const Sinon = require("sinon");
 const constants_1 = require("../../../lib/constants");
-const PathFacade_1 = require("../../../lib/facades/global/PathFacade");
-describe('PathFacade', function () {
-    it('calls make() to create new instance of Path as a facade root', function () {
+const LogFacade_1 = require("../../../lib/facades/global/LogFacade");
+describe('LogFacade', function () {
+    it('calls make() to create new instance of WinstonLogger as a facade root', function () {
         const makeSpy = Sinon.spy(Make, 'make');
-        PathFacade_1.PathFacade.reloadFacadeRoot();
-        expect(makeSpy.calledWith(constants_1.GlobalFacade.Path)).toBe(true);
+        LogFacade_1.LogFacade.reloadFacadeRoot();
+        expect(makeSpy.calledWith(constants_1.GlobalFacade.Log)).toBe(true);
         expect(makeSpy.calledOnce).toBe(true);
     });
 });

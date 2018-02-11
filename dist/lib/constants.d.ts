@@ -1,5 +1,4 @@
 export declare const HttpDriverClass: string;
-export declare const LoggerClass: string;
 export declare const HttpKernelClass: string;
 export declare const SchemaValidatorClass: string;
 export declare const GlobalFacade: {
@@ -7,6 +6,7 @@ export declare const GlobalFacade: {
     Cache: string;
     Config: string;
     Path: string;
+    Log: string;
 };
 /**
  * This Object Configuration's key

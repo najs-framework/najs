@@ -46,6 +46,7 @@ export { ExpressCorsMiddleware } from './http/middleware/ExpressCorsMiddleware'
 export { AppFacade as App } from './facades/global/AppFacade'
 export { CacheFacade as Cache } from './facades/global/CacheFacade'
 export { ConfigFacade as Config } from './facades/global/ConfigFacade'
+export { LogFacade as Log } from './facades/global/LogFacade'
 export { PathFacade as Path } from './facades/global/PathFacade'
 
 // cache package
@@ -54,10 +55,8 @@ export { RedisCache } from './cache/RedisCache'
 
 // log package
 export { ILogger } from './log/ILogger'
-export { Log, reload as reloadLog } from './log/Log'
 export { WinstonLogger } from './log/WinstonLogger'
 
-export { LoggerClass } from './constants'
 export { HttpDriverClass } from './constants'
 
 // helpers package

@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../../constants");
 const index_1 = require("../../index");
-const Log_1 = require("../../log/Log");
+const LogFacade_1 = require("../../facades/global/LogFacade");
 const lodash_1 = require("lodash");
 const Controller_1 = require("../controller/Controller");
 const ExpressController_1 = require("../controller/ExpressController");
@@ -74,7 +74,7 @@ class ExpressHttpDriver {
         if (handlers.length === 0) {
             return;
         }
-        Log_1.Log.info('  [' + method.toUpperCase() + '] \t' + path);
+        LogFacade_1.LogFacade.info('  [' + method.toUpperCase() + '] \t' + path);
         Reflect.apply(Reflect.get(this.express, method), this.express, [path, ...handlers]);
     }
     getEndpointHandlers(method, path, route) {
@@ -196,8 +196,8 @@ class ExpressHttpDriver {
             logs.push(options.host + ':');
         }
         logs.push(options.port || 3000);
-        Log_1.Log.info(logs.join(''));
-        Log_1.Log.info('Routes:');
+        LogFacade_1.LogFacade.info(logs.join(''));
+        LogFacade_1.LogFacade.info('Routes:');
         RouteCollection_1.RouteCollection.getData().map(this.route.bind(this));
     }
     respondView(response, view, variables) {

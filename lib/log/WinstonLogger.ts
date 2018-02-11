@@ -1,12 +1,12 @@
-// import { Configuration } from './../constants'
-// import { Najs } from './../core/Najs'
+import { IAutoload } from './../core/IAutoload'
+import { GlobalFacade } from '../constants'
 import { ILogger, LoggerLevels } from './ILogger'
 import { register } from '../core/register'
-import { LoggerClass } from '../constants'
+import { Facade } from '../facades/Facade'
 import * as Winston from 'winston'
 
-export class WinstonLogger implements ILogger {
-  static className = 'WinstonLogger'
+export class WinstonLogger extends Facade implements ILogger, IAutoload {
+  static className: string = 'WinstonLogger'
 
   protected logger: Winston.LoggerInstance
   private static levels: LoggerLevels = {
@@ -21,7 +21,12 @@ export class WinstonLogger implements ILogger {
   }
 
   constructor() {
+    super()
     this.logger = this.setup()
+  }
+
+  getClassName(): string {
+    return WinstonLogger.className
   }
 
   protected setup(): Winston.LoggerInstance {
@@ -110,7 +115,5 @@ export class WinstonLogger implements ILogger {
     return this
   }
 }
-
-// register WinstonLogger and using it as a default LoggerClass
 register(WinstonLogger)
-register(WinstonLogger, LoggerClass)
+register(WinstonLogger, GlobalFacade.Log)

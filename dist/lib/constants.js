@@ -1,14 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.HttpDriverClass = 'HttpDriver';
-exports.LoggerClass = 'Logger';
 exports.HttpKernelClass = 'HttpKernel';
 exports.SchemaValidatorClass = 'SchemaValidator';
 exports.GlobalFacade = {
     Application: 'Najs.Application',
     Cache: 'Najs.Cache',
     Config: 'Najs.Config',
-    Path: 'Najs.Path'
+    Path: 'Najs.Path',
+    Log: 'Najs.Log'
 };
 /**
  * This Object Configuration's key
