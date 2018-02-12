@@ -50,8 +50,16 @@ export { ExpressCorsMiddleware } from './http/middleware/ExpressCorsMiddleware'
 export { AppFacade as App } from './facades/global/AppFacade'
 export { CacheFacade as Cache } from './facades/global/CacheFacade'
 export { ConfigFacade as Config } from './facades/global/ConfigFacade'
+export { EventFacade as Event } from './facades/global/EventFacade'
+export { DispatcherFacade as Dispatcher } from './facades/global/DispatcherFacade'
 export { LogFacade as Log } from './facades/global/LogFacade'
 export { PathFacade as Path } from './facades/global/PathFacade'
+
+// event package
+export { IEventEmitter } from './event/IEventEmitter'
+export { IDispatcher } from './event/IDispatcher'
+export { EventDispatcher } from './event/EventDispatcher'
+export { EventSubscriber } from './event/EventSubscriber'
 
 // cache package
 export { ICache, CacheFallback } from './cache/ICache'

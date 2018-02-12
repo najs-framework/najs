@@ -7,8 +7,9 @@ export declare const GlobalFacade: {
     Application: string;
     Cache: string;
     Config: string;
-    Path: string;
+    Event: string;
     Log: string;
+    Path: string;
 };
 /**
  * This Object Configuration's key

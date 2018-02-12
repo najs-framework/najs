@@ -9,8 +9,9 @@ export const GlobalFacade = {
   Application: 'Najs.Application',
   Cache: 'Najs.Cache',
   Config: 'Najs.Config',
-  Path: 'Najs.Path',
-  Log: 'Najs.Log'
+  Event: 'Najs.EventDispatcher',
+  Log: 'Najs.Log',
+  Path: 'Najs.Path'
 }
 
 /**
