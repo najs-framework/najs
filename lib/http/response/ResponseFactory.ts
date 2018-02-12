@@ -1,12 +1,22 @@
+import { IAutoload } from './../../core/IAutoload'
+import { Facade } from './../../facades/Facade'
+import { GlobalFacade } from '../../constants'
 import { IView } from './types/IViewGrammars'
 import { ViewResponse } from './types/ViewResponse'
 import { IResponse } from './IResponse'
-import { IResponseFacade } from './IResponseFacade'
+import { IResponseFactory } from './IResponseFactory'
 import { JsonResponse } from './types/JsonResponse'
 import { JsonpResponse } from './types/JsonpResponse'
 import { RedirectResponse } from './types/RedirectResponse'
+import { register } from '../../core/register'
 
-class Response implements IResponseFacade {
+export class ResponseFactory extends Facade implements IResponseFactory, IAutoload {
+  static className: string = GlobalFacade.Response
+
+  getClassName() {
+    return GlobalFacade.Response
+  }
+
   view(view: string): IView
   view<T extends Object = {}>(view: string, variables: T): IView
   view<T extends Object = {}>(view: string, variables?: T): IView {
@@ -27,5 +37,4 @@ class Response implements IResponseFacade {
     return new RedirectResponse(url, status)
   }
 }
-
-export const ResponseFacade: IResponseFacade = new Response()
+register(ResponseFactory)

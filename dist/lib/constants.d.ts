@@ -10,6 +10,7 @@ export declare const GlobalFacade: {
     Event: string;
     Log: string;
     Path: string;
+    Response: string;
 };
 /**
  * This Object Configuration's key

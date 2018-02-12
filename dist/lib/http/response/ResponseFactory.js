@@ -1,10 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const Facade_1 = require("./../../facades/Facade");
+const constants_1 = require("../../constants");
 const ViewResponse_1 = require("./types/ViewResponse");
 const JsonResponse_1 = require("./types/JsonResponse");
 const JsonpResponse_1 = require("./types/JsonpResponse");
 const RedirectResponse_1 = require("./types/RedirectResponse");
-class Response {
+const register_1 = require("../../core/register");
+class ResponseFactory extends Facade_1.Facade {
+    getClassName() {
+        return constants_1.GlobalFacade.Response;
+    }
     view(view, variables) {
         return new ViewResponse_1.ViewResponse(view, variables);
     }
@@ -18,4 +24,6 @@ class Response {
         return new RedirectResponse_1.RedirectResponse(url, status);
     }
 }
-exports.ResponseFacade = new Response();
+ResponseFactory.className = constants_1.GlobalFacade.Response;
+exports.ResponseFactory = ResponseFactory;
+register_1.register(ResponseFactory);

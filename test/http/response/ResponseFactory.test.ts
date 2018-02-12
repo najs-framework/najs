@@ -1,12 +1,22 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import { ResponseFacade as Response } from '../../../lib/http/response/ResponseFacade'
+import { ResponseFactory } from '../../../lib/http/response/ResponseFactory'
 import { ViewResponse } from '../../../lib/http/response/types/ViewResponse'
 import { JsonResponse } from '../../../lib/http/response/types/JsonResponse'
 import { RedirectResponse } from '../../../lib/http/response/types/RedirectResponse'
 import { JsonpResponse } from '../../../lib/http/response/types/JsonpResponse'
+import { Facade } from '../../../lib/facades/Facade'
+import { GlobalFacade } from '../../../lib/constants'
+import { ClassRegistry } from '../../../lib/core/ClassRegistry'
 
 describe('ResponseFacade', function() {
+  const Response = new ResponseFactory()
+  it('extends from Facade so it definitely a FacadeClass', function() {
+    expect(Response).toBeInstanceOf(Facade)
+    expect(Response.getClassName()).toEqual(GlobalFacade.Response)
+    expect(ClassRegistry.has(GlobalFacade.Response)).toBe(true)
+  })
+
   describe('view', function() {
     it('creates new instance of ViewResponse', function() {
       const result = Response.view('test')

@@ -11,7 +11,8 @@ exports.GlobalFacade = {
     Config: 'Najs.Config',
     Event: 'Najs.EventDispatcher',
     Log: 'Najs.Log',
-    Path: 'Najs.Path'
+    Path: 'Najs.Path',
+    Response: 'Najs.ResponseFactory'
 };
 /**
  * This Object Configuration's key

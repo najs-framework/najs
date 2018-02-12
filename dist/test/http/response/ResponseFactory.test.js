@@ -2,15 +2,24 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
-const ResponseFacade_1 = require("../../../lib/http/response/ResponseFacade");
+const ResponseFactory_1 = require("../../../lib/http/response/ResponseFactory");
 const ViewResponse_1 = require("../../../lib/http/response/types/ViewResponse");
 const JsonResponse_1 = require("../../../lib/http/response/types/JsonResponse");
 const RedirectResponse_1 = require("../../../lib/http/response/types/RedirectResponse");
 const JsonpResponse_1 = require("../../../lib/http/response/types/JsonpResponse");
+const Facade_1 = require("../../../lib/facades/Facade");
+const constants_1 = require("../../../lib/constants");
+const ClassRegistry_1 = require("../../../lib/core/ClassRegistry");
 describe('ResponseFacade', function () {
+    const Response = new ResponseFactory_1.ResponseFactory();
+    it('extends from Facade so it definitely a FacadeClass', function () {
+        expect(Response).toBeInstanceOf(Facade_1.Facade);
+        expect(Response.getClassName()).toEqual(constants_1.GlobalFacade.Response);
+        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacade.Response)).toBe(true);
+    });
     describe('view', function () {
         it('creates new instance of ViewResponse', function () {
-            const result = ResponseFacade_1.ResponseFacade.view('test');
+            const result = Response.view('test');
             expect(result).toBeInstanceOf(ViewResponse_1.ViewResponse);
             expect(result['view']).toEqual('test');
             expect(result['variables']).toEqual({});
@@ -18,25 +27,25 @@ describe('ResponseFacade', function () {
     });
     describe('json', function () {
         it('creates new instance of JsonResponse', function () {
-            const result = ResponseFacade_1.ResponseFacade.json('test');
+            const result = Response.json('test');
             expect(result).toBeInstanceOf(JsonResponse_1.JsonResponse);
             expect(result['value']).toEqual('test');
         });
     });
     describe('jsonp', function () {
         it('creates new instance of JsonpResponse', function () {
-            const result = ResponseFacade_1.ResponseFacade.jsonp('test');
+            const result = Response.jsonp('test');
             expect(result).toBeInstanceOf(JsonpResponse_1.JsonpResponse);
             expect(result['value']).toEqual('test');
         });
     });
     describe('redirect', function () {
         it('creates new instance of RedirectResponse', function () {
-            let result = ResponseFacade_1.ResponseFacade.redirect('/path');
+            let result = Response.redirect('/path');
             expect(result).toBeInstanceOf(RedirectResponse_1.RedirectResponse);
             expect(result['url']).toEqual('/path');
             expect(result['status']).toEqual(302);
-            result = ResponseFacade_1.ResponseFacade.redirect('/path', 301);
+            result = Response.redirect('/path', 301);
             expect(result).toBeInstanceOf(RedirectResponse_1.RedirectResponse);
             expect(result['url']).toEqual('/path');
             expect(result['status']).toEqual(301);
