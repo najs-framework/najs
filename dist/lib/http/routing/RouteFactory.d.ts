@@ -1,9 +1,12 @@
+import { IAutoload } from '../../core/IAutoload';
+import { Facade } from '../../facades/Facade';
 import { RouteGrammarVerbChain, RouteGrammarGroupChain, RouteGrammarControlChain, RouteGrammarNameChain } from './interfaces/IRouteGrammars';
 import { IRouteGenerateUrl } from './interfaces/IRouteGenerateUrl';
 import { IMiddleware } from '../middleware/IMiddleware';
 import { HttpMethod } from '../HttpMethod';
 import { Controller } from '../controller/Controller';
-export declare class Route implements IRouteGenerateUrl {
+export declare class RouteFactory extends Facade implements IRouteGenerateUrl, IAutoload {
+    getClassName(): string;
     createByName(name: string): string;
     createByName(name: string, param: Object): string;
     createByName(name: string, param: Object, options: {

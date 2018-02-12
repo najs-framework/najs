@@ -1,5 +1,5 @@
 import 'jest'
-import { RouteFacade } from '../../lib/http/routing/RouteFacade'
+import { RouteFacade } from '../../lib/facades/global/RouteFacade'
 import * as Sinon from 'sinon'
 import { route } from '../../lib/helpers/route'
 

@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
-const RouteFacade_1 = require("../../lib/http/routing/RouteFacade");
+const RouteFacade_1 = require("../../lib/facades/global/RouteFacade");
 const Sinon = require("sinon");
 const route_1 = require("../../lib/helpers/route");
 describe('route()', function () {

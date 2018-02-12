@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
-const RouteFacade_1 = require("../../../lib/http/routing/RouteFacade");
+const RouteFacade_1 = require("../../../lib/facades/global/RouteFacade");
 const RouteCollection_1 = require("../../../lib/http/routing/RouteCollection");
 describe('RouteCollection', function () {
     it('is initialized with isChanged = false and empty routes, routeData', function () {

@@ -23,12 +23,13 @@ export { IHttpDriver } from './http/driver/IHttpDriver'
 export { HttpDriverStartOptions } from './http/driver/IHttpDriver'
 export { HttpKernel } from './http/HttpKernel'
 
-export { RouteFacade as Route } from './http/routing/RouteFacade'
 export { RouteCollection } from './http/routing/RouteCollection'
 export { ExpressHttpDriver } from './http/driver/ExpressHttpDriver'
 
 export { Controller } from './http/controller/Controller'
 export { ExpressController } from './http/controller/ExpressController'
+
+export { RouteFactory } from './http/routing/RouteFactory'
 
 export { ResponseFactory } from './http/response/ResponseFactory'
 export { IResponse } from './http/response/IResponse'
@@ -55,6 +56,7 @@ export { DispatcherFacade as Dispatcher } from './facades/global/DispatcherFacad
 export { LogFacade as Log } from './facades/global/LogFacade'
 export { PathFacade as Path } from './facades/global/PathFacade'
 export { ResponseFacade as Response } from './facades/global/ResponseFacade'
+export { RouteFacade as Route } from './facades/global/RouteFacade'
 
 // event package
 export { IEventEmitter } from './event/IEventEmitter'

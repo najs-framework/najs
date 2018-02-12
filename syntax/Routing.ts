@@ -1,4 +1,4 @@
-import { RouteFacade as Route } from '../lib/http/routing/RouteFacade'
+import { RouteFacade as Route } from '../lib/facades/global/RouteFacade'
 
 function desc(name: string, callback: () => void): void {}
 

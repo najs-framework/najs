@@ -12,7 +12,8 @@ export const GlobalFacade = {
   Event: 'Najs.EventDispatcher',
   Log: 'Najs.Log',
   Path: 'Najs.Path',
-  Response: 'Najs.ResponseFactory'
+  Response: 'Najs.ResponseFactory',
+  Route: 'Najs.RouteFactory'
 }
 
 /**

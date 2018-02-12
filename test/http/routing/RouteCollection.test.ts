@@ -1,5 +1,5 @@
 import 'jest'
-import { RouteFacade as Route } from '../../../lib/http/routing/RouteFacade'
+import { RouteFacade as Route } from '../../../lib/facades/global/RouteFacade'
 import { RouteCollection } from '../../../lib/http/routing/RouteCollection'
 
 describe('RouteCollection', function() {

@@ -11,6 +11,7 @@ export declare const GlobalFacade: {
     Log: string;
     Path: string;
     Response: string;
+    Route: string;
 };
 /**
  * This Object Configuration's key

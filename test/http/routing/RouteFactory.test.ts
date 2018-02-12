@@ -1,7 +1,7 @@
 import 'jest'
 import * as Sinon from 'sinon'
 import * as PathToRegex from 'path-to-regexp'
-import { RouteFacade as Route } from '../../../lib/http/routing/RouteFacade'
+import { RouteFacade as Route } from '../../../lib/facades/global/RouteFacade'
 import { RouteCollection } from '../../../lib/http/routing/RouteCollection'
 import { HttpMethod } from '../../../lib/http/HttpMethod'
 import { RouteBuilder } from '../../../lib/http/routing/RouteBuilder'
@@ -31,7 +31,7 @@ function getRouteData(
   }
 }
 
-describe('Route', function() {
+describe('RouteFactory', function() {
   describe('IRouteGenerateUrl', function() {
     it('calls "path-to-regex".compile() and passes params to generate url', function() {
       const toPath = function() {

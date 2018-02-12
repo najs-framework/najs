@@ -1,9 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const Facade_1 = require("../../facades/Facade");
+const constants_1 = require("../../constants");
 const RouteCollection_1 = require("./RouteCollection");
 const RouteBuilder_1 = require("./RouteBuilder");
 const PathToRegex = require("path-to-regexp");
-class Route {
+const register_1 = require("../../core/register");
+class RouteFactory extends Facade_1.Facade {
+    getClassName() {
+        return constants_1.GlobalFacade.Route;
+    }
     createByName(name, param, options) {
         const route = RouteCollection_1.RouteCollection.findOrFail(name);
         const toPath = PathToRegex.compile(route.prefix + route.path);
@@ -101,4 +107,5 @@ class Route {
         return RouteCollection_1.RouteCollection.register(new RouteBuilder_1.RouteBuilder()).unsubscribe(arg0, arg1, arg2);
     }
 }
-exports.Route = Route;
+exports.RouteFactory = RouteFactory;
+register_1.register(RouteFactory);

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const RouteFacade_1 = require("../lib/http/routing/RouteFacade");
+const RouteFacade_1 = require("../lib/facades/global/RouteFacade");
 function desc(name, callback) { }
 desc('Simple route with prefix() before HTTP verb', () => {
     RouteFacade_1.RouteFacade.prefix('test').get('/get', 'Controller@endpoint');

@@ -1,3 +1,6 @@
+import { IAutoload } from '../../core/IAutoload'
+import { Facade } from '../../facades/Facade'
+import { GlobalFacade } from '../../constants'
 import { RouteCollection } from './RouteCollection'
 import { RouteBuilder } from './RouteBuilder'
 import {
@@ -12,8 +15,13 @@ import { HttpMethod } from '../HttpMethod'
 import { Controller } from '../controller/Controller'
 import { IRouteData } from './interfaces/IRouteData'
 import * as PathToRegex from 'path-to-regexp'
+import { register } from '../../core/register'
 
-export class Route implements IRouteGenerateUrl {
+export class RouteFactory extends Facade implements IRouteGenerateUrl, IAutoload {
+  getClassName() {
+    return GlobalFacade.Route
+  }
+
   createByName(name: string): string
   createByName(name: string, param: Object): string
   createByName(name: string, param: Object, options: { encode: (value: string) => string }): string
@@ -263,3 +271,4 @@ export class Route implements IRouteGenerateUrl {
     return RouteCollection.register<RouteBuilder>(new RouteBuilder()).unsubscribe(arg0, arg1, arg2)
   }
 }
+register(RouteFactory)

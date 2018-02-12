@@ -1,5 +1,5 @@
 import { RouteGrammarGroupChain, RouteGrammarNameChain, IRouteGrammarVerbs, IRouteGrammarControl } from './IRouteGrammars';
-export interface IRouteFacade extends IRouteGrammarVerbs, IRouteGrammarControl {
+export interface IRouteFactory extends IRouteGrammarVerbs, IRouteGrammarControl {
     group(callback: () => void): RouteGrammarGroupChain;
     name(name: string): RouteGrammarNameChain;
 }

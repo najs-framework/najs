@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
 const PathToRegex = require("path-to-regexp");
-const RouteFacade_1 = require("../../../lib/http/routing/RouteFacade");
+const RouteFacade_1 = require("../../../lib/facades/global/RouteFacade");
 const RouteCollection_1 = require("../../../lib/http/routing/RouteCollection");
 const HttpMethod_1 = require("../../../lib/http/HttpMethod");
 const RouteBuilder_1 = require("../../../lib/http/routing/RouteBuilder");
@@ -22,7 +22,7 @@ function getRouteData(method, path, prefix, middleware, controller, endpoint, na
         endpoint
     };
 }
-describe('Route', function () {
+describe('RouteFactory', function () {
     describe('IRouteGenerateUrl', function () {
         it('calls "path-to-regex".compile() and passes params to generate url', function () {
             const toPath = function () {

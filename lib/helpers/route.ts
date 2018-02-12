@@ -1,4 +1,4 @@
-import { RouteFacade } from '../http/routing/RouteFacade'
+import { RouteFacade } from '../facades/global/RouteFacade'
 
 export function route(name: string): string
 export function route(name: string, param: Object): string
