@@ -270,23 +270,26 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   }
 
   start(options?: HttpDriverStartOptions) {
+    RouteCollection.getData().map(this.route.bind(this))
     const opts: HttpDriverStartOptions = Object.assign(
       {},
       {
+        createServer: true,
         port: ConfigFacade.get(ConfigurationKeys.Port, 3000),
         host: ConfigFacade.get(ConfigurationKeys.Host, 'localhost')
       },
       options
     )
-    const server = Http.createServer(this.express)
-    server.listen(opts.port, opts.host)
+    if (opts.createServer) {
+      const server = Http.createServer(this.express)
+      server.listen(opts.port, opts.host)
 
-    const logs: any[] = ['Listening at ']
-    logs.push(opts.host + ':')
-    logs.push(opts.port)
-    Log.info(logs.join(''))
-    Log.info('Routes:')
-    RouteCollection.getData().map(this.route.bind(this))
+      const logs: any[] = ['Listening at ']
+      logs.push(opts.host + ':')
+      logs.push(opts.port)
+      Log.info(logs.join(''))
+      Log.info('Routes:')
+    }
   }
 
   respondView(response: Express.Response, view: string, variables: Object): void {

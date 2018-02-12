@@ -189,18 +189,21 @@ class ExpressHttpDriver {
         }
     }
     start(options) {
+        RouteCollection_1.RouteCollection.getData().map(this.route.bind(this));
         const opts = Object.assign({}, {
+            createServer: true,
             port: ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Port, 3000),
             host: ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Host, 'localhost')
         }, options);
-        const server = Http.createServer(this.express);
-        server.listen(opts.port, opts.host);
-        const logs = ['Listening at '];
-        logs.push(opts.host + ':');
-        logs.push(opts.port);
-        LogFacade_1.LogFacade.info(logs.join(''));
-        LogFacade_1.LogFacade.info('Routes:');
-        RouteCollection_1.RouteCollection.getData().map(this.route.bind(this));
+        if (opts.createServer) {
+            const server = Http.createServer(this.express);
+            server.listen(opts.port, opts.host);
+            const logs = ['Listening at '];
+            logs.push(opts.host + ':');
+            logs.push(opts.port);
+            LogFacade_1.LogFacade.info(logs.join(''));
+            LogFacade_1.LogFacade.info('Routes:');
+        }
     }
     respondView(response, view, variables) {
         response.render(view, variables);

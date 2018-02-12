@@ -705,6 +705,28 @@ describe('ExpressHttpDriver', function() {
   })
 
   describe('.start()', function() {
+    it('never creates server if options = { createServer: false } (helpful for testing)', function() {
+      const fakeServer = {
+        listen(port: any, host: any) {}
+      }
+      const driver = new ExpressHttpDriver()
+
+      const listenSpy = Sinon.spy(fakeServer, 'listen')
+
+      const logStub = Log.createStub('info')
+      const httpStub = Sinon.stub(Http, 'createServer')
+      httpStub.returns(fakeServer)
+
+      driver.start({ createServer: false })
+      expect(httpStub.calledWith(driver['express'])).toBe(false)
+      expect(logStub.calledWith('Listening at localhost:3000')).toBe(false)
+      expect(listenSpy.calledWith(3000, 'localhost')).toBe(false)
+
+      listenSpy.restore()
+      httpStub.restore()
+      Log.restoreFacade()
+    })
+
     it('passes this.express to http.createServer() with default host=localhost, port=3000', function() {
       const fakeServer = {
         listen(port: any, host: any) {}

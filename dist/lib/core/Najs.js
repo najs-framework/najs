@@ -36,13 +36,13 @@ class NajsFramework {
         this.internalEventEmitter.on(event, listener);
         return this;
     }
-    async start() {
+    async start(options) {
         try {
             this.fireEventIfNeeded('start', this);
             await this.registerServiceProviders();
             await this.bootServiceProviders();
             this.httpDriver = this.app.make(constants_1.SystemClass.HttpDriver);
-            this.httpDriver.start();
+            this.httpDriver.start(options);
             this.fireEventIfNeeded('started', this);
         }
         catch (error) {

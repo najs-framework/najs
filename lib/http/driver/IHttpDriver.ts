@@ -1,6 +1,7 @@
 import { IRouteData } from '../routing/interfaces/IRouteData'
 
 export type HttpDriverStartOptions = {
+  createServer?: boolean
   port?: number
   host?: any
 }

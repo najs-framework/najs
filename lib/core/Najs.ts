@@ -4,7 +4,7 @@ import { ServiceProvider } from './ServiceProvider'
 import { Application } from './Application'
 import { make } from './make'
 import { SystemClass } from '../constants'
-import { IHttpDriver } from '../http/driver/IHttpDriver'
+import { IHttpDriver, HttpDriverStartOptions } from '../http/driver/IHttpDriver'
 import * as SystemPath from 'path'
 
 class NajsFramework implements INajs {
@@ -49,13 +49,15 @@ class NajsFramework implements INajs {
     return this
   }
 
-  async start() {
+  async start(): Promise<void>
+  async start(options: HttpDriverStartOptions): Promise<void>
+  async start(options?: HttpDriverStartOptions): Promise<void> {
     try {
       this.fireEventIfNeeded('start', this)
       await this.registerServiceProviders()
       await this.bootServiceProviders()
       this.httpDriver = this.app.make<IHttpDriver>(SystemClass.HttpDriver)
-      this.httpDriver.start()
+      this.httpDriver.start(options)
       this.fireEventIfNeeded('started', this)
     } catch (error) {
       this.handleError(error)
