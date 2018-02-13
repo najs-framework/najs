@@ -14,6 +14,7 @@ function facade(this: any, arg: ContextualFacade<any> | Object | undefined): any
   this.facadeInstanceCreator = undefined
   this.createdSpies = {}
   this.createdStubs = {}
+  this.createdMocks = []
 }
 
 facade['create'] = function(this: any, container: IFacadeContainer, key: string, facadeInstanceCreator: () => void) {
@@ -58,6 +59,13 @@ facade.prototype = {
     return stub
   },
 
+  createMock() {
+    const mock = Sinon.mock(this)
+    this.container.markFacadeWasUsed(this.accessorKey, 'mock')
+    this.createdMocks.push(mock)
+    return mock
+  },
+
   restoreFacade() {
     for (const method in this.createdSpies) {
       this.createdSpies[method].restore()
@@ -66,6 +74,11 @@ facade.prototype = {
     for (const method in this.createdStubs) {
       this.createdStubs[method].restore()
     }
+
+    for (const mock of this.createdMocks) {
+      mock.restore()
+    }
+    this.createdMocks = []
   },
 
   reloadFacadeRoot() {

@@ -247,9 +247,7 @@ describe('Najs', function () {
                 const mock = { verify() { } };
                 Najs_1.Najs['usedFacades'] = undefined;
                 Najs_1.Najs['test_facade'] = {
-                    createdMocks: {
-                        mock: mock
-                    }
+                    createdMocks: [mock]
                 };
                 const verifySpy = Sinon.spy(mock, 'verify');
                 Najs_1.Najs['verifyMocks']();
@@ -262,9 +260,7 @@ describe('Najs', function () {
                 const mock = { verify() { } };
                 Najs_1.Najs['usedFacades'] = { mock: ['not-found'] };
                 Najs_1.Najs['test_facade'] = {
-                    createdMocks: {
-                        mock: mock
-                    }
+                    createdMocks: [mock]
                 };
                 const verifySpy = Sinon.spy(mock, 'verify');
                 Najs_1.Najs['verifyMocks']();
@@ -274,9 +270,7 @@ describe('Najs', function () {
                 const mock = { verify() { } };
                 Najs_1.Najs['usedFacades'] = { mock: ['test_facade'] };
                 Najs_1.Najs['test_facade'] = {
-                    notCreatedMocks: {
-                        mock: mock
-                    }
+                    notCreatedMocks: [mock]
                 };
                 const verifySpy = Sinon.spy(mock, 'verify');
                 Najs_1.Najs['verifyMocks']();
@@ -286,9 +280,7 @@ describe('Najs', function () {
                 const mock = { verify() { } };
                 Najs_1.Najs['usedFacades'] = { mock: ['test_facade', 'test_facade'] };
                 Najs_1.Najs['test_facade'] = {
-                    createdMocks: {
-                        mock: mock
-                    }
+                    createdMocks: [mock]
                 };
                 const verifySpy = Sinon.spy(mock, 'verify');
                 Najs_1.Najs['verifyMocks']();

@@ -11,6 +11,7 @@ function facade(arg) {
     this.facadeInstanceCreator = undefined;
     this.createdSpies = {};
     this.createdStubs = {};
+    this.createdMocks = [];
 }
 facade['create'] = function (container, key, facadeInstanceCreator) {
     const registered = !exports.FacadeContainers.find(item => item === container);
@@ -48,6 +49,12 @@ facade.prototype = {
         this.createdStubs[method] = stub;
         return stub;
     },
+    createMock() {
+        const mock = Sinon.mock(this);
+        this.container.markFacadeWasUsed(this.accessorKey, 'mock');
+        this.createdMocks.push(mock);
+        return mock;
+    },
     restoreFacade() {
         for (const method in this.createdSpies) {
             this.createdSpies[method].restore();
@@ -55,6 +62,10 @@ facade.prototype = {
         for (const method in this.createdStubs) {
             this.createdStubs[method].restore();
         }
+        for (const mock of this.createdMocks) {
+            mock.restore();
+        }
+        this.createdMocks = [];
     },
     reloadFacadeRoot() {
         this.container[this.accessorKey] = this.facadeInstanceCreator();

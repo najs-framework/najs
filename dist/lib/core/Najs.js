@@ -101,8 +101,8 @@ class NajsFramework {
             if (!this[key] || !this[key].createdMocks) {
                 continue;
             }
-            for (const method in this[key].createdMocks) {
-                this[key].createdMocks[method].verify();
+            for (const mock of this[key].createdMocks) {
+                mock.verify();
             }
         }
     }

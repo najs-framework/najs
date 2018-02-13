@@ -11,6 +11,7 @@ export interface FacadeSpecs {
 export interface IFacade {
     spy(method: string): Sinon.SinonSpy;
     createStub(method: string): Sinon.SinonStub;
+    createMock(): Sinon.SinonMock;
     restoreFacade(): this;
     reloadFacadeRoot(): this;
 }

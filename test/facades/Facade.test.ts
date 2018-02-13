@@ -81,11 +81,14 @@ describe('Facade', function() {
       expect(FacadeContainers).toHaveLength(length + 1)
       const markFacadeWasUsedSpy = Sinon.spy(container, 'markFacadeWasUsed')
 
+      const originalMethod = facade['method']
+
       expect(facade['createdSpies']).toEqual({})
       const result = facade.spy('method')
       expect(result['isSinonProxy']).toBe(true)
       expect(facade['createdSpies']['method'] === result).toBe(true)
       expect(facade['method'] === result).toBe(true)
+      expect(result['wrappedMethod'] === originalMethod).toBe(true)
       expect(markFacadeWasUsedSpy.calledWith('key', 'spy')).toBe(true)
       facade.restoreFacade()
 
@@ -96,7 +99,7 @@ describe('Facade', function() {
   })
 
   describe('.createStub()', function() {
-    it('creates a spy by using Sinon.stub() and put the result to createdStubs bag', function() {
+    it('creates a stub by using Sinon.stub() and put the result to createdStubs bag', function() {
       class FacadeClass extends Facade {
         method() {}
       }
@@ -111,7 +114,7 @@ describe('Facade', function() {
       }
       const facade = Facade.create(<any>container, key, instanceCreator)
 
-      const markFacadeWasUsedSpy = Sinon.spy(container, 'markFacadeWasUsed')
+      const markFacadeWasUsedStub = Sinon.spy(container, 'markFacadeWasUsed')
 
       expect(facade['createdStubs']).toEqual({})
 
@@ -119,7 +122,39 @@ describe('Facade', function() {
       expect(result['isSinonProxy']).toBe(true)
       expect(facade['createdStubs']['method'] === result).toBe(true)
       expect(facade['method'] === result).toBe(true)
-      expect(markFacadeWasUsedSpy.calledWith('key', 'stub')).toBe(true)
+      expect(result['rootObj'] === facade).toBe(true)
+      expect(markFacadeWasUsedStub.calledWith('key', 'stub')).toBe(true)
+      facade.restoreFacade()
+    })
+  })
+
+  describe('.createMock()', function() {
+    it('creates a mock by using Sinon.createMock() and put the result to createdMocks bag', function() {
+      class FacadeClass extends Facade {
+        method() {}
+      }
+      const instance = new FacadeClass()
+      const container = {
+        key: instance,
+        markFacadeWasUsed() {}
+      }
+      const key = 'key'
+      const instanceCreator = () => {
+        return instance
+      }
+      const facade = Facade.create(<any>container, key, instanceCreator)
+
+      const markFacadeWasUsedMock = Sinon.spy(container, 'markFacadeWasUsed')
+
+      expect(facade['createdMocks']).toHaveLength(0)
+
+      const result = facade.createMock()
+      expect(facade['createdMocks']).toHaveLength(1)
+      expect(facade['createdMocks'][0] === result).toBe(true)
+      expect(typeof result.expects === 'function').toBe(true)
+      expect(typeof result.restore === 'function').toBe(true)
+      expect(typeof result.verify === 'function').toBe(true)
+      expect(markFacadeWasUsedMock.calledWith('key', 'mock')).toBe(true)
       facade.restoreFacade()
     })
   })
@@ -142,15 +177,23 @@ describe('Facade', function() {
       const facade = Facade.create(<any>container, key, instanceCreator)
 
       expect(facade['createdSpies']).toEqual({})
+      expect(facade['createdStubs']).toEqual({})
+      expect(facade['createdMocks']).toEqual([])
 
       const spy = facade.spy('methodSpy')
       expect(facade['methodSpy'].name).toEqual(spy.name)
 
       const stub = facade.createStub('methodStub')
       expect(facade['methodStub'].name).toEqual(stub.name)
+
+      const mock = facade.createMock()
+      expect(facade['createdMocks']).toEqual([mock])
+
       facade.restoreFacade()
+
       expect(facade['methodSpy'].name).toEqual(FacadeClass.prototype.methodSpy.name)
       expect(facade['methodStub'].name).toEqual(FacadeClass.prototype.methodStub.name)
+      expect(facade['createdMocks']).toEqual([])
     })
   })
 

@@ -18,6 +18,8 @@ export interface IFacade {
 
   createStub(method: string): Sinon.SinonStub
 
+  createMock(): Sinon.SinonMock
+
   restoreFacade(): this
 
   reloadFacadeRoot(): this
