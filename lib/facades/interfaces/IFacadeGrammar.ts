@@ -20,6 +20,8 @@ export interface IFacade {
 
   createMock(): Sinon.SinonMock
 
+  shouldReceive(method: string): Sinon.SinonExpectation
+
   restoreFacade(): this
 
   reloadFacadeRoot(): this

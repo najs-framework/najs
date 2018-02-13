@@ -143,6 +143,29 @@ describe('Facade', function () {
             facade.restoreFacade();
         });
     });
+    describe('.shouldReceive()', function () {
+        it('calls .createMock() to create a mock then call expects(method)', function () {
+            class FacadeClass extends Facade_1.Facade {
+                method() { }
+            }
+            const instance = new FacadeClass();
+            const container = {
+                key: instance,
+                markFacadeWasUsed() { }
+            };
+            const key = 'key';
+            const instanceCreator = () => {
+                return instance;
+            };
+            const facade = Facade_1.Facade.create(container, key, instanceCreator);
+            const createMockSpy = Sinon.spy(facade, 'createMock');
+            expect(facade['createdMocks']).toHaveLength(0);
+            facade.shouldReceive('method');
+            expect(createMockSpy.called).toBe(true);
+            expect(facade['createdMocks']).toHaveLength(1);
+            facade.restoreFacade();
+        });
+    });
     describe('.restoreFacade()', function () {
         it('loops all createdSpies + createdStubs and calls restore function', function () {
             class FacadeClass extends Facade_1.Facade {

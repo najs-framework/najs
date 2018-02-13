@@ -55,6 +55,10 @@ facade.prototype = {
         this.createdMocks.push(mock);
         return mock;
     },
+    shouldReceive(method) {
+        const mock = this.createMock();
+        return mock.expects(method);
+    },
     restoreFacade() {
         for (const method in this.createdSpies) {
             this.createdSpies[method].restore();

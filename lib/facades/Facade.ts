@@ -66,6 +66,11 @@ facade.prototype = {
     return mock
   },
 
+  shouldReceive(method: string) {
+    const mock: Sinon.SinonMock = this.createMock()
+    return mock.expects(method)
+  },
+
   restoreFacade() {
     for (const method in this.createdSpies) {
       this.createdSpies[method].restore()

@@ -149,12 +149,40 @@ describe('Facade', function() {
       expect(facade['createdMocks']).toHaveLength(0)
 
       const result = facade.createMock()
+
       expect(facade['createdMocks']).toHaveLength(1)
       expect(facade['createdMocks'][0] === result).toBe(true)
       expect(typeof result.expects === 'function').toBe(true)
       expect(typeof result.restore === 'function').toBe(true)
       expect(typeof result.verify === 'function').toBe(true)
       expect(markFacadeWasUsedMock.calledWith('key', 'mock')).toBe(true)
+      facade.restoreFacade()
+    })
+  })
+
+  describe('.shouldReceive()', function() {
+    it('calls .createMock() to create a mock then call expects(method)', function() {
+      class FacadeClass extends Facade {
+        method() {}
+      }
+      const instance = new FacadeClass()
+      const container = {
+        key: instance,
+        markFacadeWasUsed() {}
+      }
+      const key = 'key'
+      const instanceCreator = () => {
+        return instance
+      }
+      const facade = Facade.create(<any>container, key, instanceCreator)
+      const createMockSpy = Sinon.spy(facade, 'createMock')
+
+      expect(facade['createdMocks']).toHaveLength(0)
+
+      facade.shouldReceive('method')
+
+      expect(createMockSpy.called).toBe(true)
+      expect(facade['createdMocks']).toHaveLength(1)
       facade.restoreFacade()
     })
   })

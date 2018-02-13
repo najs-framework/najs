@@ -12,6 +12,7 @@ export interface IFacade {
     spy(method: string): Sinon.SinonSpy;
     createStub(method: string): Sinon.SinonStub;
     createMock(): Sinon.SinonMock;
+    shouldReceive(method: string): Sinon.SinonExpectation;
     restoreFacade(): this;
     reloadFacadeRoot(): this;
 }
