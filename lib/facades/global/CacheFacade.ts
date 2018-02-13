@@ -6,6 +6,6 @@ import { Najs } from '../../../lib/core/Najs'
 import { make } from '../../../lib/core/make'
 import { GlobalFacade } from '../../constants'
 
-export const CacheFacade: ICache & IFacade = Facade.create<ICache>(Najs, 'cache', function() {
+export const CacheFacade: ICache & IFacade = Facade.create<ICache>(<any>Najs, 'cache', function() {
   return make<ICache>(GlobalFacade.Cache)
 })

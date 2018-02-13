@@ -222,4 +222,141 @@ describe('Najs', function () {
             });
         });
     });
+    describe('IFacadeContainer', function () {
+        describe('.markFacadeWasUsed()', function () {
+            it('creates "usedFacades" based on "type" dynamically', function () {
+                Najs_1.Najs['usedFacades'] = undefined;
+                expect(Najs_1.Najs['usedFacaded']).toBeUndefined();
+                Najs_1.Najs['markFacadeWasUsed']('test', 'spy');
+                expect(typeof Najs_1.Najs['usedFacades'] === 'undefined').toBe(false);
+                expect(Najs_1.Najs['usedFacades']['spy']).toEqual(['test']);
+                expect(Najs_1.Najs['usedFacades']['stub']).toBeUndefined();
+                expect(Najs_1.Najs['usedFacades']['mock']).toBeUndefined();
+                Najs_1.Najs['markFacadeWasUsed']('test', 'stub');
+                expect(Najs_1.Najs['usedFacades']['spy']).toEqual(['test']);
+                expect(Najs_1.Najs['usedFacades']['stub']).toEqual(['test']);
+                expect(Najs_1.Najs['usedFacades']['mock']).toBeUndefined();
+                Najs_1.Najs['markFacadeWasUsed']('test', 'spy');
+                expect(Najs_1.Najs['usedFacades']['spy']).toEqual(['test', 'test']);
+                expect(Najs_1.Najs['usedFacades']['stub']).toEqual(['test']);
+                expect(Najs_1.Najs['usedFacades']['mock']).toBeUndefined();
+            });
+        });
+        describe('.verifyMocks()', function () {
+            it('does nothing if "usedFacades" or "usedFacades".mock is not found', function () {
+                const mock = { verify() { } };
+                Najs_1.Najs['usedFacades'] = undefined;
+                Najs_1.Najs['test_facade'] = {
+                    createdMocks: {
+                        mock: mock
+                    }
+                };
+                const verifySpy = Sinon.spy(mock, 'verify');
+                Najs_1.Najs['verifyMocks']();
+                expect(verifySpy.called).toBe(false);
+                Najs_1.Najs['usedFacades'] = {};
+                Najs_1.Najs['verifyMocks']();
+                expect(verifySpy.called).toBe(false);
+            });
+            it('does nothing if "accessorKey" not found in Najs', function () {
+                const mock = { verify() { } };
+                Najs_1.Najs['usedFacades'] = { mock: ['not-found'] };
+                Najs_1.Najs['test_facade'] = {
+                    createdMocks: {
+                        mock: mock
+                    }
+                };
+                const verifySpy = Sinon.spy(mock, 'verify');
+                Najs_1.Najs['verifyMocks']();
+                expect(verifySpy.called).toBe(false);
+            });
+            it('does nothing if "accessorKey".createdMocks not found', function () {
+                const mock = { verify() { } };
+                Najs_1.Najs['usedFacades'] = { mock: ['test_facade'] };
+                Najs_1.Najs['test_facade'] = {
+                    notCreatedMocks: {
+                        mock: mock
+                    }
+                };
+                const verifySpy = Sinon.spy(mock, 'verify');
+                Najs_1.Najs['verifyMocks']();
+                expect(verifySpy.called).toBe(false);
+            });
+            it('calls verify() for each instance in "createdMocks", just only one time', function () {
+                const mock = { verify() { } };
+                Najs_1.Najs['usedFacades'] = { mock: ['test_facade', 'test_facade'] };
+                Najs_1.Najs['test_facade'] = {
+                    createdMocks: {
+                        mock: mock
+                    }
+                };
+                const verifySpy = Sinon.spy(mock, 'verify');
+                Najs_1.Najs['verifyMocks']();
+                expect(verifySpy.calledOnce).toBe(true);
+            });
+        });
+        describe('.restoreFacades()', function () {
+            it('does nothing if "usedFacades" is not found', function () {
+                const facade = { restoreFacade() { } };
+                Najs_1.Najs['usedFacades'] = undefined;
+                Najs_1.Najs['test_facade'] = facade;
+                const restoreFacadeSpy = Sinon.spy(facade, 'restoreFacade');
+                Najs_1.Najs['restoreFacades']();
+                expect(restoreFacadeSpy.called).toBe(false);
+            });
+            it('merges and distinct facade instance, then loops all and call .restoreFacades()', function () {
+                const facade = { restoreFacade() { } };
+                Najs_1.Najs['usedFacades'] = {
+                    mock: ['facade1'],
+                    spy: ['facade1'],
+                    stub: ['facade2', 'not-found']
+                };
+                Najs_1.Najs['facade1'] = facade;
+                Najs_1.Najs['facade2'] = facade;
+                Najs_1.Najs['facade3'] = facade;
+                const restoreFacadeSpy = Sinon.spy(facade, 'restoreFacade');
+                Najs_1.Najs['restoreFacades']();
+                expect(restoreFacadeSpy.calledTwice).toBe(true);
+            });
+            it('works if "usedFacades".mock is missing', function () {
+                const facade = { restoreFacade() { } };
+                Najs_1.Najs['usedFacades'] = {
+                    spy: ['facade1'],
+                    stub: ['facade2', 'not-found']
+                };
+                Najs_1.Najs['facade1'] = facade;
+                Najs_1.Najs['facade2'] = facade;
+                Najs_1.Najs['facade3'] = facade;
+                const restoreFacadeSpy = Sinon.spy(facade, 'restoreFacade');
+                Najs_1.Najs['restoreFacades']();
+                expect(restoreFacadeSpy.calledTwice).toBe(true);
+            });
+            it('works if "usedFacades".spy is missing', function () {
+                const facade = { restoreFacade() { } };
+                Najs_1.Najs['usedFacades'] = {
+                    mock: ['facade1'],
+                    stub: ['facade2', 'not-found']
+                };
+                Najs_1.Najs['facade1'] = facade;
+                Najs_1.Najs['facade2'] = facade;
+                Najs_1.Najs['facade3'] = facade;
+                const restoreFacadeSpy = Sinon.spy(facade, 'restoreFacade');
+                Najs_1.Najs['restoreFacades']();
+                expect(restoreFacadeSpy.calledTwice).toBe(true);
+            });
+            it('works if "usedFacades".stub is missing', function () {
+                const facade = { restoreFacade() { } };
+                Najs_1.Najs['usedFacades'] = {
+                    spy: ['facade1'],
+                    mock: ['facade1']
+                };
+                Najs_1.Najs['facade1'] = facade;
+                Najs_1.Najs['facade2'] = facade;
+                Najs_1.Najs['facade3'] = facade;
+                const restoreFacadeSpy = Sinon.spy(facade, 'restoreFacade');
+                Najs_1.Najs['restoreFacades']();
+                expect(restoreFacadeSpy.calledOnce).toBe(true);
+            });
+        });
+    });
 });

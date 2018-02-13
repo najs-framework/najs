@@ -1,6 +1,9 @@
+import { IFacadeContainer } from './interfaces/IFacadeContainer'
 import { FacadeSpecs } from './interfaces/IFacadeGrammar'
 import { ContextualFacade } from './ContextualFacade'
 import * as Sinon from 'sinon'
+
+export const FacadeContainers: IFacadeContainer[] = []
 
 function facade(this: any, arg: ContextualFacade<any> | Object | undefined): any {
   // if (arg instanceof ContextualFacade) {
@@ -13,7 +16,12 @@ function facade(this: any, arg: ContextualFacade<any> | Object | undefined): any
   this.createdStubs = {}
 }
 
-facade['create'] = function(this: any, container: Object, key: string, facadeInstanceCreator: () => void) {
+facade['create'] = function(this: any, container: IFacadeContainer, key: string, facadeInstanceCreator: () => void) {
+  const registered: boolean = !FacadeContainers.find(item => item === container)
+  if (registered) {
+    FacadeContainers.push(container)
+  }
+
   if (typeof container[key] === 'undefined') {
     container[key] = facadeInstanceCreator()
   }
@@ -23,15 +31,29 @@ facade['create'] = function(this: any, container: Object, key: string, facadeIns
   return container[key]
 }
 
+facade['verifyMocks'] = function() {
+  for (const container of FacadeContainers) {
+    container.verifyMocks()
+  }
+}
+
+facade['restoreAll'] = function() {
+  for (const container of FacadeContainers) {
+    container.restoreFacades()
+  }
+}
+
 facade.prototype = {
   spy(method: string) {
     const spy = Sinon.spy(this, method)
+    this.container.markFacadeWasUsed(this.accessorKey, 'spy')
     this.createdSpies[method] = spy
     return spy
   },
 
   createStub(method: string) {
     const stub = Sinon.stub(this, method)
+    this.container.markFacadeWasUsed(this.accessorKey, 'stub')
     this.createdStubs[method] = stub
     return stub
   },

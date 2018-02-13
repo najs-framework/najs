@@ -6,6 +6,6 @@ import { Najs } from '../../../lib/core/Najs'
 import { make } from '../../../lib/core/make'
 import { GlobalFacade } from '../../constants'
 
-export const PathFacade: IPath & IFacade = Facade.create<IPath>(Najs, 'path', function() {
+export const PathFacade: IPath & IFacade = Facade.create<IPath>(<any>Najs, 'path', function() {
   return make<IPath>(GlobalFacade.Path)
 })

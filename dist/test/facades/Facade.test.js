@@ -3,8 +3,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
 const Facade_1 = require("../../lib/facades/Facade");
-// import { AppFacade } from './../../lib/facades/global/AppFacade'
 describe('Facade', function () {
+    describe('Facade.verifyMocks()', function () {
+        it('loops all containers in FacadeContainers and calls container.verifyMocks()', function () {
+            const container = {
+                verifyMocks() { },
+                restoreFacades() { }
+            };
+            const verifyMocksSpy = Sinon.spy(container, 'verifyMocks');
+            Facade_1.FacadeContainers.push(container);
+            Facade_1.Facade.verifyMocks();
+            expect(verifyMocksSpy.called).toBe(true);
+        });
+    });
+    describe('Facade.verifyMocks()', function () {
+        it('loops all containers in FacadeContainers and calls container.restoreFacades()', function () {
+            const container = {
+                verifyMocks() { },
+                restoreFacades() { }
+            };
+            const restoreFacadesSpy = Sinon.spy(container, 'restoreFacades');
+            Facade_1.FacadeContainers.push(container);
+            Facade_1.Facade.restoreAll();
+            expect(restoreFacadesSpy.called).toBe(true);
+        });
+    });
     describe('Facade.create()', function () {
         it('creates a facade by assume that facade instance already in container[key]', function () {
             const container = { key: {} };
@@ -41,18 +64,28 @@ describe('Facade', function () {
                 method() { }
             }
             const instance = new FacadeClass();
-            const container = { key: instance };
+            const container = {
+                key: instance,
+                markFacadeWasUsed() { }
+            };
             const key = 'key';
             const instanceCreator = () => {
                 return instance;
             };
+            const length = Facade_1.FacadeContainers.length;
             const facade = Facade_1.Facade.create(container, key, instanceCreator);
+            expect(Facade_1.FacadeContainers).toHaveLength(length + 1);
+            const markFacadeWasUsedSpy = Sinon.spy(container, 'markFacadeWasUsed');
             expect(facade['createdSpies']).toEqual({});
             const result = facade.spy('method');
             expect(result['isSinonProxy']).toBe(true);
             expect(facade['createdSpies']['method'] === result).toBe(true);
             expect(facade['method'] === result).toBe(true);
+            expect(markFacadeWasUsedSpy.calledWith('key', 'spy')).toBe(true);
             facade.restoreFacade();
+            // recreate facade with same container the container will not be appends to FacadeContainers
+            Facade_1.Facade.create(container, key, instanceCreator);
+            expect(Facade_1.FacadeContainers).toHaveLength(length + 1);
         });
     });
     describe('.createStub()', function () {
@@ -61,17 +94,22 @@ describe('Facade', function () {
                 method() { }
             }
             const instance = new FacadeClass();
-            const container = { key: instance };
+            const container = {
+                key: instance,
+                markFacadeWasUsed() { }
+            };
             const key = 'key';
             const instanceCreator = () => {
                 return instance;
             };
             const facade = Facade_1.Facade.create(container, key, instanceCreator);
+            const markFacadeWasUsedSpy = Sinon.spy(container, 'markFacadeWasUsed');
             expect(facade['createdStubs']).toEqual({});
             const result = facade.createStub('method');
             expect(result['isSinonProxy']).toBe(true);
             expect(facade['createdStubs']['method'] === result).toBe(true);
             expect(facade['method'] === result).toBe(true);
+            expect(markFacadeWasUsedSpy.calledWith('key', 'stub')).toBe(true);
             facade.restoreFacade();
         });
     });
@@ -82,7 +120,10 @@ describe('Facade', function () {
                 methodStub() { }
             }
             const instance = new FacadeClass();
-            const container = { key: instance };
+            const container = {
+                key: instance,
+                markFacadeWasUsed() { }
+            };
             const key = 'key';
             const instanceCreator = () => {
                 return instance;
@@ -103,7 +144,9 @@ describe('Facade', function () {
             class FacadeClass extends Facade_1.Facade {
             }
             const instance = new FacadeClass();
-            const container = { key: instance };
+            const container = {
+                key: instance
+            };
             const key = 'key';
             const instanceCreator = () => {
                 return new FacadeClass();

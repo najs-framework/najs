@@ -48,6 +48,9 @@ export { ExpressCsurfMiddleware } from './http/middleware/ExpressCsurfMiddleware
 export { ExpressCorsMiddleware } from './http/middleware/ExpressCorsMiddleware'
 
 // facade package
+export { IFacade } from './facades/interfaces/IFacadeGrammar'
+export { IFacadeContainer } from './facades/interfaces/IFacadeContainer'
+export { Facade, FacadeContainers } from './facades/Facade'
 export { AppFacade as App } from './facades/global/AppFacade'
 export { CacheFacade as Cache } from './facades/global/CacheFacade'
 export { ConfigFacade as Config } from './facades/global/ConfigFacade'

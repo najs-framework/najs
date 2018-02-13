@@ -6,6 +6,6 @@ import { Najs } from '../../../lib/core/Najs'
 import { make } from '../../../lib/core/make'
 import { GlobalFacade } from '../../constants'
 
-export const EventFacade: IEventEmitter & IFacade = Facade.create<IEventEmitter>(Najs, 'event', function() {
+export const EventFacade: IEventEmitter & IFacade = Facade.create<IEventEmitter>(<any>Najs, 'event', function() {
   return make<IEventEmitter>(GlobalFacade.Event)
 })

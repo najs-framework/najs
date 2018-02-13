@@ -6,6 +6,10 @@ import { Najs } from '../../../lib/core/Najs'
 import { make } from '../../../lib/core/make'
 import { GlobalFacade } from '../../constants'
 
-export const ResponseFacade: IResponseFactory & IFacade = Facade.create<IResponseFactory>(Najs, 'response', function() {
-  return make<IResponseFactory>(GlobalFacade.Response)
-})
+export const ResponseFacade: IResponseFactory & IFacade = Facade.create<IResponseFactory>(
+  <any>Najs,
+  'response',
+  function() {
+    return make<IResponseFactory>(GlobalFacade.Response)
+  }
+)

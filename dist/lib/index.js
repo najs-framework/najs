@@ -52,7 +52,9 @@ var ExpressCsurfMiddleware_1 = require("./http/middleware/ExpressCsurfMiddleware
 exports.ExpressCsurfMiddleware = ExpressCsurfMiddleware_1.ExpressCsurfMiddleware;
 var ExpressCorsMiddleware_1 = require("./http/middleware/ExpressCorsMiddleware");
 exports.ExpressCorsMiddleware = ExpressCorsMiddleware_1.ExpressCorsMiddleware;
-// facade package
+var Facade_1 = require("./facades/Facade");
+exports.Facade = Facade_1.Facade;
+exports.FacadeContainers = Facade_1.FacadeContainers;
 var AppFacade_1 = require("./facades/global/AppFacade");
 exports.App = AppFacade_1.AppFacade;
 var CacheFacade_1 = require("./facades/global/CacheFacade");

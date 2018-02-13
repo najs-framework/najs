@@ -1,9 +1,12 @@
+import { IFacadeContainer } from './IFacadeContainer';
 import * as Sinon from 'sinon';
 export interface FacadeSpecs {
     (contextualFacade: IContextualFacade): IContextualFacadeMatcher<any>;
     <T>(contextualFacade: IContextualFacade): IContextualFacadeMatcher<T>;
     new (): IFacade;
-    create<T>(container: Object, key: string, facadeInstanceCreator: () => void): IFacade & T;
+    create<T>(container: IFacadeContainer, key: string, facadeInstanceCreator: () => void): IFacade & T;
+    verifyMocks(): void;
+    restoreAll(): void;
 }
 export interface IFacade {
     spy(method: string): Sinon.SinonSpy;

@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Sinon = require("sinon");
+exports.FacadeContainers = [];
 function facade(arg) {
     // if (arg instanceof ContextualFacade) {
     // make a ContextualFacadeMatcher
@@ -12,6 +13,10 @@ function facade(arg) {
     this.createdStubs = {};
 }
 facade['create'] = function (container, key, facadeInstanceCreator) {
+    const registered = !exports.FacadeContainers.find(item => item === container);
+    if (registered) {
+        exports.FacadeContainers.push(container);
+    }
     if (typeof container[key] === 'undefined') {
         container[key] = facadeInstanceCreator();
     }
@@ -20,14 +25,26 @@ facade['create'] = function (container, key, facadeInstanceCreator) {
     container[key].facadeInstanceCreator = facadeInstanceCreator;
     return container[key];
 };
+facade['verifyMocks'] = function () {
+    for (const container of exports.FacadeContainers) {
+        container.verifyMocks();
+    }
+};
+facade['restoreAll'] = function () {
+    for (const container of exports.FacadeContainers) {
+        container.restoreFacades();
+    }
+};
 facade.prototype = {
     spy(method) {
         const spy = Sinon.spy(this, method);
+        this.container.markFacadeWasUsed(this.accessorKey, 'spy');
         this.createdSpies[method] = spy;
         return spy;
     },
     createStub(method) {
         const stub = Sinon.stub(this, method);
+        this.container.markFacadeWasUsed(this.accessorKey, 'stub');
         this.createdStubs[method] = stub;
         return stub;
     },
