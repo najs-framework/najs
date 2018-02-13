@@ -68,6 +68,10 @@ export { EventSubscriber } from './event/EventSubscriber'
 export { ICache, CacheFallback } from './cache/ICache'
 export { RedisCache } from './cache/RedisCache'
 
+// test package
+export { jest } from './test/jest'
+export { TestSuite } from './test/TestSuite'
+
 // log package
 export { ILogger } from './log/ILogger'
 export { WinstonLogger } from './log/WinstonLogger'

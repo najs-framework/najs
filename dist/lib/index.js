@@ -77,6 +77,11 @@ var EventSubscriber_1 = require("./event/EventSubscriber");
 exports.EventSubscriber = EventSubscriber_1.EventSubscriber;
 var RedisCache_1 = require("./cache/RedisCache");
 exports.RedisCache = RedisCache_1.RedisCache;
+// test package
+var jest_1 = require("./test/jest");
+exports.jest = jest_1.jest;
+var TestSuite_1 = require("./test/TestSuite");
+exports.TestSuite = TestSuite_1.TestSuite;
 var WinstonLogger_1 = require("./log/WinstonLogger");
 exports.WinstonLogger = WinstonLogger_1.WinstonLogger;
 // helpers package

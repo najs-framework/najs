@@ -48,6 +48,8 @@ export { EventDispatcher } from './event/EventDispatcher';
 export { EventSubscriber } from './event/EventSubscriber';
 export { ICache, CacheFallback } from './cache/ICache';
 export { RedisCache } from './cache/RedisCache';
+export { jest } from './test/jest';
+export { TestSuite } from './test/TestSuite';
 export { ILogger } from './log/ILogger';
 export { WinstonLogger } from './log/WinstonLogger';
 export { route } from './helpers/route';
