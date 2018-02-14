@@ -5,6 +5,9 @@ const ContextualFacadeMatcher_1 = require("./ContextualFacadeMatcher");
 const ContextualFacadeFactory_1 = require("./ContextualFacadeFactory");
 const Sinon = require("sinon");
 function facade(arg) {
+    if (arg instanceof exports.Facade) {
+        return arg;
+    }
     if (arg instanceof ContextualFacadeFactory_1.ContextualFacadeFactory) {
         return new ContextualFacadeMatcher_1.ContextualFacadeMatcher(arg);
     }
@@ -39,6 +42,9 @@ facade['restoreAll'] = function () {
     }
 };
 facade.prototype = {
+    getFacade() {
+        return this;
+    },
     spy(method) {
         const spy = Sinon.spy(this, method);
         this.container.markFacadeWasUsed(this.accessorKey, 'spy');

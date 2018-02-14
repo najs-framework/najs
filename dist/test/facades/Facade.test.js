@@ -5,6 +5,15 @@ const Sinon = require("sinon");
 const Facade_1 = require("../../lib/facades/Facade");
 const FacadeContainer_1 = require("../../lib/facades/FacadeContainer");
 describe('Facade', function () {
+    describe('() => IFacade', function () {
+        it('returns argument if the argument is Facade instance', function () {
+            class FacadeClass extends Facade_1.Facade {
+                method() { }
+            }
+            const instance = new FacadeClass();
+            expect(Facade_1.Facade(instance) === instance).toBe(true);
+        });
+    });
     describe('Facade.verifyMocks()', function () {
         it('loops all containers in FacadeContainers and calls container.verifyMocks()', function () {
             const container = {
@@ -57,6 +66,15 @@ describe('Facade', function () {
             expect(facade['container'] === container).toBe(true);
             expect(facade['accessorKey'] === key).toBe(true);
             expect(facade['facadeInstanceCreator'] === instanceCreator).toBe(true);
+        });
+    });
+    describe('.getFacade()', function () {
+        it('simply returns itself', function () {
+            class FacadeClass extends Facade_1.Facade {
+                method() { }
+            }
+            const instance = new FacadeClass();
+            expect(instance.getFacade() === instance).toBe(true);
         });
     });
     describe('.spy()', function () {

@@ -6,6 +6,10 @@ import { FacadeSpecs } from './interfaces/IFacadeGrammar'
 import * as Sinon from 'sinon'
 
 function facade(this: any, arg: ContextualFacadeFactory<any> | Object | undefined): any {
+  if (arg instanceof Facade) {
+    return arg
+  }
+
   if (arg instanceof ContextualFacadeFactory) {
     return new ContextualFacadeMatcher(arg)
   }
@@ -46,6 +50,10 @@ facade['restoreAll'] = function() {
 }
 
 facade.prototype = {
+  getFacade() {
+    return this
+  },
+
   spy(method: string) {
     const spy = Sinon.spy(this, method)
     this.container.markFacadeWasUsed(this.accessorKey, 'spy')
