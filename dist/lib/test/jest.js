@@ -18,6 +18,8 @@ function generateTestFromTestSuite(suite) {
     }
     const instance = Reflect.construct(suite, []);
     describe(suite.name, function () {
+        beforeEach(instance.setUp.bind(instance));
+        afterEach(instance.tearDown.bind(instance));
         for (const testName of tests) {
             it(testName, instance[testName].bind(instance));
         }

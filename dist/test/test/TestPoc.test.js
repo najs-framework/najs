@@ -8,9 +8,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 Object.defineProperty(exports, "__esModule", { value: true });
 const jest_1 = require("../../lib/test/jest");
 const TestSuite_1 = require("../../lib/test/TestSuite");
+const ResponseFacade_1 = require("../../lib/facades/global/ResponseFacade");
 let TestPoc = class TestPoc extends TestSuite_1.TestSuite {
     testSomething() {
-        // console.log('test')
+        ResponseFacade_1.ResponseFacade.shouldReceive('json').once();
+        ResponseFacade_1.ResponseFacade.json('test');
     }
 };
 TestPoc = __decorate([

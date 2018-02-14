@@ -17,8 +17,11 @@ function generateTestFromTestSuite(suite: typeof TestSuite) {
     tests.push(name)
   }
 
-  const instance = Reflect.construct(suite, [])
+  const instance: TestSuite = Reflect.construct(suite, [])
   describe(suite.name, function() {
+    beforeEach(instance.setUp.bind(instance))
+    afterEach(instance.tearDown.bind(instance))
+
     for (const testName of tests) {
       it(testName, instance[testName].bind(instance))
     }

@@ -1,5 +1,14 @@
+import { FacadeContainers } from './../facades/Facade'
 export class TestSuite {
   setUp() {}
 
-  tearDown() {}
+  tearDown() {
+    for (const container of FacadeContainers) {
+      container.verifyMocks()
+    }
+
+    for (const container of FacadeContainers) {
+      container.restoreFacades()
+    }
+  }
 }
