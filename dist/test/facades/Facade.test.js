@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
 const Facade_1 = require("../../lib/facades/Facade");
+const FacadeContainer_1 = require("../../lib/facades/FacadeContainer");
 describe('Facade', function () {
     describe('Facade.verifyMocks()', function () {
         it('loops all containers in FacadeContainers and calls container.verifyMocks()', function () {
@@ -11,7 +12,7 @@ describe('Facade', function () {
                 restoreFacades() { }
             };
             const verifyMocksSpy = Sinon.spy(container, 'verifyMocks');
-            Facade_1.FacadeContainers.push(container);
+            FacadeContainer_1.FacadeContainersBag.push(container);
             Facade_1.Facade.verifyMocks();
             expect(verifyMocksSpy.called).toBe(true);
         });
@@ -23,7 +24,7 @@ describe('Facade', function () {
                 restoreFacades() { }
             };
             const restoreFacadesSpy = Sinon.spy(container, 'restoreFacades');
-            Facade_1.FacadeContainers.push(container);
+            FacadeContainer_1.FacadeContainersBag.push(container);
             Facade_1.Facade.restoreAll();
             expect(restoreFacadesSpy.called).toBe(true);
         });
@@ -72,9 +73,9 @@ describe('Facade', function () {
             const instanceCreator = () => {
                 return instance;
             };
-            const length = Facade_1.FacadeContainers.length;
+            const length = FacadeContainer_1.FacadeContainersBag.length;
             const facade = Facade_1.Facade.create(container, key, instanceCreator);
-            expect(Facade_1.FacadeContainers).toHaveLength(length + 1);
+            expect(FacadeContainer_1.FacadeContainersBag).toHaveLength(length + 1);
             const markFacadeWasUsedSpy = Sinon.spy(container, 'markFacadeWasUsed');
             const originalMethod = facade['method'];
             expect(facade['createdSpies']).toEqual({});
@@ -85,9 +86,9 @@ describe('Facade', function () {
             expect(result['wrappedMethod'] === originalMethod).toBe(true);
             expect(markFacadeWasUsedSpy.calledWith('key', 'spy')).toBe(true);
             facade.restoreFacade();
-            // recreate facade with same container the container will not be appends to FacadeContainers
+            // recreate facade with same container the container will not be appends to FacadeContainersBag
             Facade_1.Facade.create(container, key, instanceCreator);
-            expect(Facade_1.FacadeContainers).toHaveLength(length + 1);
+            expect(FacadeContainer_1.FacadeContainersBag).toHaveLength(length + 1);
         });
     });
     describe('.createStub()', function () {

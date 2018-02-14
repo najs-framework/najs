@@ -1,6 +1,7 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import { Facade, FacadeContainers } from '../../lib/facades/Facade'
+import { Facade } from '../../lib/facades/Facade'
+import { FacadeContainersBag } from '../../lib/facades/FacadeContainer'
 
 describe('Facade', function() {
   describe('Facade.verifyMocks()', function() {
@@ -10,7 +11,7 @@ describe('Facade', function() {
         restoreFacades() {}
       }
       const verifyMocksSpy = Sinon.spy(container, 'verifyMocks')
-      FacadeContainers.push(<any>container)
+      FacadeContainersBag.push(<any>container)
       Facade.verifyMocks()
       expect(verifyMocksSpy.called).toBe(true)
     })
@@ -23,7 +24,7 @@ describe('Facade', function() {
         restoreFacades() {}
       }
       const restoreFacadesSpy = Sinon.spy(container, 'restoreFacades')
-      FacadeContainers.push(<any>container)
+      FacadeContainersBag.push(<any>container)
       Facade.restoreAll()
       expect(restoreFacadesSpy.called).toBe(true)
     })
@@ -76,9 +77,9 @@ describe('Facade', function() {
       const instanceCreator = () => {
         return instance
       }
-      const length = FacadeContainers.length
+      const length = FacadeContainersBag.length
       const facade = Facade.create(<any>container, key, instanceCreator)
-      expect(FacadeContainers).toHaveLength(length + 1)
+      expect(FacadeContainersBag).toHaveLength(length + 1)
       const markFacadeWasUsedSpy = Sinon.spy(container, 'markFacadeWasUsed')
 
       const originalMethod = facade['method']
@@ -92,9 +93,9 @@ describe('Facade', function() {
       expect(markFacadeWasUsedSpy.calledWith('key', 'spy')).toBe(true)
       facade.restoreFacade()
 
-      // recreate facade with same container the container will not be appends to FacadeContainers
+      // recreate facade with same container the container will not be appends to FacadeContainersBag
       Facade.create(<any>container, key, instanceCreator)
-      expect(FacadeContainers).toHaveLength(length + 1)
+      expect(FacadeContainersBag).toHaveLength(length + 1)
     })
   })
 

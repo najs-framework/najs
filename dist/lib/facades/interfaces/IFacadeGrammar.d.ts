@@ -1,5 +1,5 @@
-import { IFacadeContainer } from './IFacadeContainer';
 import * as Sinon from 'sinon';
+import { IFacadeContainer } from './IFacadeContainer';
 export interface FacadeSpecs {
     (contextualFacade: IContextualFacade): IContextualFacadeMatcher<any>;
     <T>(contextualFacade: IContextualFacade): IContextualFacadeMatcher<T>;

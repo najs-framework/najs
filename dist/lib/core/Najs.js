@@ -4,9 +4,11 @@ const events_1 = require("events");
 const Application_1 = require("./Application");
 const make_1 = require("./make");
 const constants_1 = require("../constants");
+const FacadeContainer_1 = require("../facades/FacadeContainer");
 const SystemPath = require("path");
-class NajsFramework {
+class NajsFramework extends FacadeContainer_1.FacadeContainer {
     constructor() {
+        super();
         this.cwd = SystemPath.resolve(__dirname, '..', '..', '..', '..');
         this.internalEventEmitter = new events_1.EventEmitter();
         this.serviceProviders = [];
@@ -82,41 +84,6 @@ class NajsFramework {
             return true;
         }
         return false;
-    }
-    markFacadeWasUsed(key, type) {
-        if (typeof this.usedFacades === 'undefined') {
-            this.usedFacades = {};
-        }
-        if (typeof this.usedFacades[type] === 'undefined') {
-            this.usedFacades[type] = [];
-        }
-        this.usedFacades[type].push(key);
-    }
-    verifyMocks() {
-        if (!this.usedFacades || !this.usedFacades.mock) {
-            return;
-        }
-        const facadeKeys = Array.from(new Set(this.usedFacades.mock));
-        for (const key of facadeKeys) {
-            if (!this[key] || !this[key].createdMocks) {
-                continue;
-            }
-            for (const mock of this[key].createdMocks) {
-                mock.verify();
-            }
-        }
-    }
-    restoreFacades() {
-        if (!this.usedFacades) {
-            return;
-        }
-        const facadeKeys = Array.from(new Set([].concat(this.usedFacades.spy || [], this.usedFacades.stub || [], this.usedFacades.mock || [])));
-        for (const key of facadeKeys) {
-            if (!this[key]) {
-                continue;
-            }
-            this[key].restoreFacade();
-        }
     }
 }
 exports.Najs = new NajsFramework();

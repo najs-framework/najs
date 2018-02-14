@@ -1,14 +1,15 @@
+import { FacadeContainersBag } from './FacadeContainer'
+import { ContextualFacadeMatcher } from './ContextualFacadeMatcher'
+import { ContextualFacadeFactory } from './ContextualFacadeFactory'
 import { IFacadeContainer } from './interfaces/IFacadeContainer'
 import { FacadeSpecs } from './interfaces/IFacadeGrammar'
-import { ContextualFacade } from './ContextualFacade'
 import * as Sinon from 'sinon'
 
-export const FacadeContainers: IFacadeContainer[] = []
+function facade(this: any, arg: ContextualFacadeFactory<any> | Object | undefined): any {
+  if (arg instanceof ContextualFacadeFactory) {
+    return new ContextualFacadeMatcher(arg)
+  }
 
-function facade(this: any, arg: ContextualFacade<any> | Object | undefined): any {
-  // if (arg instanceof ContextualFacade) {
-  // make a ContextualFacadeMatcher
-  // }
   this.container = undefined
   this.accessorKey = undefined
   this.facadeInstanceCreator = undefined
@@ -18,9 +19,9 @@ function facade(this: any, arg: ContextualFacade<any> | Object | undefined): any
 }
 
 facade['create'] = function(this: any, container: IFacadeContainer, key: string, facadeInstanceCreator: () => void) {
-  const registered: boolean = !FacadeContainers.find(item => item === container)
+  const registered: boolean = !FacadeContainersBag.find(item => item === container)
   if (registered) {
-    FacadeContainers.push(container)
+    FacadeContainersBag.push(container)
   }
 
   if (typeof container[key] === 'undefined') {
@@ -33,13 +34,13 @@ facade['create'] = function(this: any, container: IFacadeContainer, key: string,
 }
 
 facade['verifyMocks'] = function() {
-  for (const container of FacadeContainers) {
+  for (const container of FacadeContainersBag) {
     container.verifyMocks()
   }
 }
 
 facade['restoreAll'] = function() {
-  for (const container of FacadeContainers) {
+  for (const container of FacadeContainersBag) {
     container.restoreFacades()
   }
 }

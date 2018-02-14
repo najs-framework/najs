@@ -1,5 +1,10 @@
-export class ContextualFacade<Context = any> {
-  constructor() {}
+import { Facade } from './Facade'
 
-  of(context: Context) {}
+export abstract class ContextualFacade<Context = any> extends Facade {
+  context: Context
+
+  constructor(context: Context) {
+    super()
+    this.context = context
+  }
 }
