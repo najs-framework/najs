@@ -9,14 +9,14 @@ export const ContextualFacadeContainer = new FacadeContainer()
 
 export class ContextualFacadeMatcher {
   count: number
-  factory: ContextualFacadeFactory
+  factory: ContextualFacadeFactory<any, any>
   createContextualFacade: any
 
-  constructor(contextualFacade: ContextualFacadeFactory) {
+  constructor(contextualFacadeFactory: ContextualFacadeFactory<any, any>) {
     this.count = 0
-    this.factory = contextualFacade
-    this.createContextualFacade = this.factory['createContextualFacade']
-    this.factory['createContextualFacade'] = this.boundCreateByContext.bind(this)
+    this.factory = contextualFacadeFactory
+    this.createContextualFacade = this.factory.contextualFacadeCreator
+    this.factory.contextualFacadeCreator = this.boundCreateByContext.bind(this)
   }
 
   boundCreateByContext(context: any): any {

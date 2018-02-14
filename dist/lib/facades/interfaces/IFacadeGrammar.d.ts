@@ -2,9 +2,10 @@ import * as Sinon from 'sinon';
 import { IFacadeContainer } from './IFacadeContainer';
 export interface FacadeSpecs {
     (facade: IFacadeBase): IFacade;
-    (contextualFacade: IContextualFacade): IContextualFacadeMatcher<any>;
+    (contextualFacade: IContextualFacadeFactory): IContextualFacadeMatcher<any>;
     new (): IFacade;
     create<T>(container: IFacadeContainer, key: string, facadeInstanceCreator: () => void): IFacade & IFacadeBase & T;
+    create<T extends IContextualFacade<Context>, Context extends any>(createContextualFacade: (context: Context) => T): IContextualFacadeFactoryFullVerbs<T, Context>;
     verifyMocks(): void;
     restoreAll(): void;
 }
@@ -19,19 +20,32 @@ export interface IFacade extends IFacadeBase {
     restoreFacade(): this;
     reloadFacadeRoot(): this;
 }
-export interface IContextualFacade {
+export interface IContextualFacade<Context extends any> extends IFacade {
+    context: Context;
 }
-export interface IContextualFacadeVerbOf<Action, Context> extends IContextualFacade {
-    of(context: Context): Action;
+export interface IContextualFacadeFactory {
 }
-export interface IContextualFacadeVerbWith<Action, Context> extends IContextualFacade {
-    with(context: Context): Action;
+export interface IContextualFacadeFactoryFullVerbs<Facade extends IContextualFacade<Context>, Context> extends IContextualFacadeFactory {
+    of(context: Context): Facade;
+    with(context: Context): Facade;
+    for(context: Context): Facade;
+    at(context: Context): Facade;
+    from(context: Context): Facade;
 }
-export interface IContextualFacadeVerbFor<Action, Context> extends IContextualFacade {
-    for(context: Context): Action;
+export interface IContextualFacadeVerbOf<Facade extends IContextualFacade<Context>, Context> extends IContextualFacadeFactory {
+    of(context: Context): Facade;
 }
-export interface IContextualFacadeVerbAt<Action, Context> extends IContextualFacade {
-    at(context: Context): Action;
+export interface IContextualFacadeVerbWith<Facade extends IContextualFacade<Context>, Context> extends IContextualFacadeFactory {
+    with(context: Context): Facade;
+}
+export interface IContextualFacadeVerbFor<Facade extends IContextualFacade<Context>, Context> extends IContextualFacadeFactory {
+    for(context: Context): Facade;
+}
+export interface IContextualFacadeVerbAt<Facade extends IContextualFacade<Context>, Context> extends IContextualFacadeFactory {
+    at(context: Context): Facade;
+}
+export interface IContextualFacadeVerbFrom<Facade extends IContextualFacade<Context>, Context> extends IContextualFacadeFactory {
+    from(context: Context): Facade;
 }
 export interface IContextualFacadeMatcher<Context> {
     with(context: Context): IFacade;

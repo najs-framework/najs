@@ -5,11 +5,11 @@ const FacadeContainer_1 = require("./FacadeContainer");
 let count = 0;
 exports.ContextualFacadeContainer = new FacadeContainer_1.FacadeContainer();
 class ContextualFacadeMatcher {
-    constructor(contextualFacade) {
+    constructor(contextualFacadeFactory) {
         this.count = 0;
-        this.factory = contextualFacade;
-        this.createContextualFacade = this.factory['createContextualFacade'];
-        this.factory['createContextualFacade'] = this.boundCreateByContext.bind(this);
+        this.factory = contextualFacadeFactory;
+        this.createContextualFacade = this.factory.contextualFacadeCreator;
+        this.factory.contextualFacadeCreator = this.boundCreateByContext.bind(this);
     }
     boundCreateByContext(context) {
         // matcher should be implemented in here

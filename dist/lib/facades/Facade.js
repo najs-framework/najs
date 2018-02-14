@@ -18,7 +18,11 @@ function facade(arg) {
     this.createdStubs = {};
     this.createdMocks = [];
 }
-facade['create'] = function (container, key, facadeInstanceCreator) {
+facade['create'] = function (mixed, key, facadeInstanceCreator) {
+    if (typeof mixed === 'function') {
+        return new ContextualFacadeFactory_1.ContextualFacadeFactory(mixed);
+    }
+    const container = mixed;
     const registered = !FacadeContainer_1.FacadeContainersBag.find(item => item === container);
     if (registered) {
         FacadeContainer_1.FacadeContainersBag.push(container);

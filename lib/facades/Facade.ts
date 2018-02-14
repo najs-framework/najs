@@ -22,7 +22,12 @@ function facade(this: any, arg: ContextualFacadeFactory<any> | Object | undefine
   this.createdMocks = []
 }
 
-facade['create'] = function(this: any, container: IFacadeContainer, key: string, facadeInstanceCreator: () => void) {
+facade['create'] = function(this: any, mixed: any, key: string, facadeInstanceCreator: () => void) {
+  if (typeof mixed === 'function') {
+    return new ContextualFacadeFactory(mixed)
+  }
+
+  const container: IFacadeContainer = mixed
   const registered: boolean = !FacadeContainersBag.find(item => item === container)
   if (registered) {
     FacadeContainersBag.push(container)

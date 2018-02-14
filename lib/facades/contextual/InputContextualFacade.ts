@@ -1,6 +1,6 @@
-import { IContextualFacadeVerbOf } from '../interfaces/IFacadeGrammar'
-import { ContextualFacadeFactory } from '../ContextualFacadeFactory'
+import { Facade } from '../Facade'
 import { ContextualFacade } from '../ContextualFacade'
+import { IContextualFacadeVerbOf } from '../interfaces/IFacadeGrammar'
 
 export class InputFacade extends ContextualFacade {
   doSomething() {
@@ -8,10 +8,7 @@ export class InputFacade extends ContextualFacade {
   }
 }
 
-export class InputContextualFacadeFactory<Context extends any> extends ContextualFacadeFactory<Context> {
-  protected createContextualFacade(context: Context) {
-    return new InputFacade(context)
-  }
-}
-
-export const InputContextualFacade: IContextualFacadeVerbOf<InputFacade, any> = new InputContextualFacadeFactory()
+const facade = Facade.create<InputFacade, any>(function(context: any) {
+  return new InputFacade(context)
+})
+export const InputContextualFacade: IContextualFacadeVerbOf<InputFacade, any> = facade

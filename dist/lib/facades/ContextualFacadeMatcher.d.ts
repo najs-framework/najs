@@ -4,9 +4,9 @@ import { ContextualFacadeFactory } from './ContextualFacadeFactory';
 export declare const ContextualFacadeContainer: FacadeContainer;
 export declare class ContextualFacadeMatcher {
     count: number;
-    factory: ContextualFacadeFactory;
+    factory: ContextualFacadeFactory<any, any>;
     createContextualFacade: any;
-    constructor(contextualFacade: ContextualFacadeFactory);
+    constructor(contextualFacadeFactory: ContextualFacadeFactory<any, any>);
     boundCreateByContext(context: any): any;
     with(context: any): IFacade;
 }

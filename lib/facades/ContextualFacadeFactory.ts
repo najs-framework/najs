@@ -1,19 +1,31 @@
-export abstract class ContextualFacadeFactory<Context = any> {
-  protected abstract createContextualFacade(context: Context): any
+import { IContextualFacadeFactoryFullVerbs } from './interfaces/IFacadeGrammar'
+import { ContextualFacade } from './ContextualFacade'
 
-  of(context: Context) {
-    return this.createContextualFacade(context)
+export class ContextualFacadeFactory<T extends ContextualFacade<Context>, Context = any>
+  implements IContextualFacadeFactoryFullVerbs<T, Context> {
+  contextualFacadeCreator: (context: Context) => T
+
+  constructor(createContextualFacade: (context: Context) => T) {
+    this.contextualFacadeCreator = createContextualFacade
   }
 
-  // with(context: Context) {
-  //   return this.createContextualFacade(context)
-  // }
+  of(context: Context): T {
+    return this.contextualFacadeCreator(context)
+  }
 
-  // for(context: Context) {
-  //   return this.createContextualFacade(context)
-  // }
+  with(context: Context): T {
+    return this.contextualFacadeCreator(context)
+  }
 
-  // at(context: Context) {
-  //   return this.createContextualFacade(context)
-  // }
+  for(context: Context): T {
+    return this.contextualFacadeCreator(context)
+  }
+
+  at(context: Context): T {
+    return this.contextualFacadeCreator(context)
+  }
+
+  from(context: Context): T {
+    return this.contextualFacadeCreator(context)
+  }
 }

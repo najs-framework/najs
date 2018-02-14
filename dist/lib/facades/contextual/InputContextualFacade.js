@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ContextualFacadeFactory_1 = require("../ContextualFacadeFactory");
+const Facade_1 = require("../Facade");
 const ContextualFacade_1 = require("../ContextualFacade");
 class InputFacade extends ContextualFacade_1.ContextualFacade {
     doSomething() {
@@ -8,10 +8,7 @@ class InputFacade extends ContextualFacade_1.ContextualFacade {
     }
 }
 exports.InputFacade = InputFacade;
-class InputContextualFacadeFactory extends ContextualFacadeFactory_1.ContextualFacadeFactory {
-    createContextualFacade(context) {
-        return new InputFacade(context);
-    }
-}
-exports.InputContextualFacadeFactory = InputContextualFacadeFactory;
-exports.InputContextualFacade = new InputContextualFacadeFactory();
+const facade = Facade_1.Facade.create(function (context) {
+    return new InputFacade(context);
+});
+exports.InputContextualFacade = facade;
