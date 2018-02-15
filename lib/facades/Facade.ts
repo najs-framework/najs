@@ -11,7 +11,10 @@ function facade(this: any, arg: ContextualFacadeFactory<any> | Object | undefine
   }
 
   if (arg instanceof ContextualFacadeFactory) {
-    return new ContextualFacadeMatcher(arg)
+    if (!arg['contextualFacadeMatcher']) {
+      arg['contextualFacadeMatcher'] = new ContextualFacadeMatcher(arg)
+    }
+    return arg['contextualFacadeMatcher']
   }
 
   this.container = undefined

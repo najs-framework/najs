@@ -10,6 +10,7 @@ class TestSuite {
         for (const container of FacadeContainer_1.FacadeContainersBag) {
             container.restoreFacades();
         }
+        FacadeContainer_1.cleanFacadeContainersBag();
     }
 }
 exports.TestSuite = TestSuite;

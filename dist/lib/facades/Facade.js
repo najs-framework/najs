@@ -9,7 +9,10 @@ function facade(arg) {
         return arg;
     }
     if (arg instanceof ContextualFacadeFactory_1.ContextualFacadeFactory) {
-        return new ContextualFacadeMatcher_1.ContextualFacadeMatcher(arg);
+        if (!arg['contextualFacadeMatcher']) {
+            arg['contextualFacadeMatcher'] = new ContextualFacadeMatcher_1.ContextualFacadeMatcher(arg);
+        }
+        return arg['contextualFacadeMatcher'];
     }
     this.container = undefined;
     this.accessorKey = undefined;

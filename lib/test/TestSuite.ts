@@ -1,4 +1,4 @@
-import { FacadeContainersBag } from './../facades/FacadeContainer'
+import { FacadeContainersBag, cleanFacadeContainersBag } from './../facades/FacadeContainer'
 export class TestSuite {
   setUp() {}
 
@@ -10,5 +10,7 @@ export class TestSuite {
     for (const container of FacadeContainersBag) {
       container.restoreFacades()
     }
+
+    cleanFacadeContainersBag()
   }
 }

@@ -1,8 +1,98 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import { FacadeContainer } from '../../lib/facades/FacadeContainer'
+import { FacadeContainersBag, FacadeContainer, cleanFacadeContainersBag } from '../../lib/facades/FacadeContainer'
+
+describe('cleanFacadeContainersBag', function() {
+  it('filters and removes all container which can be cleanable', function() {
+    const containerOne = new FacadeContainer(true)
+    containerOne['anything'] = true
+    containerOne['usedFacaded'] = {}
+    containerOne['keyByCount'] = {}
+    const containerNotCleanable = new FacadeContainer()
+    containerNotCleanable['anything'] = true
+    containerNotCleanable['usedFacaded'] = {}
+    containerNotCleanable['keyByCount'] = {}
+    const containerTwo = new FacadeContainer(true)
+    containerTwo['anything'] = true
+    containerTwo['usedFacaded'] = {}
+    containerTwo['keyByCount'] = {}
+
+    FacadeContainersBag.push(containerOne)
+    FacadeContainersBag.push(containerNotCleanable)
+    FacadeContainersBag.push(containerTwo)
+
+    cleanFacadeContainersBag()
+    expect(FacadeContainersBag).toEqual([containerNotCleanable])
+
+    expect(containerOne['anything']).toBeUndefined()
+    expect(containerOne['usedFacaded']).toBeUndefined()
+    expect(containerOne['keyByCount']).toBeUndefined()
+
+    expect(containerNotCleanable['anything']).toEqual(true)
+    expect(containerNotCleanable['usedFacaded']).toEqual({})
+    expect(containerNotCleanable['keyByCount']).toEqual({})
+
+    expect(containerTwo['anything']).toBeUndefined()
+    expect(containerTwo['usedFacaded']).toBeUndefined()
+    expect(containerTwo['keyByCount']).toBeUndefined()
+  })
+})
 
 describe('FacadeContainer', function() {
+  describe('constructor()', function() {
+    it('is initiated with cleanable = false by default', function() {
+      const container = new FacadeContainer()
+      expect(container['cleanable']).toBe(false)
+    })
+
+    it('can be initiated with cleanable = true', function() {
+      const container = new FacadeContainer(true)
+      expect(container['cleanable']).toBe(true)
+    })
+  })
+
+  describe('.clean()', function() {
+    it('does nothing and return false if container is not cleanable', function() {
+      const container = new FacadeContainer()
+      expect(container.clean()).toBe(false)
+    })
+
+    it('always returns true if container is cleanable', function() {
+      const container = new FacadeContainer(true)
+      expect(container.clean()).toBe(true)
+    })
+
+    it('deletes everything in container even the "usedFacades" variable', function() {
+      const container = new FacadeContainer(true)
+      container['anything'] = true
+      container['usedFacaded'] = {}
+      container['keyByCount'] = {}
+      expect(container.clean()).toBe(true)
+      expect(container['anything']).toBeUndefined()
+      expect(container['usedFacaded']).toBeUndefined()
+      expect(container['keyByCount']).toBeUndefined()
+    })
+  })
+
+  describe('.getKeyByCount()', function() {
+    it('creates a keyByCount member automatically', function() {
+      const container = new FacadeContainer()
+      expect(container['keyByCount']).toBeUndefined()
+      container.getKeyByCount('test')
+      expect(container['keyByCount']).toEqual({ test: 1 })
+    })
+
+    it('increases number by key', function() {
+      const container = new FacadeContainer()
+      expect(container['keyByCount']).toBeUndefined()
+      container.getKeyByCount('test{count}')
+      expect(container['keyByCount']).toEqual({ 'test{count}': 1 })
+      container.getKeyByCount('test{count}')
+      expect(container['keyByCount']).toEqual({ 'test{count}': 2 })
+      expect(container.getKeyByCount('test{count}')).toEqual('test3')
+    })
+  })
+
   describe('.markFacadeWasUsed()', function() {
     it('creates "usedFacades" based on "type" dynamically', function() {
       const container = new FacadeContainer()
