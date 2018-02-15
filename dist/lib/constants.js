@@ -5,6 +5,9 @@ exports.SystemClass = {
     HttpKernel: 'Najs.HttpKernel',
     HttpDriver: 'Najs.HttpDriver'
 };
+exports.ContextualFacadeClass = {
+    Input: 'Najs.ExpressInput'
+};
 exports.GlobalFacade = {
     Application: 'Najs.Application',
     Cache: 'Najs.Cache',

@@ -5,6 +5,10 @@ export const SystemClass = {
   HttpDriver: 'Najs.HttpDriver'
 }
 
+export const ContextualFacadeClass = {
+  Input: 'Najs.ExpressInput'
+}
+
 export const GlobalFacade = {
   Application: 'Najs.Application',
   Cache: 'Najs.Cache',

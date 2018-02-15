@@ -16,7 +16,7 @@ export { IAutoload } from './core/IAutoload'
 export { ServiceProvider } from './core/ServiceProvider'
 
 // constants
-export { SystemClass, GlobalFacade } from './constants'
+export { SystemClass, GlobalFacade, ContextualFacadeClass } from './constants'
 
 // http package
 export { IHttpDriver } from './http/driver/IHttpDriver'
@@ -40,6 +40,7 @@ export { JsonResponse } from './http/response/types/JsonResponse'
 export { JsonpResponse } from './http/response/types/JsonpResponse'
 
 export { IRequestRetriever } from './http/request/IRequestRetriever'
+export { RequestInput } from './http/request/RequestInput'
 export { RequestData } from './http/request/RequestData'
 
 export { IMiddleware } from './http/middleware/IMiddleware'
@@ -51,6 +52,7 @@ export { ExpressCorsMiddleware } from './http/middleware/ExpressCorsMiddleware'
 export { IFacade } from './facades/interfaces/IFacadeGrammar'
 export { IFacadeContainer } from './facades/interfaces/IFacadeContainer'
 export { Facade } from './facades/Facade'
+export { ContextualFacade } from './facades/ContextualFacade'
 export { FacadeContainer, FacadeContainersBag } from './facades/FacadeContainer'
 export { AppFacade, App } from './facades/global/AppFacade'
 export { CacheFacade, Cache } from './facades/global/CacheFacade'
@@ -61,6 +63,7 @@ export { LogFacade, Log } from './facades/global/LogFacade'
 export { PathFacade, Path } from './facades/global/PathFacade'
 export { ResponseFacade, Response } from './facades/global/ResponseFacade'
 export { RouteFacade, Route } from './facades/global/RouteFacade'
+export { InputContextualFacade, Input } from './facades/contextual/InputContextualFacade'
 
 // event package
 export { IEventEmitter } from './event/IEventEmitter'

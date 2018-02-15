@@ -1,14 +1,19 @@
+import '../../http/request/RequestInput'
+import { make } from '../../core/make'
 import { Facade } from '../Facade'
-import { ContextualFacade } from '../ContextualFacade'
-import { IContextualFacadeVerbOf } from '../interfaces/IFacadeGrammar'
+import { IContextualFacadeVerbOf, IContextualFacadeVerbFrom } from '../interfaces/IFacadeGrammar'
+import { RequestInput } from '../../http/request/RequestInput'
+import { Controller } from '../../http/controller/Controller'
+import { ContextualFacadeClass } from '../../constants'
 
-export class InputFacade extends ContextualFacade {
-  doSomething() {
-    // console.log('do something with context', this.context)
+const facade = Facade.create<RequestInput, Controller>(function(context: Controller) {
+  if (!context.input) {
+    return make<RequestInput>(ContextualFacadeClass.Input, [context])
   }
-}
-
-const facade = Facade.create<InputFacade, any>(function(context: any) {
-  return new InputFacade(context)
+  return <RequestInput>context.input
 })
-export const InputContextualFacade: IContextualFacadeVerbOf<InputFacade, any> = facade
+
+export const Input: IContextualFacadeVerbOf<RequestInput, Controller> &
+  IContextualFacadeVerbFrom<RequestInput, Controller> = facade
+export const InputContextualFacade: IContextualFacadeVerbOf<RequestInput, Controller> &
+  IContextualFacadeVerbFrom<RequestInput, Controller> = facade

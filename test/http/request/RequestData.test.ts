@@ -65,6 +65,7 @@ describe('RequestData', function() {
       })
     })
   })
+
   describe('.except()', function() {
     it('should be immutable', function() {
       const requestData = new RequestData({})

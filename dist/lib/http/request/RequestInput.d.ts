@@ -1,16 +1,14 @@
-import { ExpressController } from '../controller/ExpressController';
+import { IAutoload } from '../../core/IAutoload';
+import { Controller } from '../controller/Controller';
 import { ContextualFacade } from '../../facades/ContextualFacade';
 import { IRequestRetriever } from './IRequestRetriever';
 import { HttpMethod } from '../HttpMethod';
-export declare class Input extends ContextualFacade<ExpressController> implements IRequestRetriever {
+export declare class RequestInput extends ContextualFacade<Controller> implements IRequestRetriever, IAutoload {
     protected data: Object;
-    readonly body: Object;
-    readonly query: Object;
-    readonly params: Object;
     readonly method: HttpMethod;
-    constructor(controller: ExpressController);
-    protected buildData(): void;
-    setData(data: Object): void;
+    constructor(controller: Controller);
+    getClassName(): string;
+    protected createInputFromExpressController(): void;
     get<T extends any>(name: string): T;
     get<T extends any>(name: string, defaultValue: T): T;
     has(name: string): boolean;

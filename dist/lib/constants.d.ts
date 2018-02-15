@@ -3,6 +3,9 @@ export declare const SystemClass: {
     HttpKernel: string;
     HttpDriver: string;
 };
+export declare const ContextualFacadeClass: {
+    Input: string;
+};
 export declare const GlobalFacade: {
     Application: string;
     Cache: string;

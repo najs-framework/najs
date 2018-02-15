@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
-const Sinon = require("sinon");
 const ExpressController_1 = require("../../../lib/http/controller/ExpressController");
+const ContextualFacade_1 = require("../../../lib/facades/ContextualFacade");
 describe('ExpressController', function () {
     describe('.constructor()', function () {
         it('should init body, params, and query from request', function () {
@@ -26,69 +26,13 @@ describe('ExpressController', function () {
             expect(expressController['query']['data']).toEqual({});
             expect(expressController['params']['data']).toEqual({});
         });
-    });
-    describe('protected .createInputFromRequest()', function () {
-        it('called by .constructor() to create input', function () {
-            const createInputFromRequestSpy = Sinon.spy(ExpressController_1.ExpressController.prototype, 'createInputFromRequest');
-            Reflect.construct(ExpressController_1.ExpressController, [{ method: 'get' }, {}]);
-            expect(createInputFromRequestSpy.called).toBe(true);
-        });
-        it('creates input depends on request.method', function () { });
-        it('creates input = merge(query, params) if that is GET request', function () {
+        it('should init Input from `InputContextualFacade` with context is this', function () {
             const request = {
-                method: 'GET',
-                body: { a: 1, d: 'body' },
-                query: { b: 2, d: 'query' },
-                params: { c: 3, d: 'params' }
+                method: 'get'
             };
             const expressController = Reflect.construct(ExpressController_1.ExpressController, [request, {}]);
-            expect(expressController['input']['data']).toEqual({ b: 2, c: 3, d: 'params' });
-        });
-        it('creates input = merge(params, body) if that is PATCH, POST, PUT, PURGE, DELETE request', function () {
-            const request = {
-                method: '',
-                body: { a: 1, d: 'body' },
-                query: { b: 2, d: 'query' },
-                params: { c: 3, d: 'params' }
-            };
-            const methods = ['PATCH', 'POST', 'PUT', 'PURGE', 'DELETE'];
-            for (const method of methods) {
-                request.method = method;
-                const expressController = Reflect.construct(ExpressController_1.ExpressController, [request, {}]);
-                expect(expressController['input']['data']).toEqual({ a: 1, c: 3, d: 'body' });
-            }
-        });
-        it('creates input = merge(query, params, body) if that is the rest kind of request', function () {
-            const request = {
-                method: '',
-                body: { a: 1, d: 'body' },
-                query: { b: 2, d: 'query' },
-                params: { c: 3, d: 'params' }
-            };
-            const methods = [
-                'CHECKOUT',
-                'COPY',
-                'HEAD',
-                'LOCK',
-                'MERGE',
-                'MKACTIVITY',
-                'MKCOL',
-                'MOVE',
-                'M-SEARCH',
-                'NOTIFY',
-                'OPTIONS',
-                'REPORT',
-                'SEARCH',
-                'SUBSCRIBE',
-                'TRACE',
-                'UNLOCK',
-                'UNSUBSCRIBE'
-            ];
-            for (const method of methods) {
-                request.method = method;
-                const expressController = Reflect.construct(ExpressController_1.ExpressController, [request, {}]);
-                expect(expressController['input']['data']).toEqual({ a: 1, b: 2, c: 3, d: 'body' });
-            }
+            expect(expressController.input).toBeInstanceOf(ContextualFacade_1.ContextualFacade);
+            expect(expressController.input['context'] === expressController).toBe(true);
         });
     });
 });

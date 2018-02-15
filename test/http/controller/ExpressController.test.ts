@@ -1,6 +1,6 @@
 import 'jest'
-import * as Sinon from 'sinon'
 import { ExpressController } from '../../../lib/http/controller/ExpressController'
+import { ContextualFacade } from '../../../lib/facades/ContextualFacade'
 
 describe('ExpressController', function() {
   describe('.constructor()', function() {
@@ -26,74 +26,14 @@ describe('ExpressController', function() {
       expect(expressController['query']['data']).toEqual({})
       expect(expressController['params']['data']).toEqual({})
     })
-  })
 
-  describe('protected .createInputFromRequest()', function() {
-    it('called by .constructor() to create input', function() {
-      const createInputFromRequestSpy = Sinon.spy(ExpressController.prototype, <any>'createInputFromRequest')
-      Reflect.construct(ExpressController, [{ method: 'get' }, {}])
-      expect(createInputFromRequestSpy.called).toBe(true)
-    })
-
-    it('creates input depends on request.method', function() {})
-
-    it('creates input = merge(query, params) if that is GET request', function() {
+    it('should init Input from `InputContextualFacade` with context is this', function() {
       const request = {
-        method: 'GET',
-        body: { a: 1, d: 'body' },
-        query: { b: 2, d: 'query' },
-        params: { c: 3, d: 'params' }
+        method: 'get'
       }
-      const expressController = Reflect.construct(ExpressController, [request, {}])
-      expect(expressController['input']['data']).toEqual({ b: 2, c: 3, d: 'params' })
-    })
-
-    it('creates input = merge(params, body) if that is PATCH, POST, PUT, PURGE, DELETE request', function() {
-      const request = {
-        method: '',
-        body: { a: 1, d: 'body' },
-        query: { b: 2, d: 'query' },
-        params: { c: 3, d: 'params' }
-      }
-      const methods = ['PATCH', 'POST', 'PUT', 'PURGE', 'DELETE']
-      for (const method of methods) {
-        request.method = method
-        const expressController = Reflect.construct(ExpressController, [request, {}])
-        expect(expressController['input']['data']).toEqual({ a: 1, c: 3, d: 'body' })
-      }
-    })
-
-    it('creates input = merge(query, params, body) if that is the rest kind of request', function() {
-      const request = {
-        method: '',
-        body: { a: 1, d: 'body' },
-        query: { b: 2, d: 'query' },
-        params: { c: 3, d: 'params' }
-      }
-      const methods = [
-        'CHECKOUT',
-        'COPY',
-        'HEAD',
-        'LOCK',
-        'MERGE',
-        'MKACTIVITY',
-        'MKCOL',
-        'MOVE',
-        'M-SEARCH',
-        'NOTIFY',
-        'OPTIONS',
-        'REPORT',
-        'SEARCH',
-        'SUBSCRIBE',
-        'TRACE',
-        'UNLOCK',
-        'UNSUBSCRIBE'
-      ]
-      for (const method of methods) {
-        request.method = method
-        const expressController = Reflect.construct(ExpressController, [request, {}])
-        expect(expressController['input']['data']).toEqual({ a: 1, b: 2, c: 3, d: 'body' })
-      }
+      const expressController: ExpressController = Reflect.construct(ExpressController, [request, {}])
+      expect(expressController.input).toBeInstanceOf(ContextualFacade)
+      expect(expressController.input['context'] === expressController).toBe(true)
     })
   })
 })

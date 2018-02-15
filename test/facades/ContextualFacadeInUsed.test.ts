@@ -1,8 +1,20 @@
 import 'jest'
 import { Facade } from '../../lib/facades/Facade'
+import { ContextualFacade } from '../../lib/facades/ContextualFacade'
 import { App, AppFacade } from './../../lib/facades/global/AppFacade'
 import { FacadeContainersBag, cleanFacadeContainersBag } from '../../lib/facades/FacadeContainer'
-import { InputContextualFacade as Input } from '../../lib/facades/contextual/InputContextualFacade'
+import { IContextualFacadeVerbOf } from '../../lib/facades/interfaces/IFacadeGrammar'
+
+export class InputFacade extends ContextualFacade {
+  doSomething() {
+    // console.log('do something with context', this.context)
+  }
+}
+
+const facade = Facade.create<InputFacade, any>(function(context: any) {
+  return new InputFacade(context)
+})
+export const Input: IContextualFacadeVerbOf<InputFacade, any> = facade
 
 describe('ContextualFacade', function() {
   afterEach(function() {
