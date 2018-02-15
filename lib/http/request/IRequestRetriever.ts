@@ -1,16 +1,16 @@
 export interface IRequestRetriever {
-  get<T extends any>(name: string): T
-  get<T extends any>(name: string, defaultValue: T): T
+  get<T extends any>(path: string): T
+  get<T extends any>(path: string, defaultValue: T): T
 
-  has(name: string): boolean
+  has(path: string): boolean
 
   all(): Object
 
-  only(name: string): Object
-  only(names: string[]): Object
+  only(path: string): Object
+  only(paths: string[]): Object
   only(...args: Array<string | string[]>): Object
 
-  except(name: string): Object
-  except(names: string[]): Object
+  except(path: string): Object
+  except(paths: string[]): Object
   except(...args: Array<string | string[]>): Object
 }

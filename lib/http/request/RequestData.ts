@@ -1,5 +1,5 @@
 import { IRequestRetriever } from './IRequestRetriever'
-import { flatten } from 'lodash'
+import { get, set, unset, has, flatten } from 'lodash'
 
 export class RequestData implements IRequestRetriever {
   protected data: Object
@@ -8,46 +8,39 @@ export class RequestData implements IRequestRetriever {
     this.data = data
   }
 
-  get<T extends any>(name: string): T
-  get<T extends any>(name: string, defaultValue: T): T
-  get<T extends any>(name: string, defaultValue?: T): T {
-    if (defaultValue && !this.data[name]) {
-      return defaultValue
-    }
-    return this.data[name]
+  get<T extends any>(path: string): T
+  get<T extends any>(path: string, defaultValue: T): T
+  get<T extends any>(path: string, defaultValue?: T): T {
+    return get(this.data, path, defaultValue)
   }
 
-  has(name: string): boolean {
-    return this.data.hasOwnProperty(name)
+  has(path: string): boolean {
+    return has(this.data, path)
   }
 
   all(): Object {
     return this.data
   }
 
-  only(name: string): Object
-  only(names: string[]): Object
+  only(path: string): Object
+  only(paths: string[]): Object
   only(...args: Array<string | string[]>): Object
   only(...args: Array<string | string[]>): Object {
-    const fields = flatten(args)
-    return Object.keys(this.data).reduce((memo: Object, key: string) => {
-      if (fields.indexOf(key) !== -1) {
-        memo[key] = this.data[key]
-      }
+    const paths: string[] = flatten(args)
+    return paths.reduce((memo: Object, path: string) => {
+      set(memo, path, get(this.data, path))
       return memo
     }, {})
   }
 
-  except(name: string): Object
-  except(names: string[]): Object
+  except(path: string): Object
+  except(paths: string[]): Object
   except(...args: Array<string | string[]>): Object
   except(...args: Array<string | string[]>): Object {
-    const fields = flatten(args)
-    return Object.keys(this.data).reduce((memo: Object, key: string) => {
-      if (fields.indexOf(key) === -1) {
-        memo[key] = this.data[key]
-      }
+    const paths: string[] = flatten(args)
+    return paths.reduce((memo: Object, path: string) => {
+      unset(memo, path)
       return memo
-    }, {})
+    }, Object.assign({}, this.data))
   }
 }

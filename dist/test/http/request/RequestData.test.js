@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
+const Lodash = require("lodash");
 const RequestData_1 = require("../../../lib/http/request/RequestData");
 describe('RequestData', function () {
     describe('.constructor()', function () {
@@ -19,31 +20,19 @@ describe('RequestData', function () {
         });
     });
     describe('.has()', function () {
-        it('uses Object.prototype.hasOwnProperty() to determine the key exists or not', function () {
+        it('uses Lodash.has() to determine the path exists in this.data', function () {
             const requestData = new RequestData_1.RequestData({});
-            const hasOwnPropertySpy = Sinon.spy(requestData['data'], 'hasOwnProperty');
+            const hasSpy = Sinon.spy(Lodash, 'has');
             requestData.has('test');
-            expect(hasOwnPropertySpy.calledWith('test')).toBe(true);
-        });
-        it('returns true if key has value undefined', function () {
-            const requestData = new RequestData_1.RequestData({ key: undefined });
-            expect(requestData.has('key')).toBe(true);
-            expect(requestData.has('test')).toBe(false);
+            expect(hasSpy.calledWith(requestData['data'], 'test')).toBe(true);
         });
     });
     describe('.get()', function () {
-        it('returns data[name] if there is no default value', function () {
-            const requestData = new RequestData_1.RequestData({ test: 'any' });
-            expect(requestData.get('test')).toEqual('any');
-            expect(requestData.get('not-found')).toBeUndefined();
-        });
-        it('returns defaultValue if defaultValue passed and and data[name] is "falsy" value', function () {
-            const requestData = new RequestData_1.RequestData({ test: 'any', keyUndefined: undefined, keyEmpty: '', keyFalse: false });
-            expect(requestData.get('test', 'something')).toEqual('any');
-            expect(requestData.get('keyUndefined', 'default')).toEqual('default');
-            expect(requestData.get('keyEmpty', 'default')).toEqual('default');
-            expect(requestData.get('keyFalse', 'default')).toEqual('default');
-            expect(requestData.get('keyNotFound', 'default')).toEqual('default');
+        it('uses Lodash.get() to get a value in this.data', function () {
+            const requestData = new RequestData_1.RequestData({});
+            const getSpy = Sinon.spy(Lodash, 'get');
+            requestData.get('test');
+            expect(getSpy.calledWith(requestData['data'], 'test')).toBe(true);
         });
     });
     describe('.only()', function () {
@@ -52,11 +41,24 @@ describe('RequestData', function () {
             expect(requestData.only('a') === requestData.all()).toBe(false);
         });
         it('returns fresh object with keys passed in arguments', function () {
-            const requestData = new RequestData_1.RequestData({ a: 'a', b: undefined, c: 1, d: true, e: false, f: {}, g: [] });
+            const requestData = new RequestData_1.RequestData({ a: 'a', b: undefined, c: 1, d: true, e: false, f: { a: 1, b: 2 }, g: [] });
             expect(requestData.only('a')).toEqual({ a: 'a' });
             expect(requestData.only('a', 'b')).toEqual({ a: 'a', b: undefined });
             expect(requestData.only(['a', 'b', 'c'])).toEqual({ a: 'a', b: undefined, c: 1 });
-            expect(requestData.only('a', ['b', 'c'], 'd', 'e')).toEqual({ a: 'a', b: undefined, c: 1, d: true, e: false });
+            expect(requestData.only('a', ['b', 'c'], 'd', 'f')).toEqual({
+                a: 'a',
+                b: undefined,
+                c: 1,
+                d: true,
+                f: { a: 1, b: 2 }
+            });
+            expect(requestData.only('a', ['b', 'c'], 'd', 'f.a')).toEqual({
+                a: 'a',
+                b: undefined,
+                c: 1,
+                d: true,
+                f: { a: 1 }
+            });
         });
     });
     describe('.except()', function () {
@@ -65,11 +67,12 @@ describe('RequestData', function () {
             expect(requestData.except('a') === requestData.all()).toBe(false);
         });
         it('returns fresh object with keys not passed in arguments', function () {
-            const requestData = new RequestData_1.RequestData({ a: 'a', b: undefined, c: 1, d: true, e: false, f: {}, g: [] });
-            expect(requestData.except('a')).toEqual({ b: undefined, c: 1, d: true, e: false, f: {}, g: [] });
-            expect(requestData.except('a', 'b')).toEqual({ c: 1, d: true, e: false, f: {}, g: [] });
-            expect(requestData.except(['a', 'b', 'c'])).toEqual({ d: true, e: false, f: {}, g: [] });
-            expect(requestData.except('a', ['b', 'c'], 'd', 'e')).toEqual({ f: {}, g: [] });
+            const requestData = new RequestData_1.RequestData({ a: 'a', b: undefined, c: 1, d: true, e: false, f: { a: 1, b: 2 }, g: [] });
+            expect(requestData.except('a')).toEqual({ b: undefined, c: 1, d: true, e: false, f: { a: 1, b: 2 }, g: [] });
+            expect(requestData.except('a', 'b')).toEqual({ c: 1, d: true, e: false, f: { a: 1, b: 2 }, g: [] });
+            expect(requestData.except(['a', 'b', 'c'])).toEqual({ d: true, e: false, f: { a: 1, b: 2 }, g: [] });
+            expect(requestData.except('a', ['b', 'c'], 'd', 'f')).toEqual({ e: false, g: [] });
+            expect(requestData.except('a', ['b', 'c'], 'd', 'f.a')).toEqual({ e: false, f: { b: 2 }, g: [] });
         });
     });
 });

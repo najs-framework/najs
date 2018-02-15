@@ -5,35 +5,28 @@ class RequestData {
     constructor(data) {
         this.data = data;
     }
-    get(name, defaultValue) {
-        if (defaultValue && !this.data[name]) {
-            return defaultValue;
-        }
-        return this.data[name];
+    get(path, defaultValue) {
+        return lodash_1.get(this.data, path, defaultValue);
     }
-    has(name) {
-        return this.data.hasOwnProperty(name);
+    has(path) {
+        return lodash_1.has(this.data, path);
     }
     all() {
         return this.data;
     }
     only(...args) {
-        const fields = lodash_1.flatten(args);
-        return Object.keys(this.data).reduce((memo, key) => {
-            if (fields.indexOf(key) !== -1) {
-                memo[key] = this.data[key];
-            }
+        const paths = lodash_1.flatten(args);
+        return paths.reduce((memo, path) => {
+            lodash_1.set(memo, path, lodash_1.get(this.data, path));
             return memo;
         }, {});
     }
     except(...args) {
-        const fields = lodash_1.flatten(args);
-        return Object.keys(this.data).reduce((memo, key) => {
-            if (fields.indexOf(key) === -1) {
-                memo[key] = this.data[key];
-            }
+        const paths = lodash_1.flatten(args);
+        return paths.reduce((memo, path) => {
+            lodash_1.unset(memo, path);
             return memo;
-        }, {});
+        }, Object.assign({}, this.data));
     }
 }
 exports.RequestData = RequestData;
