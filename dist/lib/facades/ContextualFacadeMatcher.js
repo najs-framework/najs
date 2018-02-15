@@ -11,14 +11,14 @@ class ContextualFacadeMatcher {
         this.factory.contextualFacadeCreator = this.boundCreateByContext.bind(this);
     }
     boundCreateByContext(context) {
-        // matcher should be implemented in here
         for (const availableKey in this.container) {
             const createdFacade = this.container[availableKey];
-            if (typeof createdFacade.context !== 'function') {
+            if (typeof createdFacade['isContextMatch'] !== 'function') {
                 continue;
             }
-            const match = createdFacade.context(context);
+            const match = createdFacade['isContextMatch'](context);
             if (match) {
+                createdFacade.context = context;
                 return createdFacade;
             }
         }
@@ -28,9 +28,22 @@ class ContextualFacadeMatcher {
         });
         return result;
     }
-    with(context) {
-        return this.boundCreateByContext(function (creatingContext) {
-            return creatingContext === context;
+    createMatcher(matcher) {
+        const facade = this.boundCreateByContext(undefined);
+        facade['isContextMatch'] = matcher;
+        return facade;
+    }
+    with(arg) {
+        if (typeof arg === 'function') {
+            return this.createMatcher(arg);
+        }
+        return this.createMatcher(function (creatingContext) {
+            return creatingContext === arg;
+        });
+    }
+    withAny() {
+        return this.createMatcher(function () {
+            return true;
         });
     }
 }

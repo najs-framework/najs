@@ -3,6 +3,7 @@ import { IFacadeContainer } from './IFacadeContainer';
 export interface FacadeSpecs {
     (facade: IFacadeBase): IFacade;
     (contextualFacade: IContextualFacadeFactory): IContextualFacadeMatcher<any>;
+    <T>(contextualFacade: IContextualFacadeFactory): IContextualFacadeMatcher<T>;
     new (): IFacade;
     create<T>(container: IFacadeContainer, key: string, facadeInstanceCreator: () => void): IFacade & IFacadeBase & T;
     create<T extends IContextualFacade<Context>, Context extends any>(createContextualFacade: (context: Context) => T): IContextualFacadeFactoryFullVerbs<T, Context>;
@@ -49,5 +50,6 @@ export interface IContextualFacadeVerbFrom<Facade extends IContextualFacade<Cont
 }
 export interface IContextualFacadeMatcher<Context> {
     with(context: Context): IFacade;
+    with(matcher: (context: Context) => boolean): IFacade;
     withAny(): IFacade;
 }

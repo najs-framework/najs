@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const AppFacade_1 = require("./../../lib/facades/global/AppFacade");
 require("jest");
 const Facade_1 = require("../../lib/facades/Facade");
+const AppFacade_1 = require("./../../lib/facades/global/AppFacade");
 const FacadeContainer_1 = require("../../lib/facades/FacadeContainer");
 const InputContextualFacade_1 = require("../../lib/facades/contextual/InputContextualFacade");
 describe('ContextualFacade', function () {
@@ -35,7 +35,7 @@ describe('ContextualFacade', function () {
     });
     it('does something else', function () {
         Facade_1.Facade(InputContextualFacade_1.InputContextualFacade)
-            .with('test')
+            .with((context) => context === 'test')
             .shouldReceive('doSomething')
             .once();
         Facade_1.Facade(InputContextualFacade_1.InputContextualFacade)
@@ -43,6 +43,15 @@ describe('ContextualFacade', function () {
             .shouldReceive('doSomething')
             .once();
         // Facade(Input, withAnyContext())
+        InputContextualFacade_1.InputContextualFacade.of('test').doSomething();
+        InputContextualFacade_1.InputContextualFacade.of('testing').doSomething();
+        InputContextualFacade_1.InputContextualFacade.of('testing-not-match').doSomething();
+    });
+    it('can use .withAny()', function () {
+        Facade_1.Facade(InputContextualFacade_1.InputContextualFacade)
+            .withAny()
+            .shouldReceive('doSomething')
+            .thrice();
         InputContextualFacade_1.InputContextualFacade.of('test').doSomething();
         InputContextualFacade_1.InputContextualFacade.of('testing').doSomething();
         InputContextualFacade_1.InputContextualFacade.of('testing-not-match').doSomething();

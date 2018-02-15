@@ -4,6 +4,7 @@ import { IFacadeContainer } from './IFacadeContainer'
 export interface FacadeSpecs {
   (facade: IFacadeBase): IFacade
   (contextualFacade: IContextualFacadeFactory): IContextualFacadeMatcher<any>
+  <T>(contextualFacade: IContextualFacadeFactory): IContextualFacadeMatcher<T>
   new (): IFacade
 
   create<T>(container: IFacadeContainer, key: string, facadeInstanceCreator: () => void): IFacade & IFacadeBase & T
@@ -76,6 +77,7 @@ export interface IContextualFacadeVerbFrom<Facade extends IContextualFacade<Cont
 
 export interface IContextualFacadeMatcher<Context> {
   with(context: Context): IFacade
+  with(matcher: (context: Context) => boolean): IFacade
 
   withAny(): IFacade
 }

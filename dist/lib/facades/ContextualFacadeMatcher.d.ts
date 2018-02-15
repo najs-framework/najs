@@ -8,5 +8,8 @@ export declare class ContextualFacadeMatcher {
     createContextualFacade: any;
     constructor(contextualFacadeFactory: ContextualFacadeFactory<any, any>);
     boundCreateByContext(context: any): any;
+    createMatcher(matcher: Function): any;
     with(context: any): IFacade;
+    with(matcher: (context: any) => boolean): IFacade;
+    withAny(): IFacade;
 }
