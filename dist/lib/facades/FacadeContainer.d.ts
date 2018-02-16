@@ -1,6 +1,7 @@
 import { IFacadeContainer } from './interfaces/IFacadeContainer';
 export declare let FacadeContainersBag: IFacadeContainer[];
 export declare function cleanFacadeContainersBag(): void;
+export declare function verifyAndRestoreFacades(): void;
 export declare class FacadeContainer {
     protected cleanable: boolean;
     protected keyByCount: Object;

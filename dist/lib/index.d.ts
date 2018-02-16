@@ -38,7 +38,7 @@ export { IFacade } from './facades/interfaces/IFacadeGrammar';
 export { IFacadeContainer } from './facades/interfaces/IFacadeContainer';
 export { Facade } from './facades/Facade';
 export { ContextualFacade } from './facades/ContextualFacade';
-export { FacadeContainer, FacadeContainersBag } from './facades/FacadeContainer';
+export { FacadeContainer, FacadeContainersBag, verifyAndRestoreFacades, cleanFacadeContainersBag } from './facades/FacadeContainer';
 export { AppFacade, App } from './facades/global/AppFacade';
 export { CacheFacade, Cache } from './facades/global/CacheFacade';
 export { ConfigFacade, Config } from './facades/global/ConfigFacade';

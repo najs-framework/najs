@@ -4,13 +4,7 @@ const FacadeContainer_1 = require("./../facades/FacadeContainer");
 class TestSuite {
     setUp() { }
     tearDown() {
-        for (const container of FacadeContainer_1.FacadeContainersBag) {
-            container.verifyMocks();
-        }
-        for (const container of FacadeContainer_1.FacadeContainersBag) {
-            container.restoreFacades();
-        }
-        FacadeContainer_1.cleanFacadeContainersBag();
+        FacadeContainer_1.verifyAndRestoreFacades();
     }
 }
 exports.TestSuite = TestSuite;

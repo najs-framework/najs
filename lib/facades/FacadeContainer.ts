@@ -8,6 +8,18 @@ export function cleanFacadeContainersBag() {
   })
 }
 
+export function verifyAndRestoreFacades() {
+  for (const container of FacadeContainersBag) {
+    container.verifyMocks()
+  }
+
+  for (const container of FacadeContainersBag) {
+    container.restoreFacades()
+  }
+
+  cleanFacadeContainersBag()
+}
+
 export class FacadeContainer {
   protected cleanable: boolean
   protected keyByCount: Object

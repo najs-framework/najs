@@ -7,6 +7,16 @@ function cleanFacadeContainersBag() {
     });
 }
 exports.cleanFacadeContainersBag = cleanFacadeContainersBag;
+function verifyAndRestoreFacades() {
+    for (const container of exports.FacadeContainersBag) {
+        container.verifyMocks();
+    }
+    for (const container of exports.FacadeContainersBag) {
+        container.restoreFacades();
+    }
+    cleanFacadeContainersBag();
+}
+exports.verifyAndRestoreFacades = verifyAndRestoreFacades;
 class FacadeContainer {
     constructor(cleanable) {
         this.cleanable = cleanable || false;
