@@ -1,6 +1,6 @@
 import { IAutoload } from './../../core/IAutoload'
 import { Facade } from './../../facades/Facade'
-import { GlobalFacade } from '../../constants'
+import { GlobalFacadeClass } from '../../constants'
 import { IView } from './types/IViewGrammars'
 import { ViewResponse } from './types/ViewResponse'
 import { IResponse } from './IResponse'
@@ -11,10 +11,10 @@ import { RedirectResponse } from './types/RedirectResponse'
 import { register } from '../../core/register'
 
 export class ResponseFactory extends Facade implements IResponseFactory, IAutoload {
-  static className: string = GlobalFacade.Response
+  static className: string = GlobalFacadeClass.Response
 
   getClassName() {
-    return GlobalFacade.Response
+    return GlobalFacadeClass.Response
   }
 
   view(view: string): IView

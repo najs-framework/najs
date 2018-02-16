@@ -6,6 +6,7 @@ import { EventEmitter } from 'events';
 import { EventSubscriber } from './EventSubscriber';
 import { IEventEmitter } from './IEventEmitter';
 export declare class EventDispatcher extends Facade implements IDispatcher, IAutoload, IEventEmitter {
+    static className: string;
     protected eventEmitter: EventEmitter;
     constructor();
     getClassName(): string;

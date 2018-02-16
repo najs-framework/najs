@@ -17,8 +17,8 @@ describe('RedisCache', function () {
         const redisCache = new RedisCache_1.RedisCache();
         expect(redisCache).toBeInstanceOf(Facade_1.Facade);
         expect(redisCache.getClassName()).toEqual(RedisCache_1.RedisCache.className);
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacade.Cache)).toBe(true);
-        expect(make_1.make(constants_1.GlobalFacade.Cache)).toBeInstanceOf(RedisCache_1.RedisCache);
+        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Cache)).toBe(true);
+        expect(make_1.make(constants_1.GlobalFacadeClass.Cache)).toBeInstanceOf(RedisCache_1.RedisCache);
     });
     describe('.getClassName()', function () {
         it('implements IAutoload interface', function () {

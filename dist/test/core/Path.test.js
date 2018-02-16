@@ -12,8 +12,8 @@ describe('Path', function () {
     it('extends from Facade so it definitely a FacadeClass', function () {
         const path = new Path_1.Path();
         expect(path).toBeInstanceOf(Facade_1.Facade);
-        expect(path.getClassName()).toEqual(constants_1.GlobalFacade.Path);
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacade.Path)).toBe(true);
+        expect(path.getClassName()).toEqual(constants_1.GlobalFacadeClass.Path);
+        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Path)).toBe(true);
     });
     describe('.get()', function () {
         it('resolve path based on this.workingDirectory', function () {

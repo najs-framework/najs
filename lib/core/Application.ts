@@ -4,10 +4,10 @@ import { register } from './register'
 import { bind, InstanceCreator } from './bind'
 import { IApplication } from './IApplication'
 import { Facade } from '../facades/Facade'
-import { GlobalFacade } from '../constants'
+import { GlobalFacadeClass } from '../constants'
 
 export class Application extends Facade implements IApplication, IAutoload {
-  static className: string = GlobalFacade.Application
+  static className: string = GlobalFacadeClass.Application
   getClassName(): string {
     return Application.className
   }
@@ -35,4 +35,4 @@ export class Application extends Facade implements IApplication, IAutoload {
     return this
   }
 }
-register(Application, GlobalFacade.Application)
+register(Application, GlobalFacadeClass.Application)

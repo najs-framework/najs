@@ -20,8 +20,8 @@ describe('Application', function () {
     it('extends from Facade so it definitely a FacadeClass', function () {
         const app = new Application_1.Application();
         expect(app).toBeInstanceOf(Facade_1.Facade);
-        expect(app.getClassName()).toEqual(constants_1.GlobalFacade.Application);
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacade.Application)).toBe(true);
+        expect(app.getClassName()).toEqual(constants_1.GlobalFacadeClass.Application);
+        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Application)).toBe(true);
     });
     describe('.register()', function () {
         it('proxies register() function', function () {

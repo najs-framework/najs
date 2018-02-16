@@ -6,7 +6,7 @@ export declare const SystemClass: {
 export declare const ContextualFacadeClass: {
     Input: string;
 };
-export declare const GlobalFacade: {
+export declare const GlobalFacadeClass: {
     Application: string;
     Cache: string;
     Config: string;

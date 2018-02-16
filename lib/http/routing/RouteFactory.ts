@@ -1,6 +1,6 @@
 import { IAutoload } from '../../core/IAutoload'
 import { Facade } from '../../facades/Facade'
-import { GlobalFacade } from '../../constants'
+import { GlobalFacadeClass } from '../../constants'
 import { RouteCollection } from './RouteCollection'
 import { RouteBuilder } from './RouteBuilder'
 import {
@@ -19,7 +19,7 @@ import { register } from '../../core/register'
 
 export class RouteFactory extends Facade implements IRouteGenerateUrl, IAutoload {
   getClassName() {
-    return GlobalFacade.Route
+    return GlobalFacadeClass.Route
   }
 
   createByName(name: string): string

@@ -9,7 +9,7 @@ describe('ResponseFacade', function () {
     it('calls make() to create new instance of Response as a facade root', function () {
         const makeSpy = Sinon.spy(Make, 'make');
         ResponseFacade_1.ResponseFacade.reloadFacadeRoot();
-        expect(makeSpy.calledWith(constants_1.GlobalFacade.Response)).toBe(true);
+        expect(makeSpy.calledWith(constants_1.GlobalFacadeClass.Response)).toBe(true);
         expect(makeSpy.calledOnce).toBe(true);
     });
 });

@@ -11,7 +11,7 @@ class EventDispatcher extends Facade_1.Facade {
         this.eventEmitter = new events_1.EventEmitter();
     }
     getClassName() {
-        return constants_1.GlobalFacade.Event;
+        return constants_1.GlobalFacadeClass.Event;
     }
     listen(name, arg) {
         const listener = this.resolveListener(arg);
@@ -106,5 +106,6 @@ class EventDispatcher extends Facade_1.Facade {
         return this.eventEmitter.listenerCount(type);
     }
 }
+EventDispatcher.className = constants_1.GlobalFacadeClass.Event;
 exports.EventDispatcher = EventDispatcher;
-register_1.register(EventDispatcher, constants_1.GlobalFacade.Event);
+register_1.register(EventDispatcher, constants_1.GlobalFacadeClass.Event);

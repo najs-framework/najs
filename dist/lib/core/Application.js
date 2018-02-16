@@ -21,6 +21,6 @@ class Application extends Facade_1.Facade {
         return this;
     }
 }
-Application.className = constants_1.GlobalFacade.Application;
+Application.className = constants_1.GlobalFacadeClass.Application;
 exports.Application = Application;
-register_1.register(Application, constants_1.GlobalFacade.Application);
+register_1.register(Application, constants_1.GlobalFacadeClass.Application);

@@ -3,15 +3,15 @@ import * as Sinon from 'sinon'
 import * as Make from '../../lib/core/make'
 import { EventDispatcher } from '../../lib/event/EventDispatcher'
 import { Facade } from '../../lib/facades/Facade'
-import { GlobalFacade } from '../../lib/constants'
+import { GlobalFacadeClass } from '../../lib/constants'
 import { ClassRegistry } from '../../lib/core/ClassRegistry'
 
 describe('EventDispatcher', function() {
   it('extends from Facade so it definitely a FacadeClass', function() {
     const dispatcher = new EventDispatcher()
     expect(dispatcher).toBeInstanceOf(Facade)
-    expect(dispatcher.getClassName()).toEqual(GlobalFacade.Event)
-    expect(ClassRegistry.has(GlobalFacade.Event)).toBe(true)
+    expect(dispatcher.getClassName()).toEqual(GlobalFacadeClass.Event)
+    expect(ClassRegistry.has(GlobalFacadeClass.Event)).toBe(true)
   })
 
   describe('.listen()', function() {

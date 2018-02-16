@@ -4,10 +4,10 @@ import { IFacade, IFacadeBase } from '../interfaces/IFacadeGrammar'
 import { IEventEmitter } from '../../../lib/event/IEventEmitter'
 import { Najs } from '../../../lib/core/Najs'
 import { make } from '../../../lib/core/make'
-import { GlobalFacade } from '../../constants'
+import { GlobalFacadeClass } from '../../constants'
 
 const facade = Facade.create<IEventEmitter>(<any>Najs, 'event', function() {
-  return make<IEventEmitter>(GlobalFacade.Event)
+  return make<IEventEmitter>(GlobalFacadeClass.Event)
 })
 
 export const Event: IEventEmitter & IFacadeBase = facade

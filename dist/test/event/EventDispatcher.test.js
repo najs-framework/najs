@@ -11,8 +11,8 @@ describe('EventDispatcher', function () {
     it('extends from Facade so it definitely a FacadeClass', function () {
         const dispatcher = new EventDispatcher_1.EventDispatcher();
         expect(dispatcher).toBeInstanceOf(Facade_1.Facade);
-        expect(dispatcher.getClassName()).toEqual(constants_1.GlobalFacade.Event);
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacade.Event)).toBe(true);
+        expect(dispatcher.getClassName()).toEqual(constants_1.GlobalFacadeClass.Event);
+        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Event)).toBe(true);
     });
     describe('.listen()', function () {
         it('is chain-able', function () {

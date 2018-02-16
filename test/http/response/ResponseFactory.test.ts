@@ -6,15 +6,15 @@ import { JsonResponse } from '../../../lib/http/response/types/JsonResponse'
 import { RedirectResponse } from '../../../lib/http/response/types/RedirectResponse'
 import { JsonpResponse } from '../../../lib/http/response/types/JsonpResponse'
 import { Facade } from '../../../lib/facades/Facade'
-import { GlobalFacade } from '../../../lib/constants'
+import { GlobalFacadeClass } from '../../../lib/constants'
 import { ClassRegistry } from '../../../lib/core/ClassRegistry'
 
 describe('ResponseFacade', function() {
   const Response = new ResponseFactory()
   it('extends from Facade so it definitely a FacadeClass', function() {
     expect(Response).toBeInstanceOf(Facade)
-    expect(Response.getClassName()).toEqual(GlobalFacade.Response)
-    expect(ClassRegistry.has(GlobalFacade.Response)).toBe(true)
+    expect(Response.getClassName()).toEqual(GlobalFacadeClass.Response)
+    expect(ClassRegistry.has(GlobalFacadeClass.Response)).toBe(true)
   })
 
   describe('view', function() {

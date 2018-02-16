@@ -10,7 +10,7 @@ class WinstonLogger extends Facade_1.Facade {
         this.logger = this.setup();
     }
     getClassName() {
-        return WinstonLogger.className;
+        return constants_1.GlobalFacadeClass.Log;
     }
     setup() {
         const logger = new Winston.Logger(this.getDefaultOptions());
@@ -70,7 +70,7 @@ class WinstonLogger extends Facade_1.Facade {
         return this;
     }
 }
-WinstonLogger.className = 'WinstonLogger';
+WinstonLogger.className = constants_1.GlobalFacadeClass.Log;
 WinstonLogger.levels = {
     emergency: 'emerg',
     alert: 'alert',
@@ -83,4 +83,4 @@ WinstonLogger.levels = {
 };
 exports.WinstonLogger = WinstonLogger;
 register_1.register(WinstonLogger);
-register_1.register(WinstonLogger, constants_1.GlobalFacade.Log);
+register_1.register(WinstonLogger, constants_1.GlobalFacadeClass.Log);

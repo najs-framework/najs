@@ -22,6 +22,6 @@ class Config extends Facade_1.Facade {
         return this.config.has(setting);
     }
 }
-Config.className = constants_1.GlobalFacade.Config;
+Config.className = constants_1.GlobalFacadeClass.Config;
 exports.Config = Config;
-register_1.register(Config, constants_1.GlobalFacade.Config);
+register_1.register(Config, constants_1.GlobalFacadeClass.Config);

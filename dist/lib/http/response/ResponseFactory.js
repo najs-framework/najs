@@ -9,7 +9,7 @@ const RedirectResponse_1 = require("./types/RedirectResponse");
 const register_1 = require("../../core/register");
 class ResponseFactory extends Facade_1.Facade {
     getClassName() {
-        return constants_1.GlobalFacade.Response;
+        return constants_1.GlobalFacadeClass.Response;
     }
     view(view, variables) {
         return new ViewResponse_1.ViewResponse(view, variables);
@@ -24,6 +24,6 @@ class ResponseFactory extends Facade_1.Facade {
         return new RedirectResponse_1.RedirectResponse(url, status);
     }
 }
-ResponseFactory.className = constants_1.GlobalFacade.Response;
+ResponseFactory.className = constants_1.GlobalFacadeClass.Response;
 exports.ResponseFactory = ResponseFactory;
 register_1.register(ResponseFactory);

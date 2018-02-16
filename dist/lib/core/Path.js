@@ -41,6 +41,6 @@ class Path extends Facade_1.Facade {
         return SystemPath.resolve(Najs_1.Najs['cwd'], ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.view, SystemPath.join('resources', 'view')), ...args);
     }
 }
-Path.className = constants_1.GlobalFacade.Path;
+Path.className = constants_1.GlobalFacadeClass.Path;
 exports.Path = Path;
-register_1.register(Path, constants_1.GlobalFacade.Path);
+register_1.register(Path, constants_1.GlobalFacadeClass.Path);

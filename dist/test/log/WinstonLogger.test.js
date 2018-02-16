@@ -15,8 +15,8 @@ describe('WinstonLogger', function () {
     });
     it('implements ILogger and registers to GlobalFacade.Log by default', function () {
         expect(ClassRegistry_1.ClassRegistry.has(WinstonLogger_1.WinstonLogger.className)).toBe(true);
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacade.Log)).toBe(true);
-        expect(ClassRegistry_1.ClassRegistry.findOrFail(constants_1.GlobalFacade.Log).instanceConstructor === WinstonLogger_1.WinstonLogger).toBe(true);
+        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Log)).toBe(true);
+        expect(ClassRegistry_1.ClassRegistry.findOrFail(constants_1.GlobalFacadeClass.Log).instanceConstructor === WinstonLogger_1.WinstonLogger).toBe(true);
     });
     it('calls .setup() and use .getDefaultOptions() to get options for Winston', function () {
         const setupSpy = Sinon.spy(WinstonLogger_1.WinstonLogger.prototype, 'setup');

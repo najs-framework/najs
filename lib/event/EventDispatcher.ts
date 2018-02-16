@@ -5,10 +5,11 @@ import { EventEmitter } from 'events'
 import { EventSubscriber } from './EventSubscriber'
 import { register } from '../core/register'
 import { make } from '../core/make'
-import { GlobalFacade } from '../constants'
+import { GlobalFacadeClass } from '../constants'
 import { IEventEmitter } from './IEventEmitter'
 
 export class EventDispatcher extends Facade implements IDispatcher, IAutoload, IEventEmitter {
+  static className: string = GlobalFacadeClass.Event
   protected eventEmitter: EventEmitter
 
   constructor() {
@@ -17,7 +18,7 @@ export class EventDispatcher extends Facade implements IDispatcher, IAutoload, I
   }
 
   getClassName() {
-    return GlobalFacade.Event
+    return GlobalFacadeClass.Event
   }
 
   listen(name: string, listener: string): this
@@ -136,4 +137,4 @@ export class EventDispatcher extends Facade implements IDispatcher, IAutoload, I
     return this.eventEmitter.listenerCount(type)
   }
 }
-register(EventDispatcher, GlobalFacade.Event)
+register(EventDispatcher, GlobalFacadeClass.Event)

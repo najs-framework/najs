@@ -9,7 +9,7 @@ describe('LogFacade', function () {
     it('calls make() to create new instance of WinstonLogger as a facade root', function () {
         const makeSpy = Sinon.spy(Make, 'make');
         LogFacade_1.LogFacade.reloadFacadeRoot();
-        expect(makeSpy.calledWith(constants_1.GlobalFacade.Log)).toBe(true);
+        expect(makeSpy.calledWith(constants_1.GlobalFacadeClass.Log)).toBe(true);
         expect(makeSpy.calledOnce).toBe(true);
     });
 });

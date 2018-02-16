@@ -1,12 +1,12 @@
 import { IAutoload } from './../core/IAutoload'
-import { GlobalFacade } from '../constants'
+import { GlobalFacadeClass } from '../constants'
 import { Facade } from '../facades/Facade'
 import { IConfig } from './IConfig'
 import * as ConfigLib from 'config'
 import { register } from '../core/register'
 
 export class Config extends Facade implements IConfig, IAutoload {
-  static className: string = GlobalFacade.Config
+  static className: string = GlobalFacadeClass.Config
   protected config: ConfigLib.IConfig = ConfigLib
 
   getClassName() {
@@ -26,4 +26,4 @@ export class Config extends Facade implements IConfig, IAutoload {
     return this.config.has(setting)
   }
 }
-register(Config, GlobalFacade.Config)
+register(Config, GlobalFacadeClass.Config)

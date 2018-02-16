@@ -4,15 +4,15 @@ import { ConfigFacade } from '../../lib/facades/global/ConfigFacade'
 import { Path } from '../../lib/core/Path'
 import { Najs } from '../../lib/core/Najs'
 import { Facade } from '../../lib/facades/Facade'
-import { GlobalFacade } from '../../lib/constants'
+import { GlobalFacadeClass } from '../../lib/constants'
 import { ClassRegistry } from '../../lib/core/ClassRegistry'
 
 describe('Path', function() {
   it('extends from Facade so it definitely a FacadeClass', function() {
     const path = new Path()
     expect(path).toBeInstanceOf(Facade)
-    expect(path.getClassName()).toEqual(GlobalFacade.Path)
-    expect(ClassRegistry.has(GlobalFacade.Path)).toBe(true)
+    expect(path.getClassName()).toEqual(GlobalFacadeClass.Path)
+    expect(ClassRegistry.has(GlobalFacadeClass.Path)).toBe(true)
   })
 
   describe('.get()', function() {

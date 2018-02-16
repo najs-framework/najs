@@ -23,7 +23,7 @@ exports.ServiceProvider = ServiceProvider_1.ServiceProvider;
 // constants
 var constants_1 = require("./constants");
 exports.SystemClass = constants_1.SystemClass;
-exports.GlobalFacade = constants_1.GlobalFacade;
+exports.GlobalFacadeClass = constants_1.GlobalFacadeClass;
 exports.ContextualFacadeClass = constants_1.ContextualFacadeClass;
 var HttpKernel_1 = require("./http/HttpKernel");
 exports.HttpKernel = HttpKernel_1.HttpKernel;

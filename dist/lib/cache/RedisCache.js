@@ -123,7 +123,7 @@ class RedisCache extends Facade_1.Facade {
         return value;
     }
 }
-RedisCache.className = 'RedisCache';
+RedisCache.className = constants_1.GlobalFacadeClass.Cache;
 exports.RedisCache = RedisCache;
 register_1.register(RedisCache);
-register_1.register(RedisCache, constants_1.GlobalFacade.Cache);
+register_1.register(RedisCache, constants_1.GlobalFacadeClass.Cache);

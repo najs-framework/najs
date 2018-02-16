@@ -5,7 +5,7 @@ import * as Make from '../../lib/core/make'
 import * as Bind from '../../lib/core/bind'
 import { Application } from '../../lib/core/Application'
 import { Facade } from '../../lib/facades/Facade'
-import { GlobalFacade } from '../../lib/constants'
+import { GlobalFacadeClass } from '../../lib/constants'
 import { ClassRegistry } from '../../lib/core/ClassRegistry'
 
 class Test {
@@ -21,8 +21,8 @@ describe('Application', function() {
   it('extends from Facade so it definitely a FacadeClass', function() {
     const app = new Application()
     expect(app).toBeInstanceOf(Facade)
-    expect(app.getClassName()).toEqual(GlobalFacade.Application)
-    expect(ClassRegistry.has(GlobalFacade.Application)).toBe(true)
+    expect(app.getClassName()).toEqual(GlobalFacadeClass.Application)
+    expect(ClassRegistry.has(GlobalFacadeClass.Application)).toBe(true)
   })
 
   describe('.register()', function() {

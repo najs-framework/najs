@@ -3,12 +3,12 @@ import { Facade } from '../facades/Facade'
 import { IPath } from './IPath'
 import { register } from './register'
 import { ConfigFacade } from '../facades/global/ConfigFacade'
-import { ConfigurationKeys, GlobalFacade } from '../constants'
+import { ConfigurationKeys, GlobalFacadeClass } from '../constants'
 import * as SystemPath from 'path'
 import { Najs } from './Najs'
 
 export class Path extends Facade implements IPath, IAutoload {
-  static className: string = GlobalFacade.Path
+  static className: string = GlobalFacadeClass.Path
 
   getClassName() {
     return Path.className
@@ -66,4 +66,4 @@ export class Path extends Facade implements IPath, IAutoload {
     )
   }
 }
-register(Path, GlobalFacade.Path)
+register(Path, GlobalFacadeClass.Path)

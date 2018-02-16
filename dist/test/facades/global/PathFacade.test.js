@@ -9,7 +9,7 @@ describe('PathFacade', function () {
     it('calls make() to create new instance of Path as a facade root', function () {
         const makeSpy = Sinon.spy(Make, 'make');
         PathFacade_1.PathFacade.reloadFacadeRoot();
-        expect(makeSpy.calledWith(constants_1.GlobalFacade.Path)).toBe(true);
+        expect(makeSpy.calledWith(constants_1.GlobalFacadeClass.Path)).toBe(true);
         expect(makeSpy.calledOnce).toBe(true);
     });
 });

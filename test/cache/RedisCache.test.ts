@@ -3,7 +3,7 @@ import * as Redis from 'redis'
 import { CacheFallback } from '../../lib/cache/ICache'
 import { RedisCache } from '../../lib/cache/RedisCache'
 import { Facade } from '../../lib/facades/Facade'
-import { GlobalFacade } from '../../lib/constants'
+import { GlobalFacadeClass } from '../../lib/constants'
 import { ClassRegistry } from '../../lib/core/ClassRegistry'
 import { make } from '../../lib/core/make'
 
@@ -19,8 +19,8 @@ describe('RedisCache', function() {
     const redisCache: RedisCache = new RedisCache()
     expect(redisCache).toBeInstanceOf(Facade)
     expect(redisCache.getClassName()).toEqual(RedisCache.className)
-    expect(ClassRegistry.has(GlobalFacade.Cache)).toBe(true)
-    expect(make(GlobalFacade.Cache)).toBeInstanceOf(RedisCache)
+    expect(ClassRegistry.has(GlobalFacadeClass.Cache)).toBe(true)
+    expect(make(GlobalFacadeClass.Cache)).toBeInstanceOf(RedisCache)
   })
 
   describe('.getClassName()', function() {

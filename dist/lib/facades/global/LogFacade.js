@@ -6,7 +6,7 @@ const Najs_1 = require("../../../lib/core/Najs");
 const make_1 = require("../../../lib/core/make");
 const constants_1 = require("../../constants");
 const facade = Facade_1.Facade.create(Najs_1.Najs, 'log', function () {
-    return make_1.make(constants_1.GlobalFacade.Log);
+    return make_1.make(constants_1.GlobalFacadeClass.Log);
 });
 exports.Log = facade;
 exports.LogFacade = facade;

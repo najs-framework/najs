@@ -9,7 +9,7 @@ describe('DispatcherFacade', function () {
     it('calls make() to create new instance of Dispatcher as a facade root', function () {
         const makeSpy = Sinon.spy(Make, 'make');
         DispatcherFacade_1.DispatcherFacade.reloadFacadeRoot();
-        expect(makeSpy.calledWith(constants_1.GlobalFacade.Event)).toBe(true);
+        expect(makeSpy.calledWith(constants_1.GlobalFacadeClass.Event)).toBe(true);
         expect(makeSpy.calledOnce).toBe(true);
     });
 });

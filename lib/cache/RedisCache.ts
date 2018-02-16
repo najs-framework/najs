@@ -3,7 +3,7 @@ import { ConfigFacade } from '../facades/global/ConfigFacade'
 import { ICache, CacheFallback } from './ICache'
 import { IAutoload } from '../core/IAutoload'
 import { register } from '../core/register'
-import { GlobalFacade, ConfigurationKeys } from '../constants'
+import { GlobalFacadeClass, ConfigurationKeys } from '../constants'
 import * as Redis from 'redis'
 
 function get_tag_manage_key(tagName: string): string {
@@ -15,7 +15,7 @@ function get_tag_value_key(tagName: string, key: string): string {
 }
 
 export class RedisCache extends Facade implements ICache, IAutoload {
-  static className: string = 'RedisCache'
+  static className: string = GlobalFacadeClass.Cache
   redis: Redis.RedisClient
 
   constructor() {
@@ -175,4 +175,4 @@ export class RedisCache extends Facade implements ICache, IAutoload {
   }
 }
 register(RedisCache)
-register(RedisCache, GlobalFacade.Cache)
+register(RedisCache, GlobalFacadeClass.Cache)

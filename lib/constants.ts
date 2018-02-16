@@ -9,12 +9,12 @@ export const ContextualFacadeClass = {
   Input: 'Najs.ExpressInput'
 }
 
-export const GlobalFacade = {
+export const GlobalFacadeClass = {
   Application: 'Najs.Application',
   Cache: 'Najs.Cache',
   Config: 'Najs.Config',
   Event: 'Najs.EventDispatcher',
-  Log: 'Najs.Log',
+  Log: 'Najs.WinstonLogger',
   Path: 'Najs.Path',
   Response: 'Najs.ResponseFactory',
   Route: 'Najs.RouteFactory'

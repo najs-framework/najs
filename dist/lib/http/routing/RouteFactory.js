@@ -8,7 +8,7 @@ const PathToRegex = require("path-to-regexp");
 const register_1 = require("../../core/register");
 class RouteFactory extends Facade_1.Facade {
     getClassName() {
-        return constants_1.GlobalFacade.Route;
+        return constants_1.GlobalFacadeClass.Route;
     }
     createByName(name, param, options) {
         const route = RouteCollection_1.RouteCollection.findOrFail(name);
