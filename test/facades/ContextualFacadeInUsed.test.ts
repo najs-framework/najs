@@ -2,7 +2,7 @@ import 'jest'
 import { Facade } from '../../lib/facades/Facade'
 import { ContextualFacade } from '../../lib/facades/ContextualFacade'
 import { App, AppFacade } from './../../lib/facades/global/AppFacade'
-import { verifyAndRestoreFacades } from '../../lib/facades/FacadeContainer'
+import { FacadeContainer } from '../../lib/facades/FacadeContainer'
 import { IContextualFacadeVerbOf } from '../../lib/facades/interfaces/IFacadeGrammar'
 
 export class InputFacade extends ContextualFacade {
@@ -18,7 +18,7 @@ export const Input: IContextualFacadeVerbOf<InputFacade, any> = facade
 
 describe('ContextualFacade', function() {
   afterEach(function() {
-    verifyAndRestoreFacades()
+    FacadeContainer.verifyAndRestoreAllFacades()
   })
 
   it('can use Facade() with normal Facade', function() {

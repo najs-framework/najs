@@ -1,25 +1,22 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.FacadeContainersBag = [];
-function cleanFacadeContainersBag() {
-    exports.FacadeContainersBag = exports.FacadeContainersBag.filter((container) => {
-        return !container.clean();
-    });
-}
-exports.cleanFacadeContainersBag = cleanFacadeContainersBag;
-function verifyAndRestoreFacades() {
-    for (const container of exports.FacadeContainersBag) {
-        container.verifyMocks();
-    }
-    for (const container of exports.FacadeContainersBag) {
-        container.restoreFacades();
-    }
-    cleanFacadeContainersBag();
-}
-exports.verifyAndRestoreFacades = verifyAndRestoreFacades;
 class FacadeContainer {
     constructor(cleanable) {
         this.cleanable = cleanable || false;
+    }
+    static clearBucket() {
+        this.Bucket = this.Bucket.filter((container) => {
+            return !container.clean();
+        });
+    }
+    static verifyAndRestoreAllFacades() {
+        for (const container of this.Bucket) {
+            container.verifyMocks();
+        }
+        for (const container of this.Bucket) {
+            container.restoreFacades();
+        }
+        this.clearBucket();
     }
     clean() {
         if (!this.cleanable) {
@@ -87,4 +84,5 @@ class FacadeContainer {
         }
     }
 }
+FacadeContainer.Bucket = [];
 exports.FacadeContainer = FacadeContainer;

@@ -1,4 +1,4 @@
-import { FacadeContainersBag } from './FacadeContainer'
+import { FacadeContainer } from './FacadeContainer'
 import { ContextualFacadeMatcher } from './ContextualFacadeMatcher'
 import { ContextualFacadeFactory } from './ContextualFacadeFactory'
 import { IFacadeContainer } from './interfaces/IFacadeContainer'
@@ -31,9 +31,9 @@ facade['create'] = function(this: any, mixed: any, key: string, facadeInstanceCr
   }
 
   const container: IFacadeContainer = mixed
-  const registered: boolean = !FacadeContainersBag.find(item => item === container)
+  const registered: boolean = !FacadeContainer.Bucket.find(item => item === container)
   if (registered) {
-    FacadeContainersBag.push(container)
+    FacadeContainer.Bucket.push(container)
   }
 
   if (typeof container[key] === 'undefined') {
@@ -46,13 +46,13 @@ facade['create'] = function(this: any, mixed: any, key: string, facadeInstanceCr
 }
 
 facade['verifyMocks'] = function() {
-  for (const container of FacadeContainersBag) {
+  for (const container of FacadeContainer.Bucket) {
     container.verifyMocks()
   }
 }
 
 facade['restoreAll'] = function() {
-  for (const container of FacadeContainersBag) {
+  for (const container of FacadeContainer.Bucket) {
     container.restoreFacades()
   }
 }

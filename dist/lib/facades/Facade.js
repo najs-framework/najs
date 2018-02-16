@@ -26,9 +26,9 @@ facade['create'] = function (mixed, key, facadeInstanceCreator) {
         return new ContextualFacadeFactory_1.ContextualFacadeFactory(mixed);
     }
     const container = mixed;
-    const registered = !FacadeContainer_1.FacadeContainersBag.find(item => item === container);
+    const registered = !FacadeContainer_1.FacadeContainer.Bucket.find(item => item === container);
     if (registered) {
-        FacadeContainer_1.FacadeContainersBag.push(container);
+        FacadeContainer_1.FacadeContainer.Bucket.push(container);
     }
     if (typeof container[key] === 'undefined') {
         container[key] = facadeInstanceCreator();
@@ -39,12 +39,12 @@ facade['create'] = function (mixed, key, facadeInstanceCreator) {
     return container[key];
 };
 facade['verifyMocks'] = function () {
-    for (const container of FacadeContainer_1.FacadeContainersBag) {
+    for (const container of FacadeContainer_1.FacadeContainer.Bucket) {
         container.verifyMocks();
     }
 };
 facade['restoreAll'] = function () {
-    for (const container of FacadeContainer_1.FacadeContainersBag) {
+    for (const container of FacadeContainer_1.FacadeContainer.Bucket) {
         container.restoreFacades();
     }
 };

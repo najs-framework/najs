@@ -1,7 +1,7 @@
 import 'jest'
 import * as Sinon from 'sinon'
 import { Facade } from '../../lib/facades/Facade'
-import { FacadeContainersBag } from '../../lib/facades/FacadeContainer'
+import { FacadeContainer } from '../../lib/facades/FacadeContainer'
 
 describe('Facade', function() {
   describe('() => IFacade', function() {
@@ -21,7 +21,7 @@ describe('Facade', function() {
         restoreFacades() {}
       }
       const verifyMocksSpy = Sinon.spy(container, 'verifyMocks')
-      FacadeContainersBag.push(<any>container)
+      FacadeContainer.Bucket.push(<any>container)
       Facade.verifyMocks()
       expect(verifyMocksSpy.called).toBe(true)
     })
@@ -34,7 +34,7 @@ describe('Facade', function() {
         restoreFacades() {}
       }
       const restoreFacadesSpy = Sinon.spy(container, 'restoreFacades')
-      FacadeContainersBag.push(<any>container)
+      FacadeContainer.Bucket.push(<any>container)
       Facade.restoreAll()
       expect(restoreFacadesSpy.called).toBe(true)
     })
@@ -97,9 +97,9 @@ describe('Facade', function() {
       const instanceCreator = () => {
         return instance
       }
-      const length = FacadeContainersBag.length
+      const length = FacadeContainer.Bucket.length
       const facade = Facade.create(<any>container, key, instanceCreator)
-      expect(FacadeContainersBag).toHaveLength(length + 1)
+      expect(FacadeContainer.Bucket).toHaveLength(length + 1)
       const markFacadeWasUsedSpy = Sinon.spy(container, 'markFacadeWasUsed')
 
       const originalMethod = facade['method']
@@ -115,7 +115,7 @@ describe('Facade', function() {
 
       // recreate facade with same container the container will not be appends to FacadeContainersBag
       Facade.create(<any>container, key, instanceCreator)
-      expect(FacadeContainersBag).toHaveLength(length + 1)
+      expect(FacadeContainer.Bucket).toHaveLength(length + 1)
     })
   })
 

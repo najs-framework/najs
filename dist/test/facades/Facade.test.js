@@ -21,7 +21,7 @@ describe('Facade', function () {
                 restoreFacades() { }
             };
             const verifyMocksSpy = Sinon.spy(container, 'verifyMocks');
-            FacadeContainer_1.FacadeContainersBag.push(container);
+            FacadeContainer_1.FacadeContainer.Bucket.push(container);
             Facade_1.Facade.verifyMocks();
             expect(verifyMocksSpy.called).toBe(true);
         });
@@ -33,7 +33,7 @@ describe('Facade', function () {
                 restoreFacades() { }
             };
             const restoreFacadesSpy = Sinon.spy(container, 'restoreFacades');
-            FacadeContainer_1.FacadeContainersBag.push(container);
+            FacadeContainer_1.FacadeContainer.Bucket.push(container);
             Facade_1.Facade.restoreAll();
             expect(restoreFacadesSpy.called).toBe(true);
         });
@@ -91,9 +91,9 @@ describe('Facade', function () {
             const instanceCreator = () => {
                 return instance;
             };
-            const length = FacadeContainer_1.FacadeContainersBag.length;
+            const length = FacadeContainer_1.FacadeContainer.Bucket.length;
             const facade = Facade_1.Facade.create(container, key, instanceCreator);
-            expect(FacadeContainer_1.FacadeContainersBag).toHaveLength(length + 1);
+            expect(FacadeContainer_1.FacadeContainer.Bucket).toHaveLength(length + 1);
             const markFacadeWasUsedSpy = Sinon.spy(container, 'markFacadeWasUsed');
             const originalMethod = facade['method'];
             expect(facade['createdSpies']).toEqual({});
@@ -106,7 +106,7 @@ describe('Facade', function () {
             facade.restoreFacade();
             // recreate facade with same container the container will not be appends to FacadeContainersBag
             Facade_1.Facade.create(container, key, instanceCreator);
-            expect(FacadeContainer_1.FacadeContainersBag).toHaveLength(length + 1);
+            expect(FacadeContainer_1.FacadeContainer.Bucket).toHaveLength(length + 1);
         });
     });
     describe('.createStub()', function () {

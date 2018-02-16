@@ -1,44 +1,44 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import { FacadeContainersBag, FacadeContainer, cleanFacadeContainersBag } from '../../lib/facades/FacadeContainer'
-
-describe('cleanFacadeContainersBag', function() {
-  it('filters and removes all container which can be cleanable', function() {
-    const containerOne = new FacadeContainer(true)
-    containerOne['anything'] = true
-    containerOne['usedFacaded'] = {}
-    containerOne['keyByCount'] = {}
-    const containerNotCleanable = new FacadeContainer()
-    containerNotCleanable['anything'] = true
-    containerNotCleanable['usedFacaded'] = {}
-    containerNotCleanable['keyByCount'] = {}
-    const containerTwo = new FacadeContainer(true)
-    containerTwo['anything'] = true
-    containerTwo['usedFacaded'] = {}
-    containerTwo['keyByCount'] = {}
-
-    FacadeContainersBag.push(containerOne)
-    FacadeContainersBag.push(containerNotCleanable)
-    FacadeContainersBag.push(containerTwo)
-
-    cleanFacadeContainersBag()
-    expect(FacadeContainersBag).toEqual([containerNotCleanable])
-
-    expect(containerOne['anything']).toBeUndefined()
-    expect(containerOne['usedFacaded']).toBeUndefined()
-    expect(containerOne['keyByCount']).toBeUndefined()
-
-    expect(containerNotCleanable['anything']).toEqual(true)
-    expect(containerNotCleanable['usedFacaded']).toEqual({})
-    expect(containerNotCleanable['keyByCount']).toEqual({})
-
-    expect(containerTwo['anything']).toBeUndefined()
-    expect(containerTwo['usedFacaded']).toBeUndefined()
-    expect(containerTwo['keyByCount']).toBeUndefined()
-  })
-})
+import { FacadeContainer } from '../../lib/facades/FacadeContainer'
 
 describe('FacadeContainer', function() {
+  describe('static .clearBucket()', function() {
+    it('filters and removes all container which can be cleanable', function() {
+      const containerOne = new FacadeContainer(true)
+      containerOne['anything'] = true
+      containerOne['usedFacaded'] = {}
+      containerOne['keyByCount'] = {}
+      const containerNotCleanable = new FacadeContainer()
+      containerNotCleanable['anything'] = true
+      containerNotCleanable['usedFacaded'] = {}
+      containerNotCleanable['keyByCount'] = {}
+      const containerTwo = new FacadeContainer(true)
+      containerTwo['anything'] = true
+      containerTwo['usedFacaded'] = {}
+      containerTwo['keyByCount'] = {}
+
+      FacadeContainer.Bucket.push(containerOne)
+      FacadeContainer.Bucket.push(containerNotCleanable)
+      FacadeContainer.Bucket.push(containerTwo)
+
+      FacadeContainer.clearBucket()
+      expect(FacadeContainer.Bucket).toEqual([containerNotCleanable])
+
+      expect(containerOne['anything']).toBeUndefined()
+      expect(containerOne['usedFacaded']).toBeUndefined()
+      expect(containerOne['keyByCount']).toBeUndefined()
+
+      expect(containerNotCleanable['anything']).toEqual(true)
+      expect(containerNotCleanable['usedFacaded']).toEqual({})
+      expect(containerNotCleanable['keyByCount']).toEqual({})
+
+      expect(containerTwo['anything']).toBeUndefined()
+      expect(containerTwo['usedFacaded']).toBeUndefined()
+      expect(containerTwo['keyByCount']).toBeUndefined()
+    })
+  })
+
   describe('constructor()', function() {
     it('is initiated with cleanable = false by default', function() {
       const container = new FacadeContainer()

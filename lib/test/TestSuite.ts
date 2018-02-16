@@ -1,8 +1,8 @@
-import { verifyAndRestoreFacades } from './../facades/FacadeContainer'
+import { FacadeContainer } from './../facades/FacadeContainer'
 export class TestSuite {
   setUp() {}
 
   tearDown() {
-    verifyAndRestoreFacades()
+    FacadeContainer.verifyAndRestoreAllFacades()
   }
 }

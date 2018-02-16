@@ -4,7 +4,7 @@ const FacadeContainer_1 = require("./../facades/FacadeContainer");
 class TestSuite {
     setUp() { }
     tearDown() {
-        FacadeContainer_1.verifyAndRestoreFacades();
+        FacadeContainer_1.FacadeContainer.verifyAndRestoreAllFacades();
     }
 }
 exports.TestSuite = TestSuite;

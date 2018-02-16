@@ -1,26 +1,26 @@
 import { IFacadeContainer } from './interfaces/IFacadeContainer'
 
-export let FacadeContainersBag: IFacadeContainer[] = <any>[]
-
-export function cleanFacadeContainersBag() {
-  FacadeContainersBag = FacadeContainersBag.filter((container: FacadeContainer) => {
-    return !container.clean()
-  })
-}
-
-export function verifyAndRestoreFacades() {
-  for (const container of FacadeContainersBag) {
-    container.verifyMocks()
-  }
-
-  for (const container of FacadeContainersBag) {
-    container.restoreFacades()
-  }
-
-  cleanFacadeContainersBag()
-}
-
 export class FacadeContainer {
+  static Bucket: IFacadeContainer[] = <any>[]
+
+  static clearBucket(): void {
+    this.Bucket = this.Bucket.filter((container: FacadeContainer) => {
+      return !container.clean()
+    })
+  }
+
+  static verifyAndRestoreAllFacades() {
+    for (const container of this.Bucket) {
+      container.verifyMocks()
+    }
+
+    for (const container of this.Bucket) {
+      container.restoreFacades()
+    }
+
+    this.clearBucket()
+  }
+
   protected cleanable: boolean
   protected keyByCount: Object
   protected usedFacades: {

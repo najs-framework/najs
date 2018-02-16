@@ -1,6 +1,6 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import * as FacadeContainer from '../../lib/facades/FacadeContainer'
+import { FacadeContainer } from '../../lib/facades/FacadeContainer'
 import { TestSuite } from '../../lib/test/TestSuite'
 
 describe('TestSuite', function() {
@@ -15,10 +15,10 @@ describe('TestSuite', function() {
     it('is called after running test case', function() {})
 
     it('calls verifyAndRestoreFacades() from FacadeContainer', function() {
-      const verifyAndRestoreFacadesSpy = Sinon.spy(FacadeContainer, 'verifyAndRestoreFacades')
+      const verifyAndRestoreAllFacadesSpy = Sinon.spy(FacadeContainer, 'verifyAndRestoreAllFacades')
       const testSuite = new TestSuite()
       testSuite.tearDown()
-      expect(verifyAndRestoreFacadesSpy.called).toBe(true)
+      expect(verifyAndRestoreAllFacadesSpy.called).toBe(true)
     })
   })
 })

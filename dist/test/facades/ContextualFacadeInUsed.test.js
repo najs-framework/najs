@@ -17,7 +17,7 @@ const facade = Facade_1.Facade.create(function (context) {
 exports.Input = facade;
 describe('ContextualFacade', function () {
     afterEach(function () {
-        FacadeContainer_1.verifyAndRestoreFacades();
+        FacadeContainer_1.FacadeContainer.verifyAndRestoreAllFacades();
     });
     it('can use Facade() with normal Facade', function () {
         Facade_1.Facade(AppFacade_1.App).spy('make');

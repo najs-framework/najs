@@ -3,37 +3,37 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
 const FacadeContainer_1 = require("../../lib/facades/FacadeContainer");
-describe('cleanFacadeContainersBag', function () {
-    it('filters and removes all container which can be cleanable', function () {
-        const containerOne = new FacadeContainer_1.FacadeContainer(true);
-        containerOne['anything'] = true;
-        containerOne['usedFacaded'] = {};
-        containerOne['keyByCount'] = {};
-        const containerNotCleanable = new FacadeContainer_1.FacadeContainer();
-        containerNotCleanable['anything'] = true;
-        containerNotCleanable['usedFacaded'] = {};
-        containerNotCleanable['keyByCount'] = {};
-        const containerTwo = new FacadeContainer_1.FacadeContainer(true);
-        containerTwo['anything'] = true;
-        containerTwo['usedFacaded'] = {};
-        containerTwo['keyByCount'] = {};
-        FacadeContainer_1.FacadeContainersBag.push(containerOne);
-        FacadeContainer_1.FacadeContainersBag.push(containerNotCleanable);
-        FacadeContainer_1.FacadeContainersBag.push(containerTwo);
-        FacadeContainer_1.cleanFacadeContainersBag();
-        expect(FacadeContainer_1.FacadeContainersBag).toEqual([containerNotCleanable]);
-        expect(containerOne['anything']).toBeUndefined();
-        expect(containerOne['usedFacaded']).toBeUndefined();
-        expect(containerOne['keyByCount']).toBeUndefined();
-        expect(containerNotCleanable['anything']).toEqual(true);
-        expect(containerNotCleanable['usedFacaded']).toEqual({});
-        expect(containerNotCleanable['keyByCount']).toEqual({});
-        expect(containerTwo['anything']).toBeUndefined();
-        expect(containerTwo['usedFacaded']).toBeUndefined();
-        expect(containerTwo['keyByCount']).toBeUndefined();
-    });
-});
 describe('FacadeContainer', function () {
+    describe('static .clearBucket()', function () {
+        it('filters and removes all container which can be cleanable', function () {
+            const containerOne = new FacadeContainer_1.FacadeContainer(true);
+            containerOne['anything'] = true;
+            containerOne['usedFacaded'] = {};
+            containerOne['keyByCount'] = {};
+            const containerNotCleanable = new FacadeContainer_1.FacadeContainer();
+            containerNotCleanable['anything'] = true;
+            containerNotCleanable['usedFacaded'] = {};
+            containerNotCleanable['keyByCount'] = {};
+            const containerTwo = new FacadeContainer_1.FacadeContainer(true);
+            containerTwo['anything'] = true;
+            containerTwo['usedFacaded'] = {};
+            containerTwo['keyByCount'] = {};
+            FacadeContainer_1.FacadeContainer.Bucket.push(containerOne);
+            FacadeContainer_1.FacadeContainer.Bucket.push(containerNotCleanable);
+            FacadeContainer_1.FacadeContainer.Bucket.push(containerTwo);
+            FacadeContainer_1.FacadeContainer.clearBucket();
+            expect(FacadeContainer_1.FacadeContainer.Bucket).toEqual([containerNotCleanable]);
+            expect(containerOne['anything']).toBeUndefined();
+            expect(containerOne['usedFacaded']).toBeUndefined();
+            expect(containerOne['keyByCount']).toBeUndefined();
+            expect(containerNotCleanable['anything']).toEqual(true);
+            expect(containerNotCleanable['usedFacaded']).toEqual({});
+            expect(containerNotCleanable['keyByCount']).toEqual({});
+            expect(containerTwo['anything']).toBeUndefined();
+            expect(containerTwo['usedFacaded']).toBeUndefined();
+            expect(containerTwo['keyByCount']).toBeUndefined();
+        });
+    });
     describe('constructor()', function () {
         it('is initiated with cleanable = false by default', function () {
             const container = new FacadeContainer_1.FacadeContainer();
