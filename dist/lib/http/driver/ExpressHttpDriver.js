@@ -17,6 +17,7 @@ const Http = require("http");
 const BodyParser = require("body-parser");
 const CookieParser = require("cookie-parser");
 const ExpressHandlerBars = require("express-handlebars");
+const addRequestIdMiddleware = require('express-request-id')();
 class ExpressHttpDriver {
     constructor() {
         this.express = this.setup();
@@ -28,12 +29,16 @@ class ExpressHttpDriver {
             next();
         };
     }
+    static addRequestIdMiddleware(poweredBy = 'Najs/Express') {
+        return addRequestIdMiddleware;
+    }
     setup() {
         const app = Express();
         this.setupBodyParser(app);
         this.setupCookieParser(app);
         this.setupViewEngine(app);
         this.setupStaticAssets(app);
+        app.use(ExpressHttpDriver.addRequestIdMiddleware());
         app.use(ExpressHttpDriver.setXPoweredByMiddleware());
         return app;
     }

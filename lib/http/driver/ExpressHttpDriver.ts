@@ -21,6 +21,8 @@ import * as BodyParser from 'body-parser'
 import * as CookieParser from 'cookie-parser'
 import * as ExpressHandlerBars from 'express-handlebars'
 
+const addRequestIdMiddleware = require('express-request-id')()
+
 export type ExpressApp = Express.Express
 
 export type ExpressHandlers = Array<Express.RequestHandler | Express.ErrorRequestHandler>
@@ -61,6 +63,10 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     }
   }
 
+  static addRequestIdMiddleware(poweredBy: string = 'Najs/Express') {
+    return addRequestIdMiddleware
+  }
+
   protected express: ExpressApp
   protected server: Http.Server
   protected httpKernel: HttpKernel
@@ -76,6 +82,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     this.setupCookieParser(app)
     this.setupViewEngine(app)
     this.setupStaticAssets(app)
+    app.use(ExpressHttpDriver.addRequestIdMiddleware())
     app.use(ExpressHttpDriver.setXPoweredByMiddleware())
     return app
   }

@@ -58,6 +58,7 @@
   },
   "dependencies": {
     "collect.js": "^4.0.4",
+    "express-request-id": "^1.4.0",
     "lodash": "^4.17.4",
     "path-to-regexp": "^2.1.0"
   },
