@@ -17,6 +17,14 @@ function autoload(className) {
                 if (typeof this.__autoload[className] === 'undefined') {
                     this.__autoload[className] = make_1.make(className);
                 }
+                if (this.__autoloadMetadata) {
+                    if (this.__autoload[className].__autoloadMetadata) {
+                        Object.assign(this.__autoload[className].__autoloadMetadata, this.__autoloadMetadata);
+                    }
+                    else {
+                        this.__autoload[className].__autoloadMetadata = this.__autoloadMetadata;
+                    }
+                }
                 return this.__autoload[className];
             },
             set: function (value) {

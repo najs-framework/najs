@@ -1,8 +1,36 @@
 import 'jest'
 import { register, autoload } from '../../lib'
 
+export class Model {
+  static className = 'Model'
+}
+
 export class Repository {
   static className = 'Repository'
+
+  @autoload(Model.className) model: Model
+
+  constructor()
+  constructor(metadata: Object)
+  constructor(metadata?: Object) {
+    if (metadata) {
+      this['__autoloadMetadata'] = metadata
+    }
+  }
+
+  getSomething() {
+    return 'something'
+  }
+}
+
+export class CustomMetadataRepository {
+  static className = 'CustomMetadataRepository'
+
+  @autoload(Model.className) model: Model
+
+  constructor(metadata?: Object) {
+    this['__autoloadMetadata'] = { diff: 'yes' }
+  }
 
   getSomething() {
     return 'something'
@@ -13,6 +41,15 @@ export class TestAutoloadPropertyDecorator {
   static className = 'TestAutoloadDecorator'
 
   @autoload(Repository.className) repository: Repository
+  @autoload(CustomMetadataRepository.className) customMetadataRepository: CustomMetadataRepository
+
+  constructor()
+  constructor(metadata: Object)
+  constructor(metadata?: Object) {
+    if (metadata) {
+      this['__autoloadMetadata'] = metadata
+    }
+  }
 
   getSomething() {
     return this.repository.getSomething()
@@ -20,7 +57,9 @@ export class TestAutoloadPropertyDecorator {
 }
 
 describe('@autoload', function() {
+  register(Model)
   register(Repository)
+  register(CustomMetadataRepository)
 
   it('can be used for property inside a class to initialize automatically', function() {
     for (let i = 0; i < 10; i++) {
@@ -48,6 +87,26 @@ describe('@autoload', function() {
       expect(previousInstance === hosted.repository).toBe(true)
       previousInstance = hosted.repository
     }
+  })
+
+  it('passes autoload metadata to the instances which are autoload', function() {
+    const metadata = { meta: 'anything' }
+    const hosted = new TestAutoloadPropertyDecorator(metadata)
+    expect(hosted.repository['__autoloadMetadata'] === metadata).toBe(true)
+    expect(hosted.repository.model['__autoloadMetadata'] === metadata).toBe(true)
+  })
+
+  it('merges autoload metadata if metadata in tree have different', function() {
+    const metadata = { meta: 'anything' }
+    const hosted = new TestAutoloadPropertyDecorator(metadata)
+    expect(hosted.customMetadataRepository['__autoloadMetadata']).toEqual({
+      meta: 'anything',
+      diff: 'yes'
+    })
+    expect(hosted.customMetadataRepository.model['__autoloadMetadata']).toEqual({
+      meta: 'anything',
+      diff: 'yes'
+    })
   })
 
   it('prevents assign new value to autoload property', function() {

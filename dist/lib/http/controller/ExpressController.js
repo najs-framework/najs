@@ -10,6 +10,9 @@ class ExpressController extends Controller_1.Controller {
         this.params = new RequestData_1.RequestData(request.params || {});
         this.query = new RequestData_1.RequestData(request.query || {});
         this.input = InputContextualFacade_1.Input.of(this);
+        this.__autoloadMetadata = {
+            requestId: request['id']
+        };
     }
 }
 exports.ExpressController = ExpressController;

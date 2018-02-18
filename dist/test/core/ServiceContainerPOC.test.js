@@ -11,7 +11,14 @@ const make_1 = require("../../lib/core/make");
 const register_1 = require("../../lib/core/register");
 function autoload(classDefinition) {
     return function (target, key, descriptor) {
-        console.log('autoload decorator runs container', target.constructor.className, 'binding', classDefinition.className, 'with key', key);
+        // console.log(
+        //   'autoload decorator runs container',
+        //   target.constructor.className,
+        //   'binding',
+        //   classDefinition.className,
+        //   'with key',
+        //   key
+        // )
         const className = classDefinition.className;
         Object.defineProperty(target, key, {
             get: function () {
@@ -21,10 +28,14 @@ function autoload(classDefinition) {
                 if (typeof this.__autoload[className] === 'undefined') {
                     this.__autoload[className] = make_1.make(className);
                 }
-                if (this.__autoloadContext) {
-                    this.__autoload[className].__autoloadContext = this.__autoloadContext;
+                if (this.__autoloadMetadata) {
+                    if (this.__autoload[className].__autoloadMetadata) {
+                        Object.assign(this.__autoload[className].__autoloadMetadata, this.__autoloadMetadata);
+                    }
+                    else {
+                        this.__autoload[className].__autoloadMetadata = this.__autoloadMetadata;
+                    }
                 }
-                console.log(this.__autoloadContext);
                 return this.__autoload[className];
             },
             set: function (value) {
@@ -47,6 +58,9 @@ __decorate([
 exports.TodoRepository = TodoRepository;
 register_1.register(TodoRepository);
 class TodoService {
+    constructor() {
+        this['__autoloadMetadata'] = { test: 'test' };
+    }
 }
 TodoService.className = 'TodoService';
 __decorate([
@@ -60,7 +74,7 @@ register_1.register(TodoService);
 // ------------------------------------------------------------------------------------------------
 class TodoController {
     constructor(requestId) {
-        this.__autoloadContext = { requestId };
+        this.__autoloadMetadata = { requestId };
     }
 }
 TodoController.className = 'TodoController';
@@ -74,14 +88,14 @@ describe('ServiceContainerPOC', function () {
         const controllerOne = new TodoController('123');
         controllerOne.todoService.todoModel;
         controllerOne.todoService.todoRepository;
-        console.log(controllerOne.todoService.todoRepository.todoModel['__autoloadContext']);
+        // console.log(controllerOne.todoService.todoRepository.todoModel['__autoloadMetadata'])
         const controllerTwo = new TodoController('456');
         controllerTwo.todoService.todoRepository;
         controllerTwo.todoService.todoRepository.todoModel;
-        console.log(controllerTwo.todoService.todoRepository.todoModel['__autoloadContext']);
+        // console.log(controllerTwo.todoService.todoRepository.todoModel['__autoloadMetadata'])
         const service = new TodoService();
         service.todoModel;
         service.todoRepository.todoModel;
-        console.log(service.todoRepository.todoModel['__autoloadContext']);
+        // console.log(service.todoRepository.todoModel['__autoloadMetadata'])
     });
 });

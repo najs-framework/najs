@@ -4,14 +4,14 @@ import { register } from '../../lib/core/register'
 
 function autoload(classDefinition: any): any {
   return function(target: any, key: string, descriptor: PropertyDescriptor) {
-    console.log(
-      'autoload decorator runs container',
-      target.constructor.className,
-      'binding',
-      classDefinition.className,
-      'with key',
-      key
-    )
+    // console.log(
+    //   'autoload decorator runs container',
+    //   target.constructor.className,
+    //   'binding',
+    //   classDefinition.className,
+    //   'with key',
+    //   key
+    // )
 
     const className = classDefinition.className
     Object.defineProperty(target, key, {
@@ -24,10 +24,13 @@ function autoload(classDefinition: any): any {
           this.__autoload[className] = make(className)
         }
 
-        if (this.__autoloadContext) {
-          this.__autoload[className].__autoloadContext = this.__autoloadContext
+        if (this.__autoloadMetadata) {
+          if (this.__autoload[className].__autoloadMetadata) {
+            Object.assign(this.__autoload[className].__autoloadMetadata, this.__autoloadMetadata)
+          } else {
+            this.__autoload[className].__autoloadMetadata = this.__autoloadMetadata
+          }
         }
-        console.log(this.__autoloadContext)
         return this.__autoload[className]
       },
       set: function(value: any) {
@@ -54,16 +57,20 @@ export class TodoService {
 
   @autoload(TodoModel) todoModel: TodoModel
   @autoload(TodoRepository) todoRepository: TodoRepository
+
+  constructor() {
+    this['__autoloadMetadata'] = { test: 'test' }
+  }
 }
 register(TodoService)
 
 // ------------------------------------------------------------------------------------------------
 export class TodoController {
   static className = 'TodoController'
-  protected __autoloadContext: Object
+  protected __autoloadMetadata: Object
 
   constructor(requestId: string) {
-    this.__autoloadContext = { requestId }
+    this.__autoloadMetadata = { requestId }
   }
 
   @autoload(TodoService) todoService: TodoService
@@ -75,16 +82,16 @@ describe('ServiceContainerPOC', function() {
     const controllerOne = new TodoController('123')
     controllerOne.todoService.todoModel
     controllerOne.todoService.todoRepository
-    console.log(controllerOne.todoService.todoRepository.todoModel['__autoloadContext'])
+    // console.log(controllerOne.todoService.todoRepository.todoModel['__autoloadMetadata'])
 
     const controllerTwo = new TodoController('456')
     controllerTwo.todoService.todoRepository
     controllerTwo.todoService.todoRepository.todoModel
-    console.log(controllerTwo.todoService.todoRepository.todoModel['__autoloadContext'])
+    // console.log(controllerTwo.todoService.todoRepository.todoModel['__autoloadMetadata'])
 
     const service = new TodoService()
     service.todoModel
     service.todoRepository.todoModel
-    console.log(service.todoRepository.todoModel['__autoloadContext'])
+    // console.log(service.todoRepository.todoModel['__autoloadMetadata'])
   })
 })

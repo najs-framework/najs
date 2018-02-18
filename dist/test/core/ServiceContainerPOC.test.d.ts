@@ -10,10 +10,11 @@ export declare class TodoService {
     static className: string;
     todoModel: TodoModel;
     todoRepository: TodoRepository;
+    constructor();
 }
 export declare class TodoController {
     static className: string;
-    protected __autoloadContext: Object;
+    protected __autoloadMetadata: Object;
     constructor(requestId: string);
     todoService: TodoService;
 }

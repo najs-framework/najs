@@ -20,6 +20,13 @@ export function autoload(className: string): any {
           this.__autoload[className] = make(className)
         }
 
+        if (this.__autoloadMetadata) {
+          if (this.__autoload[className].__autoloadMetadata) {
+            Object.assign(this.__autoload[className].__autoloadMetadata, this.__autoloadMetadata)
+          } else {
+            this.__autoload[className].__autoloadMetadata = this.__autoloadMetadata
+          }
+        }
         return this.__autoload[className]
       },
       set: function(value: any) {
