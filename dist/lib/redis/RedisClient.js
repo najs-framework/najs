@@ -372,6 +372,94 @@ class RedisClient extends Facade_1.Facade {
     hvals(key) {
         return this.redisClientProxy('hvals', arguments);
     }
+    /**
+     * Increment the integer value of a key by one.
+     */
+    incr(key) {
+        return this.redisClientProxy('incr', arguments);
+    }
+    /**
+     * Increment the integer value of a key by the given amount.
+     */
+    incrby(key, increment) {
+        return this.redisClientProxy('incrby', arguments);
+    }
+    /**
+     * Increment the float value of a key by the given amount.
+     */
+    incrbyfloat(key, increment) {
+        return this.redisClientProxy('incrbyfloat', arguments);
+    }
+    /**
+     * Find all keys matching the given pattern.
+     */
+    keys(pattern) {
+        return this.redisClientProxy('keys', arguments);
+    }
+    /**
+     * Get the UNIX time stamp of the last successful save to disk.
+     */
+    lastsave() {
+        return this.redisClientProxy('lastsave', arguments);
+    }
+    /**
+     * Get an element from a list by its index.
+     */
+    lindex(key, index) {
+        return this.redisClientProxy('lindex', arguments);
+    }
+    /**
+     * Insert an element before or after another element in a list.
+     */
+    linsert(key, dir, pivot, value) {
+        return this.redisClientProxy('linsert', arguments);
+    }
+    /**
+     * Get the length of a list.
+     */
+    llen(key) {
+        return this.redisClientProxy('llen', arguments);
+    }
+    /**
+     * Remove and get the first element in a list.
+     */
+    lpop(key) {
+        return this.redisClientProxy('lpop', arguments);
+    }
+    // /**
+    //  * Prepend one or multiple values to a list.
+    //  */
+    // lpush: OverloadedKeyCommand<string, number, R>
+    /**
+     * Prepend a value to a list, only if the list exists.
+     */
+    lpushx(key, value) {
+        return this.redisClientProxy('lpushx', arguments);
+    }
+    /**
+     * Get a range of elements from a list.
+     */
+    lrange(key, start, stop) {
+        return this.redisClientProxy('lrange', arguments);
+    }
+    /**
+     * Remove elements from a list.
+     */
+    lrem(key, count, value) {
+        return this.redisClientProxy('lrem', arguments);
+    }
+    /**
+     * Set the value of an element in a list by its index.
+     */
+    lset(key, index, value) {
+        return this.redisClientProxy('lset', arguments);
+    }
+    /**
+     * Trim a list to the specified range.
+     */
+    ltrim(key, start, stop) {
+        return this.redisClientProxy('ltrim', arguments);
+    }
 }
 RedisClient.className = constants_1.GlobalFacadeClass.Redis;
 exports.RedisClient = RedisClient;

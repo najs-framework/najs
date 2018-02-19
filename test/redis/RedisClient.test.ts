@@ -231,4 +231,21 @@ describe('RedisClient', function() {
   redisClientProxy_test_for('hsetnx', 'hsetnx', ['test', 'value', 'value'])
   redisClientProxy_test_for('hstrlen', 'hstrlen', ['test', 'value'])
   redisClientProxy_test_for('hvals', 'hvals', ['test'])
+
+  redisClientProxy_test_for('incr', 'incr', ['test'])
+  redisClientProxy_test_for('incrby', 'incrby', ['test', 3])
+  redisClientProxy_test_for('incrbyfloat', 'incrbyfloat', ['test', 3.0])
+
+  redisClientProxy_test_for('keys', 'keys', ['test'])
+
+  redisClientProxy_test_for('lastsave', 'lastsave', [])
+  redisClientProxy_test_for('lindex', 'lindex', ['test', 1])
+  redisClientProxy_test_for('linsert', 'linsert', ['test', 'AFTER', 'test', 'value'])
+  redisClientProxy_test_for('llen', 'llen', ['test'])
+  redisClientProxy_test_for('lpop', 'lpop', ['test'])
+  redisClientProxy_test_for('lpushx', 'lpushx', ['lpushx', 'value'])
+  redisClientProxy_test_for('lrange', 'lrange', ['test', 0, 1])
+  redisClientProxy_test_for('lrem', 'lrem', ['test', 1, 'value'])
+  redisClientProxy_test_for('lset', 'lset', ['test', 1, 'value'])
+  redisClientProxy_test_for('ltrim', 'ltrim', ['test', 1, 2])
 })

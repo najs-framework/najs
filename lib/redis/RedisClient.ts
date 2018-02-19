@@ -461,5 +461,108 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
   hvals(key: string): Promise<string[]> {
     return this.redisClientProxy('hvals', arguments)
   }
+
+  /**
+   * Increment the integer value of a key by one.
+   */
+  incr(key: string): Promise<number> {
+    return this.redisClientProxy('incr', arguments)
+  }
+
+  /**
+   * Increment the integer value of a key by the given amount.
+   */
+  incrby(key: string, increment: number): Promise<number> {
+    return this.redisClientProxy('incrby', arguments)
+  }
+
+  /**
+   * Increment the float value of a key by the given amount.
+   */
+  incrbyfloat(key: string, increment: number): Promise<number> {
+    return this.redisClientProxy('incrbyfloat', arguments)
+  }
+
+  /**
+   * Find all keys matching the given pattern.
+   */
+  keys(pattern: string): Promise<string[]> {
+    return this.redisClientProxy('keys', arguments)
+  }
+
+  /**
+   * Get the UNIX time stamp of the last successful save to disk.
+   */
+  lastsave(): Promise<number> {
+    return this.redisClientProxy('lastsave', arguments)
+  }
+
+  /**
+   * Get an element from a list by its index.
+   */
+  lindex(key: string, index: number): Promise<string> {
+    return this.redisClientProxy('lindex', arguments)
+  }
+
+  /**
+   * Insert an element before or after another element in a list.
+   */
+  linsert(key: string, dir: 'BEFORE' | 'AFTER', pivot: string, value: string): Promise<string> {
+    return this.redisClientProxy('linsert', arguments)
+  }
+
+  /**
+   * Get the length of a list.
+   */
+  llen(key: string): Promise<number> {
+    return this.redisClientProxy('llen', arguments)
+  }
+
+  /**
+   * Remove and get the first element in a list.
+   */
+  lpop(key: string): Promise<string> {
+    return this.redisClientProxy('lpop', arguments)
+  }
+
+  // /**
+  //  * Prepend one or multiple values to a list.
+  //  */
+  // lpush: OverloadedKeyCommand<string, number, R>
+
+  /**
+   * Prepend a value to a list, only if the list exists.
+   */
+  lpushx(key: string, value: string): Promise<number> {
+    return this.redisClientProxy('lpushx', arguments)
+  }
+
+  /**
+   * Get a range of elements from a list.
+   */
+  lrange(key: string, start: number, stop: number): Promise<string[]> {
+    return this.redisClientProxy('lrange', arguments)
+  }
+
+  /**
+   * Remove elements from a list.
+   */
+  lrem(key: string, count: number, value: string): Promise<number> {
+    return this.redisClientProxy('lrem', arguments)
+  }
+
+  /**
+   * Set the value of an element in a list by its index.
+   */
+  lset(key: string, index: number, value: string): Promise<'OK'> {
+    return this.redisClientProxy('lset', arguments)
+  }
+
+  /**
+   * Trim a list to the specified range.
+   */
+  ltrim(key: string, start: number, stop: number): Promise<'OK'> {
+    return this.redisClientProxy('ltrim', arguments)
+  }
 }
 register(RedisClient)

@@ -343,95 +343,80 @@ export interface IRedis {
    */
   hvals(key: string): Promise<string[]>
 
-  // /**
-  //  * Increment the integer value of a key by one.
-  //  */
-  // incr(key: string, cb?: Callback<number>): R
-  // INCR(key: string, cb?: Callback<number>): R
+  /**
+   * Increment the integer value of a key by one.
+   */
+  incr(key: string): Promise<number>
 
-  // /**
-  //  * Increment the integer value of a key by the given amount.
-  //  */
-  // incrby(key: string, increment: number, cb?: Callback<number>): R
-  // INCRBY(key: string, increment: number, cb?: Callback<number>): R
+  /**
+   * Increment the integer value of a key by the given amount.
+   */
+  incrby(key: string, increment: number): Promise<number>
 
-  // /**
-  //  * Increment the float value of a key by the given amount.
-  //  */
-  // incrbyfloat(key: string, increment: number, cb?: Callback<number>): R
-  // INCRBYFLOAT(key: string, increment: number, cb?: Callback<number>): R
+  /**
+   * Increment the float value of a key by the given amount.
+   */
+  incrbyfloat(key: string, increment: number): Promise<number>
 
-  // /**
-  //  * Find all keys matching the given pattern.
-  //  */
-  // keys(pattern: string, cb?: Callback<string[]>): R
-  // KEYS(pattern: string, cb?: Callback<string[]>): R
+  /**
+   * Find all keys matching the given pattern.
+   */
+  keys(pattern: string): Promise<string[]>
 
-  // /**
-  //  * Get the UNIX time stamp of the last successful save to disk.
-  //  */
-  // lastsave(cb?: Callback<number>): R
-  // LASTSAVE(cb?: Callback<number>): R
+  /**
+   * Get the UNIX time stamp of the last successful save to disk.
+   */
+  lastsave(): Promise<number>
 
-  // /**
-  //  * Get an element from a list by its index.
-  //  */
-  // lindex(key: string, index: number, cb?: Callback<string>): R
-  // LINDEX(key: string, index: number, cb?: Callback<string>): R
+  /**
+   * Get an element from a list by its index.
+   */
+  lindex(key: string, index: number): Promise<string>
 
-  // /**
-  //  * Insert an element before or after another element in a list.
-  //  */
-  // linsert(key: string, dir: 'BEFORE' | 'AFTER', pivot: string, value: string, cb?: Callback<string>): R
-  // LINSERT(key: string, dir: 'BEFORE' | 'AFTER', pivot: string, value: string, cb?: Callback<string>): R
+  /**
+   * Insert an element before or after another element in a list.
+   */
+  linsert(key: string, dir: 'BEFORE' | 'AFTER', pivot: string, value: string): Promise<string>
 
-  // /**
-  //  * Get the length of a list.
-  //  */
-  // llen(key: string, cb?: Callback<number>): R
-  // LLEN(key: string, cb?: Callback<number>): R
+  /**
+   * Get the length of a list.
+   */
+  llen(key: string): Promise<number>
 
-  // /**
-  //  * Remove and get the first element in a list.
-  //  */
-  // lpop(key: string, cb?: Callback<string>): R
-  // LPOP(key: string, cb?: Callback<string>): R
+  /**
+   * Remove and get the first element in a list.
+   */
+  lpop(key: string): Promise<string>
 
   // /**
   //  * Prepend one or multiple values to a list.
   //  */
   // lpush: OverloadedKeyCommand<string, number, R>
-  // LPUSH: OverloadedKeyCommand<string, number, R>
 
-  // /**
-  //  * Prepend a value to a list, only if the list exists.
-  //  */
-  // lpushx(key: string, value: string, cb?: Callback<number>): R
-  // LPUSHX(key: string, value: string, cb?: Callback<number>): R
+  /**
+   * Prepend a value to a list, only if the list exists.
+   */
+  lpushx(key: string, value: string): Promise<number>
 
-  // /**
-  //  * Get a range of elements from a list.
-  //  */
-  // lrange(key: string, start: number, stop: number, cb?: Callback<string[]>): R
-  // LRANGE(key: string, start: number, stop: number, cb?: Callback<string[]>): R
+  /**
+   * Get a range of elements from a list.
+   */
+  lrange(key: string, start: number, stop: number): Promise<string[]>
 
-  // /**
-  //  * Remove elements from a list.
-  //  */
-  // lrem(key: string, count: number, value: string, cb?: Callback<number>): R
-  // LREM(key: string, count: number, value: string, cb?: Callback<number>): R
+  /**
+   * Remove elements from a list.
+   */
+  lrem(key: string, count: number, value: string): Promise<number>
 
-  // /**
-  //  * Set the value of an element in a list by its index.
-  //  */
-  // lset(key: string, index: number, value: string, cb?: Callback<'OK'>): R
-  // LSET(key: string, index: number, value: string, cb?: Callback<'OK'>): R
+  /**
+   * Set the value of an element in a list by its index.
+   */
+  lset(key: string, index: number, value: string): Promise<'OK'>
 
-  // /**
-  //  * Trim a list to the specified range.
-  //  */
-  // ltrim(key: string, start: number, stop: number, cb?: Callback<'OK'>): R
-  // LTRIM(key: string, start: number, stop: number, cb?: Callback<'OK'>): R
+  /**
+   * Trim a list to the specified range.
+   */
+  ltrim(key: string, start: number, stop: number): Promise<'OK'>
 
   // /**
   //  * Get the values of all given keys.
