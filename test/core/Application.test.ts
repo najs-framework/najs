@@ -54,9 +54,27 @@ describe('Application', function() {
 
       app.make('Test')
       expect(makeSpy.calledWith('Test')).toBe(true)
+      makeSpy.restore()
+    })
+  })
 
-      app.make('Something', { data: 'any' })
-      expect(makeSpy.calledWith('Something', { data: 'any' })).toBe(true)
+  describe('.makeWith()', function() {
+    it('proxies make() function', function() {
+      const app = new Application()
+      const makeStub = Sinon.stub(Make, 'make')
+
+      app.makeWith(Test, { data: 'any' })
+      expect(makeStub.calledWith(Test)).toBe(true)
+
+      app.makeWith('Something', { data: 'any' })
+      expect(makeStub.calledWith('Something', { data: 'any' })).toBe(true)
+
+      app.makeWith(Test, ['anything'])
+      expect(makeStub.calledWith(Test)).toBe(true)
+
+      app.makeWith('Something', ['anything'])
+      expect(makeStub.calledWith('Something', { data: 'any' })).toBe(true)
+      makeStub.restore()
     })
   })
 
@@ -71,6 +89,7 @@ describe('Application', function() {
       const servicePoolInstanceCreator = function() {}
       app.bind('ServicePool', servicePoolInstanceCreator)
       expect(bindSpy.calledWith('ServicePool', servicePoolInstanceCreator)).toBe(true)
+      bindSpy.restore()
     })
   })
 })

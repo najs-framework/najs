@@ -9,7 +9,10 @@ class Application extends Facade_1.Facade {
     getClassName() {
         return Application.className;
     }
-    make(className, data) {
+    make(className) {
+        return make_1.make(className);
+    }
+    makeWith(className, data) {
         return make_1.make(className, data);
     }
     register(classDefinition, className, overridable, singleton) {

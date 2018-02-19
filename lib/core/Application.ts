@@ -14,8 +14,15 @@ export class Application extends Facade implements IApplication, IAutoload {
 
   make<T>(classDefinition: any): T
   make<T>(className: string): T
-  make<T>(className: string, data: Object): T
-  make(className: any, data?: any): any {
+  make(className: any): any {
+    return make(className)
+  }
+
+  makeWith<T>(classDefinition: any, data: Object): T
+  makeWith<T>(className: string, data: Object): T
+  makeWith<T>(classDefinition: string, data: any[]): T
+  makeWith<T>(className: string, data: any[]): T
+  makeWith<T>(className: any, data: any): T {
     return make(className, data)
   }
 

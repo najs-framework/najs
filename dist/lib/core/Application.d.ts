@@ -7,7 +7,10 @@ export declare class Application extends Facade implements IApplication, IAutolo
     getClassName(): string;
     make<T>(classDefinition: any): T;
     make<T>(className: string): T;
-    make<T>(className: string, data: Object): T;
+    makeWith<T>(classDefinition: any, data: Object): T;
+    makeWith<T>(className: string, data: Object): T;
+    makeWith<T>(classDefinition: string, data: any[]): T;
+    makeWith<T>(className: string, data: any[]): T;
     register<T>(classDefinition: T): this;
     register<T>(classDefinition: T, className: string): this;
     register<T>(classDefinition: T, className: string, overridable: boolean): this;
