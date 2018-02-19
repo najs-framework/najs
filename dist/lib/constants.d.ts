@@ -13,6 +13,7 @@ export declare const GlobalFacadeClass: {
     Event: string;
     Log: string;
     Path: string;
+    Redis: string;
     Response: string;
     Route: string;
 };
@@ -24,6 +25,7 @@ export declare const ConfigurationKeys: {
     Host: string;
     ViewEngineName: string;
     HandlerBarsOptions: string;
+    Redis: string;
     Paths: {
         app: string;
         config: string;

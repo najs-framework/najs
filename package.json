@@ -64,6 +64,7 @@
   },
   "devDependencies": {
     "@types/ajv": "^1.0.0",
+    "@types/benchmark": "^1.0.31",
     "@types/config": "^0.0.33",
     "@types/cookie-parser": "^1.4.1",
     "@types/cors": "^2.8.3",
@@ -78,6 +79,7 @@
     "@types/sinon": "^4.1.2",
     "@types/winston": "^2.3.7",
     "ajv": "^6.1.1",
+    "benchmark": "^2.1.4",
     "body-parser": "^1.18.2",
     "config": "^1.29.2",
     "cookie-parser": "^1.4.3",

@@ -17,6 +17,6 @@
     "skipDefaultLibCheck": true,
     "skipLibCheck": true
   },
-  "include": ["./lib/**/*.ts", "./test/**/*.ts", "./syntax/**/*.ts"],
+  "include": ["./lib/**/*.ts", "./benchmark/**/*.ts", "./test/**/*.ts", "./syntax/**/*.ts"],
   "exclude": ["node_modules", "build"]
 }

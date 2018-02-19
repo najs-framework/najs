@@ -16,6 +16,7 @@ export const GlobalFacadeClass = {
   Event: 'Najs.EventDispatcher',
   Log: 'Najs.WinstonLogger',
   Path: 'Najs.Path',
+  Redis: 'Najs.RedisClient',
   Response: 'Najs.ResponseFactory',
   Route: 'Najs.RouteFactory'
 }
@@ -28,6 +29,7 @@ export const ConfigurationKeys = {
   Host: 'host',
   ViewEngineName: 'view.engine',
   HandlerBarsOptions: 'view.handlebars',
+  Redis: 'redis',
   Paths: {
     app: 'path.app',
     config: 'path.config',
