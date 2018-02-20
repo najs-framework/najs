@@ -379,4 +379,78 @@ export declare class RedisClient extends Facade implements IRedis, IAutoload {
      * Wait for the synchronous replication of all the write commands sent in the context of the current connection.
      */
     wait(numSlaves: number, timeout: number): Promise<number>;
+    /**
+     * Get the number of members in a sorted set.
+     */
+    zcard(key: string): Promise<number>;
+    /**
+     * Count the members in a sorted set with scores between the given values.
+     */
+    zcount(key: string, min: number | string, max: number | string): Promise<number>;
+    /**
+     * Increment the score of a member in a sorted set.
+     */
+    zincrby(key: string, increment: number, member: string): Promise<number>;
+    /**
+     * Count the number of members in a sorted set between a given lexicographic range.
+     */
+    zlexcount(key: string, min: string, max: string): Promise<number>;
+    /**
+     * Return a range of members in a sorted set, by index.
+     */
+    zrange(key: string, start: number, stop: number): Promise<string[]>;
+    zrange(key: string, start: number, stop: number, withScores: string): Promise<string[]>;
+    /**
+     * Return a range of members in a sorted set, by lexicographical range.
+     */
+    zrangebylex(key: string, min: string, max: string): Promise<string[]>;
+    zrangebylex(key: string, min: string, max: string, limit: string, offset: number, count: number): Promise<string[]>;
+    /**
+     * Return a range of members in a sorted set, by lexicographical range, ordered from higher to lower strings.
+     */
+    zrevrangebylex(key: string, min: string, max: string): Promise<string[]>;
+    zrevrangebylex(key: string, min: string, max: string, limit: string, offset: number, count: number): Promise<string[]>;
+    /**
+     * Return a range of members in a sorted set, by score.
+     */
+    zrangebyscore(key: string, min: number | string, max: number | string): Promise<string[]>;
+    zrangebyscore(key: string, min: number | string, max: number | string, withScores: string): Promise<string[]>;
+    zrangebyscore(key: string, min: number | string, max: number | string, limit: string, offset: number, count: number): Promise<string[]>;
+    zrangebyscore(key: string, min: number | string, max: number | string, withScores: string, limit: string, offset: number, count: number): Promise<string[]>;
+    /**
+     * Determine the index of a member in a sorted set.
+     */
+    zrank(key: string, member: string): Promise<number | undefined>;
+    /**
+     * Remove all members in a sorted set between the given lexicographical range.
+     */
+    zremrangebylex(key: string, min: string, max: string): Promise<number>;
+    /**
+     * Remove all members in a sorted set within the given indexes.
+     */
+    zremrangebyrank(key: string, start: number, stop: number): Promise<number>;
+    /**
+     * Remove all members in a sorted set within the given indexes.
+     */
+    zremrangebyscore(key: string, min: string | number, max: string | number): Promise<number>;
+    /**
+     * Return a range of members in a sorted set, by index, with scores ordered from high to low.
+     */
+    zrevrange(key: string, start: number, stop: number): Promise<string[]>;
+    zrevrange(key: string, start: number, stop: number, withScores: string): Promise<string[]>;
+    /**
+     * Return a range of members in a sorted set, by score, with scores ordered from high to low.
+     */
+    zrevrangebyscore(key: string, min: number | string, max: number | string): Promise<string[]>;
+    zrevrangebyscore(key: string, min: number | string, max: number | string, withScores: string): Promise<string[]>;
+    zrevrangebyscore(key: string, min: number | string, max: number | string, limit: string, offset: number, count: number): Promise<string[]>;
+    zrevrangebyscore(key: string, min: number | string, max: number | string, withScores: string, limit: string, offset: number, count: number): Promise<string[]>;
+    /**
+     * Determine the index of a member in a sorted set, with scores ordered from high to low.
+     */
+    zrevrank(key: string, member: string): Promise<number | undefined>;
+    /**
+     * Get the score associated with the given member in a sorted set.
+     */
+    zscore(key: string, member: string): Promise<string>;
 }

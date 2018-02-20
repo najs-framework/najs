@@ -788,6 +788,104 @@ class RedisClient extends Facade_1.Facade {
     wait(numSlaves, timeout) {
         return this.redisClientProxy('wait', arguments);
     }
+    // /**
+    //  * Watch the given keys to determine execution of the MULTI/EXEC block.
+    //  */
+    // watch: OverloadedCommand<string, 'OK', R>
+    // WATCH: OverloadedCommand<string, 'OK', R>
+    // /**
+    //  * Add one or more members to a sorted set, or update its score if it already exists.
+    //  */
+    // zadd: OverloadedKeyCommand<string | number, number, R>
+    // ZADD: OverloadedKeyCommand<string | number, number, R>
+    /**
+     * Get the number of members in a sorted set.
+     */
+    zcard(key) {
+        return this.redisClientProxy('zcard', arguments);
+    }
+    /**
+     * Count the members in a sorted set with scores between the given values.
+     */
+    zcount(key, min, max) {
+        return this.redisClientProxy('zcount', arguments);
+    }
+    /**
+     * Increment the score of a member in a sorted set.
+     */
+    zincrby(key, increment, member) {
+        return this.redisClientProxy('zincrby', arguments);
+    }
+    // /**
+    //  * Intersect multiple sorted sets and store the resulting sorted set in a new key.
+    //  */
+    // zinterstore: OverloadedCommand<string | number, number, R>
+    // ZINTERSTORE: OverloadedCommand<string | number, number, R>
+    /**
+     * Count the number of members in a sorted set between a given lexicographic range.
+     */
+    zlexcount(key, min, max) {
+        return this.redisClientProxy('zlexcount', arguments);
+    }
+    zrange() {
+        return this.redisClientProxy('zrange', arguments);
+    }
+    zrangebylex() {
+        return this.redisClientProxy('zrangebylex', arguments);
+    }
+    zrevrangebylex() {
+        return this.redisClientProxy('zrevrangebylex', arguments);
+    }
+    zrangebyscore() {
+        return this.redisClientProxy('zrangebyscore', arguments);
+    }
+    /**
+     * Determine the index of a member in a sorted set.
+     */
+    zrank(key, member) {
+        return this.redisClientProxy('zrank', arguments);
+    }
+    // /**
+    //  * Remove one or more members from a sorted set.
+    //  */
+    // zrem: OverloadedKeyCommand<string, number, R>
+    // ZREM: OverloadedKeyCommand<string, number, R>
+    /**
+     * Remove all members in a sorted set between the given lexicographical range.
+     */
+    zremrangebylex(key, min, max) {
+        return this.redisClientProxy('zremrangebylex', arguments);
+    }
+    /**
+     * Remove all members in a sorted set within the given indexes.
+     */
+    zremrangebyrank(key, start, stop) {
+        return this.redisClientProxy('zremrangebyrank', arguments);
+    }
+    /**
+     * Remove all members in a sorted set within the given indexes.
+     */
+    zremrangebyscore(key, min, max) {
+        return this.redisClientProxy('zremrangebyscore', arguments);
+    }
+    zrevrange() {
+        return this.redisClientProxy('zrevrange', arguments);
+    }
+    zrevrangebyscore() {
+        return this.redisClientProxy('zrevrangebyscore', arguments);
+    }
+    /**
+     * Determine the index of a member in a sorted set, with scores ordered from high to low.
+     */
+    zrevrank(key, member) {
+        return this.redisClientProxy('zrevrank', arguments);
+    }
+    /**
+     * Get the score associated with the given member in a sorted set.
+     */
+    zscore(key, member) {
+        return this.redisClientProxy('zscore', arguments);
+    }
 }
 RedisClient.className = constants_1.GlobalFacadeClass.Redis;
 exports.RedisClient = RedisClient;

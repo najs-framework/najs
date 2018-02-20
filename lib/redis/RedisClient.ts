@@ -980,5 +980,211 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
   //  */
   // watch: OverloadedCommand<string, 'OK', R>
   // WATCH: OverloadedCommand<string, 'OK', R>
+
+  // /**
+  //  * Add one or more members to a sorted set, or update its score if it already exists.
+  //  */
+  // zadd: OverloadedKeyCommand<string | number, number, R>
+  // ZADD: OverloadedKeyCommand<string | number, number, R>
+
+  /**
+   * Get the number of members in a sorted set.
+   */
+  zcard(key: string): Promise<number> {
+    return this.redisClientProxy('zcard', arguments)
+  }
+
+  /**
+   * Count the members in a sorted set with scores between the given values.
+   */
+  zcount(key: string, min: number | string, max: number | string): Promise<number> {
+    return this.redisClientProxy('zcount', arguments)
+  }
+
+  /**
+   * Increment the score of a member in a sorted set.
+   */
+  zincrby(key: string, increment: number, member: string): Promise<number> {
+    return this.redisClientProxy('zincrby', arguments)
+  }
+
+  // /**
+  //  * Intersect multiple sorted sets and store the resulting sorted set in a new key.
+  //  */
+  // zinterstore: OverloadedCommand<string | number, number, R>
+  // ZINTERSTORE: OverloadedCommand<string | number, number, R>
+
+  /**
+   * Count the number of members in a sorted set between a given lexicographic range.
+   */
+  zlexcount(key: string, min: string, max: string): Promise<number> {
+    return this.redisClientProxy('zlexcount', arguments)
+  }
+
+  /**
+   * Return a range of members in a sorted set, by index.
+   */
+  zrange(key: string, start: number, stop: number): Promise<string[]>
+  zrange(key: string, start: number, stop: number, withScores: string): Promise<string[]>
+  zrange(): Promise<string[]> {
+    return this.redisClientProxy('zrange', arguments)
+  }
+
+  /**
+   * Return a range of members in a sorted set, by lexicographical range.
+   */
+  zrangebylex(key: string, min: string, max: string): Promise<string[]>
+  zrangebylex(key: string, min: string, max: string, limit: string, offset: number, count: number): Promise<string[]>
+  zrangebylex(): Promise<string[]> {
+    return this.redisClientProxy('zrangebylex', arguments)
+  }
+
+  /**
+   * Return a range of members in a sorted set, by lexicographical range, ordered from higher to lower strings.
+   */
+  zrevrangebylex(key: string, min: string, max: string): Promise<string[]>
+  zrevrangebylex(key: string, min: string, max: string, limit: string, offset: number, count: number): Promise<string[]>
+  zrevrangebylex(): Promise<string[]> {
+    return this.redisClientProxy('zrevrangebylex', arguments)
+  }
+
+  /**
+   * Return a range of members in a sorted set, by score.
+   */
+  zrangebyscore(key: string, min: number | string, max: number | string): Promise<string[]>
+  zrangebyscore(key: string, min: number | string, max: number | string, withScores: string): Promise<string[]>
+  zrangebyscore(
+    key: string,
+    min: number | string,
+    max: number | string,
+    limit: string,
+    offset: number,
+    count: number
+  ): Promise<string[]>
+  zrangebyscore(
+    key: string,
+    min: number | string,
+    max: number | string,
+    withScores: string,
+    limit: string,
+    offset: number,
+    count: number
+  ): Promise<string[]>
+  zrangebyscore() {
+    return this.redisClientProxy('zrangebyscore', arguments)
+  }
+
+  /**
+   * Determine the index of a member in a sorted set.
+   */
+  zrank(key: string, member: string): Promise<number | undefined> {
+    return this.redisClientProxy('zrank', arguments)
+  }
+
+  // /**
+  //  * Remove one or more members from a sorted set.
+  //  */
+  // zrem: OverloadedKeyCommand<string, number, R>
+  // ZREM: OverloadedKeyCommand<string, number, R>
+
+  /**
+   * Remove all members in a sorted set between the given lexicographical range.
+   */
+  zremrangebylex(key: string, min: string, max: string): Promise<number> {
+    return this.redisClientProxy('zremrangebylex', arguments)
+  }
+
+  /**
+   * Remove all members in a sorted set within the given indexes.
+   */
+  zremrangebyrank(key: string, start: number, stop: number): Promise<number> {
+    return this.redisClientProxy('zremrangebyrank', arguments)
+  }
+
+  /**
+   * Remove all members in a sorted set within the given indexes.
+   */
+  zremrangebyscore(key: string, min: string | number, max: string | number): Promise<number> {
+    return this.redisClientProxy('zremrangebyscore', arguments)
+  }
+
+  /**
+   * Return a range of members in a sorted set, by index, with scores ordered from high to low.
+   */
+  zrevrange(key: string, start: number, stop: number): Promise<string[]>
+  zrevrange(key: string, start: number, stop: number, withScores: string): Promise<string[]>
+  zrevrange(): Promise<string[]> {
+    return this.redisClientProxy('zrevrange', arguments)
+  }
+
+  /**
+   * Return a range of members in a sorted set, by score, with scores ordered from high to low.
+   */
+  zrevrangebyscore(key: string, min: number | string, max: number | string): Promise<string[]>
+  zrevrangebyscore(key: string, min: number | string, max: number | string, withScores: string): Promise<string[]>
+  zrevrangebyscore(
+    key: string,
+    min: number | string,
+    max: number | string,
+    limit: string,
+    offset: number,
+    count: number
+  ): Promise<string[]>
+  zrevrangebyscore(
+    key: string,
+    min: number | string,
+    max: number | string,
+    withScores: string,
+    limit: string,
+    offset: number,
+    count: number
+  ): Promise<string[]>
+  zrevrangebyscore() {
+    return this.redisClientProxy('zrevrangebyscore', arguments)
+  }
+
+  /**
+   * Determine the index of a member in a sorted set, with scores ordered from high to low.
+   */
+  zrevrank(key: string, member: string): Promise<number | undefined> {
+    return this.redisClientProxy('zrevrank', arguments)
+  }
+
+  /**
+   * Get the score associated with the given member in a sorted set.
+   */
+  zscore(key: string, member: string): Promise<string> {
+    return this.redisClientProxy('zscore', arguments)
+  }
+
+  // /**
+  //  * Add multiple sorted sets and store the resulting sorted set in a new key.
+  //  */
+  // zunionstore: OverloadedCommand<string | number, number, R>
+  // ZUNIONSTORE: OverloadedCommand<string | number, number, R>
+
+  // /**
+  //  * Incrementally iterate the keys space.
+  //  */
+  // scan: OverloadedCommand<string, [string, string[]], R>
+  // SCAN: OverloadedCommand<string, [string, string[]], R>
+
+  // /**
+  //  * Incrementally iterate Set elements.
+  //  */
+  // sscan: OverloadedKeyCommand<string, [string, string[]], R>
+  // SSCAN: OverloadedKeyCommand<string, [string, string[]], R>
+
+  // /**
+  //  * Incrementally iterate hash fields and associated values.
+  //  */
+  // hscan: OverloadedKeyCommand<string, [string, string[]], R>
+  // HSCAN: OverloadedKeyCommand<string, [string, string[]], R>
+
+  // /**
+  //  * Incrementally iterate sorted sets elements and associated scores.
+  //  */
+  // zscan: OverloadedKeyCommand<string, [string, string[]], R>
+  // ZSCAN: OverloadedKeyCommand<string, [string, string[]], R>
 }
 register(RedisClient)

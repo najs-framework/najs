@@ -761,23 +761,20 @@ export interface IRedis {
   // zadd: OverloadedKeyCommand<string | number, number, R>
   // ZADD: OverloadedKeyCommand<string | number, number, R>
 
-  // /**
-  //  * Get the number of members in a sorted set.
-  //  */
-  // zcard(key: string, cb?: Callback<number>): R
-  // ZCARD(key: string, cb?: Callback<number>): R
+  /**
+   * Get the number of members in a sorted set.
+   */
+  zcard(key: string): Promise<number>
 
-  // /**
-  //  * Count the members in a sorted set with scores between the given values.
-  //  */
-  // zcount(key: string, min: number | string, max: number | string, cb?: Callback<number>): R
-  // ZCOUNT(key: string, min: number | string, max: number | string, cb?: Callback<number>): R
+  /**
+   * Count the members in a sorted set with scores between the given values.
+   */
+  zcount(key: string, min: number | string, max: number | string): Promise<number>
 
-  // /**
-  //  * Increment the score of a member in a sorted set.
-  //  */
-  // zincrby(key: string, increment: number, member: string, cb?: Callback<number>): R
-  // ZINCRBY(key: string, increment: number, member: string, cb?: Callback<number>): R
+  /**
+   * Increment the score of a member in a sorted set.
+   */
+  zincrby(key: string, increment: number, member: string): Promise<number>
 
   // /**
   //  * Intersect multiple sorted sets and store the resulting sorted set in a new key.
@@ -785,119 +782,56 @@ export interface IRedis {
   // zinterstore: OverloadedCommand<string | number, number, R>
   // ZINTERSTORE: OverloadedCommand<string | number, number, R>
 
-  // /**
-  //  * Count the number of members in a sorted set between a given lexicographic range.
-  //  */
-  // zlexcount(key: string, min: string, max: string, cb?: Callback<number>): R
-  // ZLEXCOUNT(key: string, min: string, max: string, cb?: Callback<number>): R
+  /**
+   * Count the number of members in a sorted set between a given lexicographic range.
+   */
+  zlexcount(key: string, min: string, max: string): Promise<number>
 
-  // /**
-  //  * Return a range of members in a sorted set, by index.
-  //  */
-  // zrange(key: string, start: number, stop: number, cb?: Callback<string[]>): R
-  // zrange(key: string, start: number, stop: number, withscores: string, cb?: Callback<string[]>): R
-  // ZRANGE(key: string, start: number, stop: number, cb?: Callback<string[]>): R
-  // ZRANGE(key: string, start: number, stop: number, withscores: string, cb?: Callback<string[]>): R
+  /**
+   * Return a range of members in a sorted set, by index.
+   */
+  zrange(key: string, start: number, stop: number): Promise<string[]>
+  zrange(key: string, start: number, stop: number, withScores: string): Promise<string[]>
 
-  // /**
-  //  * Return a range of members in a sorted set, by lexicographical range.
-  //  */
-  // zrangebylex(key: string, min: string, max: string, cb?: Callback<string[]>): R
-  // zrangebylex(
-  //   key: string,
-  //   min: string,
-  //   max: string,
-  //   limit: string,
-  //   offset: number,
-  //   count: number,
-  //   cb?: Callback<string[]>
-  // ): R
-  // ZRANGEBYLEX(key: string, min: string, max: string, cb?: Callback<string[]>): R
-  // ZRANGEBYLEX(
-  //   key: string,
-  //   min: string,
-  //   max: string,
-  //   limit: string,
-  //   offset: number,
-  //   count: number,
-  //   cb?: Callback<string[]>
-  // ): R
+  /**
+   * Return a range of members in a sorted set, by lexicographical range.
+   */
+  zrangebylex(key: string, min: string, max: string): Promise<string[]>
+  zrangebylex(key: string, min: string, max: string, limit: string, offset: number, count: number): Promise<string[]>
 
-  // /**
-  //  * Return a range of members in a sorted set, by lexicographical range, ordered from higher to lower strings.
-  //  */
-  // zrevrangebylex(key: string, min: string, max: string, cb?: Callback<string[]>): R
-  // zrevrangebylex(
-  //   key: string,
-  //   min: string,
-  //   max: string,
-  //   limit: string,
-  //   offset: number,
-  //   count: number,
-  //   cb?: Callback<string[]>
-  // ): R
-  // ZREVRANGEBYLEX(key: string, min: string, max: string, cb?: Callback<string[]>): R
-  // ZREVRANGEBYLEX(
-  //   key: string,
-  //   min: string,
-  //   max: string,
-  //   limit: string,
-  //   offset: number,
-  //   count: number,
-  //   cb?: Callback<string[]>
-  // ): R
+  /**
+   * Return a range of members in a sorted set, by lexicographical range, ordered from higher to lower strings.
+   */
+  zrevrangebylex(key: string, min: string, max: string): Promise<string[]>
+  zrevrangebylex(key: string, min: string, max: string, limit: string, offset: number, count: number): Promise<string[]>
 
-  // /**
-  //  * Return a range of members in a sorted set, by score.
-  //  */
-  // zrangebyscore(key: string, min: number | string, max: number | string, cb?: Callback<string[]>): R
-  // zrangebyscore(key: string, min: number | string, max: number | string, withscores: string, cb?: Callback<string[]>): R
-  // zrangebyscore(
-  //   key: string,
-  //   min: number | string,
-  //   max: number | string,
-  //   limit: string,
-  //   offset: number,
-  //   count: number,
-  //   cb?: Callback<string[]>
-  // ): R
-  // zrangebyscore(
-  //   key: string,
-  //   min: number | string,
-  //   max: number | string,
-  //   withscores: string,
-  //   limit: string,
-  //   offset: number,
-  //   count: number,
-  //   cb?: Callback<string[]>
-  // ): R
-  // ZRANGEBYSCORE(key: string, min: number | string, max: number | string, cb?: Callback<string[]>): R
-  // ZRANGEBYSCORE(key: string, min: number | string, max: number | string, withscores: string, cb?: Callback<string[]>): R
-  // ZRANGEBYSCORE(
-  //   key: string,
-  //   min: number | string,
-  //   max: number | string,
-  //   limit: string,
-  //   offset: number,
-  //   count: number,
-  //   cb?: Callback<string[]>
-  // ): R
-  // ZRANGEBYSCORE(
-  //   key: string,
-  //   min: number | string,
-  //   max: number | string,
-  //   withscores: string,
-  //   limit: string,
-  //   offset: number,
-  //   count: number,
-  //   cb?: Callback<string[]>
-  // ): R
+  /**
+   * Return a range of members in a sorted set, by score.
+   */
+  zrangebyscore(key: string, min: number | string, max: number | string): Promise<string[]>
+  zrangebyscore(key: string, min: number | string, max: number | string, withScores: string): Promise<string[]>
+  zrangebyscore(
+    key: string,
+    min: number | string,
+    max: number | string,
+    limit: string,
+    offset: number,
+    count: number
+  ): Promise<string[]>
+  zrangebyscore(
+    key: string,
+    min: number | string,
+    max: number | string,
+    withScores: string,
+    limit: string,
+    offset: number,
+    count: number
+  ): Promise<string[]>
 
-  // /**
-  //  * Determine the index of a member in a sorted set.
-  //  */
-  // zrank(key: string, member: string, cb?: Callback<number | undefined>): R
-  // ZRANK(key: string, member: string, cb?: Callback<number | undefined>): R
+  /**
+   * Determine the index of a member in a sorted set.
+   */
+  zrank(key: string, member: string): Promise<number | undefined>
 
   // /**
   //  * Remove one or more members from a sorted set.
@@ -905,101 +839,59 @@ export interface IRedis {
   // zrem: OverloadedKeyCommand<string, number, R>
   // ZREM: OverloadedKeyCommand<string, number, R>
 
-  // /**
-  //  * Remove all members in a sorted set between the given lexicographical range.
-  //  */
-  // zremrangebylex(key: string, min: string, max: string, cb?: Callback<number>): R
-  // ZREMRANGEBYLEX(key: string, min: string, max: string, cb?: Callback<number>): R
+  /**
+   * Remove all members in a sorted set between the given lexicographical range.
+   */
+  zremrangebylex(key: string, min: string, max: string): Promise<number>
 
-  // /**
-  //  * Remove all members in a sorted set within the given indexes.
-  //  */
-  // zremrangebyrank(key: string, start: number, stop: number, cb?: Callback<number>): R
-  // ZREMRANGEBYRANK(key: string, start: number, stop: number, cb?: Callback<number>): R
+  /**
+   * Remove all members in a sorted set within the given indexes.
+   */
+  zremrangebyrank(key: string, start: number, stop: number): Promise<number>
 
-  // /**
-  //  * Remove all members in a sorted set within the given indexes.
-  //  */
-  // zremrangebyscore(key: string, min: string | number, max: string | number, cb?: Callback<number>): R
-  // ZREMRANGEBYSCORE(key: string, min: string | number, max: string | number, cb?: Callback<number>): R
+  /**
+   * Remove all members in a sorted set within the given indexes.
+   */
+  zremrangebyscore(key: string, min: string | number, max: string | number): Promise<number>
 
-  // /**
-  //  * Return a range of members in a sorted set, by index, with scores ordered from high to low.
-  //  */
-  // zrevrange(key: string, start: number, stop: number, cb?: Callback<string[]>): R
-  // zrevrange(key: string, start: number, stop: number, withscores: string, cb?: Callback<string[]>): R
-  // ZREVRANGE(key: string, start: number, stop: number, cb?: Callback<string[]>): R
-  // ZREVRANGE(key: string, start: number, stop: number, withscores: string, cb?: Callback<string[]>): R
+  /**
+   * Return a range of members in a sorted set, by index, with scores ordered from high to low.
+   */
+  zrevrange(key: string, start: number, stop: number): Promise<string[]>
+  zrevrange(key: string, start: number, stop: number, withScores: string): Promise<string[]>
 
-  // /**
-  //  * Return a range of members in a sorted set, by score, with scores ordered from high to low.
-  //  */
-  // zrevrangebyscore(key: string, min: number | string, max: number | string, cb?: Callback<string[]>): R
-  // zrevrangebyscore(
-  //   key: string,
-  //   min: number | string,
-  //   max: number | string,
-  //   withscores: string,
-  //   cb?: Callback<string[]>
-  // ): R
-  // zrevrangebyscore(
-  //   key: string,
-  //   min: number | string,
-  //   max: number | string,
-  //   limit: string,
-  //   offset: number,
-  //   count: number,
-  //   cb?: Callback<string[]>
-  // ): R
-  // zrevrangebyscore(
-  //   key: string,
-  //   min: number | string,
-  //   max: number | string,
-  //   withscores: string,
-  //   limit: string,
-  //   offset: number,
-  //   count: number,
-  //   cb?: Callback<string[]>
-  // ): R
-  // ZREVRANGEBYSCORE(key: string, min: number | string, max: number | string, cb?: Callback<string[]>): R
-  // ZREVRANGEBYSCORE(
-  //   key: string,
-  //   min: number | string,
-  //   max: number | string,
-  //   withscores: string,
-  //   cb?: Callback<string[]>
-  // ): R
-  // ZREVRANGEBYSCORE(
-  //   key: string,
-  //   min: number | string,
-  //   max: number | string,
-  //   limit: string,
-  //   offset: number,
-  //   count: number,
-  //   cb?: Callback<string[]>
-  // ): R
-  // ZREVRANGEBYSCORE(
-  //   key: string,
-  //   min: number | string,
-  //   max: number | string,
-  //   withscores: string,
-  //   limit: string,
-  //   offset: number,
-  //   count: number,
-  //   cb?: Callback<string[]>
-  // ): R
+  /**
+   * Return a range of members in a sorted set, by score, with scores ordered from high to low.
+   */
+  zrevrangebyscore(key: string, min: number | string, max: number | string): Promise<string[]>
+  zrevrangebyscore(key: string, min: number | string, max: number | string, withScores: string): Promise<string[]>
+  zrevrangebyscore(
+    key: string,
+    min: number | string,
+    max: number | string,
+    limit: string,
+    offset: number,
+    count: number
+  ): Promise<string[]>
+  zrevrangebyscore(
+    key: string,
+    min: number | string,
+    max: number | string,
+    withScores: string,
+    limit: string,
+    offset: number,
+    count: number
+  ): Promise<string[]>
 
-  // /**
-  //  * Determine the index of a member in a sorted set, with scores ordered from high to low.
-  //  */
-  // zrevrank(key: string, member: string, cb?: Callback<number | undefined>): R
-  // ZREVRANK(key: string, member: string, cb?: Callback<number | undefined>): R
+  /**
+   * Determine the index of a member in a sorted set, with scores ordered from high to low.
+   */
+  zrevrank(key: string, member: string): Promise<number | undefined>
 
-  // /**
-  //  * Get the score associated with the given member in a sorted set.
-  //  */
-  // zscore(key: string, member: string, cb?: Callback<string>): R
-  // ZSCORE(key: string, member: string, cb?: Callback<string>): R
+  /**
+   * Get the score associated with the given member in a sorted set.
+   */
+  zscore(key: string, member: string): Promise<string>
 
   // /**
   //  * Add multiple sorted sets and store the resulting sorted set in a new key.
