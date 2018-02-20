@@ -118,7 +118,8 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
   /**
    * Perform arbitrary bitfield integer operations on strings.
    */
-  bitfield(key: string, arg: Array<string | number>): Promise<[number, number]>
+  bitfield(): Promise<[number, number]>
+  bitfield(key: string): Promise<[number, number]>
   bitfield(key: string, ...args: Array<string | number>): Promise<[number, number]>
   bitfield(): Promise<[number, number]> {
     return this.redisClientProxy('bitfield', arguments)
@@ -309,41 +310,68 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('flushdb', arguments)
   }
 
-  // /**
-  //  * Add one or more geospatial items in the geospatial index represented using a sorted set.
-  //  */
-  // geoadd: OverloadedKeyCommand<string | number, number, R>
-  // GEOADD: OverloadedKeyCommand<string | number, number, R>
+  /**
+   * Add one or more geospatial items in the geospatial index represented using a sorted set.
+   */
+  geoadd(): Promise<number>
+  geoadd(key: string): Promise<number>
+  geoadd(key: string, ...args: Array<string | number>): Promise<number>
+  geoadd(): Promise<number> {
+    return this.redisClientProxy('geoadd', arguments)
+  }
 
-  // /**
-  //  * Returns members of a geospatial index as standard geohash strings.
-  //  */
-  // geohash: OverloadedKeyCommand<string, string, R>
-  // GEOHASH: OverloadedKeyCommand<string, string, R>
+  /**
+   * Returns members of a geospatial index as standard geohash strings.
+   */
+  geohash(): Promise<string>
+  geohash(key: string): Promise<string>
+  geohash(key: string, ...args: Array<string>): Promise<string>
+  geohash(): Promise<string> {
+    return this.redisClientProxy('geohash', arguments)
+  }
 
-  // /**
-  //  * Returns longitude and latitude of members of a geospatial index.
-  //  */
-  // geopos: OverloadedKeyCommand<string, Array<[number, number]>, R>
-  // GEOPOS: OverloadedKeyCommand<string, Array<[number, number]>, R>
+  /**
+   * Returns longitude and latitude of members of a geospatial index.
+   */
+  geopos(): Promise<Array<[number, number]>>
+  geopos(key: string): Promise<Array<[number, number]>>
+  geopos(key: string, ...args: Array<string>): Promise<Array<[number, number]>>
+  geopos(): Promise<Array<[number, number]>> {
+    return this.redisClientProxy('geopos', arguments)
+  }
 
-  // /**
-  //  * Returns the distance between two members of a geospatial index.
-  //  */
-  // geodist: OverloadedKeyCommand<string, string, R>
-  // GEODIST: OverloadedKeyCommand<string, string, R>
+  /**
+   * Returns the distance between two members of a geospatial index.
+   */
+  geodist(): Promise<string>
+  geodist(key: string): Promise<string>
+  geodist(key: string, ...args: Array<string>): Promise<string>
+  geodist(): Promise<string> {
+    return this.redisClientProxy('geodist', arguments)
+  }
 
-  // /**
-  //  * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a point.
-  //  */
-  // georadius: OverloadedKeyCommand<string | number, Array<string | [string, string | [string, string]]>, R>
-  // GEORADIUS: OverloadedKeyCommand<string | number, Array<string | [string, string | [string, string]]>, R>
+  /**
+   * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a point.
+   */
+  georadius(): Promise<Array<string | [string, string | [string, string]]>>
+  georadius(key: string): Promise<Array<string | [string, string | [string, string]]>>
+  georadius(key: string, ...args: Array<string | number>): Promise<Array<string | [string, string | [string, string]]>>
+  georadius(): Promise<Array<string | [string, string | [string, string]]>> {
+    return this.redisClientProxy('georadius', arguments)
+  }
 
-  // /**
-  //  * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a member.
-  //  */
-  // georadiusbymember: OverloadedKeyCommand<string | number, Array<string | [string, string | [string, string]]>, R>
-  // GEORADIUSBYMEMBER: OverloadedKeyCommand<string | number, Array<string | [string, string | [string, string]]>, R>
+  /**
+   * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a member.
+   */
+  georadiusbymember(): Promise<Array<string | [string, string | [string, string]]>>
+  georadiusbymember(key: string): Promise<Array<string | [string, string | [string, string]]>>
+  georadiusbymember(
+    key: string,
+    ...args: Array<string | number>
+  ): Promise<Array<string | [string, string | [string, string]]>>
+  georadiusbymember(): Promise<Array<string | [string, string | [string, string]]>> {
+    return this.redisClientProxy('georadiusbymember', arguments)
+  }
 
   /**
    * Get the value of a key.
@@ -373,11 +401,15 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('getset', arguments)
   }
 
-  // /**
-  //  * Delete on or more hash fields.
-  //  */
-  // hdel: OverloadedKeyCommand<string, number, R>
-  // HDEL: OverloadedKeyCommand<string, number, R>
+  /**
+   * Delete on or more hash fields.
+   */
+  hdel(): Promise<number>
+  hdel(key: string): Promise<number>
+  hdel(key: string, ...args: Array<string>): Promise<number>
+  hdel(): Promise<number> {
+    return this.redisClientProxy('hdel', arguments)
+  }
 
   /**
    * Determine if a hash field exists.
@@ -428,11 +460,15 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('hlen', arguments)
   }
 
-  // /**
-  //  * Get the values of all the given hash fields.
-  //  */
-  // hmget: OverloadedKeyCommand<string, string[], R>
-  // HMGET: OverloadedKeyCommand<string, string[], R>
+  /**
+   * Get the values of all the given hash fields.
+   */
+  hmget(): Promise<string[]>
+  hmget(key: string): Promise<string[]>
+  hmget(key: string, ...args: Array<string>): Promise<string[]>
+  hmget(): Promise<string[]> {
+    return this.redisClientProxy('hmget', arguments)
+  }
 
   /**
    * Set the string value of a hash field.
@@ -525,10 +561,15 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('lpop', arguments)
   }
 
-  // /**
-  //  * Prepend one or multiple values to a list.
-  //  */
-  // lpush: OverloadedKeyCommand<string, number, R>
+  /**
+   * Prepend one or multiple values to a list.
+   */
+  lpush(): Promise<number>
+  lpush(key: string): Promise<number>
+  lpush(key: string, ...args: Array<string>): Promise<number>
+  lpush(): Promise<number> {
+    return this.redisClientProxy('lpush', arguments)
+  }
 
   /**
    * Prepend a value to a list, only if the list exists.
@@ -623,11 +664,15 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('pexpireat', arguments)
   }
 
-  // /**
-  //  * Adds the specified elements to the specified HyperLogLog.
-  //  */
-  // pfadd: OverloadedKeyCommand<string, number, R>
-  // PFADD: OverloadedKeyCommand<string, number, R>
+  /**
+   * Adds the specified elements to the specified HyperLogLog.
+   */
+  pfadd(): Promise<number>
+  pfadd(key: string): Promise<number>
+  pfadd(key: string, ...args: Array<string>): Promise<number>
+  pfadd(): Promise<number> {
+    return this.redisClientProxy('pfadd', arguments)
+  }
 
   // /**
   //  * Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s).
@@ -731,11 +776,15 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('rpoplpush', arguments)
   }
 
-  // /**
-  //  * Append one or multiple values to a list.
-  //  */
-  // rpush: OverloadedKeyCommand<string, number, R>
-  // RPUSH: OverloadedKeyCommand<string, number, R>
+  /**
+   * Append one or multiple values to a list.
+   */
+  rpush(): Promise<number>
+  rpush(key: string): Promise<number>
+  rpush(key: string, ...args: Array<string>): Promise<number>
+  rpush(): Promise<number> {
+    return this.redisClientProxy('rpush', arguments)
+  }
 
   /**
    * Append a value to a list, only if the list exists.
@@ -744,11 +793,15 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('rpushx', arguments)
   }
 
-  // /**
-  //  * Append one or multiple members to a set.
-  //  */
-  // sadd: OverloadedKeyCommand<string, number, R>
-  // SADD: OverloadedKeyCommand<string, number, R>
+  /**
+   * Append one or multiple members to a set.
+   */
+  sadd(): Promise<number>
+  sadd(key: string): Promise<number>
+  sadd(key: string, ...args: Array<string>): Promise<number>
+  sadd(): Promise<number> {
+    return this.redisClientProxy('sadd', arguments)
+  }
 
   /**
    * Synchronously save the dataset to disk.
@@ -780,11 +833,15 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
   // sdiff: OverloadedCommand<string, string[], R>
   // SDIFF: OverloadedCommand<string, string[], R>
 
-  // /**
-  //  * Subtract multiple sets and store the resulting set in a key.
-  //  */
-  // sdiffstore: OverloadedKeyCommand<string, number, R>
-  // SDIFFSTORE: OverloadedKeyCommand<string, number, R>
+  /**
+   * Subtract multiple sets and store the resulting set in a key.
+   */
+  sdiffstore(): Promise<number>
+  sdiffstore(key: string): Promise<number>
+  sdiffstore(key: string, ...args: Array<string>): Promise<number>
+  sdiffstore(): Promise<number> {
+    return this.redisClientProxy('sdiffstore', arguments)
+  }
 
   /**
    * Change the selected database for the current connection.
@@ -838,11 +895,15 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
   // shutdown: OverloadedCommand<string, string, R>
   // SHUTDOWN: OverloadedCommand<string, string, R>
 
-  // /**
-  //  * Intersect multiple sets.
-  //  */
-  // sinter: OverloadedKeyCommand<string, string[], R>
-  // SINTER: OverloadedKeyCommand<string, string[], R>
+  /**
+   * Intersect multiple sets.
+   */
+  sinter(): Promise<string[]>
+  sinter(key: string): Promise<string[]>
+  sinter(key: string, ...args: Array<string>): Promise<string[]>
+  sinter(): Promise<string[]> {
+    return this.redisClientProxy('sinter', arguments)
+  }
 
   // /**
   //  * Intersect multiple sets and store the resulting set in a key.
@@ -908,11 +969,15 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('srandmember', arguments)
   }
 
-  // /**
-  //  * Remove one or more members from a set.
-  //  */
-  // srem: OverloadedKeyCommand<string, number, R>
-  // SREM: OverloadedKeyCommand<string, number, R>
+  /**
+   * Remove one or more members from a set.
+   */
+  srem(): Promise<number>
+  srem(key: string): Promise<number>
+  srem(key: string, ...args: Array<string>): Promise<number>
+  srem(): Promise<number> {
+    return this.redisClientProxy('srem', arguments)
+  }
 
   /**
    * Get the length of the value stored in a key.
@@ -981,11 +1046,15 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
   // watch: OverloadedCommand<string, 'OK', R>
   // WATCH: OverloadedCommand<string, 'OK', R>
 
-  // /**
-  //  * Add one or more members to a sorted set, or update its score if it already exists.
-  //  */
-  // zadd: OverloadedKeyCommand<string | number, number, R>
-  // ZADD: OverloadedKeyCommand<string | number, number, R>
+  /**
+   * Add one or more members to a sorted set, or update its score if it already exists.
+   */
+  zadd(): Promise<number>
+  zadd(key: string): Promise<number>
+  zadd(key: string, ...args: Array<string | number>): Promise<number>
+  zadd(): Promise<number> {
+    return this.redisClientProxy('zadd', arguments)
+  }
 
   /**
    * Get the number of members in a sorted set.
@@ -1081,11 +1150,15 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('zrank', arguments)
   }
 
-  // /**
-  //  * Remove one or more members from a sorted set.
-  //  */
-  // zrem: OverloadedKeyCommand<string, number, R>
-  // ZREM: OverloadedKeyCommand<string, number, R>
+  /**
+   * Remove one or more members from a sorted set.
+   */
+  zrem(): Promise<number>
+  zrem(key: string): Promise<number>
+  zrem(key: string, ...args: Array<string>): Promise<number>
+  zrem(): Promise<number> {
+    return this.redisClientProxy('zrem', arguments)
+  }
 
   /**
    * Remove all members in a sorted set between the given lexicographical range.
@@ -1169,22 +1242,34 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
   // scan: OverloadedCommand<string, [string, string[]], R>
   // SCAN: OverloadedCommand<string, [string, string[]], R>
 
-  // /**
-  //  * Incrementally iterate Set elements.
-  //  */
-  // sscan: OverloadedKeyCommand<string, [string, string[]], R>
-  // SSCAN: OverloadedKeyCommand<string, [string, string[]], R>
+  /**
+   * Incrementally iterate Set elements.
+   */
+  sscan(): Promise<[string, string[]]>
+  sscan(key: string): Promise<[string, string[]]>
+  sscan(key: string, ...args: Array<string>): Promise<[string, string[]]>
+  sscan(): Promise<[string, string[]]> {
+    return this.redisClientProxy('sscan', arguments)
+  }
 
-  // /**
-  //  * Incrementally iterate hash fields and associated values.
-  //  */
-  // hscan: OverloadedKeyCommand<string, [string, string[]], R>
-  // HSCAN: OverloadedKeyCommand<string, [string, string[]], R>
+  /**
+   * Incrementally iterate hash fields and associated values.
+   */
+  hscan(): Promise<[string, string[]]>
+  hscan(key: string): Promise<[string, string[]]>
+  hscan(key: string, ...args: Array<string>): Promise<[string, string[]]>
+  hscan(): Promise<[string, string[]]> {
+    return this.redisClientProxy('hscan', arguments)
+  }
 
-  // /**
-  //  * Incrementally iterate sorted sets elements and associated scores.
-  //  */
-  // zscan: OverloadedKeyCommand<string, [string, string[]], R>
-  // ZSCAN: OverloadedKeyCommand<string, [string, string[]], R>
+  /**
+   * Incrementally iterate sorted sets elements and associated scores.
+   */
+  zscan(): Promise<[string, string[]]>
+  zscan(key: string): Promise<[string, string[]]>
+  zscan(key: string, ...args: Array<string>): Promise<[string, string[]]>
+  zscan(): Promise<[string, string[]]> {
+    return this.redisClientProxy('zscan', arguments)
+  }
 }
 register(RedisClient)

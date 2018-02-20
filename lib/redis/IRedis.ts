@@ -61,8 +61,10 @@ export interface IRedis {
   /**
    * Perform arbitrary bitfield integer operations on strings.
    */
-  bitfield(key: string, arg: Array<string | number>): Promise<[number, number]>
+  bitfield(): Promise<[number, number]>
+  bitfield(key: string): Promise<[number, number]>
   bitfield(key: string, ...args: Array<string | number>): Promise<[number, number]>
+  // bitfield: OverloadedKeyCommand<string | number, [number, number], R>;
 
   /**
    * Perform bitwise operations between strings.
@@ -220,41 +222,57 @@ export interface IRedis {
    */
   flushdb(): Promise<string>
 
-  // /**
-  //  * Add one or more geospatial items in the geospatial index represented using a sorted set.
-  //  */
-  // geoadd: OverloadedKeyCommand<string | number, number, R>
-  // GEOADD: OverloadedKeyCommand<string | number, number, R>
+  /**
+   * Add one or more geospatial items in the geospatial index represented using a sorted set.
+   */
 
-  // /**
-  //  * Returns members of a geospatial index as standard geohash strings.
-  //  */
-  // geohash: OverloadedKeyCommand<string, string, R>
-  // GEOHASH: OverloadedKeyCommand<string, string, R>
+  geoadd(): Promise<number>
+  geoadd(key: string): Promise<number>
+  geoadd(key: string, ...args: Array<string | number>): Promise<number>
+  // geoadd: OverloadedKeyCommand<string | number, number, R>;
 
-  // /**
-  //  * Returns longitude and latitude of members of a geospatial index.
-  //  */
-  // geopos: OverloadedKeyCommand<string, Array<[number, number]>, R>
-  // GEOPOS: OverloadedKeyCommand<string, Array<[number, number]>, R>
+  /**
+   * Returns members of a geospatial index as standard geohash strings.
+   */
+  geohash(): Promise<string>
+  geohash(key: string): Promise<string>
+  geohash(key: string, ...args: Array<string>): Promise<string>
+  // geohash: OverloadedKeyCommand<string, string, R>;
 
-  // /**
-  //  * Returns the distance between two members of a geospatial index.
-  //  */
-  // geodist: OverloadedKeyCommand<string, string, R>
-  // GEODIST: OverloadedKeyCommand<string, string, R>
+  /**
+   * Returns longitude and latitude of members of a geospatial index.
+   */
+  geopos(): Promise<Array<[number, number]>>
+  geopos(key: string): Promise<Array<[number, number]>>
+  geopos(key: string, ...args: Array<string>): Promise<Array<[number, number]>>
+  // geopos: OverloadedKeyCommand<string, Array<[number, number]>, R>;
 
-  // /**
-  //  * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a point.
-  //  */
-  // georadius: OverloadedKeyCommand<string | number, Array<string | [string, string | [string, string]]>, R>
-  // GEORADIUS: OverloadedKeyCommand<string | number, Array<string | [string, string | [string, string]]>, R>
+  /**
+   * Returns the distance between two members of a geospatial index.
+   */
+  geodist(): Promise<string>
+  geodist(key: string): Promise<string>
+  geodist(key: string, ...args: Array<string>): Promise<string>
+  // geodist: OverloadedKeyCommand<string, string, R>;
 
-  // /**
-  //  * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a member.
-  //  */
-  // georadiusbymember: OverloadedKeyCommand<string | number, Array<string | [string, string | [string, string]]>, R>
-  // GEORADIUSBYMEMBER: OverloadedKeyCommand<string | number, Array<string | [string, string | [string, string]]>, R>
+  /**
+   * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a point.
+   */
+  georadius(): Promise<Array<string | [string, string | [string, string]]>>
+  georadius(key: string): Promise<Array<string | [string, string | [string, string]]>>
+  georadius(key: string, ...args: Array<string | number>): Promise<Array<string | [string, string | [string, string]]>>
+  // georadius: OverloadedKeyCommand<string | number, Array<string | [string, string | [string, string]]>, R>;
+
+  /**
+   * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a member.
+   */
+  georadiusbymember(): Promise<Array<string | [string, string | [string, string]]>>
+  georadiusbymember(key: string): Promise<Array<string | [string, string | [string, string]]>>
+  georadiusbymember(
+    key: string,
+    ...args: Array<string | number>
+  ): Promise<Array<string | [string, string | [string, string]]>>
+  // georadiusbymember: OverloadedKeyCommand<string | number, Array<string | [string, string | [string, string]]>, R>;
 
   /**
    * Get the value of a key.
@@ -279,8 +297,10 @@ export interface IRedis {
   // /**
   //  * Delete on or more hash fields.
   //  */
+  hdel(): Promise<number>
+  hdel(key: string): Promise<number>
+  hdel(key: string, ...args: Array<string>): Promise<number>
   // hdel: OverloadedKeyCommand<string, number, R>
-  // HDEL: OverloadedKeyCommand<string, number, R>
 
   /**
    * Determine if a hash field exists.
@@ -317,11 +337,13 @@ export interface IRedis {
    */
   hlen(key: string): Promise<number>
 
-  // /**
-  //  * Get the values of all the given hash fields.
-  //  */
+  /**
+   * Get the values of all the given hash fields.
+   */
+  hmget(): Promise<string[]>
+  hmget(key: string): Promise<string[]>
+  hmget(key: string, ...args: Array<string>): Promise<string[]>
   // hmget: OverloadedKeyCommand<string, string[], R>
-  // HMGET: OverloadedKeyCommand<string, string[], R>
 
   /**
    * Set the string value of a hash field.
@@ -388,9 +410,12 @@ export interface IRedis {
    */
   lpop(key: string): Promise<string>
 
-  // /**
-  //  * Prepend one or multiple values to a list.
-  //  */
+  /**
+   * Prepend one or multiple values to a list.
+   */
+  lpush(): Promise<number>
+  lpush(key: string): Promise<number>
+  lpush(key: string, ...args: Array<string>): Promise<number>
   // lpush: OverloadedKeyCommand<string, number, R>
 
   /**
@@ -468,11 +493,13 @@ export interface IRedis {
    */
   pexpireat(key: string, millisecondsTimestamp: number): Promise<number>
 
-  // /**
-  //  * Adds the specified elements to the specified HyperLogLog.
-  //  */
+  /**
+   * Adds the specified elements to the specified HyperLogLog.
+   */
+  pfadd(): Promise<number>
+  pfadd(key: string): Promise<number>
+  pfadd(key: string, ...args: Array<string>): Promise<number>
   // pfadd: OverloadedKeyCommand<string, number, R>
-  // PFADD: OverloadedKeyCommand<string, number, R>
 
   // /**
   //  * Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s).
@@ -552,22 +579,26 @@ export interface IRedis {
    */
   rpoplpush(source: string, destination: string): Promise<string>
 
-  // /**
-  //  * Append one or multiple values to a list.
-  //  */
+  /**
+   * Append one or multiple values to a list.
+   */
+  rpush(): Promise<number>
+  rpush(key: string): Promise<number>
+  rpush(key: string, ...args: Array<string>): Promise<number>
   // rpush: OverloadedKeyCommand<string, number, R>
-  // RPUSH: OverloadedKeyCommand<string, number, R>
 
   /**
    * Append a value to a list, only if the list exists.
    */
   rpushx(key: string, value: string): Promise<number>
 
-  // /**
-  //  * Append one or multiple members to a set.
-  //  */
+  /**
+   * Append one or multiple members to a set.
+   */
+  sadd(): Promise<number>
+  sadd(key: string): Promise<number>
+  sadd(key: string, ...args: Array<string>): Promise<number>
   // sadd: OverloadedKeyCommand<string, number, R>
-  // SADD: OverloadedKeyCommand<string, number, R>
 
   /**
    * Synchronously save the dataset to disk.
@@ -595,11 +626,13 @@ export interface IRedis {
   // sdiff: OverloadedCommand<string, string[], R>
   // SDIFF: OverloadedCommand<string, string[], R>
 
-  // /**
-  //  * Subtract multiple sets and store the resulting set in a key.
-  //  */
+  /**
+   * Subtract multiple sets and store the resulting set in a key.
+   */
+  sdiffstore(): Promise<number>
+  sdiffstore(key: string): Promise<number>
+  sdiffstore(key: string, ...args: Array<string>): Promise<number>
   // sdiffstore: OverloadedKeyCommand<string, number, R>
-  // SDIFFSTORE: OverloadedKeyCommand<string, number, R>
 
   /**
    * Change the selected database for the current connection.
@@ -640,11 +673,13 @@ export interface IRedis {
   // shutdown: OverloadedCommand<string, string, R>
   // SHUTDOWN: OverloadedCommand<string, string, R>
 
-  // /**
-  //  * Intersect multiple sets.
-  //  */
+  /**
+   * Intersect multiple sets.
+   */
+  sinter(): Promise<string[]>
+  sinter(key: string): Promise<string[]>
+  sinter(key: string, ...args: Array<string>): Promise<string[]>
   // sinter: OverloadedKeyCommand<string, string[], R>
-  // SINTER: OverloadedKeyCommand<string, string[], R>
 
   // /**
   //  * Intersect multiple sets and store the resulting set in a key.
@@ -696,11 +731,13 @@ export interface IRedis {
   srandmember(key: string): Promise<string>
   srandmember(key: string, count: number): Promise<string[]>
 
-  // /**
-  //  * Remove one or more members from a set.
-  //  */
+  /**
+   * Remove one or more members from a set.
+   */
+  srem(): Promise<number>
+  srem(key: string): Promise<number>
+  srem(key: string, ...args: Array<string>): Promise<number>
   // srem: OverloadedKeyCommand<string, number, R>
-  // SREM: OverloadedKeyCommand<string, number, R>
 
   /**
    * Get the length of the value stored in a key.
@@ -755,11 +792,13 @@ export interface IRedis {
   // watch: OverloadedCommand<string, 'OK', R>
   // WATCH: OverloadedCommand<string, 'OK', R>
 
-  // /**
-  //  * Add one or more members to a sorted set, or update its score if it already exists.
-  //  */
+  /**
+   * Add one or more members to a sorted set, or update its score if it already exists.
+   */
+  zadd(): Promise<number>
+  zadd(key: string): Promise<number>
+  zadd(key: string, ...args: Array<string | number>): Promise<number>
   // zadd: OverloadedKeyCommand<string | number, number, R>
-  // ZADD: OverloadedKeyCommand<string | number, number, R>
 
   /**
    * Get the number of members in a sorted set.
@@ -833,11 +872,13 @@ export interface IRedis {
    */
   zrank(key: string, member: string): Promise<number | undefined>
 
-  // /**
-  //  * Remove one or more members from a sorted set.
-  //  */
+  /**
+   * Remove one or more members from a sorted set.
+   */
+  zrem(): Promise<number>
+  zrem(key: string): Promise<number>
+  zrem(key: string, ...args: Array<string>): Promise<number>
   // zrem: OverloadedKeyCommand<string, number, R>
-  // ZREM: OverloadedKeyCommand<string, number, R>
 
   /**
    * Remove all members in a sorted set between the given lexicographical range.
@@ -905,21 +946,27 @@ export interface IRedis {
   // scan: OverloadedCommand<string, [string, string[]], R>
   // SCAN: OverloadedCommand<string, [string, string[]], R>
 
-  // /**
-  //  * Incrementally iterate Set elements.
-  //  */
+  /**
+   * Incrementally iterate Set elements.
+   */
+  sscan(): Promise<[string, string[]]>
+  sscan(key: string): Promise<[string, string[]]>
+  sscan(key: string, ...args: Array<string>): Promise<[string, string[]]>
   // sscan: OverloadedKeyCommand<string, [string, string[]], R>
-  // SSCAN: OverloadedKeyCommand<string, [string, string[]], R>
 
-  // /**
-  //  * Incrementally iterate hash fields and associated values.
-  //  */
+  /**
+   * Incrementally iterate hash fields and associated values.
+   */
+  hscan(): Promise<[string, string[]]>
+  hscan(key: string): Promise<[string, string[]]>
+  hscan(key: string, ...args: Array<string>): Promise<[string, string[]]>
   // hscan: OverloadedKeyCommand<string, [string, string[]], R>
-  // HSCAN: OverloadedKeyCommand<string, [string, string[]], R>
 
-  // /**
-  //  * Incrementally iterate sorted sets elements and associated scores.
-  //  */
+  /**
+   * Incrementally iterate sorted sets elements and associated scores.
+   */
+  zscan(): Promise<[string, string[]]>
+  zscan(key: string): Promise<[string, string[]]>
+  zscan(key: string, ...args: Array<string>): Promise<[string, string[]]>
   // zscan: OverloadedKeyCommand<string, [string, string[]], R>
-  // ZSCAN: OverloadedKeyCommand<string, [string, string[]], R>
 }

@@ -242,36 +242,24 @@ class RedisClient extends Facade_1.Facade {
     flushdb() {
         return this.redisClientProxy('flushdb', arguments);
     }
-    // /**
-    //  * Add one or more geospatial items in the geospatial index represented using a sorted set.
-    //  */
-    // geoadd: OverloadedKeyCommand<string | number, number, R>
-    // GEOADD: OverloadedKeyCommand<string | number, number, R>
-    // /**
-    //  * Returns members of a geospatial index as standard geohash strings.
-    //  */
-    // geohash: OverloadedKeyCommand<string, string, R>
-    // GEOHASH: OverloadedKeyCommand<string, string, R>
-    // /**
-    //  * Returns longitude and latitude of members of a geospatial index.
-    //  */
-    // geopos: OverloadedKeyCommand<string, Array<[number, number]>, R>
-    // GEOPOS: OverloadedKeyCommand<string, Array<[number, number]>, R>
-    // /**
-    //  * Returns the distance between two members of a geospatial index.
-    //  */
-    // geodist: OverloadedKeyCommand<string, string, R>
-    // GEODIST: OverloadedKeyCommand<string, string, R>
-    // /**
-    //  * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a point.
-    //  */
-    // georadius: OverloadedKeyCommand<string | number, Array<string | [string, string | [string, string]]>, R>
-    // GEORADIUS: OverloadedKeyCommand<string | number, Array<string | [string, string | [string, string]]>, R>
-    // /**
-    //  * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a member.
-    //  */
-    // georadiusbymember: OverloadedKeyCommand<string | number, Array<string | [string, string | [string, string]]>, R>
-    // GEORADIUSBYMEMBER: OverloadedKeyCommand<string | number, Array<string | [string, string | [string, string]]>, R>
+    geoadd() {
+        return this.redisClientProxy('geoadd', arguments);
+    }
+    geohash() {
+        return this.redisClientProxy('geohash', arguments);
+    }
+    geopos() {
+        return this.redisClientProxy('geopos', arguments);
+    }
+    geodist() {
+        return this.redisClientProxy('geodist', arguments);
+    }
+    georadius() {
+        return this.redisClientProxy('georadius', arguments);
+    }
+    georadiusbymember() {
+        return this.redisClientProxy('georadiusbymember', arguments);
+    }
     /**
      * Get the value of a key.
      */
@@ -296,11 +284,9 @@ class RedisClient extends Facade_1.Facade {
     getset(key, value) {
         return this.redisClientProxy('getset', arguments);
     }
-    // /**
-    //  * Delete on or more hash fields.
-    //  */
-    // hdel: OverloadedKeyCommand<string, number, R>
-    // HDEL: OverloadedKeyCommand<string, number, R>
+    hdel() {
+        return this.redisClientProxy('hdel', arguments);
+    }
     /**
      * Determine if a hash field exists.
      */
@@ -343,11 +329,9 @@ class RedisClient extends Facade_1.Facade {
     hlen(key) {
         return this.redisClientProxy('hlen', arguments);
     }
-    // /**
-    //  * Get the values of all the given hash fields.
-    //  */
-    // hmget: OverloadedKeyCommand<string, string[], R>
-    // HMGET: OverloadedKeyCommand<string, string[], R>
+    hmget() {
+        return this.redisClientProxy('hmget', arguments);
+    }
     /**
      * Set the string value of a hash field.
      */
@@ -426,10 +410,9 @@ class RedisClient extends Facade_1.Facade {
     lpop(key) {
         return this.redisClientProxy('lpop', arguments);
     }
-    // /**
-    //  * Prepend one or multiple values to a list.
-    //  */
-    // lpush: OverloadedKeyCommand<string, number, R>
+    lpush() {
+        return this.redisClientProxy('lpush', arguments);
+    }
     /**
      * Prepend a value to a list, only if the list exists.
      */
@@ -509,11 +492,9 @@ class RedisClient extends Facade_1.Facade {
     pexpireat(key, millisecondsTimestamp) {
         return this.redisClientProxy('pexpireat', arguments);
     }
-    // /**
-    //  * Adds the specified elements to the specified HyperLogLog.
-    //  */
-    // pfadd: OverloadedKeyCommand<string, number, R>
-    // PFADD: OverloadedKeyCommand<string, number, R>
+    pfadd() {
+        return this.redisClientProxy('pfadd', arguments);
+    }
     // /**
     //  * Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s).
     //  */
@@ -601,22 +582,18 @@ class RedisClient extends Facade_1.Facade {
     rpoplpush(source, destination) {
         return this.redisClientProxy('rpoplpush', arguments);
     }
-    // /**
-    //  * Append one or multiple values to a list.
-    //  */
-    // rpush: OverloadedKeyCommand<string, number, R>
-    // RPUSH: OverloadedKeyCommand<string, number, R>
+    rpush() {
+        return this.redisClientProxy('rpush', arguments);
+    }
     /**
      * Append a value to a list, only if the list exists.
      */
     rpushx(key, value) {
         return this.redisClientProxy('rpushx', arguments);
     }
-    // /**
-    //  * Append one or multiple members to a set.
-    //  */
-    // sadd: OverloadedKeyCommand<string, number, R>
-    // SADD: OverloadedKeyCommand<string, number, R>
+    sadd() {
+        return this.redisClientProxy('sadd', arguments);
+    }
     /**
      * Synchronously save the dataset to disk.
      */
@@ -629,25 +606,9 @@ class RedisClient extends Facade_1.Facade {
     scard(key) {
         return this.redisClientProxy('scard', arguments);
     }
-    // /**
-    //  * DEBUG - Set the debug mode for executed scripts.
-    //  * EXISTS - Check existence of scripts in the script cache.
-    //  * FLUSH - Remove all scripts from the script cache.
-    //  * KILL - Kill the script currently in execution.
-    //  * LOAD - Load the specified Lua script into the script cache.
-    //  */
-    // script: OverloadedCommand<string, any, R>
-    // SCRIPT: OverloadedCommand<string, any, R>
-    // /**
-    //  * Subtract multiple sets.
-    //  */
-    // sdiff: OverloadedCommand<string, string[], R>
-    // SDIFF: OverloadedCommand<string, string[], R>
-    // /**
-    //  * Subtract multiple sets and store the resulting set in a key.
-    //  */
-    // sdiffstore: OverloadedKeyCommand<string, number, R>
-    // SDIFFSTORE: OverloadedKeyCommand<string, number, R>
+    sdiffstore() {
+        return this.redisClientProxy('sdiffstore', arguments);
+    }
     /**
      * Change the selected database for the current connection.
      */
@@ -681,16 +642,9 @@ class RedisClient extends Facade_1.Facade {
     setrange(key, offset, value) {
         return this.redisClientProxy('setrange', arguments);
     }
-    // /**
-    //  * Synchronously save the dataset to disk and then shut down the server.
-    //  */
-    // shutdown: OverloadedCommand<string, string, R>
-    // SHUTDOWN: OverloadedCommand<string, string, R>
-    // /**
-    //  * Intersect multiple sets.
-    //  */
-    // sinter: OverloadedKeyCommand<string, string[], R>
-    // SINTER: OverloadedKeyCommand<string, string[], R>
+    sinter() {
+        return this.redisClientProxy('sinter', arguments);
+    }
     // /**
     //  * Intersect multiple sets and store the resulting set in a key.
     //  */
@@ -731,11 +685,9 @@ class RedisClient extends Facade_1.Facade {
     srandmember() {
         return this.redisClientProxy('srandmember', arguments);
     }
-    // /**
-    //  * Remove one or more members from a set.
-    //  */
-    // srem: OverloadedKeyCommand<string, number, R>
-    // SREM: OverloadedKeyCommand<string, number, R>
+    srem() {
+        return this.redisClientProxy('srem', arguments);
+    }
     /**
      * Get the length of the value stored in a key.
      */
@@ -788,16 +740,9 @@ class RedisClient extends Facade_1.Facade {
     wait(numSlaves, timeout) {
         return this.redisClientProxy('wait', arguments);
     }
-    // /**
-    //  * Watch the given keys to determine execution of the MULTI/EXEC block.
-    //  */
-    // watch: OverloadedCommand<string, 'OK', R>
-    // WATCH: OverloadedCommand<string, 'OK', R>
-    // /**
-    //  * Add one or more members to a sorted set, or update its score if it already exists.
-    //  */
-    // zadd: OverloadedKeyCommand<string | number, number, R>
-    // ZADD: OverloadedKeyCommand<string | number, number, R>
+    zadd() {
+        return this.redisClientProxy('zadd', arguments);
+    }
     /**
      * Get the number of members in a sorted set.
      */
@@ -845,11 +790,9 @@ class RedisClient extends Facade_1.Facade {
     zrank(key, member) {
         return this.redisClientProxy('zrank', arguments);
     }
-    // /**
-    //  * Remove one or more members from a sorted set.
-    //  */
-    // zrem: OverloadedKeyCommand<string, number, R>
-    // ZREM: OverloadedKeyCommand<string, number, R>
+    zrem() {
+        return this.redisClientProxy('zrem', arguments);
+    }
     /**
      * Remove all members in a sorted set between the given lexicographical range.
      */
@@ -885,6 +828,15 @@ class RedisClient extends Facade_1.Facade {
      */
     zscore(key, member) {
         return this.redisClientProxy('zscore', arguments);
+    }
+    sscan() {
+        return this.redisClientProxy('sscan', arguments);
+    }
+    hscan() {
+        return this.redisClientProxy('hscan', arguments);
+    }
+    zscan() {
+        return this.redisClientProxy('zscan', arguments);
     }
 }
 RedisClient.className = constants_1.GlobalFacadeClass.Redis;

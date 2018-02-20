@@ -11,8 +11,12 @@ import { ConfigFacade } from '../../lib/facades/global/ConfigFacade'
 import { FacadeContainer } from '../../lib/facades/FacadeContainer'
 
 describe('RedisClient', function() {
+  let redisClient: RedisClient
+  beforeAll(function() {
+    redisClient = new RedisClient()
+  })
+
   it('extends from Facade so it definitely a FacadeClass', function() {
-    const redisClient = new RedisClient()
     expect(redisClient).toBeInstanceOf(Facade)
     expect(redisClient.getClassName()).toEqual(GlobalFacadeClass.Redis)
     expect(ClassRegistry.has(GlobalFacadeClass.Redis)).toBe(true)
@@ -24,15 +28,14 @@ describe('RedisClient', function() {
         host: 'localhost',
         port: 6379
       })
-      const redisClient = new RedisClient()
-      expect(redisClient.getCurrentClient()).toEqual('default')
+      const newRedisClient = new RedisClient()
+      expect(newRedisClient.getCurrentClient()).toEqual('default')
       FacadeContainer.verifyAndRestoreAllFacades()
     })
   })
 
   describe('.createClient()', function() {
     it('creates new client and put into bucket if the name is not exists', function() {
-      const redisClient = new RedisClient()
       redisClient.createClient('test', {
         host: 'localhost',
         port: 6379
@@ -41,17 +44,14 @@ describe('RedisClient', function() {
     })
 
     it('does not creates new client the name is exists', function() {
-      const redisClient = new RedisClient()
       redisClient.createClient('default', {
         host: 'localhost',
         port: 6379
       })
       expect(redisClient.getCurrentClient()).toEqual('default')
-      expect(typeof redisClient['bucket']['test'] === 'undefined').toBe(true)
     })
 
     it('always return created/existing client', function() {
-      const redisClient = new RedisClient()
       expect(
         redisClient.createClient('test', {
           host: 'localhost',
@@ -64,21 +64,15 @@ describe('RedisClient', function() {
 
   describe('.useClient()', function() {
     it('sets currentBucket to the name if it exists', function() {
-      const redisClient = new RedisClient()
-      redisClient.createClient('test', {
-        host: 'localhost',
-        port: 6379
-      })
       expect(redisClient.useClient('test').getCurrentClient()).toEqual('test')
       expect(redisClient.useClient('default').getCurrentClient()).toEqual('default')
     })
 
     it('throws an Error if the name is not in bucket list', function() {
-      const redisClient = new RedisClient()
       try {
-        redisClient.useClient('test')
+        redisClient.useClient('test-not-found')
       } catch (error) {
-        expect(error.message).toEqual('RedisClient "test" is not found')
+        expect(error.message).toEqual('RedisClient "test-not-found" is not found')
         return
       }
       expect('should not reach this line').toEqual('hm')
@@ -87,20 +81,14 @@ describe('RedisClient', function() {
 
   describe('.getClient()', function() {
     it('returns native redis client if name exists', function() {
-      const redisClient = new RedisClient()
-      redisClient.createClient('test', {
-        host: 'localhost',
-        port: 6379
-      })
       expect(redisClient.getClient('test') === redisClient['bucket']['test']).toBe(true)
     })
 
     it('throws an Error if the name is not in bucket list', function() {
-      const redisClient = new RedisClient()
       try {
-        redisClient.getClient('test')
+        redisClient.getClient('test-not-found')
       } catch (error) {
-        expect(error.message).toEqual('RedisClient "test" is not found')
+        expect(error.message).toEqual('RedisClient "test-not-found" is not found')
         return
       }
       expect('should not reach this line').toEqual('hm')
@@ -113,16 +101,15 @@ describe('RedisClient', function() {
 
   describe('.hasClient()', function() {
     it('simply returns true if there is client with name in bucket', function() {
-      const redisClient = new RedisClient()
       expect(redisClient.hasClient('default')).toBe(true)
-      expect(redisClient.hasClient('test')).toBe(false)
+      expect(redisClient.hasClient('test')).toBe(true)
+      expect(redisClient.hasClient('test-not-found')).toBe(false)
     })
   })
 
   describe('protected .redisClientProxy()', function() {
     it('simply calls RedisClient.prototype[method] with custom callback', function() {
       const redisStub = Sinon.stub(Redis.RedisClient.prototype, 'get')
-      const redisClient = new RedisClient()
       expect(isPromise(redisClient['redisClientProxy']('get', ['test']))).toBe(true)
       expect(redisStub.calledWith('test')).toBe(true)
       expect(typeof redisStub.lastCall.args[1] === 'function').toBe(true)
@@ -138,7 +125,6 @@ describe('RedisClient', function() {
     })
 
     it('calls Promise.resolve if there is no error', async function() {
-      const redisClient = new RedisClient()
       const result = await redisClient['redisClientProxy']('append', ['test', 'a'])
       expect(result).toBeGreaterThan(0)
     })
@@ -165,7 +151,6 @@ describe('RedisClient', function() {
   function redisClientProxy_test_for(facadeMethod: string, redisMethod: string, args: any[]) {
     describe('.' + facadeMethod + '()', function() {
       it('returns a promise', function() {
-        const redisClient = new RedisClient()
         const redisClientProxyStub = Sinon.stub(redisClient, <any>'redisClientProxy')
         redisClientProxyStub.callsFake(async function() {})
         expect(isPromise(redisClient[facadeMethod](...args))).toBe(true)
@@ -173,7 +158,6 @@ describe('RedisClient', function() {
       })
 
       it('calls .redisClientProxy(), passes method name and arguments', async function() {
-        const redisClient = new RedisClient()
         const redisClientProxyStub = Sinon.stub(redisClient, <any>'redisClientProxy')
         redisClientProxyStub.callsFake(async function() {
           return true
@@ -181,6 +165,7 @@ describe('RedisClient', function() {
         redisClient[facadeMethod](...args)
         expect(redisClientProxyStub.calledWith(redisMethod)).toBe(true)
         expect(Array.from(redisClientProxyStub.lastCall.args[1])).toEqual(args)
+        redisClientProxyStub.restore()
       })
     })
   }
@@ -215,11 +200,53 @@ describe('RedisClient', function() {
   redisClientProxy_test_for('flushall', 'flushall', [])
   redisClientProxy_test_for('flushdb', 'flushdb', [])
 
+  redisClientProxy_test_for('geoadd', 'geoadd', [])
+  redisClientProxy_test_for('geoadd', 'geoadd', ['test'])
+  redisClientProxy_test_for('geoadd', 'geoadd', ['test', 'value'])
+  redisClientProxy_test_for('geoadd', 'geoadd', ['test', 0])
+  redisClientProxy_test_for('geoadd', 'geoadd', ['test', 0, 1])
+  redisClientProxy_test_for('geoadd', 'geoadd', ['test', 0, 1, 2])
+  redisClientProxy_test_for('geohash', 'geohash', [])
+  redisClientProxy_test_for('geohash', 'geohash', ['test'])
+  redisClientProxy_test_for('geohash', 'geohash', ['test', 'value'])
+  redisClientProxy_test_for('geohash', 'geohash', ['test', '0'])
+  redisClientProxy_test_for('geohash', 'geohash', ['test', '0', '1'])
+  redisClientProxy_test_for('geohash', 'geohash', ['test', '0', '1', '2'])
+  redisClientProxy_test_for('geopos', 'geopos', [])
+  redisClientProxy_test_for('geopos', 'geopos', ['test'])
+  redisClientProxy_test_for('geopos', 'geopos', ['test', 'value'])
+  redisClientProxy_test_for('geopos', 'geopos', ['test', '0'])
+  redisClientProxy_test_for('geopos', 'geopos', ['test', '0', '1'])
+  redisClientProxy_test_for('geopos', 'geopos', ['test', '0', '1', '2'])
+  redisClientProxy_test_for('geodist', 'geodist', [])
+  redisClientProxy_test_for('geodist', 'geodist', ['test'])
+  redisClientProxy_test_for('geodist', 'geodist', ['test', 'value'])
+  redisClientProxy_test_for('geodist', 'geodist', ['test', '0'])
+  redisClientProxy_test_for('geodist', 'geodist', ['test', '0', '1'])
+  redisClientProxy_test_for('geodist', 'geodist', ['test', '0', '1', '2'])
+  redisClientProxy_test_for('georadius', 'georadius', [])
+  redisClientProxy_test_for('georadius', 'georadius', ['test'])
+  redisClientProxy_test_for('georadius', 'georadius', ['test', 'value'])
+  redisClientProxy_test_for('georadius', 'georadius', ['test', 0])
+  redisClientProxy_test_for('georadius', 'georadius', ['test', 0, 1])
+  redisClientProxy_test_for('georadius', 'georadius', ['test', 0, 1, 2])
+  redisClientProxy_test_for('georadiusbymember', 'georadiusbymember', [])
+  redisClientProxy_test_for('georadiusbymember', 'georadiusbymember', ['test'])
+  redisClientProxy_test_for('georadiusbymember', 'georadiusbymember', ['test', 'value'])
+  redisClientProxy_test_for('georadiusbymember', 'georadiusbymember', ['test', 0])
+  redisClientProxy_test_for('georadiusbymember', 'georadiusbymember', ['test', 0, 1])
+  redisClientProxy_test_for('georadiusbymember', 'georadiusbymember', ['test', 0, 1, 2])
   redisClientProxy_test_for('get', 'get', ['test'])
   redisClientProxy_test_for('getbit', 'getbit', ['test', 7])
   redisClientProxy_test_for('getrange', 'getrange', ['test', 0, 3])
   redisClientProxy_test_for('getset', 'getset', ['test', 'value'])
 
+  redisClientProxy_test_for('hdel', 'hdel', [])
+  redisClientProxy_test_for('hdel', 'hdel', ['test'])
+  redisClientProxy_test_for('hdel', 'hdel', ['test', 'value'])
+  redisClientProxy_test_for('hdel', 'hdel', ['test', 0])
+  redisClientProxy_test_for('hdel', 'hdel', ['test', 0, 1])
+  redisClientProxy_test_for('hdel', 'hdel', ['test', 0, 1, 2])
   redisClientProxy_test_for('hexists', 'hexists', ['test', 'value'])
   redisClientProxy_test_for('hget', 'hget', ['test', 'value'])
   redisClientProxy_test_for('hgetall', 'hgetall', ['test'])
@@ -227,6 +254,13 @@ describe('RedisClient', function() {
   redisClientProxy_test_for('hincrbyfloat', 'hincrbyfloat', ['test', 'value', 3.0])
   redisClientProxy_test_for('hkeys', 'hkeys', ['test'])
   redisClientProxy_test_for('hlen', 'hlen', ['test'])
+  redisClientProxy_test_for('hmget', 'hmget', [])
+  redisClientProxy_test_for('hmget', 'hmget', ['test'])
+  redisClientProxy_test_for('hmget', 'hmget', ['test', 'value'])
+  redisClientProxy_test_for('hmget', 'hmget', ['test', 0])
+  redisClientProxy_test_for('hmget', 'hmget', ['test', 0, 1])
+  redisClientProxy_test_for('hmget', 'hmget', ['test', 0, 1, 2])
+  redisClientProxy_test_for('hmget', 'hmget', ['test', 'value', 'value'])
   redisClientProxy_test_for('hset', 'hset', ['test', 'value', 'value'])
   redisClientProxy_test_for('hsetnx', 'hsetnx', ['test', 'value', 'value'])
   redisClientProxy_test_for('hstrlen', 'hstrlen', ['test', 'value'])
@@ -243,6 +277,13 @@ describe('RedisClient', function() {
   redisClientProxy_test_for('linsert', 'linsert', ['test', 'AFTER', 'test', 'value'])
   redisClientProxy_test_for('llen', 'llen', ['test'])
   redisClientProxy_test_for('lpop', 'lpop', ['test'])
+  redisClientProxy_test_for('lpush', 'lpush', [])
+  redisClientProxy_test_for('lpush', 'lpush', ['test'])
+  redisClientProxy_test_for('lpush', 'lpush', ['test', 'value'])
+  redisClientProxy_test_for('lpush', 'lpush', ['test', 0])
+  redisClientProxy_test_for('lpush', 'lpush', ['test', 0, 1])
+  redisClientProxy_test_for('lpush', 'lpush', ['test', 0, 1, 2])
+  redisClientProxy_test_for('lpush', 'lpush', ['test', 'value', 'value'])
   redisClientProxy_test_for('lpushx', 'lpushx', ['lpushx', 'value'])
   redisClientProxy_test_for('lrange', 'lrange', ['test', 0, 1])
   redisClientProxy_test_for('lrem', 'lrem', ['test', 1, 'value'])
@@ -254,6 +295,13 @@ describe('RedisClient', function() {
   redisClientProxy_test_for('persist', 'persist', ['test'])
   redisClientProxy_test_for('pexpire', 'pexpire', ['test', 1])
   redisClientProxy_test_for('pexpireat', 'pexpireat', ['test', 1])
+  redisClientProxy_test_for('pfadd', 'pfadd', [])
+  redisClientProxy_test_for('pfadd', 'pfadd', ['test'])
+  redisClientProxy_test_for('pfadd', 'pfadd', ['test', 'value'])
+  redisClientProxy_test_for('pfadd', 'pfadd', ['test', 0])
+  redisClientProxy_test_for('pfadd', 'pfadd', ['test', 0, 1])
+  redisClientProxy_test_for('pfadd', 'pfadd', ['test', 0, 1, 2])
+  redisClientProxy_test_for('pfadd', 'pfadd', ['test', 'value', 'value'])
   redisClientProxy_test_for('psetex', 'psetex', ['test', 1, 'value'])
   redisClientProxy_test_for('pttl', 'pttl', ['test'])
 
@@ -268,10 +316,31 @@ describe('RedisClient', function() {
   redisClientProxy_test_for('role', 'role', [])
   redisClientProxy_test_for('rpop', 'rpop', ['test'])
   redisClientProxy_test_for('rpoplpush', 'rpoplpush', ['test', 'value'])
+  redisClientProxy_test_for('rpush', 'rpush', [])
+  redisClientProxy_test_for('rpush', 'rpush', ['test'])
+  redisClientProxy_test_for('rpush', 'rpush', ['test', 'value'])
+  redisClientProxy_test_for('rpush', 'rpush', ['test', 0])
+  redisClientProxy_test_for('rpush', 'rpush', ['test', 0, 1])
+  redisClientProxy_test_for('rpush', 'rpush', ['test', 0, 1, 2])
+  redisClientProxy_test_for('rpush', 'rpush', ['test', 'value', 'value'])
   redisClientProxy_test_for('rpushx', 'rpushx', ['test', 'value'])
 
+  redisClientProxy_test_for('sadd', 'sadd', [])
+  redisClientProxy_test_for('sadd', 'sadd', ['test'])
+  redisClientProxy_test_for('sadd', 'sadd', ['test', 'value'])
+  redisClientProxy_test_for('sadd', 'sadd', ['test', 0])
+  redisClientProxy_test_for('sadd', 'sadd', ['test', 0, 1])
+  redisClientProxy_test_for('sadd', 'sadd', ['test', 0, 1, 2])
+  redisClientProxy_test_for('sadd', 'sadd', ['test', 'value', 'value'])
   redisClientProxy_test_for('save', 'save', [])
   redisClientProxy_test_for('scard', 'scard', ['test'])
+  redisClientProxy_test_for('sdiffstore', 'sdiffstore', [])
+  redisClientProxy_test_for('sdiffstore', 'sdiffstore', ['test'])
+  redisClientProxy_test_for('sdiffstore', 'sdiffstore', ['test', 'value'])
+  redisClientProxy_test_for('sdiffstore', 'sdiffstore', ['test', 0])
+  redisClientProxy_test_for('sdiffstore', 'sdiffstore', ['test', 0, 1])
+  redisClientProxy_test_for('sdiffstore', 'sdiffstore', ['test', 0, 1, 2])
+  redisClientProxy_test_for('sdiffstore', 'sdiffstore', ['test', 'value', 'value'])
   redisClientProxy_test_for('select', 'select', ['test'])
   redisClientProxy_test_for('select', 'select', [0])
   redisClientProxy_test_for('set', 'set', ['test', 'value'])
@@ -282,6 +351,13 @@ describe('RedisClient', function() {
   redisClientProxy_test_for('setex', 'setex', ['test', 12, 'value'])
   redisClientProxy_test_for('setnx', 'setnx', ['test', 'value'])
   redisClientProxy_test_for('setrange', 'setrange', ['test', 0, 'value'])
+  redisClientProxy_test_for('sinter', 'sinter', [])
+  redisClientProxy_test_for('sinter', 'sinter', ['test'])
+  redisClientProxy_test_for('sinter', 'sinter', ['test', 'value'])
+  redisClientProxy_test_for('sinter', 'sinter', ['test', 0])
+  redisClientProxy_test_for('sinter', 'sinter', ['test', 0, 1])
+  redisClientProxy_test_for('sinter', 'sinter', ['test', 0, 1, 2])
+  redisClientProxy_test_for('sinter', 'sinter', ['test', 'value', 'value'])
   redisClientProxy_test_for('sismember', 'sismember', ['test', 'member'])
   redisClientProxy_test_for('slaveof', 'slaveof', ['localhost', '6666'])
   redisClientProxy_test_for('smembers', 'smembers', ['test'])
@@ -290,6 +366,13 @@ describe('RedisClient', function() {
   redisClientProxy_test_for('spop', 'spop', ['test', 2])
   redisClientProxy_test_for('srandmember', 'srandmember', ['test'])
   redisClientProxy_test_for('srandmember', 'srandmember', ['test', 2])
+  redisClientProxy_test_for('srem', 'srem', [])
+  redisClientProxy_test_for('srem', 'srem', ['test'])
+  redisClientProxy_test_for('srem', 'srem', ['test', 'value'])
+  redisClientProxy_test_for('srem', 'srem', ['test', 0])
+  redisClientProxy_test_for('srem', 'srem', ['test', 0, 1])
+  redisClientProxy_test_for('srem', 'srem', ['test', 0, 1, 2])
+  redisClientProxy_test_for('srem', 'srem', ['test', 'value', 'value'])
   redisClientProxy_test_for('strlen', 'strlen', ['test'])
   redisClientProxy_test_for('sync', 'sync', [])
 
@@ -300,6 +383,13 @@ describe('RedisClient', function() {
   redisClientProxy_test_for('unwatch', 'unwatch', [])
   redisClientProxy_test_for('wait', 'wait', [1, 10000])
 
+  redisClientProxy_test_for('zadd', 'zadd', [])
+  redisClientProxy_test_for('zadd', 'zadd', ['test'])
+  redisClientProxy_test_for('zadd', 'zadd', ['test', 'value'])
+  redisClientProxy_test_for('zadd', 'zadd', ['test', 0])
+  redisClientProxy_test_for('zadd', 'zadd', ['test', 0, 1])
+  redisClientProxy_test_for('zadd', 'zadd', ['test', 0, 1, 2])
+  redisClientProxy_test_for('zadd', 'zadd', ['test', 'value', 'value'])
   redisClientProxy_test_for('zcard', 'zcard', ['test'])
   redisClientProxy_test_for('zcount', 'zcount', ['test', 1, 3])
   redisClientProxy_test_for('zcount', 'zcount', ['test', '1', '3'])
@@ -318,6 +408,13 @@ describe('RedisClient', function() {
   redisClientProxy_test_for('zrangebyscore', 'zrangebyscore', ['test', 'min', 'max', 'limit', 1, 2])
   redisClientProxy_test_for('zrangebyscore', 'zrangebyscore', ['test', 'min', 'max', 'limit', 1, 2, 3])
   redisClientProxy_test_for('zrank', 'zrank', ['test', 'member'])
+  redisClientProxy_test_for('zrem', 'zrem', [])
+  redisClientProxy_test_for('zrem', 'zrem', ['test'])
+  redisClientProxy_test_for('zrem', 'zrem', ['test', 'value'])
+  redisClientProxy_test_for('zrem', 'zrem', ['test', 0])
+  redisClientProxy_test_for('zrem', 'zrem', ['test', 0, 1])
+  redisClientProxy_test_for('zrem', 'zrem', ['test', 0, 1, 2])
+  redisClientProxy_test_for('zrem', 'zrem', ['test', 'value', 'value'])
   redisClientProxy_test_for('zremrangebylex', 'zremrangebylex', ['test', 1, 2])
   redisClientProxy_test_for('zremrangebyrank', 'zremrangebyrank', ['test', 1, 2])
   redisClientProxy_test_for('zremrangebyscore', 'zremrangebyscore', ['test', 1, 2])
@@ -330,4 +427,26 @@ describe('RedisClient', function() {
   redisClientProxy_test_for('zrevrangebyscore', 'zrevrangebyscore', ['test', 1, 2, 'score', 'limit', 0, 1])
   redisClientProxy_test_for('zrevrank', 'zrevrank', ['test', 'member'])
   redisClientProxy_test_for('zscore', 'zscore', ['test', 'member'])
+
+  redisClientProxy_test_for('sscan', 'sscan', [])
+  redisClientProxy_test_for('sscan', 'sscan', ['test'])
+  redisClientProxy_test_for('sscan', 'sscan', ['test', 'value'])
+  redisClientProxy_test_for('sscan', 'sscan', ['test', 0])
+  redisClientProxy_test_for('sscan', 'sscan', ['test', 0, 1])
+  redisClientProxy_test_for('sscan', 'sscan', ['test', 0, 1, 2])
+  redisClientProxy_test_for('sscan', 'sscan', ['test', 'value', 'value'])
+  redisClientProxy_test_for('hscan', 'hscan', [])
+  redisClientProxy_test_for('hscan', 'hscan', ['test'])
+  redisClientProxy_test_for('hscan', 'hscan', ['test', 'value'])
+  redisClientProxy_test_for('hscan', 'hscan', ['test', 0])
+  redisClientProxy_test_for('hscan', 'hscan', ['test', 0, 1])
+  redisClientProxy_test_for('hscan', 'hscan', ['test', 0, 1, 2])
+  redisClientProxy_test_for('hscan', 'hscan', ['test', 'value', 'value'])
+  redisClientProxy_test_for('zscan', 'zscan', [])
+  redisClientProxy_test_for('zscan', 'zscan', ['test'])
+  redisClientProxy_test_for('zscan', 'zscan', ['test', 'value'])
+  redisClientProxy_test_for('zscan', 'zscan', ['test', 0])
+  redisClientProxy_test_for('zscan', 'zscan', ['test', 0, 1])
+  redisClientProxy_test_for('zscan', 'zscan', ['test', 0, 1, 2])
+  redisClientProxy_test_for('zscan', 'zscan', ['test', 'value', 'value'])
 })

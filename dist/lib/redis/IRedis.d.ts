@@ -49,7 +49,8 @@ export interface IRedis {
     /**
      * Perform arbitrary bitfield integer operations on strings.
      */
-    bitfield(key: string, arg: Array<string | number>): Promise<[number, number]>;
+    bitfield(): Promise<[number, number]>;
+    bitfield(key: string): Promise<[number, number]>;
     bitfield(key: string, ...args: Array<string | number>): Promise<[number, number]>;
     /**
      * Perform bitwise operations between strings.
@@ -114,6 +115,42 @@ export interface IRedis {
      */
     flushdb(): Promise<string>;
     /**
+     * Add one or more geospatial items in the geospatial index represented using a sorted set.
+     */
+    geoadd(): Promise<number>;
+    geoadd(key: string): Promise<number>;
+    geoadd(key: string, ...args: Array<string | number>): Promise<number>;
+    /**
+     * Returns members of a geospatial index as standard geohash strings.
+     */
+    geohash(): Promise<string>;
+    geohash(key: string): Promise<string>;
+    geohash(key: string, ...args: Array<string>): Promise<string>;
+    /**
+     * Returns longitude and latitude of members of a geospatial index.
+     */
+    geopos(): Promise<Array<[number, number]>>;
+    geopos(key: string): Promise<Array<[number, number]>>;
+    geopos(key: string, ...args: Array<string>): Promise<Array<[number, number]>>;
+    /**
+     * Returns the distance between two members of a geospatial index.
+     */
+    geodist(): Promise<string>;
+    geodist(key: string): Promise<string>;
+    geodist(key: string, ...args: Array<string>): Promise<string>;
+    /**
+     * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a point.
+     */
+    georadius(): Promise<Array<string | [string, string | [string, string]]>>;
+    georadius(key: string): Promise<Array<string | [string, string | [string, string]]>>;
+    georadius(key: string, ...args: Array<string | number>): Promise<Array<string | [string, string | [string, string]]>>;
+    /**
+     * Query a sorted set representing a geospatial index to fetch members matching a given maximum distance from a member.
+     */
+    georadiusbymember(): Promise<Array<string | [string, string | [string, string]]>>;
+    georadiusbymember(key: string): Promise<Array<string | [string, string | [string, string]]>>;
+    georadiusbymember(key: string, ...args: Array<string | number>): Promise<Array<string | [string, string | [string, string]]>>;
+    /**
      * Get the value of a key.
      */
     get(key: string): Promise<string>;
@@ -129,6 +166,9 @@ export interface IRedis {
      * Set the string value of a key and return its old value.
      */
     getset(key: string, value: string): Promise<string>;
+    hdel(): Promise<number>;
+    hdel(key: string): Promise<number>;
+    hdel(key: string, ...args: Array<string>): Promise<number>;
     /**
      * Determine if a hash field exists.
      */
@@ -159,6 +199,12 @@ export interface IRedis {
      * Get the number of fields in a hash.
      */
     hlen(key: string): Promise<number>;
+    /**
+     * Get the values of all the given hash fields.
+     */
+    hmget(): Promise<string[]>;
+    hmget(key: string): Promise<string[]>;
+    hmget(key: string, ...args: Array<string>): Promise<string[]>;
     /**
      * Set the string value of a hash field.
      */
@@ -212,6 +258,12 @@ export interface IRedis {
      */
     lpop(key: string): Promise<string>;
     /**
+     * Prepend one or multiple values to a list.
+     */
+    lpush(): Promise<number>;
+    lpush(key: string): Promise<number>;
+    lpush(key: string, ...args: Array<string>): Promise<number>;
+    /**
      * Prepend a value to a list, only if the list exists.
      */
     lpushx(key: string, value: string): Promise<number>;
@@ -247,6 +299,12 @@ export interface IRedis {
      * Set the expiration for a key as a UNIX timestamp specified in milliseconds.
      */
     pexpireat(key: string, millisecondsTimestamp: number): Promise<number>;
+    /**
+     * Adds the specified elements to the specified HyperLogLog.
+     */
+    pfadd(): Promise<number>;
+    pfadd(key: string): Promise<number>;
+    pfadd(key: string, ...args: Array<string>): Promise<number>;
     /**
      * Set the value and expiration in milliseconds of a key.
      */
@@ -296,9 +354,21 @@ export interface IRedis {
      */
     rpoplpush(source: string, destination: string): Promise<string>;
     /**
+     * Append one or multiple values to a list.
+     */
+    rpush(): Promise<number>;
+    rpush(key: string): Promise<number>;
+    rpush(key: string, ...args: Array<string>): Promise<number>;
+    /**
      * Append a value to a list, only if the list exists.
      */
     rpushx(key: string, value: string): Promise<number>;
+    /**
+     * Append one or multiple members to a set.
+     */
+    sadd(): Promise<number>;
+    sadd(key: string): Promise<number>;
+    sadd(key: string, ...args: Array<string>): Promise<number>;
     /**
      * Synchronously save the dataset to disk.
      */
@@ -307,6 +377,12 @@ export interface IRedis {
      * Get the number of members in a set.
      */
     scard(key: string): Promise<number>;
+    /**
+     * Subtract multiple sets and store the resulting set in a key.
+     */
+    sdiffstore(): Promise<number>;
+    sdiffstore(key: string): Promise<number>;
+    sdiffstore(key: string, ...args: Array<string>): Promise<number>;
     /**
      * Change the selected database for the current connection.
      */
@@ -335,6 +411,12 @@ export interface IRedis {
      */
     setrange(key: string, offset: number, value: string): Promise<number>;
     /**
+     * Intersect multiple sets.
+     */
+    sinter(): Promise<string[]>;
+    sinter(key: string): Promise<string[]>;
+    sinter(key: string, ...args: Array<string>): Promise<string[]>;
+    /**
      * Determine if a given value is a member of a set.
      */
     sismember(key: string, member: string): Promise<number>;
@@ -360,6 +442,12 @@ export interface IRedis {
      */
     srandmember(key: string): Promise<string>;
     srandmember(key: string, count: number): Promise<string[]>;
+    /**
+     * Remove one or more members from a set.
+     */
+    srem(): Promise<number>;
+    srem(key: string): Promise<number>;
+    srem(key: string, ...args: Array<string>): Promise<number>;
     /**
      * Get the length of the value stored in a key.
      */
@@ -388,6 +476,12 @@ export interface IRedis {
      * Wait for the synchronous replication of all the write commands sent in the context of the current connection.
      */
     wait(numSlaves: number, timeout: number): Promise<number>;
+    /**
+     * Add one or more members to a sorted set, or update its score if it already exists.
+     */
+    zadd(): Promise<number>;
+    zadd(key: string): Promise<number>;
+    zadd(key: string, ...args: Array<string | number>): Promise<number>;
     /**
      * Get the number of members in a sorted set.
      */
@@ -431,6 +525,12 @@ export interface IRedis {
      */
     zrank(key: string, member: string): Promise<number | undefined>;
     /**
+     * Remove one or more members from a sorted set.
+     */
+    zrem(): Promise<number>;
+    zrem(key: string): Promise<number>;
+    zrem(key: string, ...args: Array<string>): Promise<number>;
+    /**
      * Remove all members in a sorted set between the given lexicographical range.
      */
     zremrangebylex(key: string, min: string, max: string): Promise<number>;
@@ -462,4 +562,22 @@ export interface IRedis {
      * Get the score associated with the given member in a sorted set.
      */
     zscore(key: string, member: string): Promise<string>;
+    /**
+     * Incrementally iterate Set elements.
+     */
+    sscan(): Promise<[string, string[]]>;
+    sscan(key: string): Promise<[string, string[]]>;
+    sscan(key: string, ...args: Array<string>): Promise<[string, string[]]>;
+    /**
+     * Incrementally iterate hash fields and associated values.
+     */
+    hscan(): Promise<[string, string[]]>;
+    hscan(key: string): Promise<[string, string[]]>;
+    hscan(key: string, ...args: Array<string>): Promise<[string, string[]]>;
+    /**
+     * Incrementally iterate sorted sets elements and associated scores.
+     */
+    zscan(): Promise<[string, string[]]>;
+    zscan(key: string): Promise<[string, string[]]>;
+    zscan(key: string, ...args: Array<string>): Promise<[string, string[]]>;
 }
