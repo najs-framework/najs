@@ -425,16 +425,15 @@ export interface IRedis {
   // MGET: OverloadedCommand<string, string[], R>
 
   // /**
-  //  * Atomically tranfer a key from a Redis instance to another one.
+  //  * Atomically transfer a key from a Redis instance to another one.
   //  */
   // migrate: OverloadedCommand<string, boolean, R>
   // MIGRATE: OverloadedCommand<string, boolean, R>
 
-  // /**
-  //  * Move a key to another database.
-  //  */
-  // move(key: string, db: string | number): R
-  // MOVE(key: string, db: string | number): R
+  /**
+   * Move a key to another database.
+   */
+  move(key: string, db: string | number): Promise<void>
 
   // /**
   //  * Set multiple keys to multiple values.
@@ -454,23 +453,20 @@ export interface IRedis {
   // object: OverloadedCommand<string, any, R>
   // OBJECT: OverloadedCommand<string, any, R>
 
-  // /**
-  //  * Remove the expiration from a key.
-  //  */
-  // persist(key: string, cb?: Callback<number>): R
-  // PERSIST(key: string, cb?: Callback<number>): R
+  /**
+   * Remove the expiration from a key.
+   */
+  persist(key: string): Promise<number>
 
-  // /**
-  //  * Remove a key's time to live in milliseconds.
-  //  */
-  // pexpire(key: string, milliseconds: number, cb?: Callback<number>): R
-  // PEXPIRE(key: string, milliseconds: number, cb?: Callback<number>): R
+  /**
+   * Remove a key's time to live in milliseconds.
+   */
+  pexpire(key: string, milliseconds: number): Promise<number>
 
-  // /**
-  //  * Set the expiration for a key as a UNIX timestamp specified in milliseconds.
-  //  */
-  // pexpireat(key: string, millisecondsTimestamp: number, cb?: Callback<number>): R
-  // PEXPIREAT(key: string, millisecondsTimestamp: number, cb?: Callback<number>): R
+  /**
+   * Set the expiration for a key as a UNIX timestamp specified in milliseconds.
+   */
+  pexpireat(key: string, millisecondsTimestamp: number): Promise<number>
 
   // /**
   //  * Adds the specified elements to the specified HyperLogLog.
@@ -490,11 +486,10 @@ export interface IRedis {
   // pfmerge: OverloadedCommand<string, boolean, R>
   // PFMERGE: OverloadedCommand<string, boolean, R>
 
-  // /**
-  //  * Set the value and expiration in milliseconds of a key.
-  //  */
-  // psetex(key: string, milliseconds: number, value: string, cb?: Callback<'OK'>): R
-  // PSETEX(key: string, milliseconds: number, value: string, cb?: Callback<'OK'>): R
+  /**
+   * Set the value and expiration in milliseconds of a key.
+   */
+  psetex(key: string, milliseconds: number, value: string): Promise<'OK'>
 
   // /**
   //  * Inspect the state of the Pub/Sub subsytem.
@@ -502,71 +497,60 @@ export interface IRedis {
   // pubsub: OverloadedCommand<string, number, R>
   // PUBSUB: OverloadedCommand<string, number, R>
 
-  // /**
-  //  * Get the time to live for a key in milliseconds.
-  //  */
-  // pttl(key: string, cb?: Callback<number>): R
-  // PTTL(key: string, cb?: Callback<number>): R
+  /**
+   * Get the time to live for a key in milliseconds.
+   */
+  pttl(key: string): Promise<number>
 
-  // /**
-  //  * Close the connection.
-  //  */
-  // quit(cb?: Callback<'OK'>): R
-  // QUIT(cb?: Callback<'OK'>): R
+  /**
+   * Close the connection.
+   */
+  quit(): Promise<'OK'>
 
-  // /**
-  //  * Return a random key from the keyspace.
-  //  */
-  // randomkey(cb?: Callback<string>): R
-  // RANDOMKEY(cb?: Callback<string>): R
+  /**
+   * Return a random key from the keyspace.
+   */
+  randomkey(): Promise<string>
 
-  // /**
-  //  * Enables read queries for a connection to a cluster slave node.
-  //  */
-  // readonly(cb?: Callback<string>): R
-  // READONLY(cb?: Callback<string>): R
+  /**
+   * Enables read queries for a connection to a cluster slave node.
+   */
+  readonly(): Promise<string>
 
-  // /**
-  //  * Disables read queries for a connection to cluster slave node.
-  //  */
-  // readwrite(cb?: Callback<string>): R
-  // READWRITE(cb?: Callback<string>): R
+  /**
+   * Disables read queries for a connection to cluster slave node.
+   */
+  readwrite(): Promise<string>
 
-  // /**
-  //  * Rename a key.
-  //  */
-  // rename(key: string, newkey: string, cb?: Callback<'OK'>): R
-  // RENAME(key: string, newkey: string, cb?: Callback<'OK'>): R
+  /**
+   * Rename a key.
+   */
+  rename(key: string, newKey: string): Promise<'OK'>
 
-  // /**
-  //  * Rename a key, only if the new key does not exist.
-  //  */
-  // renamenx(key: string, newkey: string, cb?: Callback<number>): R
-  // RENAMENX(key: string, newkey: string, cb?: Callback<number>): R
+  /**
+   * Rename a key, only if the new key does not exist.
+   */
+  renamenx(key: string, newKey: string): Promise<number>
 
-  // /**
-  //  * Create a key using the provided serialized value, previously obtained using DUMP.
-  //  */
-  // restore(key: string, ttl: number, serializedValue: string, cb?: Callback<'OK'>): R
-  // RESTORE(key: string, ttl: number, serializedValue: string, cb?: Callback<'OK'>): R
+  /**
+   * Create a key using the provided serialized value, previously obtained using DUMP.
+   */
+  restore(key: string, ttl: number, serializedValue: string): Promise<'OK'>
 
-  // /**
-  //  * Return the role of the instance in the context of replication.
-  //  */
-  // role(cb?: Callback<[string, number, Array<[string, string, string]>]>): R
-  // ROLE(cb?: Callback<[string, number, Array<[string, string, string]>]>): R
+  /**
+   * Return the role of the instance in the context of replication.
+   */
+  role(): Promise<[string, number, Array<[string, string, string]>]>
 
-  // /**
-  //  * Remove and get the last element in a list.
-  //  */
-  // rpop(key: string, cb?: Callback<string>): R
-  // RPOP(key: string, cb?: Callback<string>): R
+  /**
+   * Remove and get the last element in a list.
+   */
+  rpop(key: string): Promise<string>
 
-  // /**
-  //  * Remove the last element in a list, prepend it to another list and return it.
-  //  */
-  // rpoplpush(source: string, destination: string, cb?: Callback<string>): R
-  // RPOPLPUSH(source: string, destination: string, cb?: Callback<string>): R
+  /**
+   * Remove the last element in a list, prepend it to another list and return it.
+   */
+  rpoplpush(source: string, destination: string): Promise<string>
 
   // /**
   //  * Append one or multiple values to a list.
@@ -574,11 +558,10 @@ export interface IRedis {
   // rpush: OverloadedKeyCommand<string, number, R>
   // RPUSH: OverloadedKeyCommand<string, number, R>
 
-  // /**
-  //  * Append a value to a list, only if the list exists.
-  //  */
-  // rpushx(key: string, value: string, cb?: Callback<number>): R
-  // RPUSHX(key: string, value: string, cb?: Callback<number>): R
+  /**
+   * Append a value to a list, only if the list exists.
+   */
+  rpushx(key: string, value: string): Promise<number>
 
   // /**
   //  * Append one or multiple members to a set.

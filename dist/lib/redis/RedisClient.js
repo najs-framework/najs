@@ -460,6 +460,158 @@ class RedisClient extends Facade_1.Facade {
     ltrim(key, start, stop) {
         return this.redisClientProxy('ltrim', arguments);
     }
+    // /**
+    //  * Get the values of all given keys.
+    //  */
+    // mget: OverloadedCommand<string, string[], R>
+    // MGET: OverloadedCommand<string, string[], R>
+    // /**
+    //  * Atomically transfer a key from a Redis instance to another one.
+    //  */
+    // migrate: OverloadedCommand<string, boolean, R>
+    // MIGRATE: OverloadedCommand<string, boolean, R>
+    /**
+     * Move a key to another database.
+     */
+    move(key, db) {
+        return this.redisClientProxy('move', arguments);
+    }
+    // /**
+    //  * Set multiple keys to multiple values.
+    //  */
+    // mset: OverloadedCommand<string, boolean, R>
+    // MSET: OverloadedCommand<string, boolean, R>
+    // /**
+    //  * Set multiple keys to multiple values, only if none of the keys exist.
+    //  */
+    // msetnx: OverloadedCommand<string, boolean, R>
+    // MSETNX: OverloadedCommand<string, boolean, R>
+    // /**
+    //  * Inspect the internals of Redis objects.
+    //  */
+    // object: OverloadedCommand<string, any, R>
+    // OBJECT: OverloadedCommand<string, any, R>
+    /**
+     * Remove the expiration from a key.
+     */
+    persist(key) {
+        return this.redisClientProxy('persist', arguments);
+    }
+    /**
+     * Remove a key's time to live in milliseconds.
+     */
+    pexpire(key, milliseconds) {
+        return this.redisClientProxy('pexpire', arguments);
+    }
+    /**
+     * Set the expiration for a key as a UNIX timestamp specified in milliseconds.
+     */
+    pexpireat(key, millisecondsTimestamp) {
+        return this.redisClientProxy('pexpireat', arguments);
+    }
+    // /**
+    //  * Adds the specified elements to the specified HyperLogLog.
+    //  */
+    // pfadd: OverloadedKeyCommand<string, number, R>
+    // PFADD: OverloadedKeyCommand<string, number, R>
+    // /**
+    //  * Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s).
+    //  */
+    // pfcount: OverloadedCommand<string, number, R>
+    // PFCOUNT: OverloadedCommand<string, number, R>
+    // /**
+    //  * Merge N different HyperLogLogs into a single one.
+    //  */
+    // pfmerge: OverloadedCommand<string, boolean, R>
+    // PFMERGE: OverloadedCommand<string, boolean, R>
+    /**
+     * Set the value and expiration in milliseconds of a key.
+     */
+    psetex(key, milliseconds, value) {
+        return this.redisClientProxy('psetex', arguments);
+    }
+    // /**
+    //  * Inspect the state of the Pub/Sub subsytem.
+    //  */
+    // pubsub: OverloadedCommand<string, number, R>
+    // PUBSUB: OverloadedCommand<string, number, R>
+    /**
+     * Get the time to live for a key in milliseconds.
+     */
+    pttl(key) {
+        return this.redisClientProxy('pttl', arguments);
+    }
+    /**
+     * Close the connection.
+     */
+    quit() {
+        return this.redisClientProxy('quit', arguments);
+    }
+    /**
+     * Return a random key from the keyspace.
+     */
+    randomkey() {
+        return this.redisClientProxy('randomkey', arguments);
+    }
+    /**
+     * Enables read queries for a connection to a cluster slave node.
+     */
+    readonly() {
+        return this.redisClientProxy('readonly', arguments);
+    }
+    /**
+     * Disables read queries for a connection to cluster slave node.
+     */
+    readwrite() {
+        return this.redisClientProxy('readwrite', arguments);
+    }
+    /**
+     * Rename a key.
+     */
+    rename(key, newKey) {
+        return this.redisClientProxy('rename', arguments);
+    }
+    /**
+     * Rename a key, only if the new key does not exist.
+     */
+    renamenx(key, newKey) {
+        return this.redisClientProxy('renamenx', arguments);
+    }
+    /**
+     * Create a key using the provided serialized value, previously obtained using DUMP.
+     */
+    restore(key, ttl, serializedValue) {
+        return this.redisClientProxy('restore', arguments);
+    }
+    /**
+     * Return the role of the instance in the context of replication.
+     */
+    role() {
+        return this.redisClientProxy('role', arguments);
+    }
+    /**
+     * Remove and get the last element in a list.
+     */
+    rpop(key) {
+        return this.redisClientProxy('rpop', arguments);
+    }
+    /**
+     * Remove the last element in a list, prepend it to another list and return it.
+     */
+    rpoplpush(source, destination) {
+        return this.redisClientProxy('rpoplpush', arguments);
+    }
+    // /**
+    //  * Append one or multiple values to a list.
+    //  */
+    // rpush: OverloadedKeyCommand<string, number, R>
+    // RPUSH: OverloadedKeyCommand<string, number, R>
+    /**
+     * Append a value to a list, only if the list exists.
+     */
+    rpushx(key, value) {
+        return this.redisClientProxy('rpushx', arguments);
+    }
 }
 RedisClient.className = constants_1.GlobalFacadeClass.Redis;
 exports.RedisClient = RedisClient;
