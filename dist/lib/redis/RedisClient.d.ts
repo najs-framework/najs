@@ -290,4 +290,93 @@ export declare class RedisClient extends Facade implements IRedis, IAutoload {
      * Append a value to a list, only if the list exists.
      */
     rpushx(key: string, value: string): Promise<number>;
+    /**
+     * Synchronously save the dataset to disk.
+     */
+    save(): Promise<string>;
+    /**
+     * Get the number of members in a set.
+     */
+    scard(key: string): Promise<number>;
+    /**
+     * Change the selected database for the current connection.
+     */
+    select(index: number | string): Promise<string>;
+    /**
+     * Set the string value of a key.
+     */
+    set(key: string, value: string): Promise<'OK'>;
+    set(key: string, value: string, flag: string): Promise<'OK'>;
+    set(key: string, value: string, mode: string, duration: number): Promise<'OK' | undefined>;
+    set(key: string, value: string, mode: string, duration: number, flag: string): Promise<'OK' | undefined>;
+    /**
+     * Sets or clears the bit at offset in the string value stored at key.
+     */
+    setbit(key: string, offset: number, value: string): Promise<number>;
+    /**
+     * Set the value and expiration of a key.
+     */
+    setex(key: string, seconds: number, value: string): Promise<string>;
+    /**
+     * Set the value of a key, only if the key does not exist.
+     */
+    setnx(key: string, value: string): Promise<number>;
+    /**
+     * Overwrite part of a string at key starting at the specified offset.
+     */
+    setrange(key: string, offset: number, value: string): Promise<number>;
+    /**
+     * Determine if a given value is a member of a set.
+     */
+    sismember(key: string, member: string): Promise<number>;
+    /**
+     * Make the server a slave of another instance, or promote it as master.
+     */
+    slaveof(host: string, port: string | number): Promise<string>;
+    /**
+     * Get all the members in a set.
+     */
+    smembers(key: string): Promise<string[]>;
+    /**
+     * Move a member from one set to another.
+     */
+    smove(source: string, destination: string, member: string): Promise<number>;
+    /**
+     * Remove and return one or multiple random members from a set.
+     */
+    spop(key: string): Promise<string>;
+    spop(key: string, count: number): Promise<string[]>;
+    /**
+     * Get one or multiple random members from a set.
+     */
+    srandmember(key: string): Promise<string>;
+    srandmember(key: string, count: number): Promise<string[]>;
+    /**
+     * Get the length of the value stored in a key.
+     */
+    strlen(key: string): Promise<number>;
+    /**
+     * Internal command used for replication.
+     */
+    sync(): Promise<undefined>;
+    /**
+     * Return the current server time.
+     */
+    time(): Promise<[string, string]>;
+    /**
+     * Get the time to live for a key.
+     */
+    ttl(key: string): Promise<number>;
+    /**
+     * Determine the type stored at key.
+     */
+    type(key: string): Promise<string>;
+    /**
+     * Forget about all watched keys.
+     */
+    unwatch(): Promise<'OK'>;
+    /**
+     * Wait for the synchronous replication of all the write commands sent in the context of the current connection.
+     */
+    wait(numSlaves: number, timeout: number): Promise<number>;
 }

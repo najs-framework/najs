@@ -743,5 +743,242 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
   rpushx(key: string, value: string): Promise<number> {
     return this.redisClientProxy('rpushx', arguments)
   }
+
+  // /**
+  //  * Append one or multiple members to a set.
+  //  */
+  // sadd: OverloadedKeyCommand<string, number, R>
+  // SADD: OverloadedKeyCommand<string, number, R>
+
+  /**
+   * Synchronously save the dataset to disk.
+   */
+  save(): Promise<string> {
+    return this.redisClientProxy('save', arguments)
+  }
+
+  /**
+   * Get the number of members in a set.
+   */
+  scard(key: string): Promise<number> {
+    return this.redisClientProxy('scard', arguments)
+  }
+
+  // /**
+  //  * DEBUG - Set the debug mode for executed scripts.
+  //  * EXISTS - Check existence of scripts in the script cache.
+  //  * FLUSH - Remove all scripts from the script cache.
+  //  * KILL - Kill the script currently in execution.
+  //  * LOAD - Load the specified Lua script into the script cache.
+  //  */
+  // script: OverloadedCommand<string, any, R>
+  // SCRIPT: OverloadedCommand<string, any, R>
+
+  // /**
+  //  * Subtract multiple sets.
+  //  */
+  // sdiff: OverloadedCommand<string, string[], R>
+  // SDIFF: OverloadedCommand<string, string[], R>
+
+  // /**
+  //  * Subtract multiple sets and store the resulting set in a key.
+  //  */
+  // sdiffstore: OverloadedKeyCommand<string, number, R>
+  // SDIFFSTORE: OverloadedKeyCommand<string, number, R>
+
+  /**
+   * Change the selected database for the current connection.
+   */
+  select(index: number | string): Promise<string> {
+    return this.redisClientProxy('select', arguments)
+  }
+
+  /**
+   * Set the string value of a key.
+   */
+  set(key: string, value: string): Promise<'OK'>
+  set(key: string, value: string, flag: string): Promise<'OK'>
+  set(key: string, value: string, mode: string, duration: number): Promise<'OK' | undefined>
+  set(key: string, value: string, mode: string, duration: number, flag: string): Promise<'OK' | undefined>
+  set(): Promise<any> {
+    return this.redisClientProxy('set', arguments)
+  }
+
+  /**
+   * Sets or clears the bit at offset in the string value stored at key.
+   */
+  setbit(key: string, offset: number, value: string): Promise<number> {
+    return this.redisClientProxy('setbit', arguments)
+  }
+
+  /**
+   * Set the value and expiration of a key.
+   */
+  setex(key: string, seconds: number, value: string): Promise<string> {
+    return this.redisClientProxy('setex', arguments)
+  }
+
+  /**
+   * Set the value of a key, only if the key does not exist.
+   */
+  setnx(key: string, value: string): Promise<number> {
+    return this.redisClientProxy('setnx', arguments)
+  }
+
+  /**
+   * Overwrite part of a string at key starting at the specified offset.
+   */
+  setrange(key: string, offset: number, value: string): Promise<number> {
+    return this.redisClientProxy('setrange', arguments)
+  }
+
+  // /**
+  //  * Synchronously save the dataset to disk and then shut down the server.
+  //  */
+  // shutdown: OverloadedCommand<string, string, R>
+  // SHUTDOWN: OverloadedCommand<string, string, R>
+
+  // /**
+  //  * Intersect multiple sets.
+  //  */
+  // sinter: OverloadedKeyCommand<string, string[], R>
+  // SINTER: OverloadedKeyCommand<string, string[], R>
+
+  // /**
+  //  * Intersect multiple sets and store the resulting set in a key.
+  //  */
+  // sinterstore: OverloadedCommand<string, number, R>
+  // SINTERSTORE: OverloadedCommand<string, number, R>
+
+  /**
+   * Determine if a given value is a member of a set.
+   */
+  sismember(key: string, member: string): Promise<number> {
+    return this.redisClientProxy('sismember', arguments)
+  }
+
+  /**
+   * Make the server a slave of another instance, or promote it as master.
+   */
+  slaveof(host: string, port: string | number): Promise<string> {
+    return this.redisClientProxy('slaveof', arguments)
+  }
+
+  // /**
+  //  * Manages the Redis slow queries log.
+  //  */
+  // slowlog: OverloadedCommand<string, Array<[number, number, number, string[]]>, R>
+  // SLOWLOG: OverloadedCommand<string, Array<[number, number, number, string[]]>, R>
+
+  /**
+   * Get all the members in a set.
+   */
+  smembers(key: string): Promise<string[]> {
+    return this.redisClientProxy('smembers', arguments)
+  }
+
+  /**
+   * Move a member from one set to another.
+   */
+  smove(source: string, destination: string, member: string): Promise<number> {
+    return this.redisClientProxy('smove', arguments)
+  }
+
+  // /**
+  //  * Sort the elements in a list, set or sorted set.
+  //  */
+  // sort: OverloadedCommand<string, string[], R>
+  // SORT: OverloadedCommand<string, string[], R>
+
+  /**
+   * Remove and return one or multiple random members from a set.
+   */
+  spop(key: string): Promise<string>
+  spop(key: string, count: number): Promise<string[]>
+  spop(): Promise<any> {
+    return this.redisClientProxy('spop', arguments)
+  }
+
+  /**
+   * Get one or multiple random members from a set.
+   */
+  srandmember(key: string): Promise<string>
+  srandmember(key: string, count: number): Promise<string[]>
+  srandmember(): Promise<any> {
+    return this.redisClientProxy('srandmember', arguments)
+  }
+
+  // /**
+  //  * Remove one or more members from a set.
+  //  */
+  // srem: OverloadedKeyCommand<string, number, R>
+  // SREM: OverloadedKeyCommand<string, number, R>
+
+  /**
+   * Get the length of the value stored in a key.
+   */
+  strlen(key: string): Promise<number> {
+    return this.redisClientProxy('strlen', arguments)
+  }
+
+  // /**
+  //  * Add multiple sets.
+  //  */
+  // sunion: OverloadedCommand<string, string[], R>
+  // SUNION: OverloadedCommand<string, string[], R>
+
+  // /**
+  //  * Add multiple sets and store the resulting set in a key.
+  //  */
+  // sunionstore: OverloadedCommand<string, number, R>
+  // SUNIONSTORE: OverloadedCommand<string, number, R>
+
+  /**
+   * Internal command used for replication.
+   */
+  sync(): Promise<undefined> {
+    return this.redisClientProxy('sync', arguments)
+  }
+
+  /**
+   * Return the current server time.
+   */
+  time(): Promise<[string, string]> {
+    return this.redisClientProxy('time', arguments)
+  }
+
+  /**
+   * Get the time to live for a key.
+   */
+  ttl(key: string): Promise<number> {
+    return this.redisClientProxy('ttl', arguments)
+  }
+
+  /**
+   * Determine the type stored at key.
+   */
+  type(key: string): Promise<string> {
+    return this.redisClientProxy('type', arguments)
+  }
+
+  /**
+   * Forget about all watched keys.
+   */
+  unwatch(): Promise<'OK'> {
+    return this.redisClientProxy('unwatch', arguments)
+  }
+
+  /**
+   * Wait for the synchronous replication of all the write commands sent in the context of the current connection.
+   */
+  wait(numSlaves: number, timeout: number): Promise<number> {
+    return this.redisClientProxy('wait', arguments)
+  }
+
+  // /**
+  //  * Watch the given keys to determine execution of the MULTI/EXEC block.
+  //  */
+  // watch: OverloadedCommand<string, 'OK', R>
+  // WATCH: OverloadedCommand<string, 'OK', R>
 }
 register(RedisClient)

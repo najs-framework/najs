@@ -569,17 +569,15 @@ export interface IRedis {
   // sadd: OverloadedKeyCommand<string, number, R>
   // SADD: OverloadedKeyCommand<string, number, R>
 
-  // /**
-  //  * Synchronously save the dataset to disk.
-  //  */
-  // save(cb?: Callback<string>): R
-  // SAVE(cb?: Callback<string>): R
+  /**
+   * Synchronously save the dataset to disk.
+   */
+  save(): Promise<string>
 
-  // /**
-  //  * Get the number of members in a set.
-  //  */
-  // scard(key: string, cb?: Callback<number>): R
-  // SCARD(key: string, cb?: Callback<number>): R
+  /**
+   * Get the number of members in a set.
+   */
+  scard(key: string): Promise<number>
 
   // /**
   //  * DEBUG - Set the debug mode for executed scripts.
@@ -603,47 +601,38 @@ export interface IRedis {
   // sdiffstore: OverloadedKeyCommand<string, number, R>
   // SDIFFSTORE: OverloadedKeyCommand<string, number, R>
 
-  // /**
-  //  * Change the selected database for the current connection.
-  //  */
-  // select(index: number | string, cb?: Callback<string>): R
-  // SELECT(index: number | string, cb?: Callback<string>): R
+  /**
+   * Change the selected database for the current connection.
+   */
+  select(index: number | string): Promise<string>
 
-  // /**
-  //  * Set the string value of a key.
-  //  */
-  // set(key: string, value: string, cb?: Callback<'OK'>): R
-  // set(key: string, value: string, flag: string, cb?: Callback<'OK'>): R
-  // set(key: string, value: string, mode: string, duration: number, cb?: Callback<'OK' | undefined>): R
-  // set(key: string, value: string, mode: string, duration: number, flag: string, cb?: Callback<'OK' | undefined>): R
-  // SET(key: string, value: string, cb?: Callback<'OK'>): R
-  // SET(key: string, value: string, flag: string, cb?: Callback<'OK'>): R
-  // SET(key: string, value: string, mode: string, duration: number, cb?: Callback<'OK' | undefined>): R
-  // SET(key: string, value: string, mode: string, duration: number, flag: string, cb?: Callback<'OK' | undefined>): R
+  /**
+   * Set the string value of a key.
+   */
+  set(key: string, value: string): Promise<'OK'>
+  set(key: string, value: string, flag: string): Promise<'OK'>
+  set(key: string, value: string, mode: string, duration: number): Promise<'OK' | undefined>
+  set(key: string, value: string, mode: string, duration: number, flag: string): Promise<'OK' | undefined>
 
-  // /**
-  //  * Sets or clears the bit at offset in the string value stored at key.
-  //  */
-  // setbit(key: string, offset: number, value: string, cb?: Callback<number>): R
-  // SETBIT(key: string, offset: number, value: string, cb?: Callback<number>): R
+  /**
+   * Sets or clears the bit at offset in the string value stored at key.
+   */
+  setbit(key: string, offset: number, value: string): Promise<number>
 
-  // /**
-  //  * Set the value and expiration of a key.
-  //  */
-  // setex(key: string, seconds: number, value: string, cb?: Callback<string>): R
-  // SETEX(key: string, seconds: number, value: string, cb?: Callback<string>): R
+  /**
+   * Set the value and expiration of a key.
+   */
+  setex(key: string, seconds: number, value: string): Promise<string>
 
-  // /**
-  //  * Set the value of a key, only if the key does not exist.
-  //  */
-  // setnx(key: string, value: string, cb?: Callback<number>): R
-  // SETNX(key: string, value: string, cb?: Callback<number>): R
+  /**
+   * Set the value of a key, only if the key does not exist.
+   */
+  setnx(key: string, value: string): Promise<number>
 
-  // /**
-  //  * Overwrite part of a string at key starting at the specified offset.
-  //  */
-  // setrange(key: string, offset: number, value: string, cb?: Callback<number>): R
-  // SETRANGE(key: string, offset: number, value: string, cb?: Callback<number>): R
+  /**
+   * Overwrite part of a string at key starting at the specified offset.
+   */
+  setrange(key: string, offset: number, value: string): Promise<number>
 
   // /**
   //  * Synchronously save the dataset to disk and then shut down the server.
@@ -663,17 +652,15 @@ export interface IRedis {
   // sinterstore: OverloadedCommand<string, number, R>
   // SINTERSTORE: OverloadedCommand<string, number, R>
 
-  // /**
-  //  * Determine if a given value is a member of a set.
-  //  */
-  // sismember(key: string, member: string, cb?: Callback<number>): R
-  // SISMEMBER(key: string, member: string, cb?: Callback<number>): R
+  /**
+   * Determine if a given value is a member of a set.
+   */
+  sismember(key: string, member: string): Promise<number>
 
-  // /**
-  //  * Make the server a slave of another instance, or promote it as master.
-  //  */
-  // slaveof(host: string, port: string | number, cb?: Callback<string>): R
-  // SLAVEOF(host: string, port: string | number, cb?: Callback<string>): R
+  /**
+   * Make the server a slave of another instance, or promote it as master.
+   */
+  slaveof(host: string, port: string | number): Promise<string>
 
   // /**
   //  * Manages the Redis slow queries log.
@@ -681,17 +668,15 @@ export interface IRedis {
   // slowlog: OverloadedCommand<string, Array<[number, number, number, string[]]>, R>
   // SLOWLOG: OverloadedCommand<string, Array<[number, number, number, string[]]>, R>
 
-  // /**
-  //  * Get all the members in a set.
-  //  */
-  // smembers(key: string, cb?: Callback<string[]>): R
-  // SMEMBERS(key: string, cb?: Callback<string[]>): R
+  /**
+   * Get all the members in a set.
+   */
+  smembers(key: string): Promise<string[]>
 
-  // /**
-  //  * Move a member from one set to another.
-  //  */
-  // smove(source: string, destination: string, member: string, cb?: Callback<number>): R
-  // SMOVE(source: string, destination: string, member: string, cb?: Callback<number>): R
+  /**
+   * Move a member from one set to another.
+   */
+  smove(source: string, destination: string, member: string): Promise<number>
 
   // /**
   //  * Sort the elements in a list, set or sorted set.
@@ -699,21 +684,17 @@ export interface IRedis {
   // sort: OverloadedCommand<string, string[], R>
   // SORT: OverloadedCommand<string, string[], R>
 
-  // /**
-  //  * Remove and return one or multiple random members from a set.
-  //  */
-  // spop(key: string, cb?: Callback<string>): R
-  // spop(key: string, count: number, cb?: Callback<string[]>): R
-  // SPOP(key: string, cb?: Callback<string>): R
-  // SPOP(key: string, count: number, cb?: Callback<string[]>): R
+  /**
+   * Remove and return one or multiple random members from a set.
+   */
+  spop(key: string): Promise<string>
+  spop(key: string, count: number): Promise<string[]>
 
-  // /**
-  //  * Get one or multiple random members from a set.
-  //  */
-  // srandmember(key: string, cb?: Callback<string>): R
-  // srandmember(key: string, count: number, cb?: Callback<string[]>): R
-  // SRANDMEMBER(key: string, cb?: Callback<string>): R
-  // SRANDMEMBER(key: string, count: number, cb?: Callback<string[]>): R
+  /**
+   * Get one or multiple random members from a set.
+   */
+  srandmember(key: string): Promise<string>
+  srandmember(key: string, count: number): Promise<string[]>
 
   // /**
   //  * Remove one or more members from a set.
@@ -721,11 +702,10 @@ export interface IRedis {
   // srem: OverloadedKeyCommand<string, number, R>
   // SREM: OverloadedKeyCommand<string, number, R>
 
-  // /**
-  //  * Get the length of the value stored in a key.
-  //  */
-  // strlen(key: string, cb?: Callback<number>): R
-  // STRLEN(key: string, cb?: Callback<number>): R
+  /**
+   * Get the length of the value stored in a key.
+   */
+  strlen(key: string): Promise<number>
 
   // /**
   //  * Add multiple sets.
@@ -739,41 +719,35 @@ export interface IRedis {
   // sunionstore: OverloadedCommand<string, number, R>
   // SUNIONSTORE: OverloadedCommand<string, number, R>
 
-  // /**
-  //  * Internal command used for replication.
-  //  */
-  // sync(cb?: Callback<undefined>): R
-  // SYNC(cb?: Callback<undefined>): R
+  /**
+   * Internal command used for replication.
+   */
+  sync(): Promise<undefined>
 
-  // /**
-  //  * Return the current server time.
-  //  */
-  // time(cb?: Callback<[string, string]>): R
-  // TIME(cb?: Callback<[string, string]>): R
+  /**
+   * Return the current server time.
+   */
+  time(): Promise<[string, string]>
 
-  // /**
-  //  * Get the time to live for a key.
-  //  */
-  // ttl(key: string, cb?: Callback<number>): R
-  // TTL(key: string, cb?: Callback<number>): R
+  /**
+   * Get the time to live for a key.
+   */
+  ttl(key: string): Promise<number>
 
-  // /**
-  //  * Determine the type stored at key.
-  //  */
-  // type(key: string, cb?: Callback<string>): R
-  // TYPE(key: string, cb?: Callback<string>): R
+  /**
+   * Determine the type stored at key.
+   */
+  type(key: string): Promise<string>
 
-  // /**
-  //  * Forget about all watched keys.
-  //  */
-  // unwatch(cb?: Callback<'OK'>): R
-  // UNWATCH(cb?: Callback<'OK'>): R
+  /**
+   * Forget about all watched keys.
+   */
+  unwatch(): Promise<'OK'>
 
-  // /**
-  //  * Wait for the synchronous replication of all the write commands sent in the context of the current connection.
-  //  */
-  // wait(numslaves: number, timeout: number, cb?: Callback<number>): R
-  // WAIT(numslaves: number, timeout: number, cb?: Callback<number>): R
+  /**
+   * Wait for the synchronous replication of all the write commands sent in the context of the current connection.
+   */
+  wait(numSlaves: number, timeout: number): Promise<number>
 
   // /**
   //  * Watch the given keys to determine execution of the MULTI/EXEC block.
