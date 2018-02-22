@@ -31,16 +31,87 @@ export interface IRedis {
    */
   getCurrentClient(): string
   // -------------------------------------------------------------------------------------------------------------------
+  /**
+   * Listen for all requests received by the server in real time.
+   */
+  monitor(): Promise<undefined>
 
   /**
-   * Append a value to a key.
+   * Get information and statistics about the server.
    */
-  append(key: string, value: string): Promise<number>
+  info(): Promise<Redis.ServerInfo>
+  info(section?: string | string[]): Promise<Redis.ServerInfo>
+
+  /**
+   * Ping the server.
+   */
+  ping(): Promise<string>
+  ping(message: string): Promise<string>
+
+  /**
+   * Post a message to a channel.
+   */
+  publish(channel: string, value: string): Promise<number>
 
   /**
    * Authenticate to the server.
    */
   auth(password: string): Promise<string>
+
+  /**
+   * KILL - Kill the connection of a client.
+   * LIST - Get the list of client connections.
+   * GETNAME - Get the current connection name.
+   * PAUSE - Stop processing commands from clients for some time.
+   * REPLY - Instruct the server whether to reply to commands.
+   * SETNAME - Set the current connection name.
+   */
+  client(...args: Array<string>): Promise<any>
+  // client: OverloadedCommand<string, any, R>
+
+  /**
+   * Set multiple hash fields to multiple values.
+   */
+  hmset(key: string): Promise<boolean>
+  hmset(key: string, ...args: Array<string | number>): Promise<boolean>
+  // hmset: OverloadedSetCommand<string | number, boolean, R>
+
+  /**
+   * Listen for messages published to the given channels.
+   */
+  subscribe(channel: string): Promise<string>
+  subscribe(channels: string[]): Promise<string>
+  subscribe(...args: string[]): Promise<string>
+  // subscribe: OverloadedListCommand<string, string, R>
+
+  /**
+   * Stop listening for messages posted to the given channels.
+   */
+  unsubscribe(channel: string): Promise<string>
+  unsubscribe(channels: string[]): Promise<string>
+  unsubscribe(...args: string[]): Promise<string>
+  // unsubscribe: OverloadedListCommand<string, string, R>
+
+  /**
+   * Listen for messages published to channels matching the given patterns.
+   */
+  psubscribe(channel: string): Promise<string>
+  psubscribe(channels: string[]): Promise<string>
+  psubscribe(...args: string[]): Promise<string>
+  // psubscribe: OverloadedListCommand<string, string, R>
+
+  /**
+   * Stop listening for messages posted to channels matching the given patterns.
+   */
+  punsubscribe(channel: string): Promise<string>
+  punsubscribe(channels: string[]): Promise<string>
+  punsubscribe(...args: string[]): Promise<string>
+  // punsubscribe: OverloadedListCommand<string, string, R>
+
+  /**
+   * Append a value to a key.
+   */
+  append(key: string, value: string): Promise<number>
 
   /**
    * Asynchronously rewrite the append-only file.
@@ -78,45 +149,57 @@ export interface IRedis {
   bitpos(key: string, bit: number, start: number): Promise<number>
   bitpos(key: string, bit: number, start: number, end: number): Promise<number>
 
-  // /**
-  //  * Remove and get the first element in a list, or block until one is available.
-  //  */
+  /**
+   * Remove and get the first element in a list, or block until one is available.
+   */
+  blpop(args: Array<string | number>): Promise<[string, string]>
+  blpop(...args: Array<string | number>): Promise<[string, string]>
+  blpop(arg1: string, arg2: number | Array<string | number>): Promise<[string, string]>
+  blpop(arg1: string, arg2: string, arg3: number): Promise<[string, string]>
+  blpop(arg1: string, arg2: string, arg3: string, arg4: number): Promise<[string, string]>
+  blpop(arg1: string, arg2: string, arg3: string, arg4: string, arg5: number): Promise<[string, string]>
+  blpop(arg1: string, arg2: string, arg3: string, arg4: string, arg5: string, arg6: number): Promise<[string, string]>
   // blpop: OverloadedLastCommand<string, number, [string, string], R>
-  // BLPOP: OverloadedLastCommand<string, number, [string, string], R>
 
-  // /**
-  //  * Remove and get the last element in a list, or block until one is available.
-  //  */
+  /**
+   * Remove and get the last element in a list, or block until one is available.
+   */
+  brpop(args: Array<string | number>): Promise<[string, string]>
+  brpop(...args: Array<string | number>): Promise<[string, string]>
+  brpop(arg1: string, arg2: number | Array<string | number>): Promise<[string, string]>
+  brpop(arg1: string, arg2: string, arg3: number): Promise<[string, string]>
+  brpop(arg1: string, arg2: string, arg3: string, arg4: number): Promise<[string, string]>
+  brpop(arg1: string, arg2: string, arg3: string, arg4: string, arg5: number): Promise<[string, string]>
+  brpop(arg1: string, arg2: string, arg3: string, arg4: string, arg5: string, arg6: number): Promise<[string, string]>
   // brpop: OverloadedLastCommand<string, number, [string, string], R>
-  // BRPOP: OverloadedLastCommand<string, number, [string, string], R>
 
   /**
    * Pop a value from a list, push it to another list and return it; or block until one is available.
    */
   brpoplpush(source: string, destination: string, timeout: number): Promise<string | null>
 
-  // /**
-  //  * ADDSLOTS - Assign new hash slots to receiving node.
-  //  * COUNT-FAILURE-REPORTS - Return the number of failure reports active for a given node.
-  //  * COUNTKEYSINSLOT - Return the number of local keys in the specified hash slot.
-  //  * DELSLOTS - Set hash slots as unbound in receiving node.
-  //  * FAILOVER - Forces a slave to perform a manual failover of its master.
-  //  * FORGET - Remove a node from the nodes table.
-  //  * GETKEYSINSLOT - Return local key names in the specified hash slot.
-  //  * INFO - Provides info about Redis Cluster node state.
-  //  * KEYSLOT - Returns the hash slot of the specified key.
-  //  * MEET - Force a node cluster to handshake with another node.
-  //  * NODES - Get cluster config for the node.
-  //  * REPLICATE - Reconfigure a node as a slave of the specified master node.
-  //  * RESET - Reset a Redis Cluster node.
-  //  * SAVECONFIG - Forces the node to save cluster state on disk.
-  //  * SET-CONFIG-EPOCH - Set the configuration epoch in a new node.
-  //  * SETSLOT - Bind a hash slot to a specified node.
-  //  * SLAVES - List slave nodes of the specified master node.
-  //  * SLOTS - Get array of Cluster slot to node mappings.
-  //  */
+  /**
+   * ADDSLOTS - Assign new hash slots to receiving node.
+   * COUNT-FAILURE-REPORTS - Return the number of failure reports active for a given node.
+   * COUNTKEYSINSLOT - Return the number of local keys in the specified hash slot.
+   * DELSLOTS - Set hash slots as unbound in receiving node.
+   * FAILOVER - Forces a slave to perform a manual failover of its master.
+   * FORGET - Remove a node from the nodes table.
+   * GETKEYSINSLOT - Return local key names in the specified hash slot.
+   * INFO - Provides info about Redis Cluster node state.
+   * KEYSLOT - Returns the hash slot of the specified key.
+   * MEET - Force a node cluster to handshake with another node.
+   * NODES - Get cluster config for the node.
+   * REPLICATE - Reconfigure a node as a slave of the specified master node.
+   * RESET - Reset a Redis Cluster node.
+   * SAVECONFIG - Forces the node to save cluster state on disk.
+   * SET-CONFIG-EPOCH - Set the configuration epoch in a new node.
+   * SETSLOT - Bind a hash slot to a specified node.
+   * SLAVES - List slave nodes of the specified master node.
+   * SLOTS - Get array of Cluster slot to node mappings.
+   */
+  cluster(...args: Array<string>): Promise<any>
   // cluster: OverloadedCommand<string, any, this>
-  // CLUSTER: OverloadedCommand<string, any, this>
 
   /**
    * Get array of Redis command details.
@@ -127,31 +210,31 @@ export interface IRedis {
    */
   command(): Promise<Array<[string, number, string[], number, number, number]>>
 
-  // /**
-  //  * Get array of Redis command details.
-  //  *
-  //  * COUNT - Get array of Redis command details.
-  //  * GETKEYS - Extract keys given a full Redis command.
-  //  * INFO - Get array of specific Redis command details.
-  //  * GET - Get the value of a configuration parameter.
-  //  * REWRITE - Rewrite the configuration file with the in memory configuration.
-  //  * SET - Set a configuration parameter to the given value.
-  //  * RESETSTAT - Reset the stats returned by INFO.
-  //  */
+  /**
+   * Get array of Redis command details.
+   *
+   * COUNT - Get array of Redis command details.
+   * GETKEYS - Extract keys given a full Redis command.
+   * INFO - Get array of specific Redis command details.
+   * GET - Get the value of a configuration parameter.
+   * REWRITE - Rewrite the configuration file with the in memory configuration.
+   * SET - Set a configuration parameter to the given value.
+   * RESETSTAT - Reset the stats returned by INFO.
+   */
+  config(...args: Array<string>): Promise<boolean>
   // config: OverloadedCommand<string, boolean, R>
-  // CONFIG: OverloadedCommand<string, boolean, R>
 
   /**
    * Return the number of keys in the selected database.
    */
   dbsize(): Promise<number>
 
-  // /**
-  //  * OBJECT - Get debugging information about a key.
-  //  * SEGFAULT - Make the server crash.
-  //  */
+  /**
+   * OBJECT - Get debugging information about a key.
+   * SEGFAULT - Make the server crash.
+   */
+  debug(...args: Array<string>): Promise<boolean>
   // debug: OverloadedCommand<string, boolean, R>
-  // DEBUG: OverloadedCommand<string, boolean, R>
 
   /**
    * Decrement the integer value of a key by one.
@@ -163,11 +246,11 @@ export interface IRedis {
    */
   decrby(key: string, decrement: number): Promise<number>
 
-  // /**
-  //  * Delete a key.
-  //  */
+  /**
+   * Delete a key.
+   */
+  del(...args: Array<string>): Promise<number>
   // del: OverloadedCommand<string, number, R>
-  // DEL: OverloadedCommand<string, number, R>
 
   /**
    * Discard all commands issued after MULTI.
@@ -184,23 +267,23 @@ export interface IRedis {
    */
   echo<T extends string>(message: T): Promise<T>
 
-  // /**
-  //  * Execute a Lua script server side.
-  //  */
+  /**
+   * Execute a Lua script server side.
+   */
+  eval(...args: Array<string | number>): Promise<any>
   // eval: OverloadedCommand<string | number, any, R>
-  // EVAL: OverloadedCommand<string | number, any, R>
 
-  // /**
-  //  * Execute a Lue script server side.
-  //  */
+  /**
+   * Execute a Lue script server side.
+   */
+  evalsha(...args: Array<string | number>): Promise<any>
   // evalsha: OverloadedCommand<string | number, any, R>
-  // EVALSHA: OverloadedCommand<string | number, any, R>
 
-  // /**
-  //  * Determine if a key exists.
-  //  */
+  /**
+   * Determine if a key exists.
+   */
+  exists(...args: Array<string>): Promise<number>
   // exists: OverloadedCommand<string, number, R>
-  // EXISTS: OverloadedCommand<string, number, R>
 
   /**
    * Set a key's time to live in seconds.
@@ -443,40 +526,40 @@ export interface IRedis {
    */
   ltrim(key: string, start: number, stop: number): Promise<'OK'>
 
-  // /**
-  //  * Get the values of all given keys.
-  //  */
+  /**
+   * Get the values of all given keys.
+   */
+  mget(...args: Array<string>): Promise<string[]>
   // mget: OverloadedCommand<string, string[], R>
-  // MGET: OverloadedCommand<string, string[], R>
 
-  // /**
-  //  * Atomically transfer a key from a Redis instance to another one.
-  //  */
+  /**
+   * Atomically transfer a key from a Redis instance to another one.
+   */
+  migrate(...args: Array<string>): Promise<boolean>
   // migrate: OverloadedCommand<string, boolean, R>
-  // MIGRATE: OverloadedCommand<string, boolean, R>
 
   /**
    * Move a key to another database.
    */
   move(key: string, db: string | number): Promise<void>
 
-  // /**
-  //  * Set multiple keys to multiple values.
-  //  */
+  /**
+   * Set multiple keys to multiple values.
+   */
+  mset(...args: Array<string>): Promise<boolean>
   // mset: OverloadedCommand<string, boolean, R>
-  // MSET: OverloadedCommand<string, boolean, R>
 
-  // /**
-  //  * Set multiple keys to multiple values, only if none of the keys exist.
-  //  */
+  /**
+   * Set multiple keys to multiple values, only if none of the keys exist.
+   */
+  msetnx(...args: Array<string>): Promise<boolean>
   // msetnx: OverloadedCommand<string, boolean, R>
-  // MSETNX: OverloadedCommand<string, boolean, R>
 
-  // /**
-  //  * Inspect the internals of Redis objects.
-  //  */
+  /**
+   * Inspect the internals of Redis objects.
+   */
+  object(...args: Array<string>): Promise<any>
   // object: OverloadedCommand<string, any, R>
-  // OBJECT: OverloadedCommand<string, any, R>
 
   /**
    * Remove the expiration from a key.
@@ -501,28 +584,28 @@ export interface IRedis {
   pfadd(key: string, ...args: Array<string>): Promise<number>
   // pfadd: OverloadedKeyCommand<string, number, R>
 
-  // /**
-  //  * Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s).
-  //  */
+  /**
+   * Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s).
+   */
+  pfcount(...args: Array<string>): Promise<number>
   // pfcount: OverloadedCommand<string, number, R>
-  // PFCOUNT: OverloadedCommand<string, number, R>
 
-  // /**
-  //  * Merge N different HyperLogLogs into a single one.
-  //  */
+  /**
+   * Merge N different HyperLogLogs into a single one.
+   */
+  pfmerge(...args: Array<string>): Promise<boolean>
   // pfmerge: OverloadedCommand<string, boolean, R>
-  // PFMERGE: OverloadedCommand<string, boolean, R>
 
   /**
    * Set the value and expiration in milliseconds of a key.
    */
   psetex(key: string, milliseconds: number, value: string): Promise<'OK'>
 
-  // /**
-  //  * Inspect the state of the Pub/Sub subsytem.
-  //  */
+  /**
+   * Inspect the state of the Pub/Sub subsystem.
+   */
+  pubsub(...args: Array<string>): Promise<number>
   // pubsub: OverloadedCommand<string, number, R>
-  // PUBSUB: OverloadedCommand<string, number, R>
 
   /**
    * Get the time to live for a key in milliseconds.
@@ -610,21 +693,21 @@ export interface IRedis {
    */
   scard(key: string): Promise<number>
 
-  // /**
-  //  * DEBUG - Set the debug mode for executed scripts.
-  //  * EXISTS - Check existence of scripts in the script cache.
-  //  * FLUSH - Remove all scripts from the script cache.
-  //  * KILL - Kill the script currently in execution.
-  //  * LOAD - Load the specified Lua script into the script cache.
-  //  */
+  /**
+   * DEBUG - Set the debug mode for executed scripts.
+   * EXISTS - Check existence of scripts in the script cache.
+   * FLUSH - Remove all scripts from the script cache.
+   * KILL - Kill the script currently in execution.
+   * LOAD - Load the specified Lua script into the script cache.
+   */
+  script(...args: Array<string>): Promise<any>
   // script: OverloadedCommand<string, any, R>
-  // SCRIPT: OverloadedCommand<string, any, R>
 
-  // /**
-  //  * Subtract multiple sets.
-  //  */
+  /**
+   * Subtract multiple sets.
+   */
+  sdiff(...args: Array<string>): Promise<string[]>
   // sdiff: OverloadedCommand<string, string[], R>
-  // SDIFF: OverloadedCommand<string, string[], R>
 
   /**
    * Subtract multiple sets and store the resulting set in a key.
@@ -667,11 +750,11 @@ export interface IRedis {
    */
   setrange(key: string, offset: number, value: string): Promise<number>
 
-  // /**
-  //  * Synchronously save the dataset to disk and then shut down the server.
-  //  */
+  /**
+   * Synchronously save the dataset to disk and then shut down the server.
+   */
+  shutdown(...args: Array<string>): Promise<string>
   // shutdown: OverloadedCommand<string, string, R>
-  // SHUTDOWN: OverloadedCommand<string, string, R>
 
   /**
    * Intersect multiple sets.
@@ -681,11 +764,11 @@ export interface IRedis {
   sinter(key: string, ...args: Array<string>): Promise<string[]>
   // sinter: OverloadedKeyCommand<string, string[], R>
 
-  // /**
-  //  * Intersect multiple sets and store the resulting set in a key.
-  //  */
+  /**
+   * Intersect multiple sets and store the resulting set in a key.
+   */
+  sinterstore(...args: Array<string>): Promise<number>
   // sinterstore: OverloadedCommand<string, number, R>
-  // SINTERSTORE: OverloadedCommand<string, number, R>
 
   /**
    * Determine if a given value is a member of a set.
@@ -697,11 +780,11 @@ export interface IRedis {
    */
   slaveof(host: string, port: string | number): Promise<string>
 
-  // /**
-  //  * Manages the Redis slow queries log.
-  //  */
+  /**
+   * Manages the Redis slow queries log.
+   */
+  slowlog(...args: Array<string>): Promise<Array<[number, number, number, string[]]>>
   // slowlog: OverloadedCommand<string, Array<[number, number, number, string[]]>, R>
-  // SLOWLOG: OverloadedCommand<string, Array<[number, number, number, string[]]>, R>
 
   /**
    * Get all the members in a set.
@@ -713,11 +796,11 @@ export interface IRedis {
    */
   smove(source: string, destination: string, member: string): Promise<number>
 
-  // /**
-  //  * Sort the elements in a list, set or sorted set.
-  //  */
+  /**
+   * Sort the elements in a list, set or sorted set.
+   */
+  sort(...args: Array<string>): Promise<string[]>
   // sort: OverloadedCommand<string, string[], R>
-  // SORT: OverloadedCommand<string, string[], R>
 
   /**
    * Remove and return one or multiple random members from a set.
@@ -744,17 +827,17 @@ export interface IRedis {
    */
   strlen(key: string): Promise<number>
 
-  // /**
-  //  * Add multiple sets.
-  //  */
+  /**
+   * Add multiple sets.
+   */
+  sunion(...args: Array<string>): Promise<string[]>
   // sunion: OverloadedCommand<string, string[], R>
-  // SUNION: OverloadedCommand<string, string[], R>
 
-  // /**
-  //  * Add multiple sets and store the resulting set in a key.
-  //  */
+  /**
+   * Add multiple sets and store the resulting set in a key.
+   */
+  sunionstore(...args: Array<string>): Promise<number>
   // sunionstore: OverloadedCommand<string, number, R>
-  // SUNIONSTORE: OverloadedCommand<string, number, R>
 
   /**
    * Internal command used for replication.
@@ -786,11 +869,11 @@ export interface IRedis {
    */
   wait(numSlaves: number, timeout: number): Promise<number>
 
-  // /**
-  //  * Watch the given keys to determine execution of the MULTI/EXEC block.
-  //  */
+  /**
+   * Watch the given keys to determine execution of the MULTI/EXEC block.
+   */
+  watch(...args: Array<string>): Promise<'OK'>
   // watch: OverloadedCommand<string, 'OK', R>
-  // WATCH: OverloadedCommand<string, 'OK', R>
 
   /**
    * Add one or more members to a sorted set, or update its score if it already exists.
@@ -815,11 +898,11 @@ export interface IRedis {
    */
   zincrby(key: string, increment: number, member: string): Promise<number>
 
-  // /**
-  //  * Intersect multiple sorted sets and store the resulting sorted set in a new key.
-  //  */
+  /**
+   * Intersect multiple sorted sets and store the resulting sorted set in a new key.
+   */
+  zinterstore(...args: Array<string | number>): Promise<number>
   // zinterstore: OverloadedCommand<string | number, number, R>
-  // ZINTERSTORE: OverloadedCommand<string | number, number, R>
 
   /**
    * Count the number of members in a sorted set between a given lexicographic range.
@@ -934,17 +1017,17 @@ export interface IRedis {
    */
   zscore(key: string, member: string): Promise<string>
 
-  // /**
-  //  * Add multiple sorted sets and store the resulting sorted set in a new key.
-  //  */
+  /**
+   * Add multiple sorted sets and store the resulting sorted set in a new key.
+   */
+  zunionstore(...args: Array<string | number>): Promise<number>
   // zunionstore: OverloadedCommand<string | number, number, R>
-  // ZUNIONSTORE: OverloadedCommand<string | number, number, R>
 
-  // /**
-  //  * Incrementally iterate the keys space.
-  //  */
+  /**
+   * Incrementally iterate the keys space.
+   */
+  scan(...args: Array<string>): Promise<[string, string[]]>
   // scan: OverloadedCommand<string, [string, string[]], R>
-  // SCAN: OverloadedCommand<string, [string, string[]], R>
 
   /**
    * Incrementally iterate Set elements.

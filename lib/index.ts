@@ -61,6 +61,7 @@ export { EventFacade, Event } from './facades/global/EventFacade'
 export { DispatcherFacade, Dispatcher } from './facades/global/DispatcherFacade'
 export { LogFacade, Log } from './facades/global/LogFacade'
 export { PathFacade, Path } from './facades/global/PathFacade'
+export { RedisFacade, Redis } from './facades/global/RedisFacade'
 export { ResponseFacade, Response } from './facades/global/ResponseFacade'
 export { RouteFacade, Route } from './facades/global/RouteFacade'
 export { InputContextualFacade, Input } from './facades/contextual/InputContextualFacade'
@@ -82,6 +83,10 @@ export { TestSuite } from './test/TestSuite'
 // log package
 export { ILogger } from './log/ILogger'
 export { WinstonLogger } from './log/WinstonLogger'
+
+// redis package
+export { IRedis } from './redis/IRedis'
+export { RedisClient } from './redis/RedisClient'
 
 // helpers package
 export { route } from './helpers/route'

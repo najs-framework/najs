@@ -26,13 +26,69 @@ export interface IRedis {
      */
     getCurrentClient(): string;
     /**
-     * Append a value to a key.
+     * Listen for all requests received by the server in real time.
      */
-    append(key: string, value: string): Promise<number>;
+    monitor(): Promise<undefined>;
+    /**
+     * Get information and statistics about the server.
+     */
+    info(): Promise<Redis.ServerInfo>;
+    info(section?: string | string[]): Promise<Redis.ServerInfo>;
+    /**
+     * Ping the server.
+     */
+    ping(): Promise<string>;
+    ping(message: string): Promise<string>;
+    /**
+     * Post a message to a channel.
+     */
+    publish(channel: string, value: string): Promise<number>;
     /**
      * Authenticate to the server.
      */
     auth(password: string): Promise<string>;
+    /**
+     * KILL - Kill the connection of a client.
+     * LIST - Get the list of client connections.
+     * GETNAME - Get the current connection name.
+     * PAUSE - Stop processing commands from clients for some time.
+     * REPLY - Instruct the server whether to reply to commands.
+     * SETNAME - Set the current connection name.
+     */
+    client(...args: Array<string>): Promise<any>;
+    /**
+     * Set multiple hash fields to multiple values.
+     */
+    hmset(key: string): Promise<boolean>;
+    hmset(key: string, ...args: Array<string | number>): Promise<boolean>;
+    /**
+     * Listen for messages published to the given channels.
+     */
+    subscribe(channel: string): Promise<string>;
+    subscribe(channels: string[]): Promise<string>;
+    subscribe(...args: string[]): Promise<string>;
+    /**
+     * Stop listening for messages posted to the given channels.
+     */
+    unsubscribe(channel: string): Promise<string>;
+    unsubscribe(channels: string[]): Promise<string>;
+    unsubscribe(...args: string[]): Promise<string>;
+    /**
+     * Listen for messages published to channels matching the given patterns.
+     */
+    psubscribe(channel: string): Promise<string>;
+    psubscribe(channels: string[]): Promise<string>;
+    psubscribe(...args: string[]): Promise<string>;
+    /**
+     * Stop listening for messages posted to channels matching the given patterns.
+     */
+    punsubscribe(channel: string): Promise<string>;
+    punsubscribe(channels: string[]): Promise<string>;
+    punsubscribe(...args: string[]): Promise<string>;
+    /**
+     * Append a value to a key.
+     */
+    append(key: string, value: string): Promise<number>;
     /**
      * Asynchronously rewrite the append-only file.
      */
@@ -63,9 +119,50 @@ export interface IRedis {
     bitpos(key: string, bit: number, start: number): Promise<number>;
     bitpos(key: string, bit: number, start: number, end: number): Promise<number>;
     /**
+     * Remove and get the first element in a list, or block until one is available.
+     */
+    blpop(args: Array<string | number>): Promise<[string, string]>;
+    blpop(...args: Array<string | number>): Promise<[string, string]>;
+    blpop(arg1: string, arg2: number | Array<string | number>): Promise<[string, string]>;
+    blpop(arg1: string, arg2: string, arg3: number): Promise<[string, string]>;
+    blpop(arg1: string, arg2: string, arg3: string, arg4: number): Promise<[string, string]>;
+    blpop(arg1: string, arg2: string, arg3: string, arg4: string, arg5: number): Promise<[string, string]>;
+    blpop(arg1: string, arg2: string, arg3: string, arg4: string, arg5: string, arg6: number): Promise<[string, string]>;
+    /**
+     * Remove and get the last element in a list, or block until one is available.
+     */
+    brpop(args: Array<string | number>): Promise<[string, string]>;
+    brpop(...args: Array<string | number>): Promise<[string, string]>;
+    brpop(arg1: string, arg2: number | Array<string | number>): Promise<[string, string]>;
+    brpop(arg1: string, arg2: string, arg3: number): Promise<[string, string]>;
+    brpop(arg1: string, arg2: string, arg3: string, arg4: number): Promise<[string, string]>;
+    brpop(arg1: string, arg2: string, arg3: string, arg4: string, arg5: number): Promise<[string, string]>;
+    brpop(arg1: string, arg2: string, arg3: string, arg4: string, arg5: string, arg6: number): Promise<[string, string]>;
+    /**
      * Pop a value from a list, push it to another list and return it; or block until one is available.
      */
     brpoplpush(source: string, destination: string, timeout: number): Promise<string | null>;
+    /**
+     * ADDSLOTS - Assign new hash slots to receiving node.
+     * COUNT-FAILURE-REPORTS - Return the number of failure reports active for a given node.
+     * COUNTKEYSINSLOT - Return the number of local keys in the specified hash slot.
+     * DELSLOTS - Set hash slots as unbound in receiving node.
+     * FAILOVER - Forces a slave to perform a manual failover of its master.
+     * FORGET - Remove a node from the nodes table.
+     * GETKEYSINSLOT - Return local key names in the specified hash slot.
+     * INFO - Provides info about Redis Cluster node state.
+     * KEYSLOT - Returns the hash slot of the specified key.
+     * MEET - Force a node cluster to handshake with another node.
+     * NODES - Get cluster config for the node.
+     * REPLICATE - Reconfigure a node as a slave of the specified master node.
+     * RESET - Reset a Redis Cluster node.
+     * SAVECONFIG - Forces the node to save cluster state on disk.
+     * SET-CONFIG-EPOCH - Set the configuration epoch in a new node.
+     * SETSLOT - Bind a hash slot to a specified node.
+     * SLAVES - List slave nodes of the specified master node.
+     * SLOTS - Get array of Cluster slot to node mappings.
+     */
+    cluster(...args: Array<string>): Promise<any>;
     /**
      * Get array of Redis command details.
      *
@@ -75,9 +172,26 @@ export interface IRedis {
      */
     command(): Promise<Array<[string, number, string[], number, number, number]>>;
     /**
+     * Get array of Redis command details.
+     *
+     * COUNT - Get array of Redis command details.
+     * GETKEYS - Extract keys given a full Redis command.
+     * INFO - Get array of specific Redis command details.
+     * GET - Get the value of a configuration parameter.
+     * REWRITE - Rewrite the configuration file with the in memory configuration.
+     * SET - Set a configuration parameter to the given value.
+     * RESETSTAT - Reset the stats returned by INFO.
+     */
+    config(...args: Array<string>): Promise<boolean>;
+    /**
      * Return the number of keys in the selected database.
      */
     dbsize(): Promise<number>;
+    /**
+     * OBJECT - Get debugging information about a key.
+     * SEGFAULT - Make the server crash.
+     */
+    debug(...args: Array<string>): Promise<boolean>;
     /**
      * Decrement the integer value of a key by one.
      */
@@ -86,6 +200,10 @@ export interface IRedis {
      * Decrement the integer value of a key by the given number.
      */
     decrby(key: string, decrement: number): Promise<number>;
+    /**
+     * Delete a key.
+     */
+    del(...args: Array<string>): Promise<number>;
     /**
      * Discard all commands issued after MULTI.
      */
@@ -98,6 +216,18 @@ export interface IRedis {
      * Echo the given string.
      */
     echo<T extends string>(message: T): Promise<T>;
+    /**
+     * Execute a Lua script server side.
+     */
+    eval(...args: Array<string | number>): Promise<any>;
+    /**
+     * Execute a Lue script server side.
+     */
+    evalsha(...args: Array<string | number>): Promise<any>;
+    /**
+     * Determine if a key exists.
+     */
+    exists(...args: Array<string>): Promise<number>;
     /**
      * Set a key's time to live in seconds.
      */
@@ -284,9 +414,29 @@ export interface IRedis {
      */
     ltrim(key: string, start: number, stop: number): Promise<'OK'>;
     /**
+     * Get the values of all given keys.
+     */
+    mget(...args: Array<string>): Promise<string[]>;
+    /**
+     * Atomically transfer a key from a Redis instance to another one.
+     */
+    migrate(...args: Array<string>): Promise<boolean>;
+    /**
      * Move a key to another database.
      */
     move(key: string, db: string | number): Promise<void>;
+    /**
+     * Set multiple keys to multiple values.
+     */
+    mset(...args: Array<string>): Promise<boolean>;
+    /**
+     * Set multiple keys to multiple values, only if none of the keys exist.
+     */
+    msetnx(...args: Array<string>): Promise<boolean>;
+    /**
+     * Inspect the internals of Redis objects.
+     */
+    object(...args: Array<string>): Promise<any>;
     /**
      * Remove the expiration from a key.
      */
@@ -306,9 +456,21 @@ export interface IRedis {
     pfadd(key: string): Promise<number>;
     pfadd(key: string, ...args: Array<string>): Promise<number>;
     /**
+     * Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s).
+     */
+    pfcount(...args: Array<string>): Promise<number>;
+    /**
+     * Merge N different HyperLogLogs into a single one.
+     */
+    pfmerge(...args: Array<string>): Promise<boolean>;
+    /**
      * Set the value and expiration in milliseconds of a key.
      */
     psetex(key: string, milliseconds: number, value: string): Promise<'OK'>;
+    /**
+     * Inspect the state of the Pub/Sub subsystem.
+     */
+    pubsub(...args: Array<string>): Promise<number>;
     /**
      * Get the time to live for a key in milliseconds.
      */
@@ -378,6 +540,18 @@ export interface IRedis {
      */
     scard(key: string): Promise<number>;
     /**
+     * DEBUG - Set the debug mode for executed scripts.
+     * EXISTS - Check existence of scripts in the script cache.
+     * FLUSH - Remove all scripts from the script cache.
+     * KILL - Kill the script currently in execution.
+     * LOAD - Load the specified Lua script into the script cache.
+     */
+    script(...args: Array<string>): Promise<any>;
+    /**
+     * Subtract multiple sets.
+     */
+    sdiff(...args: Array<string>): Promise<string[]>;
+    /**
      * Subtract multiple sets and store the resulting set in a key.
      */
     sdiffstore(): Promise<number>;
@@ -411,11 +585,19 @@ export interface IRedis {
      */
     setrange(key: string, offset: number, value: string): Promise<number>;
     /**
+     * Synchronously save the dataset to disk and then shut down the server.
+     */
+    shutdown(...args: Array<string>): Promise<string>;
+    /**
      * Intersect multiple sets.
      */
     sinter(): Promise<string[]>;
     sinter(key: string): Promise<string[]>;
     sinter(key: string, ...args: Array<string>): Promise<string[]>;
+    /**
+     * Intersect multiple sets and store the resulting set in a key.
+     */
+    sinterstore(...args: Array<string>): Promise<number>;
     /**
      * Determine if a given value is a member of a set.
      */
@@ -425,6 +607,10 @@ export interface IRedis {
      */
     slaveof(host: string, port: string | number): Promise<string>;
     /**
+     * Manages the Redis slow queries log.
+     */
+    slowlog(...args: Array<string>): Promise<Array<[number, number, number, string[]]>>;
+    /**
      * Get all the members in a set.
      */
     smembers(key: string): Promise<string[]>;
@@ -432,6 +618,10 @@ export interface IRedis {
      * Move a member from one set to another.
      */
     smove(source: string, destination: string, member: string): Promise<number>;
+    /**
+     * Sort the elements in a list, set or sorted set.
+     */
+    sort(...args: Array<string>): Promise<string[]>;
     /**
      * Remove and return one or multiple random members from a set.
      */
@@ -452,6 +642,14 @@ export interface IRedis {
      * Get the length of the value stored in a key.
      */
     strlen(key: string): Promise<number>;
+    /**
+     * Add multiple sets.
+     */
+    sunion(...args: Array<string>): Promise<string[]>;
+    /**
+     * Add multiple sets and store the resulting set in a key.
+     */
+    sunionstore(...args: Array<string>): Promise<number>;
     /**
      * Internal command used for replication.
      */
@@ -477,6 +675,10 @@ export interface IRedis {
      */
     wait(numSlaves: number, timeout: number): Promise<number>;
     /**
+     * Watch the given keys to determine execution of the MULTI/EXEC block.
+     */
+    watch(...args: Array<string>): Promise<'OK'>;
+    /**
      * Add one or more members to a sorted set, or update its score if it already exists.
      */
     zadd(): Promise<number>;
@@ -494,6 +696,10 @@ export interface IRedis {
      * Increment the score of a member in a sorted set.
      */
     zincrby(key: string, increment: number, member: string): Promise<number>;
+    /**
+     * Intersect multiple sorted sets and store the resulting sorted set in a new key.
+     */
+    zinterstore(...args: Array<string | number>): Promise<number>;
     /**
      * Count the number of members in a sorted set between a given lexicographic range.
      */
@@ -562,6 +768,14 @@ export interface IRedis {
      * Get the score associated with the given member in a sorted set.
      */
     zscore(key: string, member: string): Promise<string>;
+    /**
+     * Add multiple sorted sets and store the resulting sorted set in a new key.
+     */
+    zunionstore(...args: Array<string | number>): Promise<number>;
+    /**
+     * Incrementally iterate the keys space.
+     */
+    scan(...args: Array<string>): Promise<[string, string[]]>;
     /**
      * Incrementally iterate Set elements.
      */

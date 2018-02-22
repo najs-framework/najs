@@ -57,16 +57,60 @@ class RedisClient extends Facade_1.Facade {
     }
     // -------------------------------------------------------------------------------------------------------------------
     /**
-     * Append a value to a key.
+     * Listen for all requests received by the server in real time.
      */
-    append(key, value) {
-        return this.redisClientProxy('append', arguments);
+    monitor() {
+        return this.redisClientProxy('monitor', arguments);
+    }
+    info() {
+        return this.redisClientProxy('info', arguments);
+    }
+    ping() {
+        return this.redisClientProxy('ping', arguments);
+    }
+    /**
+     * Post a message to a channel.
+     */
+    publish(channel, value) {
+        return this.redisClientProxy('publish', arguments);
+    }
+    /**
+     * KILL - Kill the connection of a client.
+     * LIST - Get the list of client connections.
+     * GETNAME - Get the current connection name.
+     * PAUSE - Stop processing commands from clients for some time.
+     * REPLY - Instruct the server whether to reply to commands.
+     * SETNAME - Set the current connection name.
+     */
+    client(...args) {
+        return this.redisClientProxy('client', arguments);
+    }
+    hmset() {
+        return this.redisClientProxy('hmset', arguments);
+    }
+    subscribe() {
+        return this.redisClientProxy('subscribe', arguments);
+    }
+    unsubscribe() {
+        return this.redisClientProxy('unsubscribe', arguments);
+    }
+    psubscribe() {
+        return this.redisClientProxy('psubscribe', arguments);
+    }
+    punsubscribe() {
+        return this.redisClientProxy('punsubscribe', arguments);
     }
     /**
      * Authenticate to the server.
      */
     auth(password) {
         return this.redisClientProxy('auth', arguments);
+    }
+    /**
+     * Append a value to a key.
+     */
+    append(key, value) {
+        return this.redisClientProxy('append', arguments);
     }
     /**
      * Asynchronously rewrite the append-only file.
@@ -95,44 +139,41 @@ class RedisClient extends Facade_1.Facade {
     bitpos() {
         return this.redisClientProxy('bitpos', arguments);
     }
-    // /**
-    //  * Remove and get the first element in a list, or block until one is available.
-    //  */
-    // blpop: OverloadedLastCommand<string, number, [string, string], R>
-    // BLPOP: OverloadedLastCommand<string, number, [string, string], R>
-    // /**
-    //  * Remove and get the last element in a list, or block until one is available.
-    //  */
-    // brpop: OverloadedLastCommand<string, number, [string, string], R>
-    // BRPOP: OverloadedLastCommand<string, number, [string, string], R>
+    blpop() {
+        return this.redisClientProxy('blpop', arguments);
+    }
+    brpop() {
+        return this.redisClientProxy('brpop', arguments);
+    }
     /**
      * Pop a value from a list, push it to another list and return it; or block until one is available.
      */
     brpoplpush(source, destination, timeout) {
         return this.redisClientProxy('brpoplpush', arguments);
     }
-    // /**
-    //  * ADDSLOTS - Assign new hash slots to receiving node.
-    //  * COUNT-FAILURE-REPORTS - Return the number of failure reports active for a given node.
-    //  * COUNTKEYSINSLOT - Return the number of local keys in the specified hash slot.
-    //  * DELSLOTS - Set hash slots as unbound in receiving node.
-    //  * FAILOVER - Forces a slave to perform a manual failover of its master.
-    //  * FORGET - Remove a node from the nodes table.
-    //  * GETKEYSINSLOT - Return local key names in the specified hash slot.
-    //  * INFO - Provides info about Redis Cluster node state.
-    //  * KEYSLOT - Returns the hash slot of the specified key.
-    //  * MEET - Force a node cluster to handshake with another node.
-    //  * NODES - Get cluster config for the node.
-    //  * REPLICATE - Reconfigure a node as a slave of the specified master node.
-    //  * RESET - Reset a Redis Cluster node.
-    //  * SAVECONFIG - Forces the node to save cluster state on disk.
-    //  * SET-CONFIG-EPOCH - Set the configuration epoch in a new node.
-    //  * SETSLOT - Bind a hash slot to a specified node.
-    //  * SLAVES - List slave nodes of the specified master node.
-    //  * SLOTS - Get array of Cluster slot to node mappings.
-    //  */
-    // cluster: OverloadedCommand<string, any, this>
-    // CLUSTER: OverloadedCommand<string, any, this>
+    /**
+     * ADDSLOTS - Assign new hash slots to receiving node.
+     * COUNT-FAILURE-REPORTS - Return the number of failure reports active for a given node.
+     * COUNTKEYSINSLOT - Return the number of local keys in the specified hash slot.
+     * DELSLOTS - Set hash slots as unbound in receiving node.
+     * FAILOVER - Forces a slave to perform a manual failover of its master.
+     * FORGET - Remove a node from the nodes table.
+     * GETKEYSINSLOT - Return local key names in the specified hash slot.
+     * INFO - Provides info about Redis Cluster node state.
+     * KEYSLOT - Returns the hash slot of the specified key.
+     * MEET - Force a node cluster to handshake with another node.
+     * NODES - Get cluster config for the node.
+     * REPLICATE - Reconfigure a node as a slave of the specified master node.
+     * RESET - Reset a Redis Cluster node.
+     * SAVECONFIG - Forces the node to save cluster state on disk.
+     * SET-CONFIG-EPOCH - Set the configuration epoch in a new node.
+     * SETSLOT - Bind a hash slot to a specified node.
+     * SLAVES - List slave nodes of the specified master node.
+     * SLOTS - Get array of Cluster slot to node mappings.
+     */
+    cluster(...args) {
+        return this.redisClientProxy('cluster', arguments);
+    }
     /**
      * Get array of Redis command details.
      *
@@ -143,31 +184,33 @@ class RedisClient extends Facade_1.Facade {
     command() {
         return this.redisClientProxy('command', arguments);
     }
-    // /**
-    //  * Get array of Redis command details.
-    //  *
-    //  * COUNT - Get array of Redis command details.
-    //  * GETKEYS - Extract keys given a full Redis command.
-    //  * INFO - Get array of specific Redis command details.
-    //  * GET - Get the value of a configuration parameter.
-    //  * REWRITE - Rewrite the configuration file with the in memory configuration.
-    //  * SET - Set a configuration parameter to the given value.
-    //  * RESETSTAT - Reset the stats returned by INFO.
-    //  */
-    // config: OverloadedCommand<string, boolean, R>
-    // CONFIG: OverloadedCommand<string, boolean, R>
+    /**
+     * Get array of Redis command details.
+     *
+     * COUNT - Get array of Redis command details.
+     * GETKEYS - Extract keys given a full Redis command.
+     * INFO - Get array of specific Redis command details.
+     * GET - Get the value of a configuration parameter.
+     * REWRITE - Rewrite the configuration file with the in memory configuration.
+     * SET - Set a configuration parameter to the given value.
+     * RESETSTAT - Reset the stats returned by INFO.
+     */
+    config(...args) {
+        return this.redisClientProxy('config', arguments);
+    }
     /**
      * Return the number of keys in the selected database.
      */
     dbsize() {
         return this.redisClientProxy('dbsize', arguments);
     }
-    // /**
-    //  * OBJECT - Get debugging information about a key.
-    //  * SEGFAULT - Make the server crash.
-    //  */
-    // debug: OverloadedCommand<string, boolean, R>
-    // DEBUG: OverloadedCommand<string, boolean, R>
+    /**
+     * OBJECT - Get debugging information about a key.
+     * SEGFAULT - Make the server crash.
+     */
+    debug(...args) {
+        return this.redisClientProxy('debug', arguments);
+    }
     /**
      * Decrement the integer value of a key by one.
      */
@@ -180,11 +223,12 @@ class RedisClient extends Facade_1.Facade {
     decrby(key, decrement) {
         return this.redisClientProxy('decrby', arguments);
     }
-    // /**
-    //  * Delete a key.
-    //  */
-    // del: OverloadedCommand<string, number, R>
-    // DEL: OverloadedCommand<string, number, R>
+    /**
+     * Delete a key.
+     */
+    del(...args) {
+        return this.redisClientProxy('del', arguments);
+    }
     /**
      * Discard all commands issued after MULTI.
      */
@@ -203,21 +247,24 @@ class RedisClient extends Facade_1.Facade {
     echo(message) {
         return this.redisClientProxy('echo', arguments);
     }
-    // /**
-    //  * Execute a Lua script server side.
-    //  */
-    // eval: OverloadedCommand<string | number, any, R>
-    // EVAL: OverloadedCommand<string | number, any, R>
-    // /**
-    //  * Execute a Lue script server side.
-    //  */
-    // evalsha: OverloadedCommand<string | number, any, R>
-    // EVALSHA: OverloadedCommand<string | number, any, R>
-    // /**
-    //  * Determine if a key exists.
-    //  */
-    // exists: OverloadedCommand<string, number, R>
-    // EXISTS: OverloadedCommand<string, number, R>
+    /**
+     * Execute a Lua script server side.
+     */
+    eval(...args) {
+        return this.redisClientProxy('eval', arguments);
+    }
+    /**
+     * Execute a Lue script server side.
+     */
+    evalsha(...args) {
+        return this.redisClientProxy('evalsha', arguments);
+    }
+    /**
+     * Determine if a key exists.
+     */
+    exists(...args) {
+        return this.redisClientProxy('exists', arguments);
+    }
     /**
      * Set a key's time to live in seconds.
      */
@@ -443,37 +490,42 @@ class RedisClient extends Facade_1.Facade {
     ltrim(key, start, stop) {
         return this.redisClientProxy('ltrim', arguments);
     }
-    // /**
-    //  * Get the values of all given keys.
-    //  */
-    // mget: OverloadedCommand<string, string[], R>
-    // MGET: OverloadedCommand<string, string[], R>
-    // /**
-    //  * Atomically transfer a key from a Redis instance to another one.
-    //  */
-    // migrate: OverloadedCommand<string, boolean, R>
-    // MIGRATE: OverloadedCommand<string, boolean, R>
+    /**
+     * Get the values of all given keys.
+     */
+    mget(...args) {
+        return this.redisClientProxy('mget', arguments);
+    }
+    /**
+     * Atomically transfer a key from a Redis instance to another one.
+     */
+    migrate(...args) {
+        return this.redisClientProxy('migrate', arguments);
+    }
     /**
      * Move a key to another database.
      */
     move(key, db) {
         return this.redisClientProxy('move', arguments);
     }
-    // /**
-    //  * Set multiple keys to multiple values.
-    //  */
-    // mset: OverloadedCommand<string, boolean, R>
-    // MSET: OverloadedCommand<string, boolean, R>
-    // /**
-    //  * Set multiple keys to multiple values, only if none of the keys exist.
-    //  */
-    // msetnx: OverloadedCommand<string, boolean, R>
-    // MSETNX: OverloadedCommand<string, boolean, R>
-    // /**
-    //  * Inspect the internals of Redis objects.
-    //  */
-    // object: OverloadedCommand<string, any, R>
-    // OBJECT: OverloadedCommand<string, any, R>
+    /**
+     * Set multiple keys to multiple values.
+     */
+    mset(...args) {
+        return this.redisClientProxy('mset', arguments);
+    }
+    /**
+     * Set multiple keys to multiple values, only if none of the keys exist.
+     */
+    msetnx(...args) {
+        return this.redisClientProxy('msetnx', arguments);
+    }
+    /**
+     * Inspect the internals of Redis objects.
+     */
+    object(...args) {
+        return this.redisClientProxy('object', arguments);
+    }
     /**
      * Remove the expiration from a key.
      */
@@ -495,27 +547,30 @@ class RedisClient extends Facade_1.Facade {
     pfadd() {
         return this.redisClientProxy('pfadd', arguments);
     }
-    // /**
-    //  * Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s).
-    //  */
-    // pfcount: OverloadedCommand<string, number, R>
-    // PFCOUNT: OverloadedCommand<string, number, R>
-    // /**
-    //  * Merge N different HyperLogLogs into a single one.
-    //  */
-    // pfmerge: OverloadedCommand<string, boolean, R>
-    // PFMERGE: OverloadedCommand<string, boolean, R>
+    /**
+     * Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s).
+     */
+    pfcount(...args) {
+        return this.redisClientProxy('pfcount', arguments);
+    }
+    /**
+     * Merge N different HyperLogLogs into a single one.
+     */
+    pfmerge(...args) {
+        return this.redisClientProxy('pfmerge', arguments);
+    }
     /**
      * Set the value and expiration in milliseconds of a key.
      */
     psetex(key, milliseconds, value) {
         return this.redisClientProxy('psetex', arguments);
     }
-    // /**
-    //  * Inspect the state of the Pub/Sub subsytem.
-    //  */
-    // pubsub: OverloadedCommand<string, number, R>
-    // PUBSUB: OverloadedCommand<string, number, R>
+    /**
+     * Inspect the state of the Pub/Sub subsystem.
+     */
+    pubsub(...args) {
+        return this.redisClientProxy('pubsub', arguments);
+    }
     /**
      * Get the time to live for a key in milliseconds.
      */
@@ -606,6 +661,22 @@ class RedisClient extends Facade_1.Facade {
     scard(key) {
         return this.redisClientProxy('scard', arguments);
     }
+    /**
+     * DEBUG - Set the debug mode for executed scripts.
+     * EXISTS - Check existence of scripts in the script cache.
+     * FLUSH - Remove all scripts from the script cache.
+     * KILL - Kill the script currently in execution.
+     * LOAD - Load the specified Lua script into the script cache.
+     */
+    script(...args) {
+        return this.redisClientProxy('script', arguments);
+    }
+    /**
+     * Subtract multiple sets.
+     */
+    sdiff(...args) {
+        return this.redisClientProxy('sdiff', arguments);
+    }
     sdiffstore() {
         return this.redisClientProxy('sdiffstore', arguments);
     }
@@ -642,14 +713,21 @@ class RedisClient extends Facade_1.Facade {
     setrange(key, offset, value) {
         return this.redisClientProxy('setrange', arguments);
     }
+    /**
+     * Synchronously save the dataset to disk and then shut down the server.
+     */
+    shutdown(...args) {
+        return this.redisClientProxy('shutdown', arguments);
+    }
     sinter() {
         return this.redisClientProxy('sinter', arguments);
     }
-    // /**
-    //  * Intersect multiple sets and store the resulting set in a key.
-    //  */
-    // sinterstore: OverloadedCommand<string, number, R>
-    // SINTERSTORE: OverloadedCommand<string, number, R>
+    /**
+     * Intersect multiple sets and store the resulting set in a key.
+     */
+    sinterstore(...args) {
+        return this.redisClientProxy('sinterstore', arguments);
+    }
     /**
      * Determine if a given value is a member of a set.
      */
@@ -662,11 +740,12 @@ class RedisClient extends Facade_1.Facade {
     slaveof(host, port) {
         return this.redisClientProxy('slaveof', arguments);
     }
-    // /**
-    //  * Manages the Redis slow queries log.
-    //  */
-    // slowlog: OverloadedCommand<string, Array<[number, number, number, string[]]>, R>
-    // SLOWLOG: OverloadedCommand<string, Array<[number, number, number, string[]]>, R>
+    /**
+     * Manages the Redis slow queries log.
+     */
+    slowlog(...args) {
+        return this.redisClientProxy('slowlog', arguments);
+    }
     /**
      * Get all the members in a set.
      */
@@ -678,6 +757,12 @@ class RedisClient extends Facade_1.Facade {
      */
     smove(source, destination, member) {
         return this.redisClientProxy('smove', arguments);
+    }
+    /**
+     * Sort the elements in a list, set or sorted set.
+     */
+    sort(...args) {
+        return this.redisClientProxy('sort', arguments);
     }
     spop() {
         return this.redisClientProxy('spop', arguments);
@@ -694,16 +779,18 @@ class RedisClient extends Facade_1.Facade {
     strlen(key) {
         return this.redisClientProxy('strlen', arguments);
     }
-    // /**
-    //  * Add multiple sets.
-    //  */
-    // sunion: OverloadedCommand<string, string[], R>
-    // SUNION: OverloadedCommand<string, string[], R>
-    // /**
-    //  * Add multiple sets and store the resulting set in a key.
-    //  */
-    // sunionstore: OverloadedCommand<string, number, R>
-    // SUNIONSTORE: OverloadedCommand<string, number, R>
+    /**
+     * Add multiple sets.
+     */
+    sunion(...args) {
+        return this.redisClientProxy('sunion', arguments);
+    }
+    /**
+     * Add multiple sets and store the resulting set in a key.
+     */
+    sunionstore(...args) {
+        return this.redisClientProxy('sunionstore', arguments);
+    }
     /**
      * Internal command used for replication.
      */
@@ -740,6 +827,12 @@ class RedisClient extends Facade_1.Facade {
     wait(numSlaves, timeout) {
         return this.redisClientProxy('wait', arguments);
     }
+    /**
+     * Watch the given keys to determine execution of the MULTI/EXEC block.
+     */
+    watch(...args) {
+        return this.redisClientProxy('watch', arguments);
+    }
     zadd() {
         return this.redisClientProxy('zadd', arguments);
     }
@@ -761,11 +854,12 @@ class RedisClient extends Facade_1.Facade {
     zincrby(key, increment, member) {
         return this.redisClientProxy('zincrby', arguments);
     }
-    // /**
-    //  * Intersect multiple sorted sets and store the resulting sorted set in a new key.
-    //  */
-    // zinterstore: OverloadedCommand<string | number, number, R>
-    // ZINTERSTORE: OverloadedCommand<string | number, number, R>
+    /**
+     * Intersect multiple sorted sets and store the resulting sorted set in a new key.
+     */
+    zinterstore(...args) {
+        return this.redisClientProxy('zinterstore', arguments);
+    }
     /**
      * Count the number of members in a sorted set between a given lexicographic range.
      */
@@ -828,6 +922,18 @@ class RedisClient extends Facade_1.Facade {
      */
     zscore(key, member) {
         return this.redisClientProxy('zscore', arguments);
+    }
+    /**
+     * Add multiple sorted sets and store the resulting sorted set in a new key.
+     */
+    zunionstore(...args) {
+        return this.redisClientProxy('zunionstore', arguments);
+    }
+    /**
+     * Incrementally iterate the keys space.
+     */
+    scan(...args) {
+        return this.redisClientProxy('scan', arguments);
     }
     sscan() {
         return this.redisClientProxy('sscan', arguments);

@@ -79,10 +79,96 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
 
   // -------------------------------------------------------------------------------------------------------------------
   /**
-   * Append a value to a key.
+   * Listen for all requests received by the server in real time.
    */
-  append(key: string, value: string): Promise<number> {
-    return this.redisClientProxy('append', arguments)
+  monitor(): Promise<undefined> {
+    return this.redisClientProxy('monitor', arguments)
+  }
+
+  /**
+   * Get information and statistics about the server.
+   */
+  info(): Promise<Redis.ServerInfo>
+  info(section?: string | string[]): Promise<Redis.ServerInfo>
+  info(): Promise<Redis.ServerInfo> {
+    return this.redisClientProxy('info', arguments)
+  }
+
+  /**
+   * Ping the server.
+   */
+  ping(): Promise<string>
+  ping(message: string): Promise<string>
+  ping(): Promise<string> {
+    return this.redisClientProxy('ping', arguments)
+  }
+
+  /**
+   * Post a message to a channel.
+   */
+  publish(channel: string, value: string): Promise<number> {
+    return this.redisClientProxy('publish', arguments)
+  }
+
+  /**
+   * KILL - Kill the connection of a client.
+   * LIST - Get the list of client connections.
+   * GETNAME - Get the current connection name.
+   * PAUSE - Stop processing commands from clients for some time.
+   * REPLY - Instruct the server whether to reply to commands.
+   * SETNAME - Set the current connection name.
+   */
+  client(...args: Array<string>): Promise<any> {
+    return this.redisClientProxy('client', arguments)
+  }
+
+  /**
+   * Set multiple hash fields to multiple values.
+   */
+  hmset(key: string): Promise<boolean>
+  hmset(key: string, ...args: Array<string | number>): Promise<boolean>
+  hmset(): Promise<boolean> {
+    return this.redisClientProxy('hmset', arguments)
+  }
+
+  /**
+   * Listen for messages published to the given channels.
+   */
+  subscribe(channel: string): Promise<string>
+  subscribe(channels: string[]): Promise<string>
+  subscribe(...args: string[]): Promise<string>
+  subscribe(): Promise<string> {
+    return this.redisClientProxy('subscribe', arguments)
+  }
+
+  /**
+   * Stop listening for messages posted to the given channels.
+   */
+  unsubscribe(channel: string): Promise<string>
+  unsubscribe(channels: string[]): Promise<string>
+  unsubscribe(...args: string[]): Promise<string>
+  unsubscribe(): Promise<string> {
+    return this.redisClientProxy('unsubscribe', arguments)
+  }
+
+  /**
+   * Listen for messages published to channels matching the given patterns.
+   */
+  psubscribe(channel: string): Promise<string>
+  psubscribe(channels: string[]): Promise<string>
+  psubscribe(...args: string[]): Promise<string>
+  psubscribe(): Promise<string> {
+    return this.redisClientProxy('psubscribe', arguments)
+  }
+
+  /**
+   * Stop listening for messages posted to channels matching the given patterns.
+   */
+  punsubscribe(channel: string): Promise<string>
+  punsubscribe(channels: string[]): Promise<string>
+  punsubscribe(...args: string[]): Promise<string>
+  punsubscribe(): Promise<string> {
+    return this.redisClientProxy('punsubscribe', arguments)
   }
 
   /**
@@ -90,6 +176,13 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
    */
   auth(password: string): Promise<string> {
     return this.redisClientProxy('auth', arguments)
+  }
+
+  /**
+   * Append a value to a key.
+   */
+  append(key: string, value: string): Promise<number> {
+    return this.redisClientProxy('append', arguments)
   }
 
   /**
@@ -142,17 +235,33 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('bitpos', arguments)
   }
 
-  // /**
-  //  * Remove and get the first element in a list, or block until one is available.
-  //  */
-  // blpop: OverloadedLastCommand<string, number, [string, string], R>
-  // BLPOP: OverloadedLastCommand<string, number, [string, string], R>
+  /**
+   * Remove and get the first element in a list, or block until one is available.
+   */
+  blpop(args: Array<string | number>): Promise<[string, string]>
+  blpop(...args: Array<string | number>): Promise<[string, string]>
+  blpop(arg1: string, arg2: number | Array<string | number>): Promise<[string, string]>
+  blpop(arg1: string, arg2: string, arg3: number): Promise<[string, string]>
+  blpop(arg1: string, arg2: string, arg3: string, arg4: number): Promise<[string, string]>
+  blpop(arg1: string, arg2: string, arg3: string, arg4: string, arg5: number): Promise<[string, string]>
+  blpop(arg1: string, arg2: string, arg3: string, arg4: string, arg5: string, arg6: number): Promise<[string, string]>
+  blpop(): Promise<[string, string]> {
+    return this.redisClientProxy('blpop', arguments)
+  }
 
-  // /**
-  //  * Remove and get the last element in a list, or block until one is available.
-  //  */
-  // brpop: OverloadedLastCommand<string, number, [string, string], R>
-  // BRPOP: OverloadedLastCommand<string, number, [string, string], R>
+  /**
+   * Remove and get the last element in a list, or block until one is available.
+   */
+  brpop(args: Array<string | number>): Promise<[string, string]>
+  brpop(...args: Array<string | number>): Promise<[string, string]>
+  brpop(arg1: string, arg2: number | Array<string | number>): Promise<[string, string]>
+  brpop(arg1: string, arg2: string, arg3: number): Promise<[string, string]>
+  brpop(arg1: string, arg2: string, arg3: string, arg4: number): Promise<[string, string]>
+  brpop(arg1: string, arg2: string, arg3: string, arg4: string, arg5: number): Promise<[string, string]>
+  brpop(arg1: string, arg2: string, arg3: string, arg4: string, arg5: string, arg6: number): Promise<[string, string]>
+  brpop(): Promise<[string, string]> {
+    return this.redisClientProxy('brpop', arguments)
+  }
 
   /**
    * Pop a value from a list, push it to another list and return it; or block until one is available.
@@ -161,28 +270,29 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('brpoplpush', arguments)
   }
 
-  // /**
-  //  * ADDSLOTS - Assign new hash slots to receiving node.
-  //  * COUNT-FAILURE-REPORTS - Return the number of failure reports active for a given node.
-  //  * COUNTKEYSINSLOT - Return the number of local keys in the specified hash slot.
-  //  * DELSLOTS - Set hash slots as unbound in receiving node.
-  //  * FAILOVER - Forces a slave to perform a manual failover of its master.
-  //  * FORGET - Remove a node from the nodes table.
-  //  * GETKEYSINSLOT - Return local key names in the specified hash slot.
-  //  * INFO - Provides info about Redis Cluster node state.
-  //  * KEYSLOT - Returns the hash slot of the specified key.
-  //  * MEET - Force a node cluster to handshake with another node.
-  //  * NODES - Get cluster config for the node.
-  //  * REPLICATE - Reconfigure a node as a slave of the specified master node.
-  //  * RESET - Reset a Redis Cluster node.
-  //  * SAVECONFIG - Forces the node to save cluster state on disk.
-  //  * SET-CONFIG-EPOCH - Set the configuration epoch in a new node.
-  //  * SETSLOT - Bind a hash slot to a specified node.
-  //  * SLAVES - List slave nodes of the specified master node.
-  //  * SLOTS - Get array of Cluster slot to node mappings.
-  //  */
-  // cluster: OverloadedCommand<string, any, this>
-  // CLUSTER: OverloadedCommand<string, any, this>
+  /**
+   * ADDSLOTS - Assign new hash slots to receiving node.
+   * COUNT-FAILURE-REPORTS - Return the number of failure reports active for a given node.
+   * COUNTKEYSINSLOT - Return the number of local keys in the specified hash slot.
+   * DELSLOTS - Set hash slots as unbound in receiving node.
+   * FAILOVER - Forces a slave to perform a manual failover of its master.
+   * FORGET - Remove a node from the nodes table.
+   * GETKEYSINSLOT - Return local key names in the specified hash slot.
+   * INFO - Provides info about Redis Cluster node state.
+   * KEYSLOT - Returns the hash slot of the specified key.
+   * MEET - Force a node cluster to handshake with another node.
+   * NODES - Get cluster config for the node.
+   * REPLICATE - Reconfigure a node as a slave of the specified master node.
+   * RESET - Reset a Redis Cluster node.
+   * SAVECONFIG - Forces the node to save cluster state on disk.
+   * SET-CONFIG-EPOCH - Set the configuration epoch in a new node.
+   * SETSLOT - Bind a hash slot to a specified node.
+   * SLAVES - List slave nodes of the specified master node.
+   * SLOTS - Get array of Cluster slot to node mappings.
+   */
+  cluster(...args: Array<string>): Promise<any> {
+    return this.redisClientProxy('cluster', arguments)
+  }
 
   /**
    * Get array of Redis command details.
@@ -195,19 +305,20 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('command', arguments)
   }
 
-  // /**
-  //  * Get array of Redis command details.
-  //  *
-  //  * COUNT - Get array of Redis command details.
-  //  * GETKEYS - Extract keys given a full Redis command.
-  //  * INFO - Get array of specific Redis command details.
-  //  * GET - Get the value of a configuration parameter.
-  //  * REWRITE - Rewrite the configuration file with the in memory configuration.
-  //  * SET - Set a configuration parameter to the given value.
-  //  * RESETSTAT - Reset the stats returned by INFO.
-  //  */
-  // config: OverloadedCommand<string, boolean, R>
-  // CONFIG: OverloadedCommand<string, boolean, R>
+  /**
+   * Get array of Redis command details.
+   *
+   * COUNT - Get array of Redis command details.
+   * GETKEYS - Extract keys given a full Redis command.
+   * INFO - Get array of specific Redis command details.
+   * GET - Get the value of a configuration parameter.
+   * REWRITE - Rewrite the configuration file with the in memory configuration.
+   * SET - Set a configuration parameter to the given value.
+   * RESETSTAT - Reset the stats returned by INFO.
+   */
+  config(...args: Array<string>): Promise<boolean> {
+    return this.redisClientProxy('config', arguments)
+  }
 
   /**
    * Return the number of keys in the selected database.
@@ -216,12 +327,13 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('dbsize', arguments)
   }
 
-  // /**
-  //  * OBJECT - Get debugging information about a key.
-  //  * SEGFAULT - Make the server crash.
-  //  */
-  // debug: OverloadedCommand<string, boolean, R>
-  // DEBUG: OverloadedCommand<string, boolean, R>
+  /**
+   * OBJECT - Get debugging information about a key.
+   * SEGFAULT - Make the server crash.
+   */
+  debug(...args: Array<string>): Promise<boolean> {
+    return this.redisClientProxy('debug', arguments)
+  }
 
   /**
    * Decrement the integer value of a key by one.
@@ -237,11 +349,12 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('decrby', arguments)
   }
 
-  // /**
-  //  * Delete a key.
-  //  */
-  // del: OverloadedCommand<string, number, R>
-  // DEL: OverloadedCommand<string, number, R>
+  /**
+   * Delete a key.
+   */
+  del(...args: Array<string>): Promise<number> {
+    return this.redisClientProxy('del', arguments)
+  }
 
   /**
    * Discard all commands issued after MULTI.
@@ -264,23 +377,26 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('echo', arguments)
   }
 
-  // /**
-  //  * Execute a Lua script server side.
-  //  */
-  // eval: OverloadedCommand<string | number, any, R>
-  // EVAL: OverloadedCommand<string | number, any, R>
+  /**
+   * Execute a Lua script server side.
+   */
+  eval(...args: Array<string | number>): Promise<any> {
+    return this.redisClientProxy('eval', arguments)
+  }
 
-  // /**
-  //  * Execute a Lue script server side.
-  //  */
-  // evalsha: OverloadedCommand<string | number, any, R>
-  // EVALSHA: OverloadedCommand<string | number, any, R>
+  /**
+   * Execute a Lue script server side.
+   */
+  evalsha(...args: Array<string | number>): Promise<any> {
+    return this.redisClientProxy('evalsha', arguments)
+  }
 
-  // /**
-  //  * Determine if a key exists.
-  //  */
-  // exists: OverloadedCommand<string, number, R>
-  // EXISTS: OverloadedCommand<string, number, R>
+  /**
+   * Determine if a key exists.
+   */
+  exists(...args: Array<string>): Promise<number> {
+    return this.redisClientProxy('exists', arguments)
+  }
 
   /**
    * Set a key's time to live in seconds.
@@ -606,17 +722,19 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('ltrim', arguments)
   }
 
-  // /**
-  //  * Get the values of all given keys.
-  //  */
-  // mget: OverloadedCommand<string, string[], R>
-  // MGET: OverloadedCommand<string, string[], R>
+  /**
+   * Get the values of all given keys.
+   */
+  mget(...args: Array<string>): Promise<string[]> {
+    return this.redisClientProxy('mget', arguments)
+  }
 
-  // /**
-  //  * Atomically transfer a key from a Redis instance to another one.
-  //  */
-  // migrate: OverloadedCommand<string, boolean, R>
-  // MIGRATE: OverloadedCommand<string, boolean, R>
+  /**
+   * Atomically transfer a key from a Redis instance to another one.
+   */
+  migrate(...args: Array<string>): Promise<boolean> {
+    return this.redisClientProxy('migrate', arguments)
+  }
 
   /**
    * Move a key to another database.
@@ -625,23 +743,26 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('move', arguments)
   }
 
-  // /**
-  //  * Set multiple keys to multiple values.
-  //  */
-  // mset: OverloadedCommand<string, boolean, R>
-  // MSET: OverloadedCommand<string, boolean, R>
+  /**
+   * Set multiple keys to multiple values.
+   */
+  mset(...args: Array<string>): Promise<boolean> {
+    return this.redisClientProxy('mset', arguments)
+  }
 
-  // /**
-  //  * Set multiple keys to multiple values, only if none of the keys exist.
-  //  */
-  // msetnx: OverloadedCommand<string, boolean, R>
-  // MSETNX: OverloadedCommand<string, boolean, R>
+  /**
+   * Set multiple keys to multiple values, only if none of the keys exist.
+   */
+  msetnx(...args: Array<string>): Promise<boolean> {
+    return this.redisClientProxy('msetnx', arguments)
+  }
 
-  // /**
-  //  * Inspect the internals of Redis objects.
-  //  */
-  // object: OverloadedCommand<string, any, R>
-  // OBJECT: OverloadedCommand<string, any, R>
+  /**
+   * Inspect the internals of Redis objects.
+   */
+  object(...args: Array<string>): Promise<any> {
+    return this.redisClientProxy('object', arguments)
+  }
 
   /**
    * Remove the expiration from a key.
@@ -674,17 +795,19 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('pfadd', arguments)
   }
 
-  // /**
-  //  * Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s).
-  //  */
-  // pfcount: OverloadedCommand<string, number, R>
-  // PFCOUNT: OverloadedCommand<string, number, R>
+  /**
+   * Return the approximated cardinality of the set(s) observed by the HyperLogLog at key(s).
+   */
+  pfcount(...args: Array<string>): Promise<number> {
+    return this.redisClientProxy('pfcount', arguments)
+  }
 
-  // /**
-  //  * Merge N different HyperLogLogs into a single one.
-  //  */
-  // pfmerge: OverloadedCommand<string, boolean, R>
-  // PFMERGE: OverloadedCommand<string, boolean, R>
+  /**
+   * Merge N different HyperLogLogs into a single one.
+   */
+  pfmerge(...args: Array<string>): Promise<boolean> {
+    return this.redisClientProxy('pfmerge', arguments)
+  }
 
   /**
    * Set the value and expiration in milliseconds of a key.
@@ -693,11 +816,12 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('psetex', arguments)
   }
 
-  // /**
-  //  * Inspect the state of the Pub/Sub subsytem.
-  //  */
-  // pubsub: OverloadedCommand<string, number, R>
-  // PUBSUB: OverloadedCommand<string, number, R>
+  /**
+   * Inspect the state of the Pub/Sub subsystem.
+   */
+  pubsub(...args: Array<string>): Promise<number> {
+    return this.redisClientProxy('pubsub', arguments)
+  }
 
   /**
    * Get the time to live for a key in milliseconds.
@@ -817,21 +941,23 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('scard', arguments)
   }
 
-  // /**
-  //  * DEBUG - Set the debug mode for executed scripts.
-  //  * EXISTS - Check existence of scripts in the script cache.
-  //  * FLUSH - Remove all scripts from the script cache.
-  //  * KILL - Kill the script currently in execution.
-  //  * LOAD - Load the specified Lua script into the script cache.
-  //  */
-  // script: OverloadedCommand<string, any, R>
-  // SCRIPT: OverloadedCommand<string, any, R>
+  /**
+   * DEBUG - Set the debug mode for executed scripts.
+   * EXISTS - Check existence of scripts in the script cache.
+   * FLUSH - Remove all scripts from the script cache.
+   * KILL - Kill the script currently in execution.
+   * LOAD - Load the specified Lua script into the script cache.
+   */
+  script(...args: Array<string>): Promise<any> {
+    return this.redisClientProxy('script', arguments)
+  }
 
-  // /**
-  //  * Subtract multiple sets.
-  //  */
-  // sdiff: OverloadedCommand<string, string[], R>
-  // SDIFF: OverloadedCommand<string, string[], R>
+  /**
+   * Subtract multiple sets.
+   */
+  sdiff(...args: Array<string>): Promise<string[]> {
+    return this.redisClientProxy('sdiff', arguments)
+  }
 
   /**
    * Subtract multiple sets and store the resulting set in a key.
@@ -889,11 +1015,12 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('setrange', arguments)
   }
 
-  // /**
-  //  * Synchronously save the dataset to disk and then shut down the server.
-  //  */
-  // shutdown: OverloadedCommand<string, string, R>
-  // SHUTDOWN: OverloadedCommand<string, string, R>
+  /**
+   * Synchronously save the dataset to disk and then shut down the server.
+   */
+  shutdown(...args: Array<string>): Promise<string> {
+    return this.redisClientProxy('shutdown', arguments)
+  }
 
   /**
    * Intersect multiple sets.
@@ -905,11 +1032,12 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('sinter', arguments)
   }
 
-  // /**
-  //  * Intersect multiple sets and store the resulting set in a key.
-  //  */
-  // sinterstore: OverloadedCommand<string, number, R>
-  // SINTERSTORE: OverloadedCommand<string, number, R>
+  /**
+   * Intersect multiple sets and store the resulting set in a key.
+   */
+  sinterstore(...args: Array<string>): Promise<number> {
+    return this.redisClientProxy('sinterstore', arguments)
+  }
 
   /**
    * Determine if a given value is a member of a set.
@@ -925,11 +1053,12 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('slaveof', arguments)
   }
 
-  // /**
-  //  * Manages the Redis slow queries log.
-  //  */
-  // slowlog: OverloadedCommand<string, Array<[number, number, number, string[]]>, R>
-  // SLOWLOG: OverloadedCommand<string, Array<[number, number, number, string[]]>, R>
+  /**
+   * Manages the Redis slow queries log.
+   */
+  slowlog(...args: Array<string>): Promise<Array<[number, number, number, string[]]>> {
+    return this.redisClientProxy('slowlog', arguments)
+  }
 
   /**
    * Get all the members in a set.
@@ -945,11 +1074,12 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('smove', arguments)
   }
 
-  // /**
-  //  * Sort the elements in a list, set or sorted set.
-  //  */
-  // sort: OverloadedCommand<string, string[], R>
-  // SORT: OverloadedCommand<string, string[], R>
+  /**
+   * Sort the elements in a list, set or sorted set.
+   */
+  sort(...args: Array<string>): Promise<string[]> {
+    return this.redisClientProxy('sort', arguments)
+  }
 
   /**
    * Remove and return one or multiple random members from a set.
@@ -986,17 +1116,19 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('strlen', arguments)
   }
 
-  // /**
-  //  * Add multiple sets.
-  //  */
-  // sunion: OverloadedCommand<string, string[], R>
-  // SUNION: OverloadedCommand<string, string[], R>
+  /**
+   * Add multiple sets.
+   */
+  sunion(...args: Array<string>): Promise<string[]> {
+    return this.redisClientProxy('sunion', arguments)
+  }
 
-  // /**
-  //  * Add multiple sets and store the resulting set in a key.
-  //  */
-  // sunionstore: OverloadedCommand<string, number, R>
-  // SUNIONSTORE: OverloadedCommand<string, number, R>
+  /**
+   * Add multiple sets and store the resulting set in a key.
+   */
+  sunionstore(...args: Array<string>): Promise<number> {
+    return this.redisClientProxy('sunionstore', arguments)
+  }
 
   /**
    * Internal command used for replication.
@@ -1040,11 +1172,12 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('wait', arguments)
   }
 
-  // /**
-  //  * Watch the given keys to determine execution of the MULTI/EXEC block.
-  //  */
-  // watch: OverloadedCommand<string, 'OK', R>
-  // WATCH: OverloadedCommand<string, 'OK', R>
+  /**
+   * Watch the given keys to determine execution of the MULTI/EXEC block.
+   */
+  watch(...args: Array<string>): Promise<'OK'> {
+    return this.redisClientProxy('watch', arguments)
+  }
 
   /**
    * Add one or more members to a sorted set, or update its score if it already exists.
@@ -1077,11 +1210,12 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('zincrby', arguments)
   }
 
-  // /**
-  //  * Intersect multiple sorted sets and store the resulting sorted set in a new key.
-  //  */
-  // zinterstore: OverloadedCommand<string | number, number, R>
-  // ZINTERSTORE: OverloadedCommand<string | number, number, R>
+  /**
+   * Intersect multiple sorted sets and store the resulting sorted set in a new key.
+   */
+  zinterstore(...args: Array<string | number>): Promise<number> {
+    return this.redisClientProxy('zinterstore', arguments)
+  }
 
   /**
    * Count the number of members in a sorted set between a given lexicographic range.
@@ -1230,17 +1364,19 @@ export class RedisClient extends Facade implements IRedis, IAutoload {
     return this.redisClientProxy('zscore', arguments)
   }
 
-  // /**
-  //  * Add multiple sorted sets and store the resulting sorted set in a new key.
-  //  */
-  // zunionstore: OverloadedCommand<string | number, number, R>
-  // ZUNIONSTORE: OverloadedCommand<string | number, number, R>
+  /**
+   * Add multiple sorted sets and store the resulting sorted set in a new key.
+   */
+  zunionstore(...args: Array<string | number>): Promise<number> {
+    return this.redisClientProxy('zunionstore', arguments)
+  }
 
-  // /**
-  //  * Incrementally iterate the keys space.
-  //  */
-  // scan: OverloadedCommand<string, [string, string[]], R>
-  // SCAN: OverloadedCommand<string, [string, string[]], R>
+  /**
+   * Incrementally iterate the keys space.
+   */
+  scan(...args: Array<string>): Promise<[string, string[]]> {
+    return this.redisClientProxy('scan', arguments)
+  }
 
   /**
    * Incrementally iterate Set elements.
