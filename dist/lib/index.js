@@ -2,22 +2,25 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./cache/RedisCache");
 require("./log/WinstonLogger");
+// najs-binding package
+var najs_binding_1 = require("najs-binding");
+exports.make = najs_binding_1.make;
+var najs_binding_2 = require("najs-binding");
+exports.bind = najs_binding_2.bind;
+var najs_binding_3 = require("najs-binding");
+exports.register = najs_binding_3.register;
+var najs_binding_4 = require("najs-binding");
+exports.singleton = najs_binding_4.singleton;
+var najs_binding_5 = require("najs-binding");
+exports.autoload = najs_binding_5.autoload;
+var najs_binding_6 = require("najs-binding");
+exports.extend = najs_binding_6.extend;
+var najs_binding_7 = require("najs-binding");
+exports.ClassRegistry = najs_binding_7.ClassRegistry;
 // core package
 const Najs_1 = require("./core/Najs");
 exports.Najs = Najs_1.Najs;
 exports.default = Najs_1.Najs;
-var make_1 = require("./core/make");
-exports.make = make_1.make;
-var bind_1 = require("./core/bind");
-exports.bind = bind_1.bind;
-var register_1 = require("./core/register");
-exports.register = register_1.register;
-var singleton_1 = require("./core/singleton");
-exports.singleton = singleton_1.singleton;
-var autoload_1 = require("./core/autoload");
-exports.autoload = autoload_1.autoload;
-var ClassRegistry_1 = require("./core/ClassRegistry");
-exports.ClassRegistry = ClassRegistry_1.ClassRegistry;
 var ServiceProvider_1 = require("./core/ServiceProvider");
 exports.ServiceProvider = ServiceProvider_1.ServiceProvider;
 // constants

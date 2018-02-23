@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const register_1 = require("../../../core/register");
+const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../../../constants");
 class BackResponse {
     constructor(defaultUrl = '/') {
@@ -19,4 +19,4 @@ class BackResponse {
 }
 BackResponse.className = constants_1.ResponseTypeClass.Back;
 exports.BackResponse = BackResponse;
-register_1.register(BackResponse);
+najs_binding_1.register(BackResponse);

@@ -2,17 +2,17 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
-const Make = require("../../lib/core/make");
+const NajsBinding = require("najs-binding");
 const EventDispatcher_1 = require("../../lib/event/EventDispatcher");
 const Facade_1 = require("../../lib/facades/Facade");
 const constants_1 = require("../../lib/constants");
-const ClassRegistry_1 = require("../../lib/core/ClassRegistry");
+const najs_binding_1 = require("najs-binding");
 describe('EventDispatcher', function () {
     it('extends from Facade so it definitely a FacadeClass', function () {
         const dispatcher = new EventDispatcher_1.EventDispatcher();
         expect(dispatcher).toBeInstanceOf(Facade_1.Facade);
         expect(dispatcher.getClassName()).toEqual(constants_1.GlobalFacadeClass.Event);
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Event)).toBe(true);
+        expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Event)).toBe(true);
     });
     describe('.listen()', function () {
         it('is chain-able', function () {
@@ -91,7 +91,7 @@ describe('EventDispatcher', function () {
     });
     describe('.resolveSubscriber()', function () {
         it('calls make() to get instance of EventSubscriber if param is a string', function () {
-            const makeStub = Sinon.stub(Make, 'make');
+            const makeStub = Sinon.stub(NajsBinding, 'make');
             makeStub.returns({});
             const dispatcher = new EventDispatcher_1.EventDispatcher();
             dispatcher.resolveSubscriber('Test');
@@ -120,14 +120,14 @@ describe('EventDispatcher', function () {
             expect(dispatcher.resolveListener('Any')).toBeUndefined();
         });
         it('returns undefined if listener is well format but Class can not be resolved by make()', function () {
-            const makeStub = Sinon.stub(Make, 'make');
+            const makeStub = Sinon.stub(NajsBinding, 'make');
             makeStub.returns(undefined);
             const dispatcher = new EventDispatcher_1.EventDispatcher();
             expect(dispatcher.resolveListener('Class@test')).toBeUndefined();
             makeStub.restore();
         });
         it('returns undefined if listener is well format but Class can be resolved by make() but function not found', function () {
-            const makeStub = Sinon.stub(Make, 'make');
+            const makeStub = Sinon.stub(NajsBinding, 'make');
             makeStub.returns({});
             const dispatcher = new EventDispatcher_1.EventDispatcher();
             expect(dispatcher.resolveListener('Class@test')).toBeUndefined();
@@ -135,7 +135,7 @@ describe('EventDispatcher', function () {
         });
         it('returns resolved Class[function]', function () {
             const object = { test() { } };
-            const makeStub = Sinon.stub(Make, 'make');
+            const makeStub = Sinon.stub(NajsBinding, 'make');
             makeStub.returns(object);
             const dispatcher = new EventDispatcher_1.EventDispatcher();
             expect(dispatcher.resolveListener('Class@test') === object.test).toBe(true);

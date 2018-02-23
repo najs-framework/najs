@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
-const Make = require("../../lib/core/make");
+const NajsBinding = require("najs-binding");
 const Sinon = require("sinon");
 const Path = require("path");
 const Application_1 = require("../../lib/core/Application");
@@ -153,7 +153,7 @@ describe('Najs', function () {
         });
         describe('protected .resolveProvider()', function () {
             it('calls make() if provider is a string', function () {
-                const makeStub = Sinon.stub(Make, 'make');
+                const makeStub = Sinon.stub(NajsBinding, 'make');
                 Najs_1.Najs['resolveProvider']('ClassName');
                 const call = makeStub.getCalls()[0];
                 expect(call.args[0] === 'ClassName').toBe(true);

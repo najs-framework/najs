@@ -1,8 +1,6 @@
-import { IAutoload } from '../core/IAutoload'
+import { IAutoload, make, register } from 'najs-binding'
 import { IMiddleware } from './middleware/IMiddleware'
-import { make } from '../core/make'
 import { isString } from 'lodash'
-import { register } from '../core/register'
 import { SystemClass } from '../constants'
 
 export class HttpKernel implements IAutoload {

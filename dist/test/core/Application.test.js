@@ -2,13 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
-const Register = require("../../lib/core/register");
-const Make = require("../../lib/core/make");
-const Bind = require("../../lib/core/bind");
+const NajsBinding = require("najs-binding");
 const Application_1 = require("../../lib/core/Application");
 const Facade_1 = require("../../lib/facades/Facade");
 const constants_1 = require("../../lib/constants");
-const ClassRegistry_1 = require("../../lib/core/ClassRegistry");
+const najs_binding_1 = require("najs-binding");
 class Test {
 }
 Test.className = 'Test';
@@ -21,12 +19,12 @@ describe('Application', function () {
         const app = new Application_1.Application();
         expect(app).toBeInstanceOf(Facade_1.Facade);
         expect(app.getClassName()).toEqual(constants_1.GlobalFacadeClass.Application);
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Application)).toBe(true);
+        expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Application)).toBe(true);
     });
     describe('.register()', function () {
         it('proxies register() function', function () {
             const app = new Application_1.Application();
-            const registerSpy = Sinon.spy(Register, 'register');
+            const registerSpy = Sinon.spy(NajsBinding, 'register');
             app.register(FakeHttpDriver);
             expect(registerSpy.calledWith(FakeHttpDriver)).toBe(true);
             app.register(Test, 'Test');
@@ -40,7 +38,7 @@ describe('Application', function () {
     describe('.make()', function () {
         it('proxies make() function', function () {
             const app = new Application_1.Application();
-            const makeSpy = Sinon.spy(Make, 'make');
+            const makeSpy = Sinon.spy(NajsBinding, 'make');
             app.make(Test);
             expect(makeSpy.calledWith(Test)).toBe(true);
             app.make('Test');
@@ -51,7 +49,7 @@ describe('Application', function () {
     describe('.makeWith()', function () {
         it('proxies make() function', function () {
             const app = new Application_1.Application();
-            const makeStub = Sinon.stub(Make, 'make');
+            const makeStub = Sinon.stub(NajsBinding, 'make');
             app.makeWith(Test, { data: 'any' });
             expect(makeStub.calledWith(Test)).toBe(true);
             app.makeWith('Something', { data: 'any' });
@@ -66,13 +64,23 @@ describe('Application', function () {
     describe('.bind()', function () {
         it('proxies bind() function', function () {
             const app = new Application_1.Application();
-            const bindSpy = Sinon.spy(Bind, 'bind');
+            const bindSpy = Sinon.spy(NajsBinding, 'bind');
             app.bind('Cache', 'RedisCached');
             expect(bindSpy.calledWith('Cache', 'RedisCached')).toBe(true);
             const servicePoolInstanceCreator = function () { };
             app.bind('ServicePool', servicePoolInstanceCreator);
             expect(bindSpy.calledWith('ServicePool', servicePoolInstanceCreator)).toBe(true);
             bindSpy.restore();
+        });
+    });
+    describe('.extend()', function () {
+        it('proxies extend() function', function () {
+            const app = new Application_1.Application();
+            const extendSpy = Sinon.spy(NajsBinding, 'extend');
+            const servicePoolInstanceCreator = function () { };
+            app.extend('ServicePool', servicePoolInstanceCreator);
+            expect(extendSpy.calledWith('ServicePool', servicePoolInstanceCreator)).toBe(true);
+            extendSpy.restore();
         });
     });
 });

@@ -1,5 +1,5 @@
 /// <reference types="express-serve-static-core" />
-import { IAutoload } from '../../core/IAutoload';
+import { IAutoload } from 'najs-binding';
 import { IExpressMiddleware } from './IExpressMiddleware';
 export declare class ExpressAjvValidatorMiddleware implements IExpressMiddleware, IAutoload {
     static className: string;

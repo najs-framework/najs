@@ -1,7 +1,4 @@
-import { IAutoload } from './IAutoload'
-import { make } from './make'
-import { register } from './register'
-import { bind, InstanceCreator } from './bind'
+import { make, register, bind, IAutoload, extend, InstanceCreator, InstanceExtending } from 'najs-binding'
 import { IApplication } from './IApplication'
 import { Facade } from '../facades/Facade'
 import { GlobalFacadeClass } from '../constants'
@@ -39,6 +36,13 @@ export class Application extends Facade implements IApplication, IAutoload {
   bind(className: string, concrete: string): this
   bind(abstract: string, concrete: string | InstanceCreator): this {
     bind(abstract, <any>concrete)
+    return this
+  }
+
+  extend(className: string, decorator: InstanceExtending): IApplication
+  extend(classDefinition: Function, decorator: InstanceExtending): IApplication
+  extend(abstract: any, decorator: InstanceExtending): IApplication {
+    extend(abstract, decorator)
     return this
   }
 }

@@ -1,5 +1,5 @@
 /// <reference types="express" />
-import { IAutoload } from '../../core/IAutoload';
+import { IAutoload } from 'najs-binding';
 import { IExpressMiddleware } from './IExpressMiddleware';
 import * as Express from 'express';
 export declare let CsurfProtection: Express.RequestHandler;

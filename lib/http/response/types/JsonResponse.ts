@@ -1,5 +1,4 @@
-import { IAutoload } from '../../../core/IAutoload'
-import { register } from '../../../core/register'
+import { IAutoload, register } from 'najs-binding'
 import { ResponseTypeClass } from '../../../constants'
 import { IResponse } from '../IResponse'
 import { IHttpDriver } from '../../driver/IHttpDriver'

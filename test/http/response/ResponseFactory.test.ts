@@ -8,7 +8,7 @@ import { BackResponse } from '../../../lib/http/response/types/BackResponse'
 import { JsonpResponse } from '../../../lib/http/response/types/JsonpResponse'
 import { Facade } from '../../../lib/facades/Facade'
 import { GlobalFacadeClass } from '../../../lib/constants'
-import { ClassRegistry } from '../../../lib/core/ClassRegistry'
+import { ClassRegistry } from 'najs-binding'
 
 describe('ResponseFacade', function() {
   const Response = new ResponseFactory()

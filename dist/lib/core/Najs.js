@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
 const Application_1 = require("./Application");
-const make_1 = require("./make");
+const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../constants");
 const FacadeContainer_1 = require("../facades/FacadeContainer");
 const SystemPath = require("path");
@@ -62,7 +62,7 @@ class NajsFramework extends FacadeContainer_1.FacadeContainer {
     }
     resolveProvider(provider) {
         if (typeof provider === 'string') {
-            return make_1.make(provider, [this.app]);
+            return najs_binding_1.make(provider, [this.app]);
         }
         return Reflect.construct(provider, [this.app]);
     }

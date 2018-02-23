@@ -1,7 +1,7 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import * as Make from '../../lib/core/make'
-import { ClassRegistry } from '../../lib/core/ClassRegistry'
+import * as NajsBinding from 'najs-binding'
+import { ClassRegistry } from 'najs-binding'
 import { HttpKernel } from '../../lib/http/HttpKernel'
 import { SystemClass } from '../../lib/constants'
 
@@ -23,7 +23,7 @@ describe('HttpKernel', function() {
 
     it('calls make() and push middleware to result if middleware instance is exists', function() {
       const middleware = {}
-      const makeStub = Sinon.stub(Make, 'make')
+      const makeStub = Sinon.stub(NajsBinding, 'make')
       makeStub.returns(middleware)
 
       const instance = new HttpKernel()
@@ -36,7 +36,7 @@ describe('HttpKernel', function() {
     })
 
     it('calls make() and does not push middleware to result if middleware instance not exists', function() {
-      const makeStub = Sinon.stub(Make, 'make')
+      const makeStub = Sinon.stub(NajsBinding, 'make')
       makeStub.returns(undefined)
 
       const instance = new HttpKernel()
@@ -49,7 +49,7 @@ describe('HttpKernel', function() {
 
     it('maps all if the middleware is an array, does the same thing as string param', function() {
       const middleware = {}
-      const makeStub = Sinon.stub(Make, 'make')
+      const makeStub = Sinon.stub(NajsBinding, 'make')
       makeStub.withArgs('something').returns(middleware)
       makeStub.withArgs('not-found').returns(undefined)
 

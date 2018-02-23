@@ -4,8 +4,7 @@ import { CacheFallback } from '../../lib/cache/ICache'
 import { RedisCache } from '../../lib/cache/RedisCache'
 import { Facade } from '../../lib/facades/Facade'
 import { GlobalFacadeClass } from '../../lib/constants'
-import { ClassRegistry } from '../../lib/core/ClassRegistry'
-import { make } from '../../lib/core/make'
+import { ClassRegistry, make } from 'najs-binding'
 
 const PREVENT_FLAKY_PADDING = 10
 

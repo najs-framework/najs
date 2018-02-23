@@ -5,13 +5,13 @@ const Sinon = require("sinon");
 const Config_1 = require("../../lib/config/Config");
 const Facade_1 = require("../../lib/facades/Facade");
 const constants_1 = require("../../lib/constants");
-const ClassRegistry_1 = require("../../lib/core/ClassRegistry");
+const najs_binding_1 = require("najs-binding");
 describe('Config', function () {
     it('extends from Facade so it definitely a FacadeClass', function () {
         const config = new Config_1.Config();
         expect(config).toBeInstanceOf(Facade_1.Facade);
         expect(config.getClassName()).toEqual(constants_1.GlobalFacadeClass.Config);
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Config)).toBe(true);
+        expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Config)).toBe(true);
     });
     describe('.get()', function () {
         it('calls "config".get if there is no default value', function () {

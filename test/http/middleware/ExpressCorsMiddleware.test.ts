@@ -1,7 +1,7 @@
 import 'jest'
 import * as Sinon from 'sinon'
 import * as Middleware from '../../../lib/http/middleware/ExpressCorsMiddleware'
-import { make } from '../../../lib/core/make'
+import { make } from 'najs-binding'
 import { isPromise } from '../../../lib/private/isPromise'
 
 describe('ExpressCorsMiddleware', function() {

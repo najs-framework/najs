@@ -1,12 +1,10 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import * as Register from '../../lib/core/register'
-import * as Make from '../../lib/core/make'
-import * as Bind from '../../lib/core/bind'
+import * as NajsBinding from 'najs-binding'
 import { Application } from '../../lib/core/Application'
 import { Facade } from '../../lib/facades/Facade'
 import { GlobalFacadeClass } from '../../lib/constants'
-import { ClassRegistry } from '../../lib/core/ClassRegistry'
+import { ClassRegistry } from 'najs-binding'
 
 class Test {
   static className: string = 'Test'
@@ -28,7 +26,7 @@ describe('Application', function() {
   describe('.register()', function() {
     it('proxies register() function', function() {
       const app = new Application()
-      const registerSpy = Sinon.spy(Register, 'register')
+      const registerSpy = Sinon.spy(NajsBinding, 'register')
 
       app.register(FakeHttpDriver)
       expect(registerSpy.calledWith(FakeHttpDriver)).toBe(true)
@@ -47,7 +45,7 @@ describe('Application', function() {
   describe('.make()', function() {
     it('proxies make() function', function() {
       const app = new Application()
-      const makeSpy = Sinon.spy(Make, 'make')
+      const makeSpy = Sinon.spy(NajsBinding, 'make')
 
       app.make(Test)
       expect(makeSpy.calledWith(Test)).toBe(true)
@@ -61,7 +59,7 @@ describe('Application', function() {
   describe('.makeWith()', function() {
     it('proxies make() function', function() {
       const app = new Application()
-      const makeStub = Sinon.stub(Make, 'make')
+      const makeStub = Sinon.stub(NajsBinding, 'make')
 
       app.makeWith(Test, { data: 'any' })
       expect(makeStub.calledWith(Test)).toBe(true)
@@ -81,7 +79,7 @@ describe('Application', function() {
   describe('.bind()', function() {
     it('proxies bind() function', function() {
       const app = new Application()
-      const bindSpy = Sinon.spy(Bind, 'bind')
+      const bindSpy = Sinon.spy(NajsBinding, 'bind')
 
       app.bind('Cache', 'RedisCached')
       expect(bindSpy.calledWith('Cache', 'RedisCached')).toBe(true)
@@ -90,6 +88,18 @@ describe('Application', function() {
       app.bind('ServicePool', servicePoolInstanceCreator)
       expect(bindSpy.calledWith('ServicePool', servicePoolInstanceCreator)).toBe(true)
       bindSpy.restore()
+    })
+  })
+
+  describe('.extend()', function() {
+    it('proxies extend() function', function() {
+      const app = new Application()
+      const extendSpy = Sinon.spy(NajsBinding, 'extend')
+
+      const servicePoolInstanceCreator = function() {}
+      app.extend('ServicePool', servicePoolInstanceCreator)
+      expect(extendSpy.calledWith('ServicePool', servicePoolInstanceCreator)).toBe(true)
+      extendSpy.restore()
     })
   })
 })

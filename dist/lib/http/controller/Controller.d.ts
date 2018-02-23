@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { IAutoload } from '../../core/IAutoload';
+import { IAutoload } from 'najs-binding';
 import { IRequestRetriever } from '../request/IRequestRetriever';
 import { IncomingMessage, ServerResponse } from 'http';
 export declare abstract class Controller<Request extends IncomingMessage = IncomingMessage, Response extends ServerResponse = ServerResponse> implements IAutoload {

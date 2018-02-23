@@ -1,13 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../../constants");
+const najs_binding_1 = require("najs-binding");
 const index_1 = require("../../index");
 const LogFacade_1 = require("../../facades/global/LogFacade");
 const lodash_1 = require("lodash");
 const Controller_1 = require("../controller/Controller");
 const ExpressController_1 = require("../controller/ExpressController");
 const RouteCollection_1 = require("../routing/RouteCollection");
-const make_1 = require("../../core/make");
 const IResponse_1 = require("../response/IResponse");
 const isPromise_1 = require("../../private/isPromise");
 const ConfigFacade_1 = require("../../facades/global/ConfigFacade");
@@ -21,7 +21,7 @@ const addRequestIdMiddleware = require('express-request-id')();
 class ExpressHttpDriver {
     constructor() {
         this.express = this.setup();
-        this.httpKernel = make_1.make(constants_1.SystemClass.HttpKernel);
+        this.httpKernel = najs_binding_1.make(constants_1.SystemClass.HttpKernel);
     }
     static setXPoweredByMiddleware(poweredBy = 'Najs/Express') {
         return function (request, response, next) {
@@ -142,7 +142,7 @@ class ExpressHttpDriver {
     }
     createEndpointWrapper(controllerName, endpointName, middleware) {
         return async (request, response) => {
-            const controller = make_1.make(controllerName, [request, response]);
+            const controller = najs_binding_1.make(controllerName, [request, response]);
             const endpoint = Reflect.get(controller, endpointName);
             if (lodash_1.isFunction(endpoint)) {
                 const result = Reflect.apply(endpoint, controller, [request, response]);
@@ -162,7 +162,7 @@ class ExpressHttpDriver {
     }
     cloneControllerObject(controller, request, response) {
         if (controller instanceof Controller_1.Controller) {
-            return make_1.make(controller.getClassName(), [request, response]);
+            return najs_binding_1.make(controller.getClassName(), [request, response]);
         }
         return Object.assign({}, controller, { request, response });
     }

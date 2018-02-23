@@ -1,4 +1,4 @@
-import { IAutoload } from './../core/IAutoload';
+import { IAutoload } from 'najs-binding';
 import { ILogger } from './ILogger';
 import { Facade } from '../facades/Facade';
 import * as Winston from 'winston';

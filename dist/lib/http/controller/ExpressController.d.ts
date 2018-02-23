@@ -1,5 +1,5 @@
 /// <reference types="express" />
-import { IAutoloadMetadata } from '../../core/IAutoload';
+import { IAutoloadMetadata } from 'najs-binding';
 import { Controller } from './Controller';
 import { IRequestRetriever } from '../request/IRequestRetriever';
 import { Request, Response } from 'express';

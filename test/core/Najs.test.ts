@@ -1,5 +1,5 @@
 import 'jest'
-import * as Make from '../../lib/core/make'
+import * as NajsBinding from 'najs-binding'
 import * as Sinon from 'sinon'
 import * as Path from 'path'
 import { Application } from '../../lib/core/Application'
@@ -170,7 +170,7 @@ describe('Najs', function() {
 
     describe('protected .resolveProvider()', function() {
       it('calls make() if provider is a string', function() {
-        const makeStub = Sinon.stub(Make, 'make')
+        const makeStub = Sinon.stub(NajsBinding, 'make')
         Najs['resolveProvider']('ClassName')
         const call = makeStub.getCalls()[0]
         expect(call.args[0] === 'ClassName').toBe(true)

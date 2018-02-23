@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
 const Facade_1 = require("../facades/Facade");
 const ConfigLib = require("config");
-const register_1 = require("../core/register");
+const najs_binding_1 = require("najs-binding");
 class Config extends Facade_1.Facade {
     constructor() {
         super(...arguments);
@@ -24,4 +24,4 @@ class Config extends Facade_1.Facade {
 }
 Config.className = constants_1.GlobalFacadeClass.Config;
 exports.Config = Config;
-register_1.register(Config, constants_1.GlobalFacadeClass.Config);
+najs_binding_1.register(Config, constants_1.GlobalFacadeClass.Config);

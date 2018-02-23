@@ -1,9 +1,8 @@
-import { IAutoload } from './../core/IAutoload'
 import { GlobalFacadeClass } from '../constants'
 import { Facade } from '../facades/Facade'
 import { IConfig } from './IConfig'
 import * as ConfigLib from 'config'
-import { register } from '../core/register'
+import { IAutoload, register } from 'najs-binding'
 
 export class Config extends Facade implements IConfig, IAutoload {
   static className: string = GlobalFacadeClass.Config

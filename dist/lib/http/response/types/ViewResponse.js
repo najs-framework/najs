@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const register_1 = require("../../../core/register");
+const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../../../constants");
 class ViewResponse {
     constructor(view, variables) {
@@ -23,4 +23,4 @@ class ViewResponse {
 }
 ViewResponse.className = constants_1.ResponseTypeClass.View;
 exports.ViewResponse = ViewResponse;
-register_1.register(ViewResponse);
+najs_binding_1.register(ViewResponse);

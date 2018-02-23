@@ -1,11 +1,9 @@
-import { IAutoload } from './../../core/IAutoload'
-import { make } from './../../core/make'
+import { IAutoload, make, register } from 'najs-binding'
 import { Facade } from './../../facades/Facade'
 import { GlobalFacadeClass, ResponseTypeClass } from '../../constants'
 import { IView } from './types/IViewGrammars'
 import { IResponse } from './IResponse'
 import { IResponseFactory } from './IResponseFactory'
-import { register } from '../../core/register'
 
 export class ResponseFactory extends Facade implements IResponseFactory, IAutoload {
   static className: string = GlobalFacadeClass.Response

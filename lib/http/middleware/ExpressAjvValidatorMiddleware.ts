@@ -1,6 +1,5 @@
-import { IAutoload } from '../../core/IAutoload'
+import { IAutoload, register } from 'najs-binding'
 import { IExpressMiddleware } from './IExpressMiddleware'
-import { register } from '../../core/register'
 
 export class ExpressAjvValidatorMiddleware implements IExpressMiddleware, IAutoload {
   static className: string = 'ExpressAjvValidatorMiddleware'

@@ -1,18 +1,20 @@
 import './cache/RedisCache'
 import './log/WinstonLogger'
 
+// najs-binding package
+export { make } from 'najs-binding'
+export { bind, InstanceCreator } from 'najs-binding'
+export { register } from 'najs-binding'
+export { singleton } from 'najs-binding'
+export { autoload } from 'najs-binding'
+export { extend, InstanceExtending } from 'najs-binding'
+export { ClassRegistry } from 'najs-binding'
+export { IAutoload, IAutoloadMetadata } from 'najs-binding'
+
 // core package
 import { Najs } from './core/Najs'
 export { Najs }
 export default Najs
-
-export { make } from './core/make'
-export { bind } from './core/bind'
-export { register } from './core/register'
-export { singleton } from './core/singleton'
-export { autoload } from './core/autoload'
-export { ClassRegistry } from './core/ClassRegistry'
-export { IAutoload } from './core/IAutoload'
 export { ServiceProvider } from './core/ServiceProvider'
 
 // constants

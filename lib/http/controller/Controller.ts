@@ -1,4 +1,4 @@
-import { IAutoload } from '../../core/IAutoload'
+import { IAutoload } from 'najs-binding'
 import { IRequestRetriever } from '../request/IRequestRetriever'
 import { IncomingMessage, ServerResponse } from 'http'
 

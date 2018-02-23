@@ -1,5 +1,4 @@
-import { IAutoload } from '../../core/IAutoload'
-import { register } from '../../core/register'
+import { IAutoload, register } from 'najs-binding'
 import { Controller } from '../controller/Controller'
 import { ExpressController } from '../controller/ExpressController'
 import { ContextualFacade } from '../../facades/ContextualFacade'

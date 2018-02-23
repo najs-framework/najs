@@ -1,5 +1,5 @@
 import { IApplication } from './IApplication'
-import { IAutoload } from './IAutoload'
+import { IAutoload } from 'najs-binding'
 
 export abstract class ServiceProvider implements IAutoload {
   abstract getClassName(): string

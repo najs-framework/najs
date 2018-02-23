@@ -1,4 +1,4 @@
-import { IAutoload } from './IAutoload';
+import { IAutoload } from 'najs-binding';
 import { Facade } from '../facades/Facade';
 import { IPath } from './IPath';
 export declare class Path extends Facade implements IPath, IAutoload {

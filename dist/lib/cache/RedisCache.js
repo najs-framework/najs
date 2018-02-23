@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Facade_1 = require("../facades/Facade");
 const ConfigFacade_1 = require("../facades/global/ConfigFacade");
-const register_1 = require("../core/register");
+const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../constants");
 const Redis = require("redis");
 function get_tag_manage_key(tagName) {
@@ -125,5 +125,5 @@ class RedisCache extends Facade_1.Facade {
 }
 RedisCache.className = constants_1.GlobalFacadeClass.Cache;
 exports.RedisCache = RedisCache;
-register_1.register(RedisCache);
-register_1.register(RedisCache, constants_1.GlobalFacadeClass.Cache);
+najs_binding_1.register(RedisCache);
+najs_binding_1.register(RedisCache, constants_1.GlobalFacadeClass.Cache);

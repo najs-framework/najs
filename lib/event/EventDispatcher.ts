@@ -1,10 +1,8 @@
-import { IAutoload } from '../core/IAutoload'
+import { IAutoload, register, make } from 'najs-binding'
 import { Facade } from '../facades/Facade'
 import { IDispatcher } from './IDispatcher'
 import { EventEmitter } from 'events'
 import { EventSubscriber } from './EventSubscriber'
-import { register } from '../core/register'
-import { make } from '../core/make'
 import { GlobalFacadeClass } from '../constants'
 import { IEventEmitter } from './IEventEmitter'
 

@@ -2,7 +2,7 @@
 /// <reference types="node" />
 import { HttpKernel } from './../HttpKernel';
 import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver';
-import { IAutoload } from '../../core/IAutoload';
+import { IAutoload } from 'najs-binding';
 import { IRouteData } from '../routing/interfaces/IRouteData';
 import { IMiddleware } from '../middleware/IMiddleware';
 import * as Express from 'express';

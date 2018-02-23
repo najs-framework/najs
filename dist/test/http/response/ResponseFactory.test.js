@@ -10,13 +10,13 @@ const BackResponse_1 = require("../../../lib/http/response/types/BackResponse");
 const JsonpResponse_1 = require("../../../lib/http/response/types/JsonpResponse");
 const Facade_1 = require("../../../lib/facades/Facade");
 const constants_1 = require("../../../lib/constants");
-const ClassRegistry_1 = require("../../../lib/core/ClassRegistry");
+const najs_binding_1 = require("najs-binding");
 describe('ResponseFacade', function () {
     const Response = new ResponseFactory_1.ResponseFactory();
     it('extends from Facade so it definitely a FacadeClass', function () {
         expect(Response).toBeInstanceOf(Facade_1.Facade);
         expect(Response.getClassName()).toEqual(constants_1.GlobalFacadeClass.Response);
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Response)).toBe(true);
+        expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Response)).toBe(true);
     });
     describe('view', function () {
         it('creates new instance of ViewResponse', function () {

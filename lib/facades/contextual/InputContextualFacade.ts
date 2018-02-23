@@ -1,5 +1,5 @@
 import '../../http/request/RequestInput'
-import { make } from '../../core/make'
+import { make } from 'najs-binding'
 import { Facade } from '../Facade'
 import { IContextualFacadeVerbOf, IContextualFacadeVerbFrom } from '../interfaces/IFacadeGrammar'
 import { RequestInput } from '../../http/request/RequestInput'

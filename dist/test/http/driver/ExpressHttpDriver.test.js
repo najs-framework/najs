@@ -3,12 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
 const Http = require("http");
-const Make = require("../../../lib/core/make");
+const NajsBinding = require("najs-binding");
 const ExpressHttpDriver_1 = require("../../../lib/http/driver/ExpressHttpDriver");
 const LogFacade_1 = require("../../../lib/facades/global/LogFacade");
 const Controller_1 = require("../../../lib/http/controller/Controller");
 const ExpressController_1 = require("../../../lib/http/controller/ExpressController");
-const register_1 = require("../../../lib/core/register");
 const isPromise_1 = require("../../../lib/private/isPromise");
 describe('ExpressHttpDriver', function () {
     describe('static .setXPoweredByMiddleware()', function () {
@@ -306,7 +305,7 @@ describe('ExpressHttpDriver', function () {
             endpoint() { }
         }
         TestControllerA.className = 'TestControllerA';
-        register_1.register(TestControllerA);
+        NajsBinding.register(TestControllerA);
         it('always returns a function despite Controller or Endpoint are invalid', function () {
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             const result = driver['createEndpointWrapper']('NotFound', 'invalid', []);
@@ -326,7 +325,7 @@ describe('ExpressHttpDriver', function () {
             expect('shout not reach this line').toEqual('hum');
         });
         it('creates instance of Controller via make but do not call if endpoint not found', function () {
-            const makeSpy = Sinon.spy(Make, 'make');
+            const makeSpy = Sinon.spy(NajsBinding, 'make');
             const endpointSpy = Sinon.spy(TestControllerA.prototype, 'endpoint');
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             const result = driver['createEndpointWrapper']('TestControllerA', 'invalid', []);
@@ -339,7 +338,7 @@ describe('ExpressHttpDriver', function () {
             endpointSpy.restore();
         });
         it('creates instance of Controller via make, calls endpoint and calls handleEndpointResult()', function () {
-            const makeSpy = Sinon.spy(Make, 'make');
+            const makeSpy = Sinon.spy(NajsBinding, 'make');
             const endpointSpy = Sinon.spy(TestControllerA.prototype, 'endpoint');
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             const handleEndpointResultStub = Sinon.stub(driver, 'handleEndpointResult');
@@ -362,8 +361,8 @@ describe('ExpressHttpDriver', function () {
             expect(typeof result === 'function').toBe(true);
         });
         it('calls cloneControllerObject()/make() with controller instance but do not call if endpoint not found', function () {
-            const makeSpy = Sinon.spy(Make, 'make');
-            const controller = Make.make('TestControllerA');
+            const makeSpy = Sinon.spy(NajsBinding, 'make');
+            const controller = NajsBinding.make('TestControllerA');
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             const cloneControllerObjectSpy = Sinon.spy(driver, 'cloneControllerObject');
             const result = driver['createEndpointWrapperByObject'](controller, 'invalid', []);
@@ -376,8 +375,8 @@ describe('ExpressHttpDriver', function () {
             cloneControllerObjectSpy.restore();
         });
         it('calls cloneControllerObject()/make() with controller instance, calls endpoint and calls handleEndpointResult()', async function () {
-            const makeSpy = Sinon.spy(Make, 'make');
-            const controller = Make.make('TestControllerA');
+            const makeSpy = Sinon.spy(NajsBinding, 'make');
+            const controller = NajsBinding.make('TestControllerA');
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             const handleEndpointResultStub = Sinon.stub(driver, 'handleEndpointResult');
             const cloneControllerObjectSpy = Sinon.spy(driver, 'cloneControllerObject');
@@ -393,7 +392,7 @@ describe('ExpressHttpDriver', function () {
             handleEndpointResultStub.restore();
         });
         it('calls cloneControllerObject() with raw object but do not call if endpoint not found', function () {
-            const controller = Make.make('TestControllerA');
+            const controller = NajsBinding.make('TestControllerA');
             const endpointSpy = Sinon.spy(controller, 'endpoint');
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             const cloneControllerObjectSpy = Sinon.spy(driver, 'cloneControllerObject');

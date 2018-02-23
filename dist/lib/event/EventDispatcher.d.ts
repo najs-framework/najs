@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import { IAutoload } from '../core/IAutoload';
+import { IAutoload } from 'najs-binding';
 import { Facade } from '../facades/Facade';
 import { IDispatcher } from './IDispatcher';
 import { EventEmitter } from 'events';

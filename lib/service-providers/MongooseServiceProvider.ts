@@ -1,8 +1,7 @@
 import { ConfigurationKeys } from './../constants'
 import { ConfigFacade } from './../facades/global/ConfigFacade'
 import { ServiceProvider } from '../core/ServiceProvider'
-import { register } from '../core/register'
-import { bind } from '../core/bind'
+import { register, bind } from 'najs-binding'
 import { Schema, Document, Model } from 'mongoose'
 const mongoose = require('mongoose')
 

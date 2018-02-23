@@ -1,9 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const najs_binding_1 = require("najs-binding");
 const Facade_1 = require("../facades/Facade");
 const events_1 = require("events");
-const register_1 = require("../core/register");
-const make_1 = require("../core/make");
 const constants_1 = require("../constants");
 class EventDispatcher extends Facade_1.Facade {
     constructor() {
@@ -40,7 +39,7 @@ class EventDispatcher extends Facade_1.Facade {
     }
     resolveSubscriber(eventSubscriber) {
         if (typeof eventSubscriber === 'string') {
-            return make_1.make(eventSubscriber);
+            return najs_binding_1.make(eventSubscriber);
         }
         return Reflect.construct(eventSubscriber, []);
     }
@@ -48,7 +47,7 @@ class EventDispatcher extends Facade_1.Facade {
         if (typeof listener === 'string') {
             const parts = listener.split('@');
             if (parts.length === 2) {
-                const instance = make_1.make(parts[0]);
+                const instance = najs_binding_1.make(parts[0]);
                 if (instance && typeof instance[parts[1]] === 'function') {
                     return instance[parts[1]];
                 }
@@ -108,4 +107,4 @@ class EventDispatcher extends Facade_1.Facade {
 }
 EventDispatcher.className = constants_1.GlobalFacadeClass.Event;
 exports.EventDispatcher = EventDispatcher;
-register_1.register(EventDispatcher, constants_1.GlobalFacadeClass.Event);
+najs_binding_1.register(EventDispatcher, constants_1.GlobalFacadeClass.Event);

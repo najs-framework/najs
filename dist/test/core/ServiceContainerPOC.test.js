@@ -7,8 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
-const make_1 = require("../../lib/core/make");
-const register_1 = require("../../lib/core/register");
+const najs_binding_1 = require("najs-binding");
 function autoload(classDefinition) {
     return function (target, key, descriptor) {
         // console.log(
@@ -26,7 +25,7 @@ function autoload(classDefinition) {
                     this.__autoload = {};
                 }
                 if (typeof this.__autoload[className] === 'undefined') {
-                    this.__autoload[className] = make_1.make(className);
+                    this.__autoload[className] = najs_binding_1.make(className);
                 }
                 if (this.__autoloadMetadata) {
                     if (this.__autoload[className].__autoloadMetadata) {
@@ -48,7 +47,7 @@ class TodoModel {
 }
 TodoModel.className = 'TodoModel';
 exports.TodoModel = TodoModel;
-register_1.register(TodoModel);
+najs_binding_1.register(TodoModel);
 class TodoRepository {
 }
 TodoRepository.className = 'TodoRepository';
@@ -56,7 +55,7 @@ __decorate([
     autoload(TodoModel)
 ], TodoRepository.prototype, "todoModel", void 0);
 exports.TodoRepository = TodoRepository;
-register_1.register(TodoRepository);
+najs_binding_1.register(TodoRepository);
 class TodoService {
     constructor() {
         this['__autoloadMetadata'] = { test: 'test' };
@@ -70,7 +69,7 @@ __decorate([
     autoload(TodoRepository)
 ], TodoService.prototype, "todoRepository", void 0);
 exports.TodoService = TodoService;
-register_1.register(TodoService);
+najs_binding_1.register(TodoService);
 // ------------------------------------------------------------------------------------------------
 class TodoController {
     constructor(requestId) {
@@ -82,7 +81,7 @@ __decorate([
     autoload(TodoService)
 ], TodoController.prototype, "todoService", void 0);
 exports.TodoController = TodoController;
-register_1.register(TodoController);
+najs_binding_1.register(TodoController);
 describe('ServiceContainerPOC', function () {
     it('does something', function () {
         const controllerOne = new TodoController('123');

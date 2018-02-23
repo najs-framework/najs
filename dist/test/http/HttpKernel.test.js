@@ -2,14 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
-const Make = require("../../lib/core/make");
-const ClassRegistry_1 = require("../../lib/core/ClassRegistry");
+const NajsBinding = require("najs-binding");
+const najs_binding_1 = require("najs-binding");
 const HttpKernel_1 = require("../../lib/http/HttpKernel");
 const constants_1 = require("../../lib/constants");
 describe('HttpKernel', function () {
     it('is a base class which contains middleware configuration', function () { });
     it('auto register to ClassRegistry with name HttpKernel', function () {
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.SystemClass.HttpKernel)).toBe(true);
+        expect(najs_binding_1.ClassRegistry.has(constants_1.SystemClass.HttpKernel)).toBe(true);
         const instance = new HttpKernel_1.HttpKernel();
         expect(instance.getClassName() === constants_1.SystemClass.HttpKernel);
     });
@@ -20,7 +20,7 @@ describe('HttpKernel', function () {
         });
         it('calls make() and push middleware to result if middleware instance is exists', function () {
             const middleware = {};
-            const makeStub = Sinon.stub(Make, 'make');
+            const makeStub = Sinon.stub(NajsBinding, 'make');
             makeStub.returns(middleware);
             const instance = new HttpKernel_1.HttpKernel();
             instance['middleware']['test'] = 'something';
@@ -31,7 +31,7 @@ describe('HttpKernel', function () {
             makeStub.restore();
         });
         it('calls make() and does not push middleware to result if middleware instance not exists', function () {
-            const makeStub = Sinon.stub(Make, 'make');
+            const makeStub = Sinon.stub(NajsBinding, 'make');
             makeStub.returns(undefined);
             const instance = new HttpKernel_1.HttpKernel();
             instance['middleware']['test'] = 'something';
@@ -42,7 +42,7 @@ describe('HttpKernel', function () {
         });
         it('maps all if the middleware is an array, does the same thing as string param', function () {
             const middleware = {};
-            const makeStub = Sinon.stub(Make, 'make');
+            const makeStub = Sinon.stub(NajsBinding, 'make');
             makeStub.withArgs('something').returns(middleware);
             makeStub.withArgs('not-found').returns(undefined);
             const instance = new HttpKernel_1.HttpKernel();

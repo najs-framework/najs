@@ -1,10 +1,10 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import * as Make from '../../lib/core/make'
+import * as NajsBinding from 'najs-binding'
 import { EventDispatcher } from '../../lib/event/EventDispatcher'
 import { Facade } from '../../lib/facades/Facade'
 import { GlobalFacadeClass } from '../../lib/constants'
-import { ClassRegistry } from '../../lib/core/ClassRegistry'
+import { ClassRegistry } from 'najs-binding'
 
 describe('EventDispatcher', function() {
   it('extends from Facade so it definitely a FacadeClass', function() {
@@ -102,7 +102,7 @@ describe('EventDispatcher', function() {
 
   describe('.resolveSubscriber()', function() {
     it('calls make() to get instance of EventSubscriber if param is a string', function() {
-      const makeStub = Sinon.stub(Make, 'make')
+      const makeStub = Sinon.stub(NajsBinding, 'make')
       makeStub.returns({})
 
       const dispatcher = new EventDispatcher()
@@ -136,7 +136,7 @@ describe('EventDispatcher', function() {
     })
 
     it('returns undefined if listener is well format but Class can not be resolved by make()', function() {
-      const makeStub = Sinon.stub(Make, 'make')
+      const makeStub = Sinon.stub(NajsBinding, 'make')
       makeStub.returns(undefined)
       const dispatcher = new EventDispatcher()
       expect(dispatcher.resolveListener('Class@test')).toBeUndefined()
@@ -144,7 +144,7 @@ describe('EventDispatcher', function() {
     })
 
     it('returns undefined if listener is well format but Class can be resolved by make() but function not found', function() {
-      const makeStub = Sinon.stub(Make, 'make')
+      const makeStub = Sinon.stub(NajsBinding, 'make')
       makeStub.returns({})
       const dispatcher = new EventDispatcher()
       expect(dispatcher.resolveListener('Class@test')).toBeUndefined()
@@ -153,7 +153,7 @@ describe('EventDispatcher', function() {
 
     it('returns resolved Class[function]', function() {
       const object = { test() {} }
-      const makeStub = Sinon.stub(Make, 'make')
+      const makeStub = Sinon.stub(NajsBinding, 'make')
       makeStub.returns(object)
       const dispatcher = new EventDispatcher()
       expect(dispatcher.resolveListener('Class@test') === object.test).toBe(true)

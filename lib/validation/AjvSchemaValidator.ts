@@ -1,7 +1,6 @@
 import { ISchemaValidator } from './ISchemaValidator'
 import { SchemaValidatorClass } from '../constants'
-import { register } from '../core/register'
-import { IAutoload } from '../core/IAutoload'
+import { IAutoload, register } from 'najs-binding'
 import * as Ajv from 'ajv'
 
 export class AjvSchemaValidator implements ISchemaValidator, IAutoload {

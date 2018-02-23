@@ -1,4 +1,4 @@
-import { IAutoload } from './../../core/IAutoload';
+import { IAutoload } from 'najs-binding';
 import { Facade } from './../../facades/Facade';
 import { IView } from './types/IViewGrammars';
 import { IResponse } from './IResponse';

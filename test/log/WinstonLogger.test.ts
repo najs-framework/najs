@@ -1,7 +1,7 @@
 import 'jest'
 import * as Sinon from 'sinon'
 import * as Winston from 'winston'
-import { ClassRegistry } from '../../lib/core/ClassRegistry'
+import { ClassRegistry } from 'najs-binding'
 import { WinstonLogger } from '../../lib/log/WinstonLogger'
 import { Facade } from '../../lib/facades/Facade'
 import { GlobalFacadeClass } from '../../lib/constants'

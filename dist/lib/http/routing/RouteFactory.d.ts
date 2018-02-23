@@ -1,4 +1,4 @@
-import { IAutoload } from '../../core/IAutoload';
+import { IAutoload } from 'najs-binding';
 import { Facade } from '../../facades/Facade';
 import { RouteGrammarVerbChain, RouteGrammarGroupChain, RouteGrammarControlChain, RouteGrammarNameChain } from './interfaces/IRouteGrammars';
 import { IRouteGenerateUrl } from './interfaces/IRouteGenerateUrl';

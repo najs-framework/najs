@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
 const Winston = require("winston");
-const ClassRegistry_1 = require("../../lib/core/ClassRegistry");
+const najs_binding_1 = require("najs-binding");
 const WinstonLogger_1 = require("../../lib/log/WinstonLogger");
 const Facade_1 = require("../../lib/facades/Facade");
 const constants_1 = require("../../lib/constants");
@@ -14,9 +14,9 @@ describe('WinstonLogger', function () {
         expect(logger.getClassName()).toEqual(WinstonLogger_1.WinstonLogger.className);
     });
     it('implements ILogger and registers to GlobalFacade.Log by default', function () {
-        expect(ClassRegistry_1.ClassRegistry.has(WinstonLogger_1.WinstonLogger.className)).toBe(true);
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Log)).toBe(true);
-        expect(ClassRegistry_1.ClassRegistry.findOrFail(constants_1.GlobalFacadeClass.Log).instanceConstructor === WinstonLogger_1.WinstonLogger).toBe(true);
+        expect(najs_binding_1.ClassRegistry.has(WinstonLogger_1.WinstonLogger.className)).toBe(true);
+        expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Log)).toBe(true);
+        expect(najs_binding_1.ClassRegistry.findOrFail(constants_1.GlobalFacadeClass.Log).instanceConstructor === WinstonLogger_1.WinstonLogger).toBe(true);
     });
     it('calls .setup() and use .getDefaultOptions() to get options for Winston', function () {
         const setupSpy = Sinon.spy(WinstonLogger_1.WinstonLogger.prototype, 'setup');

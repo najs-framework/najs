@@ -1,4 +1,4 @@
-import { IAutoload } from '../../../core/IAutoload';
+import { IAutoload } from 'najs-binding';
 import { IResponse } from '../IResponse';
 import { IHttpDriver } from '../../driver/IHttpDriver';
 export declare class JsonResponse implements IResponse, IAutoload {

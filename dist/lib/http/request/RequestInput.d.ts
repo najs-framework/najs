@@ -1,4 +1,4 @@
-import { IAutoload } from '../../core/IAutoload';
+import { IAutoload } from 'najs-binding';
 import { Controller } from '../controller/Controller';
 import { ContextualFacade } from '../../facades/ContextualFacade';
 import { IRequestRetriever } from './IRequestRetriever';

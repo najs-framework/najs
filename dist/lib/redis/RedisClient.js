@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../constants");
 const Facade_1 = require("../facades/Facade");
 const ConfigFacade_1 = require("../facades/global/ConfigFacade");
-const register_1 = require("../core/register");
 const Redis = require("redis");
 class RedisClient extends Facade_1.Facade {
     constructor() {
@@ -947,4 +947,4 @@ class RedisClient extends Facade_1.Facade {
 }
 RedisClient.className = constants_1.GlobalFacadeClass.Redis;
 exports.RedisClient = RedisClient;
-register_1.register(RedisClient);
+najs_binding_1.register(RedisClient);

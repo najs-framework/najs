@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const ConfigFacade_1 = require("../../facades/global/ConfigFacade");
 const constants_1 = require("../../constants");
-const register_1 = require("../../core/register");
+const najs_binding_1 = require("najs-binding");
 const CORS = require("cors");
 class ExpressCorsMiddleware {
     constructor() {
@@ -29,4 +29,4 @@ class ExpressCorsMiddleware {
 }
 ExpressCorsMiddleware.className = 'ExpressCorsMiddleware';
 exports.ExpressCorsMiddleware = ExpressCorsMiddleware;
-register_1.register(ExpressCorsMiddleware);
+najs_binding_1.register(ExpressCorsMiddleware);

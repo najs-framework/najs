@@ -1,6 +1,5 @@
 import 'jest'
-import { make } from '../../lib/core/make'
-import { register } from '../../lib/core/register'
+import { make, register } from 'najs-binding'
 
 function autoload(classDefinition: any): any {
   return function(target: any, key: string, descriptor: PropertyDescriptor) {

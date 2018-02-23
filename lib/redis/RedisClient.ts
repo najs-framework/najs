@@ -1,9 +1,8 @@
-import { IAutoload } from './../core/IAutoload'
+import { IAutoload, register } from 'najs-binding'
 import { ConfigurationKeys, GlobalFacadeClass } from '../constants'
 import { IRedis } from './IRedis'
 import { Facade } from '../facades/Facade'
 import { ConfigFacade } from '../facades/global/ConfigFacade'
-import { register } from '../core/register'
 import * as Redis from 'redis'
 
 export class RedisClient extends Facade implements IRedis, IAutoload {

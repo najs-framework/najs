@@ -3,7 +3,7 @@ import { Facade } from '../Facade'
 import { IFacade, IFacadeBase } from '../interfaces/IFacadeGrammar'
 import { IEventEmitter } from '../../../lib/event/IEventEmitter'
 import { Najs } from '../../../lib/core/Najs'
-import { make } from '../../../lib/core/make'
+import { make } from 'najs-binding'
 import { GlobalFacadeClass } from '../../constants'
 
 const facade = Facade.create<IEventEmitter>(<any>Najs, 'event', function() {

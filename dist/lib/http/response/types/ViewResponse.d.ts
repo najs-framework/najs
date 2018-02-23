@@ -1,4 +1,4 @@
-import { IAutoload } from '../../../core/IAutoload';
+import { IAutoload } from 'najs-binding';
 import { IView } from './IViewGrammars';
 import { IResponse } from '../IResponse';
 import { IHttpDriver } from '../../driver/IHttpDriver';

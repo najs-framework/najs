@@ -1,6 +1,6 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import * as Make from '../../../lib/core/make'
+import * as NajsBinding from 'najs-binding'
 import { Input } from '../../../lib/facades/contextual/InputContextualFacade'
 
 describe('InputContextualFacade', function() {
@@ -9,7 +9,7 @@ describe('InputContextualFacade', function() {
       method: 'GET'
     }
     const context = { request: request }
-    const makeSpy = Sinon.spy(Make, 'make')
+    const makeSpy = Sinon.spy(NajsBinding, 'make')
     Input.of(<any>context)
     expect(context['input'] === Input.of(<any>context)).toBe(true)
     expect(context['input'] === Input.from(<any>context)).toBe(true)

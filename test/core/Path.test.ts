@@ -5,7 +5,7 @@ import { Path } from '../../lib/core/Path'
 import { Najs } from '../../lib/core/Najs'
 import { Facade } from '../../lib/facades/Facade'
 import { GlobalFacadeClass } from '../../lib/constants'
-import { ClassRegistry } from '../../lib/core/ClassRegistry'
+import { ClassRegistry } from 'najs-binding'
 
 describe('Path', function() {
   it('extends from Facade so it definitely a FacadeClass', function() {

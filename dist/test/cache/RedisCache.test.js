@@ -5,8 +5,7 @@ const Redis = require("redis");
 const RedisCache_1 = require("../../lib/cache/RedisCache");
 const Facade_1 = require("../../lib/facades/Facade");
 const constants_1 = require("../../lib/constants");
-const ClassRegistry_1 = require("../../lib/core/ClassRegistry");
-const make_1 = require("../../lib/core/make");
+const najs_binding_1 = require("najs-binding");
 const PREVENT_FLAKY_PADDING = 10;
 describe('RedisCache', function () {
     const redis = Redis.createClient({
@@ -17,8 +16,8 @@ describe('RedisCache', function () {
         const redisCache = new RedisCache_1.RedisCache();
         expect(redisCache).toBeInstanceOf(Facade_1.Facade);
         expect(redisCache.getClassName()).toEqual(RedisCache_1.RedisCache.className);
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Cache)).toBe(true);
-        expect(make_1.make(constants_1.GlobalFacadeClass.Cache)).toBeInstanceOf(RedisCache_1.RedisCache);
+        expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Cache)).toBe(true);
+        expect(najs_binding_1.make(constants_1.GlobalFacadeClass.Cache)).toBeInstanceOf(RedisCache_1.RedisCache);
     });
     describe('.getClassName()', function () {
         it('implements IAutoload interface', function () {

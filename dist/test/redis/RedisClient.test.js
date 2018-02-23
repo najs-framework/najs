@@ -6,7 +6,7 @@ const Redis = require("redis");
 const Facade_1 = require("../../lib/facades/Facade");
 const constants_1 = require("../../lib/constants");
 const RedisClient_1 = require("../../lib/redis/RedisClient");
-const ClassRegistry_1 = require("../../lib/core/ClassRegistry");
+const najs_binding_1 = require("najs-binding");
 const isPromise_1 = require("../../lib/private/isPromise");
 const constants_2 = require("../../lib/constants");
 const ConfigFacade_1 = require("../../lib/facades/global/ConfigFacade");
@@ -19,7 +19,7 @@ describe('RedisClient', function () {
     it('extends from Facade so it definitely a FacadeClass', function () {
         expect(redisClient).toBeInstanceOf(Facade_1.Facade);
         expect(redisClient.getClassName()).toEqual(constants_1.GlobalFacadeClass.Redis);
-        expect(ClassRegistry_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Redis)).toBe(true);
+        expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Redis)).toBe(true);
     });
     describe('constructor()', function () {
         it('calls createClient() with default and config get from ConfigFacade', function () {

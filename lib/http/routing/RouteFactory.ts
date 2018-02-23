@@ -1,4 +1,4 @@
-import { IAutoload } from '../../core/IAutoload'
+import { IAutoload, register } from 'najs-binding'
 import { Facade } from '../../facades/Facade'
 import { GlobalFacadeClass } from '../../constants'
 import { RouteCollection } from './RouteCollection'
@@ -15,7 +15,6 @@ import { HttpMethod } from '../HttpMethod'
 import { Controller } from '../controller/Controller'
 import { IRouteData } from './interfaces/IRouteData'
 import * as PathToRegex from 'path-to-regexp'
-import { register } from '../../core/register'
 
 export class RouteFactory extends Facade implements IRouteGenerateUrl, IAutoload {
   getClassName() {

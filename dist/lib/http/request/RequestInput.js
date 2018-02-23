@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const register_1 = require("../../core/register");
+const najs_binding_1 = require("najs-binding");
 const ExpressController_1 = require("../controller/ExpressController");
 const ContextualFacade_1 = require("../../facades/ContextualFacade");
 const constants_1 = require("../../constants");
@@ -52,4 +52,4 @@ class RequestInput extends ContextualFacade_1.ContextualFacade {
     }
 }
 exports.RequestInput = RequestInput;
-register_1.register(RequestInput);
+najs_binding_1.register(RequestInput);

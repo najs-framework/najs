@@ -1,12 +1,11 @@
 import 'jest'
 import * as Sinon from 'sinon'
 import * as Http from 'http'
-import * as Make from '../../../lib/core/make'
+import * as NajsBinding from 'najs-binding'
 import { ExpressHttpDriver } from '../../../lib/http/driver/ExpressHttpDriver'
 import { LogFacade as Log } from '../../../lib/facades/global/LogFacade'
 import { Controller } from '../../../lib/http/controller/Controller'
 import { ExpressController } from '../../../lib/http/controller/ExpressController'
-import { register } from '../../../lib/core/register'
 import { isPromise } from '../../../lib/private/isPromise'
 
 describe('ExpressHttpDriver', function() {
@@ -366,7 +365,7 @@ describe('ExpressHttpDriver', function() {
 
       endpoint() {}
     }
-    register(TestControllerA)
+    NajsBinding.register(TestControllerA)
 
     it('always returns a function despite Controller or Endpoint are invalid', function() {
       const driver = new ExpressHttpDriver()
@@ -388,7 +387,7 @@ describe('ExpressHttpDriver', function() {
     })
 
     it('creates instance of Controller via make but do not call if endpoint not found', function() {
-      const makeSpy = Sinon.spy(Make, 'make')
+      const makeSpy = Sinon.spy(NajsBinding, 'make')
       const endpointSpy = Sinon.spy(TestControllerA.prototype, 'endpoint')
       const driver = new ExpressHttpDriver()
       const result = driver['createEndpointWrapper']('TestControllerA', 'invalid', [])
@@ -403,7 +402,7 @@ describe('ExpressHttpDriver', function() {
     })
 
     it('creates instance of Controller via make, calls endpoint and calls handleEndpointResult()', function() {
-      const makeSpy = Sinon.spy(Make, 'make')
+      const makeSpy = Sinon.spy(NajsBinding, 'make')
       const endpointSpy = Sinon.spy(TestControllerA.prototype, 'endpoint')
       const driver = new ExpressHttpDriver()
       const handleEndpointResultStub = Sinon.stub(driver, <any>'handleEndpointResult')
@@ -430,8 +429,8 @@ describe('ExpressHttpDriver', function() {
     })
 
     it('calls cloneControllerObject()/make() with controller instance but do not call if endpoint not found', function() {
-      const makeSpy = Sinon.spy(Make, 'make')
-      const controller: Object = Make.make('TestControllerA')
+      const makeSpy = Sinon.spy(NajsBinding, 'make')
+      const controller: Object = NajsBinding.make('TestControllerA')
       const driver = new ExpressHttpDriver()
       const cloneControllerObjectSpy = Sinon.spy(driver, <any>'cloneControllerObject')
       const result = driver['createEndpointWrapperByObject'](controller, 'invalid', [])
@@ -447,8 +446,8 @@ describe('ExpressHttpDriver', function() {
     })
 
     it('calls cloneControllerObject()/make() with controller instance, calls endpoint and calls handleEndpointResult()', async function() {
-      const makeSpy = Sinon.spy(Make, 'make')
-      const controller: Object = Make.make('TestControllerA')
+      const makeSpy = Sinon.spy(NajsBinding, 'make')
+      const controller: Object = NajsBinding.make('TestControllerA')
 
       const driver = new ExpressHttpDriver()
       const handleEndpointResultStub = Sinon.stub(driver, <any>'handleEndpointResult')
@@ -468,7 +467,7 @@ describe('ExpressHttpDriver', function() {
     })
 
     it('calls cloneControllerObject() with raw object but do not call if endpoint not found', function() {
-      const controller: Object = Make.make('TestControllerA')
+      const controller: Object = NajsBinding.make('TestControllerA')
 
       const endpointSpy = Sinon.spy(controller, <any>'endpoint')
 

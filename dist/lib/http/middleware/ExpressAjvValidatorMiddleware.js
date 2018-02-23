@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const register_1 = require("../../core/register");
+const najs_binding_1 = require("najs-binding");
 class ExpressAjvValidatorMiddleware {
     getClassName() {
         return ExpressAjvValidatorMiddleware.className;
@@ -10,4 +10,4 @@ class ExpressAjvValidatorMiddleware {
 }
 ExpressAjvValidatorMiddleware.className = 'ExpressAjvValidatorMiddleware';
 exports.ExpressAjvValidatorMiddleware = ExpressAjvValidatorMiddleware;
-register_1.register(ExpressAjvValidatorMiddleware);
+najs_binding_1.register(ExpressAjvValidatorMiddleware);

@@ -1,5 +1,5 @@
 import { ISchemaValidator } from './ISchemaValidator'
-import { make } from '../core/make'
+import { make } from 'najs-binding'
 import { SchemaValidatorClass } from '../constants'
 import { AjvSchemaValidator } from './AjvSchemaValidator'
 

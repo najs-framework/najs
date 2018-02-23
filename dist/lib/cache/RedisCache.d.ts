@@ -1,6 +1,6 @@
 import { Facade } from '../facades/Facade';
 import { ICache, CacheFallback } from './ICache';
-import { IAutoload } from '../core/IAutoload';
+import { IAutoload } from 'najs-binding';
 import * as Redis from 'redis';
 export declare class RedisCache extends Facade implements ICache, IAutoload {
     static className: string;

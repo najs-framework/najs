@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
 const Middleware = require("../../../lib/http/middleware/ExpressCorsMiddleware");
-const make_1 = require("../../../lib/core/make");
+const najs_binding_1 = require("najs-binding");
 const isPromise_1 = require("../../../lib/private/isPromise");
 describe('ExpressCorsMiddleware', function () {
     it('has shared Express.RequestHandler called CsurfProtection which not init by default', function () {
@@ -11,14 +11,14 @@ describe('ExpressCorsMiddleware', function () {
     });
     it('creates CsurfProtection from "csurf" module with {cookie: true} options when constructor called', function () {
         const getOptionsSpy = Sinon.spy(Middleware.ExpressCorsMiddleware.prototype, 'getOptions');
-        make_1.make(Middleware.ExpressCorsMiddleware.className);
+        najs_binding_1.make(Middleware.ExpressCorsMiddleware.className);
         expect(typeof Middleware.CorsEnable === 'function').toBe(true);
         expect(getOptionsSpy.called).toBe(true);
         getOptionsSpy.restore();
     });
     it('creates CsurfProtection only one time', function () {
         const getOptionsSpy = Sinon.spy(Middleware.ExpressCorsMiddleware.prototype, 'getOptions');
-        make_1.make(Middleware.ExpressCorsMiddleware.className);
+        najs_binding_1.make(Middleware.ExpressCorsMiddleware.className);
         expect(getOptionsSpy.called).toBe(false);
     });
     it('implements IAutoload interface with class name "ExpressCorsMiddleware"', function () {

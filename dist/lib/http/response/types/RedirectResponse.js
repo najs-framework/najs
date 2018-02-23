@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const register_1 = require("../../../core/register");
+const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../../../constants");
 class RedirectResponse {
     constructor(url, status = 302) {
@@ -16,4 +16,4 @@ class RedirectResponse {
 }
 RedirectResponse.className = constants_1.ResponseTypeClass.Redirect;
 exports.RedirectResponse = RedirectResponse;
-register_1.register(RedirectResponse);
+najs_binding_1.register(RedirectResponse);

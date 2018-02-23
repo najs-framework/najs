@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const najs_binding_1 = require("najs-binding");
 const Facade_1 = require("../facades/Facade");
-const register_1 = require("./register");
 const ConfigFacade_1 = require("../facades/global/ConfigFacade");
 const constants_1 = require("../constants");
 const SystemPath = require("path");
@@ -43,4 +43,4 @@ class Path extends Facade_1.Facade {
 }
 Path.className = constants_1.GlobalFacadeClass.Path;
 exports.Path = Path;
-register_1.register(Path, constants_1.GlobalFacadeClass.Path);
+najs_binding_1.register(Path, constants_1.GlobalFacadeClass.Path);

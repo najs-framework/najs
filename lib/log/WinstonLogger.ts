@@ -1,7 +1,6 @@
-import { IAutoload } from './../core/IAutoload'
+import { IAutoload, register } from 'najs-binding'
 import { GlobalFacadeClass } from '../constants'
 import { ILogger, LoggerLevels } from './ILogger'
-import { register } from '../core/register'
 import { Facade } from '../facades/Facade'
 import * as Winston from 'winston'
 

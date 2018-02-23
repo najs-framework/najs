@@ -1,8 +1,7 @@
 import { ConfigFacade } from '../../facades/global/ConfigFacade'
 import { ConfigurationKeys } from '../../constants'
-import { IAutoload } from '../../core/IAutoload'
+import { IAutoload, register } from 'najs-binding'
 import { IExpressMiddleware } from './IExpressMiddleware'
-import { register } from '../../core/register'
 import * as Express from 'express'
 import * as CORS from 'cors'
 

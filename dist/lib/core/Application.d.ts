@@ -1,5 +1,4 @@
-import { IAutoload } from './IAutoload';
-import { InstanceCreator } from './bind';
+import { IAutoload, InstanceCreator, InstanceExtending } from 'najs-binding';
 import { IApplication } from './IApplication';
 import { Facade } from '../facades/Facade';
 export declare class Application extends Facade implements IApplication, IAutoload {
@@ -17,4 +16,6 @@ export declare class Application extends Facade implements IApplication, IAutolo
     register<T>(classDefinition: T, className: string, overridable: boolean, singleton: boolean): this;
     bind(className: string, instanceCreator: InstanceCreator): this;
     bind(className: string, concrete: string): this;
+    extend(className: string, decorator: InstanceExtending): IApplication;
+    extend(classDefinition: Function, decorator: InstanceExtending): IApplication;
 }

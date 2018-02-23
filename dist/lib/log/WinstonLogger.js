@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../constants");
-const register_1 = require("../core/register");
 const Facade_1 = require("../facades/Facade");
 const Winston = require("winston");
 class WinstonLogger extends Facade_1.Facade {
@@ -82,5 +82,5 @@ WinstonLogger.levels = {
     debug: 'debug'
 };
 exports.WinstonLogger = WinstonLogger;
-register_1.register(WinstonLogger);
-register_1.register(WinstonLogger, constants_1.GlobalFacadeClass.Log);
+najs_binding_1.register(WinstonLogger);
+najs_binding_1.register(WinstonLogger, constants_1.GlobalFacadeClass.Log);

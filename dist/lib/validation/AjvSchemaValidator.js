@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
-const register_1 = require("../core/register");
+const najs_binding_1 = require("najs-binding");
 const Ajv = require("ajv");
 class AjvSchemaValidator {
     constructor() {
@@ -59,5 +59,5 @@ class AjvSchemaValidator {
 }
 AjvSchemaValidator.className = 'AjvSchemaValidator';
 exports.AjvSchemaValidator = AjvSchemaValidator;
-register_1.register(AjvSchemaValidator);
-register_1.register(AjvSchemaValidator, constants_1.SchemaValidatorClass);
+najs_binding_1.register(AjvSchemaValidator);
+najs_binding_1.register(AjvSchemaValidator, constants_1.SchemaValidatorClass);

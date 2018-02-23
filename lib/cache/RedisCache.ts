@@ -1,8 +1,8 @@
 import { Facade } from '../facades/Facade'
 import { ConfigFacade } from '../facades/global/ConfigFacade'
 import { ICache, CacheFallback } from './ICache'
-import { IAutoload } from '../core/IAutoload'
-import { register } from '../core/register'
+import { IAutoload } from 'najs-binding'
+import { register } from 'najs-binding'
 import { GlobalFacadeClass, ConfigurationKeys } from '../constants'
 import * as Redis from 'redis'
 

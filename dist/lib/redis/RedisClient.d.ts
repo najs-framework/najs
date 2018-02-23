@@ -1,4 +1,4 @@
-import { IAutoload } from './../core/IAutoload';
+import { IAutoload } from 'najs-binding';
 import { IRedis } from './IRedis';
 import { Facade } from '../facades/Facade';
 import * as Redis from 'redis';

@@ -1,4 +1,4 @@
-import { InstanceCreator } from './bind';
+import { InstanceCreator, InstanceExtending } from 'najs-binding';
 export interface IApplication {
     make<T>(classDefinition: any): T;
     make<T>(className: string): T;
@@ -12,4 +12,6 @@ export interface IApplication {
     register<T>(classDefinition: T, className: string, overridable: boolean, singleton: boolean): IApplication;
     bind(className: string, instanceCreator: InstanceCreator): IApplication;
     bind(className: string, concrete: string): IApplication;
+    extend(className: string, decorator: InstanceExtending): IApplication;
+    extend(classDefinition: Function, decorator: InstanceExtending): IApplication;
 }

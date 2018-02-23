@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const register_1 = require("../../../core/register");
+const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../../../constants");
 class JsonResponse {
     constructor(value) {
@@ -15,4 +15,4 @@ class JsonResponse {
 }
 JsonResponse.className = constants_1.ResponseTypeClass.Json;
 exports.JsonResponse = JsonResponse;
-register_1.register(JsonResponse);
+najs_binding_1.register(JsonResponse);
