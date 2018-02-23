@@ -1,8 +1,12 @@
+import { IAutoload } from '../../../core/IAutoload'
+import { register } from '../../../core/register'
+import { ResponseTypeClass } from '../../../constants'
 import { IView } from './IViewGrammars'
 import { IResponse } from '../IResponse'
 import { IHttpDriver } from '../../driver/IHttpDriver'
 
-export class ViewResponse<T extends Object = {}> implements IResponse, IView {
+export class ViewResponse<T extends Object = {}> implements IResponse, IAutoload, IView {
+  static className: string = ResponseTypeClass.View
   protected view: string
   protected variables: T
 
@@ -11,6 +15,10 @@ export class ViewResponse<T extends Object = {}> implements IResponse, IView {
   constructor(view: string, variables?: T) {
     this.view = view
     this.variables = variables || <T>{}
+  }
+
+  getClassName() {
+    return ResponseTypeClass.View
   }
 
   respond(request: any, response: any, driver: IHttpDriver) {
@@ -26,3 +34,4 @@ export class ViewResponse<T extends Object = {}> implements IResponse, IView {
     return this.variables
   }
 }
+register(ViewResponse)

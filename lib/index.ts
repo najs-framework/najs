@@ -16,7 +16,7 @@ export { IAutoload } from './core/IAutoload'
 export { ServiceProvider } from './core/ServiceProvider'
 
 // constants
-export { SystemClass, GlobalFacadeClass, ContextualFacadeClass } from './constants'
+export { SystemClass, GlobalFacadeClass, ContextualFacadeClass, ResponseTypeClass } from './constants'
 
 // http package
 export { IHttpDriver } from './http/driver/IHttpDriver'

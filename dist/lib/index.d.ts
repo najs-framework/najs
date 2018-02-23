@@ -11,7 +11,7 @@ export { autoload } from './core/autoload';
 export { ClassRegistry } from './core/ClassRegistry';
 export { IAutoload } from './core/IAutoload';
 export { ServiceProvider } from './core/ServiceProvider';
-export { SystemClass, GlobalFacadeClass, ContextualFacadeClass } from './constants';
+export { SystemClass, GlobalFacadeClass, ContextualFacadeClass, ResponseTypeClass } from './constants';
 export { IHttpDriver } from './http/driver/IHttpDriver';
 export { HttpDriverStartOptions } from './http/driver/IHttpDriver';
 export { HttpKernel } from './http/HttpKernel';

@@ -9,6 +9,14 @@ export const ContextualFacadeClass = {
   Input: 'Najs.ExpressInput'
 }
 
+export const ResponseTypeClass = {
+  Back: 'Najs.BackResponse',
+  Json: 'Najs.JsonResponse',
+  Jsonp: 'Najs.JsonpResponse',
+  Redirect: 'Najs.RedirectResponse',
+  View: 'Najs.ViewResponse'
+}
+
 export const GlobalFacadeClass = {
   Application: 'Najs.Application',
   Cache: 'Najs.Cache',

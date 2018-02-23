@@ -25,6 +25,7 @@ var constants_1 = require("./constants");
 exports.SystemClass = constants_1.SystemClass;
 exports.GlobalFacadeClass = constants_1.GlobalFacadeClass;
 exports.ContextualFacadeClass = constants_1.ContextualFacadeClass;
+exports.ResponseTypeClass = constants_1.ResponseTypeClass;
 var HttpKernel_1 = require("./http/HttpKernel");
 exports.HttpKernel = HttpKernel_1.HttpKernel;
 var RouteCollection_1 = require("./http/routing/RouteCollection");

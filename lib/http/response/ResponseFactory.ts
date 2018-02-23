@@ -1,14 +1,10 @@
 import { IAutoload } from './../../core/IAutoload'
+import { make } from './../../core/make'
 import { Facade } from './../../facades/Facade'
-import { GlobalFacadeClass } from '../../constants'
+import { GlobalFacadeClass, ResponseTypeClass } from '../../constants'
 import { IView } from './types/IViewGrammars'
-import { ViewResponse } from './types/ViewResponse'
 import { IResponse } from './IResponse'
 import { IResponseFactory } from './IResponseFactory'
-import { JsonResponse } from './types/JsonResponse'
-import { JsonpResponse } from './types/JsonpResponse'
-import { RedirectResponse } from './types/RedirectResponse'
-import { BackResponse } from './types/BackResponse'
 import { register } from '../../core/register'
 
 export class ResponseFactory extends Facade implements IResponseFactory, IAutoload {
@@ -18,30 +14,30 @@ export class ResponseFactory extends Facade implements IResponseFactory, IAutolo
     return GlobalFacadeClass.Response
   }
 
-  view(view: string): IView
-  view<T extends Object = {}>(view: string, variables: T): IView
-  view<T extends Object = {}>(view: string, variables?: T): IView {
-    return new ViewResponse(view, <any>variables)
+  view<R = IView>(view: string): R
+  view<T extends Object = {}, R = IView>(view: string, variables: T): R
+  view<T extends Object = {}, R = IView>(view: string, variables?: T): R {
+    return make(ResponseTypeClass.View, [view, <any>variables])
   }
 
-  json(value: any): IResponse {
-    return new JsonResponse(value)
+  json<R = IResponse>(value: any): R {
+    return make(ResponseTypeClass.Json, [value])
   }
 
-  jsonp(value: any): IResponse {
-    return new JsonpResponse(value)
+  jsonp<R = IResponse>(value: any): R {
+    return make(ResponseTypeClass.Jsonp, [value])
   }
 
-  redirect(url: string): IResponse
-  redirect(url: string, status: number): IResponse
-  redirect(url: string, status: number = 302): IResponse {
-    return new RedirectResponse(url, status)
+  redirect<R = IResponse>(url: string): R
+  redirect<R = IResponse>(url: string, status: number): R
+  redirect<R = IResponse>(url: string, status: number = 302): R {
+    return make(ResponseTypeClass.Redirect, [url, status])
   }
 
-  back(): IResponse
-  back(defaultUrl: string): IResponse
-  back(defaultUrl?: string): IResponse {
-    return new BackResponse(defaultUrl)
+  back<R = IResponse>(): R
+  back<R = IResponse>(defaultUrl: string): R
+  back<R = IResponse>(defaultUrl?: string): R {
+    return make(ResponseTypeClass.Back, [defaultUrl])
   }
 }
 register(ResponseFactory)

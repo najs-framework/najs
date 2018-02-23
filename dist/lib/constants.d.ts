@@ -6,6 +6,13 @@ export declare const SystemClass: {
 export declare const ContextualFacadeClass: {
     Input: string;
 };
+export declare const ResponseTypeClass: {
+    Back: string;
+    Json: string;
+    Jsonp: string;
+    Redirect: string;
+    View: string;
+};
 export declare const GlobalFacadeClass: {
     Application: string;
     Cache: string;

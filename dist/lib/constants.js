@@ -8,6 +8,13 @@ exports.SystemClass = {
 exports.ContextualFacadeClass = {
     Input: 'Najs.ExpressInput'
 };
+exports.ResponseTypeClass = {
+    Back: 'Najs.BackResponse',
+    Json: 'Najs.JsonResponse',
+    Jsonp: 'Najs.JsonpResponse',
+    Redirect: 'Najs.RedirectResponse',
+    View: 'Najs.ViewResponse'
+};
 exports.GlobalFacadeClass = {
     Application: 'Najs.Application',
     Cache: 'Najs.Cache',
