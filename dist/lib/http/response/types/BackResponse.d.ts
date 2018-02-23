@@ -1,8 +1,7 @@
 import { IResponse } from '../IResponse';
 import { IHttpDriver } from '../../driver/IHttpDriver';
-export declare class RedirectResponse implements IResponse {
-    protected url: string;
-    protected status: number;
-    constructor(url: string, status?: number);
+export declare class BackResponse implements IResponse {
+    protected defaultUrl: string;
+    constructor(defaultUrl?: string);
     respond(request: any, response: any, driver: IHttpDriver): void;
 }

@@ -4,7 +4,7 @@ class JsonResponse {
     constructor(value) {
         this.value = value;
     }
-    respond(response, driver) {
+    respond(request, response, driver) {
         return driver.respondJson(response, this.value);
     }
 }

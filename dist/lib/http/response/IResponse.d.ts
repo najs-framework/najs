@@ -1,5 +1,7 @@
+/// <reference types="node" />
 import { IHttpDriver } from '../driver/IHttpDriver';
+import { IncomingMessage, ServerResponse } from 'http';
 export interface IResponse {
-    respond(response: any, driver: IHttpDriver): void;
+    respond(request: IncomingMessage, response: ServerResponse, driver: IHttpDriver): void;
 }
 export declare function isIResponse(arg: any): boolean;

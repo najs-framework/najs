@@ -8,7 +8,7 @@ export class JsonResponse implements IResponse {
     this.value = value
   }
 
-  respond(response: any, driver: IHttpDriver) {
+  respond(request: any, response: any, driver: IHttpDriver) {
     return driver.respondJson(response, this.value)
   }
 }

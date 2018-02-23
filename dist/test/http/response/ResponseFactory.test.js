@@ -6,6 +6,7 @@ const ResponseFactory_1 = require("../../../lib/http/response/ResponseFactory");
 const ViewResponse_1 = require("../../../lib/http/response/types/ViewResponse");
 const JsonResponse_1 = require("../../../lib/http/response/types/JsonResponse");
 const RedirectResponse_1 = require("../../../lib/http/response/types/RedirectResponse");
+const BackResponse_1 = require("../../../lib/http/response/types/BackResponse");
 const JsonpResponse_1 = require("../../../lib/http/response/types/JsonpResponse");
 const Facade_1 = require("../../../lib/facades/Facade");
 const constants_1 = require("../../../lib/constants");
@@ -51,6 +52,16 @@ describe('ResponseFacade', function () {
             expect(result['status']).toEqual(301);
         });
     });
+    describe('back', function () {
+        it('creates new instance of BackResponse', function () {
+            let result = Response.back();
+            expect(result).toBeInstanceOf(BackResponse_1.BackResponse);
+            expect(result['defaultUrl']).toEqual('/');
+            result = Response.back('/path');
+            expect(result).toBeInstanceOf(BackResponse_1.BackResponse);
+            expect(result['defaultUrl']).toEqual('/path');
+        });
+    });
 });
 describe('ViewResponse', function () {
     it('can be created with view only', function () {
@@ -64,11 +75,12 @@ describe('ViewResponse', function () {
         expect(view['variables']).toEqual({ any: 'thing' });
     });
     it('calls IHttpDriver.respondView and passes response, this.view, this.variables', function () {
+        const request = {};
         const response = {};
         const driver = { respondView() { } };
         const respondViewSpy = Sinon.spy(driver, 'respondView');
         const view = new ViewResponse_1.ViewResponse('view', { any: 'thing' });
-        view.respond(response, driver);
+        view.respond(request, response, driver);
         expect(respondViewSpy.calledWith(response, 'view', { any: 'thing' })).toBe(true);
     });
     describe('getVariables()', function () {
@@ -98,11 +110,12 @@ describe('JsonResponse', function () {
         expect(json['value']).toEqual({ ok: true });
     });
     it('calls IHttpDriver.respondJson and passes response, this.value', function () {
+        const request = {};
         const response = {};
         const driver = { respondJson() { } };
         const respondJsonSpy = Sinon.spy(driver, 'respondJson');
         const json = new JsonResponse_1.JsonResponse('any');
-        json.respond(response, driver);
+        json.respond(request, response, driver);
         expect(respondJsonSpy.calledWith(response, 'any')).toBe(true);
     });
 });
@@ -112,11 +125,12 @@ describe('JsonpResponse', function () {
         expect(redirect['value']).toEqual({ ok: true });
     });
     it('calls IHttpDriver.respondJson and passes response, this.value', function () {
+        const request = {};
         const response = {};
         const driver = { respondJsonp(response, url, status) { } };
         const respondJsonSpy = Sinon.spy(driver, 'respondJsonp');
         const redirect = new JsonpResponse_1.JsonpResponse('any');
-        redirect.respond(response, driver);
+        redirect.respond(request, response, driver);
         expect(respondJsonSpy.calledWith(response, 'any')).toBe(true);
     });
 });
@@ -132,11 +146,48 @@ describe('RedirectResponse', function () {
         expect(redirect['status']).toEqual(301);
     });
     it('calls IHttpDriver.respondRedirect and passes response, this.url, this.status', function () {
+        const request = {};
         const response = {};
         const driver = { respondRedirect(response, url, status) { } };
         const responseRedirectSpy = Sinon.spy(driver, 'respondRedirect');
         const redirect = new RedirectResponse_1.RedirectResponse('/path', 301);
-        redirect.respond(response, driver);
+        redirect.respond(request, response, driver);
         expect(responseRedirectSpy.calledWith(response, '/path', 301)).toBe(true);
+    });
+});
+describe('BackResponse', function () {
+    it('can be created with default url = /', function () {
+        const redirect = new BackResponse_1.BackResponse();
+        expect(redirect['defaultUrl']).toEqual('/');
+    });
+    it('can be created with custom default url', function () {
+        const redirect = new BackResponse_1.BackResponse('/path');
+        expect(redirect['defaultUrl']).toEqual('/path');
+    });
+    it('calls IHttpDriver.respondRedirect and passes response, request.header("Referer"), status 302', function () {
+        const request = {
+            header() {
+                return 'anything';
+            }
+        };
+        const response = {};
+        const driver = { respondRedirect(response, url, status) { } };
+        const responseRedirectSpy = Sinon.spy(driver, 'respondRedirect');
+        const redirect = new BackResponse_1.BackResponse('/path');
+        redirect.respond(request, response, driver);
+        expect(responseRedirectSpy.calledWith(response, 'anything', 302)).toBe(true);
+    });
+    it('calls IHttpDriver.respondRedirect and passes response, this.defaultUrl, status 302 if there is no Referer in header', function () {
+        const request = {
+            header() {
+                return undefined;
+            }
+        };
+        const response = {};
+        const driver = { respondRedirect(response, url, status) { } };
+        const responseRedirectSpy = Sinon.spy(driver, 'respondRedirect');
+        const redirect = new BackResponse_1.BackResponse('/path');
+        redirect.respond(request, response, driver);
+        expect(responseRedirectSpy.calledWith(response, '/path', 302)).toBe(true);
     });
 });

@@ -5,7 +5,7 @@ class ViewResponse {
         this.view = view;
         this.variables = variables || {};
     }
-    respond(response, driver) {
+    respond(request, response, driver) {
         return driver.respondView(response, this.view, this.variables);
     }
     with(name, value) {

@@ -4,7 +4,7 @@ class JsonpResponse {
     constructor(value) {
         this.value = value;
     }
-    respond(response, driver) {
+    respond(request, response, driver) {
         return driver.respondJsonp(response, this.value);
     }
 }

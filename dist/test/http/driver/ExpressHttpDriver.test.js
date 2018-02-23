@@ -495,7 +495,7 @@ describe('ExpressHttpDriver', function () {
             const response = {};
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             await driver['handleEndpointResult'](request, response, promise, []);
-            expect(iResponseSpy.calledWith(response, driver)).toBe(true);
+            expect(iResponseSpy.calledWith(request, response, driver)).toBe(true);
         });
         it('calls result.respond if result is IResponse', async function () {
             const iResponse = {
@@ -506,7 +506,7 @@ describe('ExpressHttpDriver', function () {
             const response = {};
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             await driver['handleEndpointResult'](request, response, iResponse, []);
-            expect(iResponseSpy.calledWith(response, driver)).toBe(true);
+            expect(iResponseSpy.calledWith(request, response, driver)).toBe(true);
         });
     });
     describe('protected .applyAfterMiddlewareWrapper()', function () {

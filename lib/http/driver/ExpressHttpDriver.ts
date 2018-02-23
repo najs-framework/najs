@@ -272,7 +272,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     const rawValue: any = isPromise(result) ? await (result as Promise<any>) : result
     const value: any = await this.applyAfterMiddlewareWrapper(middleware, request, response, rawValue)
     if (isIResponse(value)) {
-      return value.respond(response, this)
+      return value.respond(request, response, this)
     }
   }
 

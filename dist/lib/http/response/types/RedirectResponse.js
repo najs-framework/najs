@@ -5,7 +5,7 @@ class RedirectResponse {
         this.url = url;
         this.status = status;
     }
-    respond(response, driver) {
+    respond(request, response, driver) {
         return driver.respondRedirect(response, this.url, this.status);
     }
 }

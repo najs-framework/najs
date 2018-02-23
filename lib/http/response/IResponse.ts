@@ -1,8 +1,9 @@
 import { IHttpDriver } from '../driver/IHttpDriver'
+import { IncomingMessage, ServerResponse } from 'http'
 import { isFunction } from 'lodash'
 
 export interface IResponse {
-  respond(response: any, driver: IHttpDriver): void
+  respond(request: IncomingMessage, response: ServerResponse, driver: IHttpDriver): void
 }
 
 export function isIResponse(arg: any) {

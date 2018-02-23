@@ -13,7 +13,7 @@ export class ViewResponse<T extends Object = {}> implements IResponse, IView {
     this.variables = variables || <T>{}
   }
 
-  respond(response: any, driver: IHttpDriver) {
+  respond(request: any, response: any, driver: IHttpDriver) {
     return driver.respondView(response, this.view, this.variables)
   }
 

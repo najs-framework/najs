@@ -8,6 +8,7 @@ import { IResponseFactory } from './IResponseFactory'
 import { JsonResponse } from './types/JsonResponse'
 import { JsonpResponse } from './types/JsonpResponse'
 import { RedirectResponse } from './types/RedirectResponse'
+import { BackResponse } from './types/BackResponse'
 import { register } from '../../core/register'
 
 export class ResponseFactory extends Facade implements IResponseFactory, IAutoload {
@@ -35,6 +36,12 @@ export class ResponseFactory extends Facade implements IResponseFactory, IAutolo
   redirect(url: string, status: number): IResponse
   redirect(url: string, status: number = 302): IResponse {
     return new RedirectResponse(url, status)
+  }
+
+  back(): IResponse
+  back(defaultUrl: string): IResponse
+  back(defaultUrl?: string): IResponse {
+    return new BackResponse(defaultUrl)
   }
 }
 register(ResponseFactory)

@@ -190,7 +190,7 @@ class ExpressHttpDriver {
         const rawValue = isPromise_1.isPromise(result) ? await result : result;
         const value = await this.applyAfterMiddlewareWrapper(middleware, request, response, rawValue);
         if (IResponse_1.isIResponse(value)) {
-            return value.respond(response, this);
+            return value.respond(request, response, this);
         }
     }
     start(options) {

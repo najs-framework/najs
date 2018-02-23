@@ -10,7 +10,7 @@ export class RedirectResponse implements IResponse {
     this.status = status
   }
 
-  respond(response: any, driver: IHttpDriver) {
+  respond(request: any, response: any, driver: IHttpDriver) {
     return driver.respondRedirect(response, this.url, this.status)
   }
 }

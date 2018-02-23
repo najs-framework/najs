@@ -590,7 +590,7 @@ describe('ExpressHttpDriver', function() {
       const response = {}
       const driver = new ExpressHttpDriver()
       await driver['handleEndpointResult'](<any>request, <any>response, promise, [])
-      expect(iResponseSpy.calledWith(response, driver)).toBe(true)
+      expect(iResponseSpy.calledWith(request, response, driver)).toBe(true)
     })
 
     it('calls result.respond if result is IResponse', async function() {
@@ -603,7 +603,7 @@ describe('ExpressHttpDriver', function() {
       const response = {}
       const driver = new ExpressHttpDriver()
       await driver['handleEndpointResult'](<any>request, <any>response, iResponse, [])
-      expect(iResponseSpy.calledWith(response, driver)).toBe(true)
+      expect(iResponseSpy.calledWith(request, response, driver)).toBe(true)
     })
   })
 

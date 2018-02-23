@@ -25,6 +25,7 @@ export { IResponse } from './http/response/IResponse';
 export { IResponseFactory } from './http/response/IResponseFactory';
 export { ViewResponse } from './http/response/types/ViewResponse';
 export { RedirectResponse } from './http/response/types/RedirectResponse';
+export { BackResponse } from './http/response/types/BackResponse';
 export { JsonResponse } from './http/response/types/JsonResponse';
 export { JsonpResponse } from './http/response/types/JsonpResponse';
 export { IRequestRetriever } from './http/request/IRequestRetriever';
