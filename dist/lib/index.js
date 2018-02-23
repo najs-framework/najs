@@ -115,3 +115,5 @@ exports.route = route_1.route;
 // internal service providers
 var ExpressHttpDriverServiceProvider_1 = require("./service-providers/ExpressHttpDriverServiceProvider");
 exports.ExpressHttpDriverServiceProvider = ExpressHttpDriverServiceProvider_1.ExpressHttpDriverServiceProvider;
+var MongooseServiceProvider_1 = require("./service-providers/MongooseServiceProvider");
+exports.MongooseServiceProvider = MongooseServiceProvider_1.MongooseServiceProvider;

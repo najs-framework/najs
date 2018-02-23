@@ -30,6 +30,8 @@ export const ConfigurationKeys = {
   ViewEngineName: 'view.engine',
   HandlerBarsOptions: 'view.handlebars',
   Redis: 'redis',
+  Mongoose: 'mongoose.uri',
+  MongooseOptions: 'mongoose.options',
   Paths: {
     app: 'path.app',
     config: 'path.config',

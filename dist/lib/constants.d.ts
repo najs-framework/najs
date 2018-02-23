@@ -26,6 +26,8 @@ export declare const ConfigurationKeys: {
     ViewEngineName: string;
     HandlerBarsOptions: string;
     Redis: string;
+    Mongoose: string;
+    MongooseOptions: string;
     Paths: {
         app: string;
         config: string;

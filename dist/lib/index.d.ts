@@ -64,3 +64,4 @@ export { IRedis } from './redis/IRedis';
 export { RedisClient } from './redis/RedisClient';
 export { route } from './helpers/route';
 export { ExpressHttpDriverServiceProvider } from './service-providers/ExpressHttpDriverServiceProvider';
+export { MongooseServiceProvider } from './service-providers/MongooseServiceProvider';

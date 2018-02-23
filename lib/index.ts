@@ -93,3 +93,4 @@ export { route } from './helpers/route'
 
 // internal service providers
 export { ExpressHttpDriverServiceProvider } from './service-providers/ExpressHttpDriverServiceProvider'
+export { MongooseServiceProvider } from './service-providers/MongooseServiceProvider'
