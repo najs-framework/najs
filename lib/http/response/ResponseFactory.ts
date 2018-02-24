@@ -1,5 +1,5 @@
 import { IAutoload, make, register } from 'najs-binding'
-import { Facade } from './../../facades/Facade'
+import { Facade } from 'najs-facade'
 import { GlobalFacadeClass, ResponseTypeClass } from '../../constants'
 import { IView } from './types/IViewGrammars'
 import { IResponse } from './IResponse'

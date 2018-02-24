@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const najs_binding_1 = require("najs-binding");
 const ExpressController_1 = require("../controller/ExpressController");
-const ContextualFacade_1 = require("../../facades/ContextualFacade");
+const najs_facade_1 = require("najs-facade");
 const constants_1 = require("../../constants");
 const RequestData_1 = require("./RequestData");
 const HttpMethod_1 = require("../HttpMethod");
-class RequestInput extends ContextualFacade_1.ContextualFacade {
+class RequestInput extends najs_facade_1.ContextualFacade {
     constructor(controller) {
         super(controller);
         controller.input = this;

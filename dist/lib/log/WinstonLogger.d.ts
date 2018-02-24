@@ -1,6 +1,6 @@
 import { IAutoload } from 'najs-binding';
 import { ILogger } from './ILogger';
-import { Facade } from '../facades/Facade';
+import { Facade } from 'najs-facade';
 import * as Winston from 'winston';
 export declare class WinstonLogger extends Facade implements ILogger, IAutoload {
     static className: string;

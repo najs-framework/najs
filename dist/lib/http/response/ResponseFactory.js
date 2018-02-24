@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const najs_binding_1 = require("najs-binding");
-const Facade_1 = require("./../../facades/Facade");
+const najs_facade_1 = require("najs-facade");
 const constants_1 = require("../../constants");
-class ResponseFactory extends Facade_1.Facade {
+class ResponseFactory extends najs_facade_1.Facade {
     getClassName() {
         return constants_1.GlobalFacadeClass.Response;
     }

@@ -6,7 +6,7 @@ import { JsonResponse } from '../../../lib/http/response/types/JsonResponse'
 import { RedirectResponse } from '../../../lib/http/response/types/RedirectResponse'
 import { BackResponse } from '../../../lib/http/response/types/BackResponse'
 import { JsonpResponse } from '../../../lib/http/response/types/JsonpResponse'
-import { Facade } from '../../../lib/facades/Facade'
+import { Facade } from 'najs-facade'
 import { GlobalFacadeClass } from '../../../lib/constants'
 import { ClassRegistry } from 'najs-binding'
 

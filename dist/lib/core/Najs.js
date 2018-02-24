@@ -4,9 +4,9 @@ const events_1 = require("events");
 const Application_1 = require("./Application");
 const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../constants");
-const FacadeContainer_1 = require("../facades/FacadeContainer");
+const najs_facade_1 = require("najs-facade");
 const SystemPath = require("path");
-class NajsFramework extends FacadeContainer_1.FacadeContainer {
+class NajsFramework extends najs_facade_1.FacadeContainer {
     constructor() {
         super();
         this.cwd = SystemPath.resolve(__dirname, '..', '..', '..', '..');

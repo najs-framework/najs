@@ -1,6 +1,6 @@
 import 'jest'
 import { ExpressController } from '../../../lib/http/controller/ExpressController'
-import { ContextualFacade } from '../../../lib/facades/ContextualFacade'
+import { ContextualFacade } from 'najs-facade'
 
 describe('ExpressController', function() {
   describe('.constructor()', function() {

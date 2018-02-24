@@ -1,4 +1,4 @@
-import { Facade } from '../facades/Facade';
+import { Facade } from 'najs-facade';
 import { IConfig } from './IConfig';
 import * as ConfigLib from 'config';
 import { IAutoload } from 'najs-binding';

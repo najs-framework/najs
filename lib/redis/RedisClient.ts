@@ -1,7 +1,7 @@
 import { IAutoload, register } from 'najs-binding'
 import { ConfigurationKeys, GlobalFacadeClass } from '../constants'
 import { IRedis } from './IRedis'
-import { Facade } from '../facades/Facade'
+import { Facade } from 'najs-facade'
 import { ConfigFacade } from '../facades/global/ConfigFacade'
 import * as Redis from 'redis'
 

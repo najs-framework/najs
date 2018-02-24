@@ -2,7 +2,7 @@ import 'jest'
 import * as Sinon from 'sinon'
 import * as NajsBinding from 'najs-binding'
 import { Application } from '../../lib/core/Application'
-import { Facade } from '../../lib/facades/Facade'
+import { Facade } from 'najs-facade'
 import { GlobalFacadeClass } from '../../lib/constants'
 import { ClassRegistry } from 'najs-binding'
 

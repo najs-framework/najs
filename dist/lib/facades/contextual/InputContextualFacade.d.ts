@@ -1,5 +1,5 @@
 import '../../http/request/RequestInput';
-import { IContextualFacadeVerbOf, IContextualFacadeVerbFrom } from '../interfaces/IFacadeGrammar';
+import { IContextualFacadeVerbOf, IContextualFacadeVerbFrom } from 'najs-facade';
 import { RequestInput } from '../../http/request/RequestInput';
 import { Controller } from '../../http/controller/Controller';
 export declare const Input: IContextualFacadeVerbOf<RequestInput, Controller> & IContextualFacadeVerbFrom<RequestInput, Controller>;

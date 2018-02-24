@@ -3,13 +3,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
 const Config_1 = require("../../lib/config/Config");
-const Facade_1 = require("../../lib/facades/Facade");
+const najs_facade_1 = require("najs-facade");
 const constants_1 = require("../../lib/constants");
 const najs_binding_1 = require("najs-binding");
 describe('Config', function () {
     it('extends from Facade so it definitely a FacadeClass', function () {
         const config = new Config_1.Config();
-        expect(config).toBeInstanceOf(Facade_1.Facade);
+        expect(config).toBeInstanceOf(najs_facade_1.Facade);
         expect(config.getClassName()).toEqual(constants_1.GlobalFacadeClass.Config);
         expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Config)).toBe(true);
     });

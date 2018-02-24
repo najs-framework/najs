@@ -1,6 +1,5 @@
 import '../../../lib/config/Config'
-import { Facade } from '../Facade'
-import { IFacade, IFacadeBase } from '../interfaces/IFacadeGrammar'
+import { Facade, IFacade, IFacadeBase } from 'najs-facade'
 import { IConfig } from '../../../lib/config/IConfig'
 import { Najs } from '../../../lib/core/Najs'
 import { make } from 'najs-binding'

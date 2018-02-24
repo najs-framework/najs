@@ -5,12 +5,12 @@ const Sinon = require("sinon");
 const Winston = require("winston");
 const najs_binding_1 = require("najs-binding");
 const WinstonLogger_1 = require("../../lib/log/WinstonLogger");
-const Facade_1 = require("../../lib/facades/Facade");
+const najs_facade_1 = require("najs-facade");
 const constants_1 = require("../../lib/constants");
 describe('WinstonLogger', function () {
     it('extends from Facade so it definitely a FacadeClass', function () {
         const logger = new WinstonLogger_1.WinstonLogger();
-        expect(logger).toBeInstanceOf(Facade_1.Facade);
+        expect(logger).toBeInstanceOf(najs_facade_1.Facade);
         expect(logger.getClassName()).toEqual(WinstonLogger_1.WinstonLogger.className);
     });
     it('implements ILogger and registers to GlobalFacade.Log by default', function () {

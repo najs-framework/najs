@@ -1,6 +1,5 @@
 import '../../../lib/event/EventDispatcher'
-import { Facade } from '../Facade'
-import { IFacade, IFacadeBase } from '../interfaces/IFacadeGrammar'
+import { Facade, IFacade, IFacadeBase } from 'najs-facade'
 import { IEventEmitter } from '../../../lib/event/IEventEmitter'
 import { Najs } from '../../../lib/core/Najs'
 import { make } from 'najs-binding'

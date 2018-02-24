@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Redis = require("redis");
 const RedisCache_1 = require("../../lib/cache/RedisCache");
-const Facade_1 = require("../../lib/facades/Facade");
+const najs_facade_1 = require("najs-facade");
 const constants_1 = require("../../lib/constants");
 const najs_binding_1 = require("najs-binding");
 const PREVENT_FLAKY_PADDING = 10;
@@ -14,7 +14,7 @@ describe('RedisCache', function () {
     });
     it('extends from Facade so it definitely a FacadeClass', function () {
         const redisCache = new RedisCache_1.RedisCache();
-        expect(redisCache).toBeInstanceOf(Facade_1.Facade);
+        expect(redisCache).toBeInstanceOf(najs_facade_1.Facade);
         expect(redisCache.getClassName()).toEqual(RedisCache_1.RedisCache.className);
         expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Cache)).toBe(true);
         expect(najs_binding_1.make(constants_1.GlobalFacadeClass.Cache)).toBeInstanceOf(RedisCache_1.RedisCache);

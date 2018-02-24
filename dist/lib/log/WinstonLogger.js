@@ -2,9 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../constants");
-const Facade_1 = require("../facades/Facade");
+const najs_facade_1 = require("najs-facade");
 const Winston = require("winston");
-class WinstonLogger extends Facade_1.Facade {
+class WinstonLogger extends najs_facade_1.Facade {
     constructor() {
         super();
         this.logger = this.setup();

@@ -1,6 +1,5 @@
 import '../../../lib/log/WinstonLogger'
-import { Facade } from '../Facade'
-import { IFacade, IFacadeBase } from '../interfaces/IFacadeGrammar'
+import { Facade, IFacade, IFacadeBase } from 'najs-facade'
 import { ILogger } from '../../../lib/log/ILogger'
 import { Najs } from '../../../lib/core/Najs'
 import { make } from 'najs-binding'

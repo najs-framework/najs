@@ -51,12 +51,25 @@ export { IExpressMiddleware } from './http/middleware/IExpressMiddleware'
 export { ExpressCsurfMiddleware } from './http/middleware/ExpressCsurfMiddleware'
 export { ExpressCorsMiddleware } from './http/middleware/ExpressCorsMiddleware'
 
+// najs-facade package
+export {
+  IFacade,
+  IFacadeBase,
+  IContextualFacade,
+  IContextualFacadeFactory,
+  IContextualFacadeFactoryFullVerbs,
+  IContextualFacadeVerbAt,
+  IContextualFacadeVerbFor,
+  IContextualFacadeVerbFrom,
+  IContextualFacadeVerbOf,
+  IContextualFacadeVerbWith
+} from 'najs-facade'
+export { IFacadeContainer } from 'najs-facade'
+export { Facade } from 'najs-facade'
+export { ContextualFacade } from 'najs-facade'
+export { FacadeContainer } from 'najs-facade'
+
 // facade package
-export { IFacade } from './facades/interfaces/IFacadeGrammar'
-export { IFacadeContainer } from './facades/interfaces/IFacadeContainer'
-export { Facade } from './facades/Facade'
-export { ContextualFacade } from './facades/ContextualFacade'
-export { FacadeContainer } from './facades/FacadeContainer'
 export { AppFacade, App } from './facades/global/AppFacade'
 export { CacheFacade, Cache } from './facades/global/CacheFacade'
 export { ConfigFacade, Config } from './facades/global/ConfigFacade'

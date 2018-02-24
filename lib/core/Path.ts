@@ -1,5 +1,5 @@
 import { IAutoload, register } from 'najs-binding'
-import { Facade } from '../facades/Facade'
+import { Facade } from 'najs-facade'
 import { IPath } from './IPath'
 import { ConfigFacade } from '../facades/global/ConfigFacade'
 import { ConfigurationKeys, GlobalFacadeClass } from '../constants'

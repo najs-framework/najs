@@ -1,14 +1,13 @@
 import 'jest'
 import * as Sinon from 'sinon'
 import * as Redis from 'redis'
-import { Facade } from '../../lib/facades/Facade'
+import { Facade, FacadeContainer } from 'najs-facade'
 import { GlobalFacadeClass } from '../../lib/constants'
 import { RedisClient } from '../../lib/redis/RedisClient'
 import { ClassRegistry } from 'najs-binding'
 import { isPromise } from '../../lib/private/isPromise'
 import { ConfigurationKeys } from '../../lib/constants'
 import { ConfigFacade } from '../../lib/facades/global/ConfigFacade'
-import { FacadeContainer } from '../../lib/facades/FacadeContainer'
 
 describe('RedisClient', function() {
   let redisClient: RedisClient

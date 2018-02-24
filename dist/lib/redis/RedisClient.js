@@ -2,10 +2,10 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../constants");
-const Facade_1 = require("../facades/Facade");
+const najs_facade_1 = require("najs-facade");
 const ConfigFacade_1 = require("../facades/global/ConfigFacade");
 const Redis = require("redis");
-class RedisClient extends Facade_1.Facade {
+class RedisClient extends najs_facade_1.Facade {
     constructor() {
         super();
         this.bucket = {};

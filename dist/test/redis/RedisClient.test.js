@@ -3,21 +3,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
 const Redis = require("redis");
-const Facade_1 = require("../../lib/facades/Facade");
+const najs_facade_1 = require("najs-facade");
 const constants_1 = require("../../lib/constants");
 const RedisClient_1 = require("../../lib/redis/RedisClient");
 const najs_binding_1 = require("najs-binding");
 const isPromise_1 = require("../../lib/private/isPromise");
 const constants_2 = require("../../lib/constants");
 const ConfigFacade_1 = require("../../lib/facades/global/ConfigFacade");
-const FacadeContainer_1 = require("../../lib/facades/FacadeContainer");
 describe('RedisClient', function () {
     let redisClient;
     beforeAll(function () {
         redisClient = new RedisClient_1.RedisClient();
     });
     it('extends from Facade so it definitely a FacadeClass', function () {
-        expect(redisClient).toBeInstanceOf(Facade_1.Facade);
+        expect(redisClient).toBeInstanceOf(najs_facade_1.Facade);
         expect(redisClient.getClassName()).toEqual(constants_1.GlobalFacadeClass.Redis);
         expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Redis)).toBe(true);
     });
@@ -29,7 +28,7 @@ describe('RedisClient', function () {
             });
             const newRedisClient = new RedisClient_1.RedisClient();
             expect(newRedisClient.getCurrentClient()).toEqual('default');
-            FacadeContainer_1.FacadeContainer.verifyAndRestoreAllFacades();
+            najs_facade_1.FacadeContainer.verifyAndRestoreAllFacades();
         });
     });
     describe('.createClient()', function () {

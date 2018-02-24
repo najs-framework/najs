@@ -1,6 +1,6 @@
 import { IAutoload } from 'najs-binding';
 import { Controller } from '../controller/Controller';
-import { ContextualFacade } from '../../facades/ContextualFacade';
+import { ContextualFacade } from 'najs-facade';
 import { IRequestRetriever } from './IRequestRetriever';
 import { HttpMethod } from '../HttpMethod';
 export declare class RequestInput extends ContextualFacade<Controller> implements IRequestRetriever, IAutoload {

@@ -2,7 +2,7 @@ import 'jest'
 import * as Redis from 'redis'
 import { CacheFallback } from '../../lib/cache/ICache'
 import { RedisCache } from '../../lib/cache/RedisCache'
-import { Facade } from '../../lib/facades/Facade'
+import { Facade } from 'najs-facade'
 import { GlobalFacadeClass } from '../../lib/constants'
 import { ClassRegistry, make } from 'najs-binding'
 

@@ -5,7 +5,7 @@ import { Application } from './Application'
 import { make } from 'najs-binding'
 import { SystemClass } from '../constants'
 import { IHttpDriver, HttpDriverStartOptions } from '../http/driver/IHttpDriver'
-import { FacadeContainer } from '../facades/FacadeContainer'
+import { FacadeContainer } from 'najs-facade'
 import * as SystemPath from 'path'
 
 class NajsFramework extends FacadeContainer implements INajs {

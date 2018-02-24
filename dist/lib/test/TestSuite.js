@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const FacadeContainer_1 = require("./../facades/FacadeContainer");
+const najs_facade_1 = require("najs-facade");
 class TestSuite {
     setUp() { }
     tearDown() {
-        FacadeContainer_1.FacadeContainer.verifyAndRestoreAllFacades();
+        najs_facade_1.FacadeContainer.verifyAndRestoreAllFacades();
     }
 }
 exports.TestSuite = TestSuite;

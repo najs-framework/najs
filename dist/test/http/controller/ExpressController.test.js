@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const ExpressController_1 = require("../../../lib/http/controller/ExpressController");
-const ContextualFacade_1 = require("../../../lib/facades/ContextualFacade");
+const najs_facade_1 = require("najs-facade");
 describe('ExpressController', function () {
     describe('.constructor()', function () {
         it('should init body, params, and query from request', function () {
@@ -31,7 +31,7 @@ describe('ExpressController', function () {
                 method: 'get'
             };
             const expressController = Reflect.construct(ExpressController_1.ExpressController, [request, {}]);
-            expect(expressController.input).toBeInstanceOf(ContextualFacade_1.ContextualFacade);
+            expect(expressController.input).toBeInstanceOf(najs_facade_1.ContextualFacade);
             expect(expressController.input['context'] === expressController).toBe(true);
         });
     });

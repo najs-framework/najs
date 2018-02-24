@@ -1,6 +1,6 @@
 import { IAutoload, InstanceCreator, InstanceExtending } from 'najs-binding';
 import { IApplication } from './IApplication';
-import { Facade } from '../facades/Facade';
+import { Facade } from 'najs-facade';
 export declare class Application extends Facade implements IApplication, IAutoload {
     static className: string;
     getClassName(): string;

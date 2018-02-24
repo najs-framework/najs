@@ -1,5 +1,5 @@
 import { IAutoload } from 'najs-binding';
-import { Facade } from '../../facades/Facade';
+import { Facade } from 'najs-facade';
 import { RouteGrammarVerbChain, RouteGrammarGroupChain, RouteGrammarControlChain, RouteGrammarNameChain } from './interfaces/IRouteGrammars';
 import { IRouteGenerateUrl } from './interfaces/IRouteGenerateUrl';
 import { IMiddleware } from '../middleware/IMiddleware';

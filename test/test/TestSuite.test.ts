@@ -1,6 +1,6 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import { FacadeContainer } from '../../lib/facades/FacadeContainer'
+import { FacadeContainer } from 'najs-facade'
 import { TestSuite } from '../../lib/test/TestSuite'
 
 describe('TestSuite', function() {

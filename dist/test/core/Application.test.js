@@ -4,7 +4,7 @@ require("jest");
 const Sinon = require("sinon");
 const NajsBinding = require("najs-binding");
 const Application_1 = require("../../lib/core/Application");
-const Facade_1 = require("../../lib/facades/Facade");
+const najs_facade_1 = require("najs-facade");
 const constants_1 = require("../../lib/constants");
 const najs_binding_1 = require("najs-binding");
 class Test {
@@ -17,7 +17,7 @@ FakeHttpDriver.className = 'FakeHttpDriver';
 describe('Application', function () {
     it('extends from Facade so it definitely a FacadeClass', function () {
         const app = new Application_1.Application();
-        expect(app).toBeInstanceOf(Facade_1.Facade);
+        expect(app).toBeInstanceOf(najs_facade_1.Facade);
         expect(app.getClassName()).toEqual(constants_1.GlobalFacadeClass.Application);
         expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Application)).toBe(true);
     });

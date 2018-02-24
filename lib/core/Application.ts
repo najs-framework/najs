@@ -1,6 +1,6 @@
 import { make, register, bind, IAutoload, extend, InstanceCreator, InstanceExtending } from 'najs-binding'
 import { IApplication } from './IApplication'
-import { Facade } from '../facades/Facade'
+import { Facade } from 'najs-facade'
 import { GlobalFacadeClass } from '../constants'
 
 export class Application extends Facade implements IApplication, IAutoload {

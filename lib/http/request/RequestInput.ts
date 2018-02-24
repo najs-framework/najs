@@ -1,7 +1,7 @@
 import { IAutoload, register } from 'najs-binding'
 import { Controller } from '../controller/Controller'
 import { ExpressController } from '../controller/ExpressController'
-import { ContextualFacade } from '../../facades/ContextualFacade'
+import { ContextualFacade } from 'najs-facade'
 import { ContextualFacadeClass } from '../../constants'
 import { RequestData } from './RequestData'
 import { IRequestRetriever } from './IRequestRetriever'

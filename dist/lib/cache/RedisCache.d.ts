@@ -1,4 +1,4 @@
-import { Facade } from '../facades/Facade';
+import { Facade } from 'najs-facade';
 import { ICache, CacheFallback } from './ICache';
 import { IAutoload } from 'najs-binding';
 import * as Redis from 'redis';

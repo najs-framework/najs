@@ -4,13 +4,13 @@ require("jest");
 const Sinon = require("sinon");
 const NajsBinding = require("najs-binding");
 const EventDispatcher_1 = require("../../lib/event/EventDispatcher");
-const Facade_1 = require("../../lib/facades/Facade");
+const najs_facade_1 = require("najs-facade");
 const constants_1 = require("../../lib/constants");
 const najs_binding_1 = require("najs-binding");
 describe('EventDispatcher', function () {
     it('extends from Facade so it definitely a FacadeClass', function () {
         const dispatcher = new EventDispatcher_1.EventDispatcher();
-        expect(dispatcher).toBeInstanceOf(Facade_1.Facade);
+        expect(dispatcher).toBeInstanceOf(najs_facade_1.Facade);
         expect(dispatcher.getClassName()).toEqual(constants_1.GlobalFacadeClass.Event);
         expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Event)).toBe(true);
     });

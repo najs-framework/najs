@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const najs_binding_1 = require("najs-binding");
-const Facade_1 = require("../facades/Facade");
+const najs_facade_1 = require("najs-facade");
 const events_1 = require("events");
 const constants_1 = require("../constants");
-class EventDispatcher extends Facade_1.Facade {
+class EventDispatcher extends najs_facade_1.Facade {
     constructor() {
         super();
         this.eventEmitter = new events_1.EventEmitter();

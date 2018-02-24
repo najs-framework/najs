@@ -3,7 +3,7 @@ import * as SystemPath from 'path'
 import { ConfigFacade } from '../../lib/facades/global/ConfigFacade'
 import { Path } from '../../lib/core/Path'
 import { Najs } from '../../lib/core/Najs'
-import { Facade } from '../../lib/facades/Facade'
+import { Facade } from 'najs-facade'
 import { GlobalFacadeClass } from '../../lib/constants'
 import { ClassRegistry } from 'najs-binding'
 

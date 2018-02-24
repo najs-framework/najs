@@ -1,6 +1,5 @@
 import '../../../lib/http/response/ResponseFactory'
-import { Facade } from '../Facade'
-import { IFacade, IFacadeBase } from '../interfaces/IFacadeGrammar'
+import { Facade, IFacade, IFacadeBase } from 'najs-facade'
 import { IResponseFactory } from '../../../lib/http/response/IResponseFactory'
 import { Najs } from '../../../lib/core/Najs'
 import { make } from 'najs-binding'

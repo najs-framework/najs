@@ -1,6 +1,5 @@
 import '../../../lib/redis/RedisClient'
-import { Facade } from '../Facade'
-import { IFacade, IFacadeBase } from '../interfaces/IFacadeGrammar'
+import { Facade, IFacade, IFacadeBase } from 'najs-facade'
 import { IRedis } from '../../../lib/redis/IRedis'
 import { Najs } from '../../../lib/core/Najs'
 import { make } from 'najs-binding'

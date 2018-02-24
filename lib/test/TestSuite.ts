@@ -1,4 +1,4 @@
-import { FacadeContainer } from './../facades/FacadeContainer'
+import { FacadeContainer } from 'najs-facade'
 export class TestSuite {
   setUp() {}
 

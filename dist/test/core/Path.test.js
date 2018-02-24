@@ -5,13 +5,13 @@ const SystemPath = require("path");
 const ConfigFacade_1 = require("../../lib/facades/global/ConfigFacade");
 const Path_1 = require("../../lib/core/Path");
 const Najs_1 = require("../../lib/core/Najs");
-const Facade_1 = require("../../lib/facades/Facade");
+const najs_facade_1 = require("najs-facade");
 const constants_1 = require("../../lib/constants");
 const najs_binding_1 = require("najs-binding");
 describe('Path', function () {
     it('extends from Facade so it definitely a FacadeClass', function () {
         const path = new Path_1.Path();
-        expect(path).toBeInstanceOf(Facade_1.Facade);
+        expect(path).toBeInstanceOf(najs_facade_1.Facade);
         expect(path.getClassName()).toEqual(constants_1.GlobalFacadeClass.Path);
         expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Path)).toBe(true);
     });

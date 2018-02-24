@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
-const Facade_1 = require("../facades/Facade");
+const najs_facade_1 = require("najs-facade");
 const ConfigLib = require("config");
 const najs_binding_1 = require("najs-binding");
-class Config extends Facade_1.Facade {
+class Config extends najs_facade_1.Facade {
     constructor() {
         super(...arguments);
         this.config = ConfigLib;

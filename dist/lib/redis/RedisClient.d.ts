@@ -1,6 +1,6 @@
 import { IAutoload } from 'najs-binding';
 import { IRedis } from './IRedis';
-import { Facade } from '../facades/Facade';
+import { Facade } from 'najs-facade';
 import * as Redis from 'redis';
 export declare class RedisClient extends Facade implements IRedis, IAutoload {
     static className: string;
