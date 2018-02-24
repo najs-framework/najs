@@ -1,5 +1,6 @@
 import { IAutoload } from 'najs-binding'
-import { IRequestRetriever } from '../request/IRequestRetriever'
+import { IRequestDataReader } from '../request/IRequestDataReader'
+import { ISession } from '../session/ISession'
 import { IncomingMessage, ServerResponse } from 'http'
 
 export abstract class Controller<
@@ -8,7 +9,8 @@ export abstract class Controller<
 > implements IAutoload {
   public request: Request
   public response: Response
-  public input: IRequestRetriever
+  public input: IRequestDataReader
+  public session: ISession
 
   public constructor(request: Request, response: Response) {
     this.request = request

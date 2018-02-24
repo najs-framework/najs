@@ -1,5 +1,6 @@
 /// <reference types="express" />
 /// <reference types="node" />
+import '../session/ExpressSessionMemoryStore';
 import { HttpKernel } from './../HttpKernel';
 import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver';
 import { IAutoload } from 'najs-binding';
@@ -21,6 +22,7 @@ export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
     protected setup(): ExpressApp;
     protected setupBodyParser(app: ExpressApp): void;
     protected setupCookieParser(app: ExpressApp): void;
+    protected setupSession(app: ExpressApp): void;
     protected setupViewEngine(app: ExpressApp): void;
     protected setupStaticAssets(app: ExpressApp): void;
     getClassName(): string;

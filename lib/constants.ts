@@ -2,11 +2,13 @@ export const SchemaValidatorClass: string = 'SchemaValidator'
 
 export const SystemClass = {
   HttpKernel: 'Najs.HttpKernel',
-  HttpDriver: 'Najs.HttpDriver'
+  HttpDriver: 'Najs.HttpDriver',
+  ExpressSessionStore: 'Najs.ExpressSessionStore'
 }
 
 export const ContextualFacadeClass = {
-  Input: 'Najs.ExpressInput'
+  Input: 'Najs.RequestInput',
+  Session: 'Najs.Session'
 }
 
 export const ResponseTypeClass = {
@@ -37,6 +39,7 @@ export const ConfigurationKeys = {
   Host: 'host',
   ViewEngineName: 'view.engine',
   HandlerBarsOptions: 'view.handlebars',
+  Session: 'session',
   Redis: 'redis',
   Mongoose: 'mongoose.uri',
   MongooseOptions: 'mongoose.options',

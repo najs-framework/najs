@@ -2,7 +2,7 @@ import 'jest'
 import * as Sinon from 'sinon'
 import { Controller } from '../../../lib/http/controller/Controller'
 import { ExpressController } from '../../../lib/http/controller/ExpressController'
-import { RequestData } from '../../../lib/http/request/RequestData'
+import { RequestDataReader } from '../../../lib/http/request/RequestDataReader'
 import { RequestInput } from '../../../lib/http/request/RequestInput'
 import { ContextualFacadeClass } from '../../../lib/constants'
 
@@ -104,58 +104,69 @@ describe('ExpressInput', function() {
   })
 
   describe('.get()', function() {
-    it('calls implementation of RequestData.get()', function() {
-      const requestDataSpy = Sinon.spy(<any>RequestData.prototype.get, 'apply')
+    it('calls implementation of RequestDataReader.get()', function() {
+      const requestDataReaderSpy = Sinon.spy(<any>RequestDataReader.prototype.get, 'apply')
       const input = new RequestInput(<any>{ request: { method: 'get' } })
       input.get('test')
-      expect(requestDataSpy.calledWith(input)).toBe(true)
-      expect(Array.from(requestDataSpy.firstCall.args[1])).toEqual(['test'])
-      requestDataSpy.restore()
+      expect(requestDataReaderSpy.calledWith(input)).toBe(true)
+      expect(Array.from(requestDataReaderSpy.firstCall.args[1])).toEqual(['test'])
+      requestDataReaderSpy.restore()
     })
   })
 
   describe('.has()', function() {
-    it('calls implementation of RequestData.has()', function() {
-      const requestDataSpy = Sinon.spy(<any>RequestData.prototype.has, 'apply')
+    it('calls implementation of RequestDataReader.has()', function() {
+      const requestDataReaderSpy = Sinon.spy(<any>RequestDataReader.prototype.has, 'apply')
       const input = new RequestInput(<any>{ request: { method: 'get' } })
       input.has('test')
-      expect(requestDataSpy.calledWith(input)).toBe(true)
-      expect(Array.from(requestDataSpy.firstCall.args[1])).toEqual(['test'])
-      requestDataSpy.restore()
+      expect(requestDataReaderSpy.calledWith(input)).toBe(true)
+      expect(Array.from(requestDataReaderSpy.firstCall.args[1])).toEqual(['test'])
+      requestDataReaderSpy.restore()
+    })
+  })
+
+  describe('.exists()', function() {
+    it('calls implementation of RequestDataReader.exists()', function() {
+      const requestDataReaderSpy = Sinon.spy(<any>RequestDataReader.prototype.exists, 'apply')
+      const input = new RequestInput(<any>{ request: { method: 'get' } })
+      input.exists('test')
+      expect(requestDataReaderSpy.calledWith(input)).toBe(true)
+      expect(Array.from(requestDataReaderSpy.firstCall.args[1])).toEqual(['test'])
+      requestDataReaderSpy.restore()
     })
   })
 
   describe('.all()', function() {
-    it('calls implementation of RequestData.all()', function() {
-      const requestDataSpy = Sinon.spy(<any>RequestData.prototype.all, 'apply')
+    it('calls implementation of RequestDataReader.all()', function() {
+      const requestDataReaderSpy = Sinon.spy(<any>RequestDataReader.prototype.all, 'apply')
       const input = new RequestInput(<any>{ request: { method: 'get' } })
       input.all()
       expect(input.all() === input['data']).toBe(true)
-      expect(requestDataSpy.calledWith(input)).toBe(true)
-      expect(Array.from(requestDataSpy.firstCall.args[1])).toEqual([])
-      requestDataSpy.restore()
+      expect(requestDataReaderSpy.calledWith(input)).toBe(true)
+      expect(Array.from(requestDataReaderSpy.firstCall.args[1])).toEqual([])
+      requestDataReaderSpy.restore()
     })
   })
 
   describe('.only()', function() {
-    it('calls implementation of RequestData.all()', function() {
-      const requestDataSpy = Sinon.spy(<any>RequestData.prototype.only, 'apply')
+    it('calls implementation of RequestDataReader.only()', function() {
+      const requestDataReaderSpy = Sinon.spy(<any>RequestDataReader.prototype.only, 'apply')
       const input = new RequestInput(<any>{ request: { method: 'get' } })
       input.only('a', 'b', ['c', 'd'], 'e')
-      expect(requestDataSpy.calledWith(input)).toBe(true)
-      expect(Array.from(requestDataSpy.firstCall.args[1])).toEqual(['a', 'b', ['c', 'd'], 'e'])
-      requestDataSpy.restore()
+      expect(requestDataReaderSpy.calledWith(input)).toBe(true)
+      expect(Array.from(requestDataReaderSpy.firstCall.args[1])).toEqual(['a', 'b', ['c', 'd'], 'e'])
+      requestDataReaderSpy.restore()
     })
   })
 
   describe('.except()', function() {
-    it('calls implementation of RequestData.all()', function() {
-      const requestDataSpy = Sinon.spy(<any>RequestData.prototype.except, 'apply')
+    it('calls implementation of RequestDataReader.except()', function() {
+      const requestDataReaderSpy = Sinon.spy(<any>RequestDataReader.prototype.except, 'apply')
       const input = new RequestInput(<any>{ request: { method: 'get' } })
       input.except('a', 'b', ['c', 'd'], 'e')
-      expect(requestDataSpy.calledWith(input)).toBe(true)
-      expect(Array.from(requestDataSpy.firstCall.args[1])).toEqual(['a', 'b', ['c', 'd'], 'e'])
-      requestDataSpy.restore()
+      expect(requestDataReaderSpy.calledWith(input)).toBe(true)
+      expect(Array.from(requestDataReaderSpy.firstCall.args[1])).toEqual(['a', 'b', ['c', 'd'], 'e'])
+      requestDataReaderSpy.restore()
     })
 
     it('proves that functionality of RequestData is re-used', function() {

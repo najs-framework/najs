@@ -1,10 +1,11 @@
-import { IRequestRetriever } from './IRequestRetriever';
-export declare class RequestData implements IRequestRetriever {
+import { IRequestDataReader } from './IRequestDataReader';
+export declare class RequestDataReader implements IRequestDataReader {
     protected data: Object;
     constructor(data: Object);
     get<T extends any>(path: string): T;
     get<T extends any>(path: string, defaultValue: T): T;
     has(path: string): boolean;
+    exists(path: string): boolean;
     all(): Object;
     only(path: string): Object;
     only(paths: string[]): Object;

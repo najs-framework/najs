@@ -4,7 +4,7 @@ require("jest");
 const Sinon = require("sinon");
 const Controller_1 = require("../../../lib/http/controller/Controller");
 const ExpressController_1 = require("../../../lib/http/controller/ExpressController");
-const RequestData_1 = require("../../../lib/http/request/RequestData");
+const RequestDataReader_1 = require("../../../lib/http/request/RequestDataReader");
 const RequestInput_1 = require("../../../lib/http/request/RequestInput");
 const constants_1 = require("../../../lib/constants");
 describe('ExpressInput', function () {
@@ -92,54 +92,64 @@ describe('ExpressInput', function () {
         });
     });
     describe('.get()', function () {
-        it('calls implementation of RequestData.get()', function () {
-            const requestDataSpy = Sinon.spy(RequestData_1.RequestData.prototype.get, 'apply');
+        it('calls implementation of RequestDataReader.get()', function () {
+            const requestDataReaderSpy = Sinon.spy(RequestDataReader_1.RequestDataReader.prototype.get, 'apply');
             const input = new RequestInput_1.RequestInput({ request: { method: 'get' } });
             input.get('test');
-            expect(requestDataSpy.calledWith(input)).toBe(true);
-            expect(Array.from(requestDataSpy.firstCall.args[1])).toEqual(['test']);
-            requestDataSpy.restore();
+            expect(requestDataReaderSpy.calledWith(input)).toBe(true);
+            expect(Array.from(requestDataReaderSpy.firstCall.args[1])).toEqual(['test']);
+            requestDataReaderSpy.restore();
         });
     });
     describe('.has()', function () {
-        it('calls implementation of RequestData.has()', function () {
-            const requestDataSpy = Sinon.spy(RequestData_1.RequestData.prototype.has, 'apply');
+        it('calls implementation of RequestDataReader.has()', function () {
+            const requestDataReaderSpy = Sinon.spy(RequestDataReader_1.RequestDataReader.prototype.has, 'apply');
             const input = new RequestInput_1.RequestInput({ request: { method: 'get' } });
             input.has('test');
-            expect(requestDataSpy.calledWith(input)).toBe(true);
-            expect(Array.from(requestDataSpy.firstCall.args[1])).toEqual(['test']);
-            requestDataSpy.restore();
+            expect(requestDataReaderSpy.calledWith(input)).toBe(true);
+            expect(Array.from(requestDataReaderSpy.firstCall.args[1])).toEqual(['test']);
+            requestDataReaderSpy.restore();
+        });
+    });
+    describe('.exists()', function () {
+        it('calls implementation of RequestDataReader.exists()', function () {
+            const requestDataReaderSpy = Sinon.spy(RequestDataReader_1.RequestDataReader.prototype.exists, 'apply');
+            const input = new RequestInput_1.RequestInput({ request: { method: 'get' } });
+            input.exists('test');
+            expect(requestDataReaderSpy.calledWith(input)).toBe(true);
+            expect(Array.from(requestDataReaderSpy.firstCall.args[1])).toEqual(['test']);
+            requestDataReaderSpy.restore();
         });
     });
     describe('.all()', function () {
-        it('calls implementation of RequestData.all()', function () {
-            const requestDataSpy = Sinon.spy(RequestData_1.RequestData.prototype.all, 'apply');
+        it('calls implementation of RequestDataReader.all()', function () {
+            const requestDataReaderSpy = Sinon.spy(RequestDataReader_1.RequestDataReader.prototype.all, 'apply');
             const input = new RequestInput_1.RequestInput({ request: { method: 'get' } });
             input.all();
             expect(input.all() === input['data']).toBe(true);
-            expect(requestDataSpy.calledWith(input)).toBe(true);
-            expect(Array.from(requestDataSpy.firstCall.args[1])).toEqual([]);
-            requestDataSpy.restore();
+            expect(requestDataReaderSpy.calledWith(input)).toBe(true);
+            expect(Array.from(requestDataReaderSpy.firstCall.args[1])).toEqual([]);
+            requestDataReaderSpy.restore();
         });
     });
     describe('.only()', function () {
-        it('calls implementation of RequestData.all()', function () {
-            const requestDataSpy = Sinon.spy(RequestData_1.RequestData.prototype.only, 'apply');
+        it('calls implementation of RequestDataReader.only()', function () {
+            const requestDataReaderSpy = Sinon.spy(RequestDataReader_1.RequestDataReader.prototype.only, 'apply');
             const input = new RequestInput_1.RequestInput({ request: { method: 'get' } });
             input.only('a', 'b', ['c', 'd'], 'e');
-            expect(requestDataSpy.calledWith(input)).toBe(true);
-            expect(Array.from(requestDataSpy.firstCall.args[1])).toEqual(['a', 'b', ['c', 'd'], 'e']);
-            requestDataSpy.restore();
+            expect(requestDataReaderSpy.calledWith(input)).toBe(true);
+            expect(Array.from(requestDataReaderSpy.firstCall.args[1])).toEqual(['a', 'b', ['c', 'd'], 'e']);
+            requestDataReaderSpy.restore();
         });
     });
     describe('.except()', function () {
-        it('calls implementation of RequestData.all()', function () {
-            const requestDataSpy = Sinon.spy(RequestData_1.RequestData.prototype.except, 'apply');
+        it('calls implementation of RequestDataReader.except()', function () {
+            const requestDataReaderSpy = Sinon.spy(RequestDataReader_1.RequestDataReader.prototype.except, 'apply');
             const input = new RequestInput_1.RequestInput({ request: { method: 'get' } });
             input.except('a', 'b', ['c', 'd'], 'e');
-            expect(requestDataSpy.calledWith(input)).toBe(true);
-            expect(Array.from(requestDataSpy.firstCall.args[1])).toEqual(['a', 'b', ['c', 'd'], 'e']);
-            requestDataSpy.restore();
+            expect(requestDataReaderSpy.calledWith(input)).toBe(true);
+            expect(Array.from(requestDataReaderSpy.firstCall.args[1])).toEqual(['a', 'b', ['c', 'd'], 'e']);
+            requestDataReaderSpy.restore();
         });
         it('proves that functionality of RequestData is re-used', function () {
             const input = new RequestInput_1.RequestInput({ request: { method: 'get' } });

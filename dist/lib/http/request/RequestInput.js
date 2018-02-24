@@ -4,7 +4,7 @@ const najs_binding_1 = require("najs-binding");
 const ExpressController_1 = require("../controller/ExpressController");
 const najs_facade_1 = require("najs-facade");
 const constants_1 = require("../../constants");
-const RequestData_1 = require("./RequestData");
+const RequestDataReader_1 = require("./RequestDataReader");
 const HttpMethod_1 = require("../HttpMethod");
 class RequestInput extends najs_facade_1.ContextualFacade {
     constructor(controller) {
@@ -36,19 +36,22 @@ class RequestInput extends najs_facade_1.ContextualFacade {
         }
     }
     get(name, defaultValue) {
-        return RequestData_1.RequestData.prototype.get.apply(this, arguments);
+        return RequestDataReader_1.RequestDataReader.prototype.get.apply(this, arguments);
     }
     has(name) {
-        return RequestData_1.RequestData.prototype.has.apply(this, arguments);
+        return RequestDataReader_1.RequestDataReader.prototype.has.apply(this, arguments);
+    }
+    exists(name) {
+        return RequestDataReader_1.RequestDataReader.prototype.exists.apply(this, arguments);
     }
     all() {
-        return RequestData_1.RequestData.prototype.all.apply(this, arguments);
+        return RequestDataReader_1.RequestDataReader.prototype.all.apply(this, arguments);
     }
     only(...args) {
-        return RequestData_1.RequestData.prototype.only.apply(this, arguments);
+        return RequestDataReader_1.RequestDataReader.prototype.only.apply(this, arguments);
     }
     except(...args) {
-        return RequestData_1.RequestData.prototype.except.apply(this, arguments);
+        return RequestDataReader_1.RequestDataReader.prototype.except.apply(this, arguments);
     }
 }
 exports.RequestInput = RequestInput;

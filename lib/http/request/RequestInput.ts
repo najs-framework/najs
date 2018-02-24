@@ -3,12 +3,12 @@ import { Controller } from '../controller/Controller'
 import { ExpressController } from '../controller/ExpressController'
 import { ContextualFacade } from 'najs-facade'
 import { ContextualFacadeClass } from '../../constants'
-import { RequestData } from './RequestData'
-import { IRequestRetriever } from './IRequestRetriever'
+import { RequestDataReader } from './RequestDataReader'
+import { IRequestDataReader } from './IRequestDataReader'
 import { HttpMethod } from '../HttpMethod'
 import * as Express from 'express'
 
-export class RequestInput extends ContextualFacade<Controller> implements IRequestRetriever, IAutoload {
+export class RequestInput extends ContextualFacade<Controller> implements IRequestDataReader, IAutoload {
   protected data: Object
   readonly method: HttpMethod
 
@@ -45,32 +45,38 @@ export class RequestInput extends ContextualFacade<Controller> implements IReque
     }
   }
 
+  // -------------------------------------------------------------------------------------------------------------------
+
   get<T extends any>(name: string): T
   get<T extends any>(name: string, defaultValue: T): T
   get<T extends any>(name: string, defaultValue?: T): T {
-    return RequestData.prototype.get.apply(this, arguments)
+    return RequestDataReader.prototype.get.apply(this, arguments)
   }
 
   has(name: string): boolean {
-    return RequestData.prototype.has.apply(this, arguments)
+    return RequestDataReader.prototype.has.apply(this, arguments)
+  }
+
+  exists(name: string): boolean {
+    return RequestDataReader.prototype.exists.apply(this, arguments)
   }
 
   all(): Object {
-    return RequestData.prototype.all.apply(this, arguments)
+    return RequestDataReader.prototype.all.apply(this, arguments)
   }
 
   only(name: string): Object
   only(names: string[]): Object
   only(...args: Array<string | string[]>): Object
   only(...args: Array<string | string[]>): Object {
-    return RequestData.prototype.only.apply(this, arguments)
+    return RequestDataReader.prototype.only.apply(this, arguments)
   }
 
   except(name: string): Object
   except(names: string[]): Object
   except(...args: Array<string | string[]>): Object
   except(...args: Array<string | string[]>): Object {
-    return RequestData.prototype.except.apply(this, arguments)
+    return RequestDataReader.prototype.except.apply(this, arguments)
   }
 }
 register(RequestInput)

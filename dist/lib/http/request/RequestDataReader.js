@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const lodash_1 = require("lodash");
-class RequestData {
+class RequestDataReader {
     constructor(data) {
         this.data = data;
     }
@@ -9,6 +9,9 @@ class RequestData {
         return lodash_1.get(this.data, path, defaultValue);
     }
     has(path) {
+        return lodash_1.has(this.data, path) && !!lodash_1.get(this.data, path);
+    }
+    exists(path) {
         return lodash_1.has(this.data, path);
     }
     all() {
@@ -29,4 +32,4 @@ class RequestData {
         }, Object.assign({}, this.data));
     }
 }
-exports.RequestData = RequestData;
+exports.RequestDataReader = RequestDataReader;

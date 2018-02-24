@@ -42,9 +42,15 @@ export { BackResponse } from './http/response/types/BackResponse'
 export { JsonResponse } from './http/response/types/JsonResponse'
 export { JsonpResponse } from './http/response/types/JsonpResponse'
 
-export { IRequestRetriever } from './http/request/IRequestRetriever'
+export { IRequestDataReader } from './http/request/IRequestDataReader'
+export { IRequestDataWriter } from './http/request/IRequestDataWriter'
 export { RequestInput } from './http/request/RequestInput'
-export { RequestData } from './http/request/RequestData'
+export { RequestDataReader } from './http/request/RequestDataReader'
+export { RequestDataWriter } from './http/request/RequestDataWriter'
+
+export { ISession } from './http/session/ISession'
+export { Session } from './http/session/Session'
+export { ExpressSessionMemoryStore } from './http/session/ExpressSessionMemoryStore'
 
 export { IMiddleware } from './http/middleware/IMiddleware'
 export { IExpressMiddleware } from './http/middleware/IExpressMiddleware'

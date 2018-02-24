@@ -2,9 +2,11 @@ export declare const SchemaValidatorClass: string;
 export declare const SystemClass: {
     HttpKernel: string;
     HttpDriver: string;
+    ExpressSessionStore: string;
 };
 export declare const ContextualFacadeClass: {
     Input: string;
+    Session: string;
 };
 export declare const ResponseTypeClass: {
     Back: string;
@@ -32,6 +34,7 @@ export declare const ConfigurationKeys: {
     Host: string;
     ViewEngineName: string;
     HandlerBarsOptions: string;
+    Session: string;
     Redis: string;
     Mongoose: string;
     MongooseOptions: string;

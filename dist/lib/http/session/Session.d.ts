@@ -1,14 +1,12 @@
 import { IAutoload } from 'najs-binding';
-import { Controller } from '../controller/Controller';
 import { ContextualFacade } from 'najs-facade';
-import { IRequestDataReader } from './IRequestDataReader';
-import { HttpMethod } from '../HttpMethod';
-export declare class RequestInput extends ContextualFacade<Controller> implements IRequestDataReader, IAutoload {
+import { Controller } from '../controller/Controller';
+import { ISession } from './ISession';
+export declare class Session extends ContextualFacade<Controller> implements ISession, IAutoload {
     protected data: Object;
-    readonly method: HttpMethod;
     constructor(controller: Controller);
     getClassName(): string;
-    protected createInputFromExpressController(): void;
+    clear(): this;
     get<T extends any>(name: string): T;
     get<T extends any>(name: string, defaultValue: T): T;
     has(name: string): boolean;
@@ -20,4 +18,13 @@ export declare class RequestInput extends ContextualFacade<Controller> implement
     except(name: string): Object;
     except(names: string[]): Object;
     except(...args: Array<string | string[]>): Object;
+    set<T extends any>(path: string, value: T): this;
+    put<T extends any>(path: string, value: T): this;
+    push<T extends any>(path: string, value: T): this;
+    pull<T extends any>(path: string): T;
+    pull<T extends any>(path: string, defaultValue: T): T;
+    delete(path: string): this;
+    remove(path: string): this;
+    forget(path: string): this;
+    flush(): this;
 }

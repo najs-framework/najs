@@ -3,10 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SchemaValidatorClass = 'SchemaValidator';
 exports.SystemClass = {
     HttpKernel: 'Najs.HttpKernel',
-    HttpDriver: 'Najs.HttpDriver'
+    HttpDriver: 'Najs.HttpDriver',
+    ExpressSessionStore: 'Najs.ExpressSessionStore'
 };
 exports.ContextualFacadeClass = {
-    Input: 'Najs.ExpressInput'
+    Input: 'Najs.RequestInput',
+    Session: 'Najs.Session'
 };
 exports.ResponseTypeClass = {
     Back: 'Najs.BackResponse',
@@ -34,6 +36,7 @@ exports.ConfigurationKeys = {
     Host: 'host',
     ViewEngineName: 'view.engine',
     HandlerBarsOptions: 'view.handlebars',
+    Session: 'session',
     Redis: 'redis',
     Mongoose: 'mongoose.uri',
     MongooseOptions: 'mongoose.options',

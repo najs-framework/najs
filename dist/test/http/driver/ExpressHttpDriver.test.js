@@ -565,6 +565,11 @@ describe('ExpressHttpDriver', function () {
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
             expect(setupBodyParser.calledWith(driver['express'])).toBe(true);
         });
+        it('calls .setupSession()', function () {
+            const setupSession = Sinon.spy(ExpressHttpDriver_1.ExpressHttpDriver.prototype, 'setupSession');
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            expect(setupSession.calledWith(driver['express'])).toBe(true);
+        });
         it('calls .setupCookieParser()', function () {
             const setupCookieParser = Sinon.spy(ExpressHttpDriver_1.ExpressHttpDriver.prototype, 'setupCookieParser');
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();

@@ -1,7 +1,7 @@
-import { IRequestRetriever } from './IRequestRetriever'
+import { IRequestDataReader } from './IRequestDataReader'
 import { get, set, unset, has, flatten } from 'lodash'
 
-export class RequestData implements IRequestRetriever {
+export class RequestDataReader implements IRequestDataReader {
   protected data: Object
 
   constructor(data: Object) {
@@ -15,6 +15,10 @@ export class RequestData implements IRequestRetriever {
   }
 
   has(path: string): boolean {
+    return has(this.data, path) && !!get(this.data, path)
+  }
+
+  exists(path: string): boolean {
     return has(this.data, path)
   }
 
