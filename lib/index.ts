@@ -49,7 +49,7 @@ export { RequestDataReader } from './http/request/RequestDataReader'
 export { RequestDataWriter } from './http/request/RequestDataWriter'
 
 export { ISession } from './http/session/ISession'
-export { Session } from './http/session/Session'
+export { Session as NajsSession } from './http/session/Session'
 export { ExpressSessionMemoryStore } from './http/session/ExpressSessionMemoryStore'
 
 export { IMiddleware } from './http/middleware/IMiddleware'
@@ -86,7 +86,9 @@ export { PathFacade, Path } from './facades/global/PathFacade'
 export { RedisFacade, Redis } from './facades/global/RedisFacade'
 export { ResponseFacade, Response } from './facades/global/ResponseFacade'
 export { RouteFacade, Route } from './facades/global/RouteFacade'
+
 export { InputContextualFacade, Input } from './facades/contextual/InputContextualFacade'
+export { SessionContextualFacade, Session } from './facades/contextual/SessionContextualFacade'
 
 // event package
 export { IEventEmitter } from './event/IEventEmitter'
