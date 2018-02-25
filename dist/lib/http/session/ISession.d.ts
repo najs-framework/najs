@@ -1,9 +1,40 @@
 import { IRequestDataReader } from '../request/IRequestDataReader';
 import { IRequestDataWriter } from '../request/IRequestDataWriter';
+export declare type FlashRegistry = {
+    reflash: boolean;
+    keep: string[];
+    flash: string[];
+};
 export interface ISession extends IRequestDataReader, IRequestDataWriter {
-}
-export interface ISessionFunctions {
-    regenerate(): string;
-    flash(): this;
-    keep(): this;
+    /**
+     * regenerates the session ID
+     */
+    regenerate(): Promise<any>;
+    /**
+     * store value in the session, it's automatically deleted when it is get back.
+     * It's useful for short-lived status messages
+     *
+     * @param {string} path
+     * @param {mixed} value
+     */
+    flash(path: string, value: any): this;
+    /**
+     * re-flashes all flash values, do not delete when it is get back
+     */
+    reflash(): this;
+    /**
+     * keeps specific flash value, do not delete when it is get back
+     * @param {string} path
+     */
+    keep(path: string): this;
+    /**
+     * keeps specific flash values, do not delete when they are get back
+     * @param {string} path
+     */
+    keep(paths: string[]): this;
+    /**
+     * keeps specific flash values, do not delete when they are get back
+     * @param {string} path
+     */
+    keep(...args: Array<string | string[]>): this;
 }
