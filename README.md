@@ -145,7 +145,9 @@ II. Model [Released] - It's developed and released in separate package [Najs Elo
 
 III. Routing [Released] - I'm going to use `express` as a routing framework
 
-IV. Controller & Endpoint [In Progress]
+IV. Controller & Endpoint [Released]
+
+V. Session & Cookie [In Progress]
 
 ## Contribute
 
