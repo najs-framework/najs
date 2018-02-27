@@ -15,7 +15,8 @@ exports.ResponseTypeClass = {
     Json: 'Najs.JsonResponse',
     Jsonp: 'Najs.JsonpResponse',
     Redirect: 'Najs.RedirectResponse',
-    View: 'Najs.ViewResponse'
+    View: 'Najs.ViewResponse',
+    HandlebarsView: 'Najs.HandlebarsViewResponse'
 };
 exports.GlobalFacadeClass = {
     Application: 'Najs.Application',

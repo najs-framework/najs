@@ -8,14 +8,20 @@ class HandlebarsHelper {
     isBlockHelper() {
         return typeof this.options.fn === 'function';
     }
-    static create(name, controller, helper) {
-        return {
-            [name]: function () {
-                const options = arguments[arguments.length - 1];
-                const instance = Reflect.construct(helper, [this, controller]);
-                instance.options = options;
-                return instance.run.apply(instance, arguments);
-            }
+    static createInstanceLevelHelper(controller, helper) {
+        return function () {
+            const options = arguments[arguments.length - 1];
+            const instance = Reflect.construct(helper, [this, controller]);
+            instance.options = options;
+            return instance.run.apply(instance, arguments);
+        };
+    }
+    static createGlobalHelper(helper) {
+        return function () {
+            const options = arguments[arguments.length - 1];
+            const instance = Reflect.construct(helper, [this]);
+            instance.options = options;
+            return instance.run.apply(instance, arguments);
         };
     }
 }

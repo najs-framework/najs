@@ -3,6 +3,7 @@ import { ResponseTypeClass } from '../../../constants'
 import { IView } from './IViewGrammars'
 import { IResponse } from '../IResponse'
 import { IHttpDriver } from '../../driver/IHttpDriver'
+import { set } from 'lodash'
 
 export class ViewResponse<T extends Object = {}> implements IResponse, IAutoload, IView {
   static className: string = ResponseTypeClass.View
@@ -25,7 +26,7 @@ export class ViewResponse<T extends Object = {}> implements IResponse, IAutoload
   }
 
   with(name: string, value: any): this {
-    this.variables[name] = value
+    set(this.variables, name, value)
     return this
   }
 

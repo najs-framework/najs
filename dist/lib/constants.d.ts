@@ -14,6 +14,7 @@ export declare const ResponseTypeClass: {
     Jsonp: string;
     Redirect: string;
     View: string;
+    HandlebarsView: string;
 };
 export declare const GlobalFacadeClass: {
     Application: string;

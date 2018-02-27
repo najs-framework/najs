@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../../../constants");
+const lodash_1 = require("lodash");
 class ViewResponse {
     constructor(view, variables) {
         this.view = view;
@@ -14,7 +15,7 @@ class ViewResponse {
         return driver.respondView(response, this.view, this.variables);
     }
     with(name, value) {
-        this.variables[name] = value;
+        lodash_1.set(this.variables, name, value);
         return this;
     }
     getVariables() {
