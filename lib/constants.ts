@@ -39,7 +39,7 @@ export const ConfigurationKeys = {
   Port: 'port',
   Host: 'host',
   ViewEngineName: 'view.engine',
-  HandlerBarsOptions: 'view.handlebars',
+  HandlebarsOptions: 'view.handlebars',
   Session: 'session',
   Redis: 'redis',
   Mongoose: 'mongoose.uri',

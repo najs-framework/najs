@@ -131,7 +131,8 @@ exports.route = route_1.route;
 // view package
 var HandlebarsHelper_1 = require("./view/handlebars/HandlebarsHelper");
 exports.HandlebarsHelper = HandlebarsHelper_1.HandlebarsHelper;
-// export { HandlebarsViewResponse } from './view/handlebars/HandlebarsViewResponse'
+var HandlebarsViewResponse_1 = require("./view/handlebars/HandlebarsViewResponse");
+exports.HandlebarsViewResponse = HandlebarsViewResponse_1.HandlebarsViewResponse;
 // internal service providers
 var ExpressHttpDriverServiceProvider_1 = require("./service-providers/ExpressHttpDriverServiceProvider");
 exports.ExpressHttpDriverServiceProvider = ExpressHttpDriverServiceProvider_1.ExpressHttpDriverServiceProvider;

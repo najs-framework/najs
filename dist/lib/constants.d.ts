@@ -34,7 +34,7 @@ export declare const ConfigurationKeys: {
     Port: string;
     Host: string;
     ViewEngineName: string;
-    HandlerBarsOptions: string;
+    HandlebarsOptions: string;
     Session: string;
     Redis: string;
     Mongoose: string;

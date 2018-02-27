@@ -18,7 +18,7 @@ const Http = require("http");
 const BodyParser = require("body-parser");
 const CookieParser = require("cookie-parser");
 const Session = require("express-session");
-const ExpressHandlerBars = require("express-handlebars");
+const ExpressHandlebars = require("express-handlebars");
 const addRequestIdMiddleware = require('express-request-id')();
 class ExpressHttpDriver {
     constructor() {
@@ -64,7 +64,7 @@ class ExpressHttpDriver {
     }
     setupViewEngine(app) {
         const viewEngine = ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.ViewEngineName, 'hbs');
-        app.engine(viewEngine, ExpressHandlerBars(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.HandlerBarsOptions, {
+        app.engine(viewEngine, ExpressHandlebars(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.HandlebarsOptions, {
             layoutsDir: PathFacade_1.PathFacade.layout(),
             extname: '.hbs',
             defaultLayout: 'default'

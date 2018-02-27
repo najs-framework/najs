@@ -20,7 +20,7 @@ import * as Http from 'http'
 import * as BodyParser from 'body-parser'
 import * as CookieParser from 'cookie-parser'
 import * as Session from 'express-session'
-import * as ExpressHandlerBars from 'express-handlebars'
+import * as ExpressHandlebars from 'express-handlebars'
 
 const addRequestIdMiddleware = require('express-request-id')()
 
@@ -121,8 +121,8 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     const viewEngine: string = ConfigFacade.get(ConfigurationKeys.ViewEngineName, 'hbs')
     app.engine(
       viewEngine,
-      ExpressHandlerBars(
-        ConfigFacade.get(ConfigurationKeys.HandlerBarsOptions, {
+      ExpressHandlebars(
+        ConfigFacade.get(ConfigurationKeys.HandlebarsOptions, {
           layoutsDir: PathFacade.layout(),
           extname: '.hbs',
           defaultLayout: 'default'

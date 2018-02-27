@@ -6,7 +6,7 @@ class TestHelper extends HandlebarsHelper {
   run() {}
 }
 
-describe('HandlerbarsHelper', function() {
+describe('HandlebarsHelper', function() {
   describe('constructor()', function() {
     it('assigns context in param to "context", and assigns controller if exists', function() {
       const context = {}
