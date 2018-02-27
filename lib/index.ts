@@ -116,10 +116,10 @@ export { RedisClient } from './redis/RedisClient'
 export { route } from './helpers/route'
 
 // view package
-// export { HandlebarsHelper } from './view/handlebars/HandlebarsHelper'
+export { HandlebarsHelper } from './view/handlebars/HandlebarsHelper'
 // export { HandlebarsViewResponse } from './view/handlebars/HandlebarsViewResponse'
 
 // internal service providers
 export { ExpressHttpDriverServiceProvider } from './service-providers/ExpressHttpDriverServiceProvider'
-// export { HandlebarsViewServiceProvider } from './service-providers/HandlebarsViewServiceProvider'
+export { HandlebarsViewServiceProvider } from './service-providers/HandlebarsViewServiceProvider'
 export { MongooseServiceProvider } from './service-providers/MongooseServiceProvider'

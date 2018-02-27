@@ -71,5 +71,7 @@ export { WinstonLogger } from './log/WinstonLogger';
 export { IRedis } from './redis/IRedis';
 export { RedisClient } from './redis/RedisClient';
 export { route } from './helpers/route';
+export { HandlebarsHelper } from './view/handlebars/HandlebarsHelper';
 export { ExpressHttpDriverServiceProvider } from './service-providers/ExpressHttpDriverServiceProvider';
+export { HandlebarsViewServiceProvider } from './service-providers/HandlebarsViewServiceProvider';
 export { MongooseServiceProvider } from './service-providers/MongooseServiceProvider';

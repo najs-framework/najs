@@ -5,7 +5,9 @@ export abstract class HandlebarsHelper {
   protected controller?: Controller
   protected options: any
 
-  constructor(context: any, controller?: Controller) {
+  protected constructor(context: any)
+  protected constructor(context: any, controller: Controller)
+  protected constructor(context: any, controller?: Controller) {
     this.context = context
     this.controller = controller
   }
@@ -13,22 +15,15 @@ export abstract class HandlebarsHelper {
   abstract run(): any
 
   isBlockHelper(): boolean {
-    return typeof this.options.fn === 'function'
+    return typeof this.options !== 'undefined' && typeof this.options.fn === 'function'
   }
 
-  static createInstanceLevelHelper(controller: Controller, helper: typeof HandlebarsHelper) {
+  static create(helper: typeof HandlebarsHelper): Function
+  static create(helper: typeof HandlebarsHelper, controller: Controller): Function
+  static create(helper: typeof HandlebarsHelper, controller?: Controller): Function {
     return function(this: any) {
       const options = arguments[arguments.length - 1]
       const instance: HandlebarsHelper = Reflect.construct(helper, [this, controller])
-      instance.options = options
-      return instance.run.apply(instance, arguments)
-    }
-  }
-
-  static createGlobalHelper(helper: typeof HandlebarsHelper): any {
-    return function(this: any) {
-      const options = arguments[arguments.length - 1]
-      const instance: HandlebarsHelper = Reflect.construct(helper, [this])
       instance.options = options
       return instance.run.apply(instance, arguments)
     }

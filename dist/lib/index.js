@@ -129,11 +129,13 @@ exports.RedisClient = RedisClient_1.RedisClient;
 var route_1 = require("./helpers/route");
 exports.route = route_1.route;
 // view package
-// export { HandlebarsHelper } from './view/handlebars/HandlebarsHelper'
+var HandlebarsHelper_1 = require("./view/handlebars/HandlebarsHelper");
+exports.HandlebarsHelper = HandlebarsHelper_1.HandlebarsHelper;
 // export { HandlebarsViewResponse } from './view/handlebars/HandlebarsViewResponse'
 // internal service providers
 var ExpressHttpDriverServiceProvider_1 = require("./service-providers/ExpressHttpDriverServiceProvider");
 exports.ExpressHttpDriverServiceProvider = ExpressHttpDriverServiceProvider_1.ExpressHttpDriverServiceProvider;
-// export { HandlebarsViewServiceProvider } from './service-providers/HandlebarsViewServiceProvider'
+var HandlebarsViewServiceProvider_1 = require("./service-providers/HandlebarsViewServiceProvider");
+exports.HandlebarsViewServiceProvider = HandlebarsViewServiceProvider_1.HandlebarsViewServiceProvider;
 var MongooseServiceProvider_1 = require("./service-providers/MongooseServiceProvider");
 exports.MongooseServiceProvider = MongooseServiceProvider_1.MongooseServiceProvider;
