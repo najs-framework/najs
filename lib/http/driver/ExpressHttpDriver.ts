@@ -233,7 +233,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
       const endpoint: any = Reflect.get(controller, endpointName)
       if (isFunction(endpoint)) {
         const result = Reflect.apply(endpoint, controller, [request, response])
-        await this.handleEndpointResult(request, response, result, middleware)
+        await this.handleEndpointResult(request, response, result, controller, middleware)
       }
     }
   }
@@ -244,7 +244,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
       const endpoint: any = Reflect.get(controller, endpointName)
       if (isFunction(endpoint)) {
         const result = Reflect.apply(endpoint, controller, [request, response])
-        await this.handleEndpointResult(request, response, result, middleware)
+        await this.handleEndpointResult(request, response, result, <any>controller, middleware)
       }
     }
   }
@@ -261,7 +261,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
       // Can not use make for default ExpressController
       const controller = Reflect.construct(ExpressController, [request, response])
       const result = Reflect.apply(endpoint, controller, [request, response])
-      await this.handleEndpointResult(request, response, result, middleware)
+      await this.handleEndpointResult(request, response, result, controller, middleware)
     }
   }
 
@@ -269,7 +269,8 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     middlewareList: IMiddleware[],
     request: Express.Request,
     response: Express.Response,
-    value: any
+    value: any,
+    controller: Controller
   ): Promise<any> {
     if (middlewareList.length === 0) {
       return value
@@ -278,7 +279,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     let result: any = value
     for (const middleware of middlewareList) {
       if (isFunction(middleware.after)) {
-        result = await Reflect.apply(middleware.after, middleware, [request, response, result])
+        result = await Reflect.apply(middleware.after, middleware, [request, response, result, controller])
       }
     }
     return result
@@ -288,10 +289,11 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     request: Express.Request,
     response: Express.Response,
     result: any,
+    controller: Controller,
     middleware: IMiddleware[]
   ) {
     const rawValue: any = isPromise(result) ? await (result as Promise<any>) : result
-    const value: any = await this.applyAfterMiddlewareWrapper(middleware, request, response, rawValue)
+    const value: any = await this.applyAfterMiddlewareWrapper(middleware, request, response, rawValue, controller)
     if (isIResponse(value)) {
       return value.respond(request, response, this)
     }

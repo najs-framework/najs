@@ -159,7 +159,7 @@ class ExpressHttpDriver {
             const endpoint = Reflect.get(controller, endpointName);
             if (lodash_1.isFunction(endpoint)) {
                 const result = Reflect.apply(endpoint, controller, [request, response]);
-                await this.handleEndpointResult(request, response, result, middleware);
+                await this.handleEndpointResult(request, response, result, controller, middleware);
             }
         };
     }
@@ -169,7 +169,7 @@ class ExpressHttpDriver {
             const endpoint = Reflect.get(controller, endpointName);
             if (lodash_1.isFunction(endpoint)) {
                 const result = Reflect.apply(endpoint, controller, [request, response]);
-                await this.handleEndpointResult(request, response, result, middleware);
+                await this.handleEndpointResult(request, response, result, controller, middleware);
             }
         };
     }
@@ -184,24 +184,24 @@ class ExpressHttpDriver {
             // Can not use make for default ExpressController
             const controller = Reflect.construct(ExpressController_1.ExpressController, [request, response]);
             const result = Reflect.apply(endpoint, controller, [request, response]);
-            await this.handleEndpointResult(request, response, result, middleware);
+            await this.handleEndpointResult(request, response, result, controller, middleware);
         };
     }
-    async applyAfterMiddlewareWrapper(middlewareList, request, response, value) {
+    async applyAfterMiddlewareWrapper(middlewareList, request, response, value, controller) {
         if (middlewareList.length === 0) {
             return value;
         }
         let result = value;
         for (const middleware of middlewareList) {
             if (lodash_1.isFunction(middleware.after)) {
-                result = await Reflect.apply(middleware.after, middleware, [request, response, result]);
+                result = await Reflect.apply(middleware.after, middleware, [request, response, result, controller]);
             }
         }
         return result;
     }
-    async handleEndpointResult(request, response, result, middleware) {
+    async handleEndpointResult(request, response, result, controller, middleware) {
         const rawValue = isPromise_1.isPromise(result) ? await result : result;
-        const value = await this.applyAfterMiddlewareWrapper(middleware, request, response, rawValue);
+        const value = await this.applyAfterMiddlewareWrapper(middleware, request, response, rawValue, controller);
         if (IResponse_1.isIResponse(value)) {
             return value.respond(request, response, this);
         }

@@ -5,6 +5,7 @@ import { HttpKernel } from './../HttpKernel';
 import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver';
 import { IAutoload } from 'najs-binding';
 import { IRouteData } from '../routing/interfaces/IRouteData';
+import { Controller } from '../controller/Controller';
 import { IMiddleware } from '../middleware/IMiddleware';
 import * as Express from 'express';
 import * as Http from 'http';
@@ -36,8 +37,8 @@ export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
     protected createEndpointWrapperByObject(controllerObject: Object, endpointName: string, middleware: IMiddleware[]): (request: Express.Request, response: Express.Response) => Promise<void>;
     protected cloneControllerObject(controller: Object, request: Express.Request, response: Express.Response): Object;
     protected createEndpointWrapperByFunction(endpoint: Function, middleware: IMiddleware[]): (request: Express.Request, response: Express.Response) => Promise<void>;
-    protected applyAfterMiddlewareWrapper(middlewareList: IMiddleware[], request: Express.Request, response: Express.Response, value: any): Promise<any>;
-    protected handleEndpointResult(request: Express.Request, response: Express.Response, result: any, middleware: IMiddleware[]): Promise<any>;
+    protected applyAfterMiddlewareWrapper(middlewareList: IMiddleware[], request: Express.Request, response: Express.Response, value: any, controller: Controller): Promise<any>;
+    protected handleEndpointResult(request: Express.Request, response: Express.Response, result: any, controller: Controller, middleware: IMiddleware[]): Promise<any>;
     start(options?: HttpDriverStartOptions): void;
     respondView(response: Express.Response, view: string, variables: Object): void;
     respondJson(response: Express.Response, value: any): void;

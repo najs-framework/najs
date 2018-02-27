@@ -413,7 +413,9 @@ describe('ExpressHttpDriver', function() {
       result(<any>request, <any>response)
       expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true)
       expect(endpointSpy.called).toBe(true)
-      expect(handleEndpointResultStub.calledWith(request, response, undefined, [])).toBe(true)
+      expect(handleEndpointResultStub.calledWith(request, response, undefined)).toBe(true)
+      expect(handleEndpointResultStub.lastCall.args[3]).toBeInstanceOf(Controller)
+      expect(handleEndpointResultStub.lastCall.args[4]).toEqual([])
 
       makeSpy.restore()
       endpointSpy.restore()
@@ -459,7 +461,9 @@ describe('ExpressHttpDriver', function() {
       result(<any>request, <any>response)
       expect(cloneControllerObjectSpy.called).toBe(true)
       expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true)
-      expect(handleEndpointResultStub.calledWith(request, response, undefined, [])).toBe(true)
+      expect(handleEndpointResultStub.calledWith(request, response, undefined)).toBe(true)
+      expect(handleEndpointResultStub.lastCall.args[3]).toBeInstanceOf(Controller)
+      expect(handleEndpointResultStub.lastCall.args[4]).toEqual([])
 
       makeSpy.restore()
       cloneControllerObjectSpy.restore()
@@ -500,7 +504,10 @@ describe('ExpressHttpDriver', function() {
       await result(<any>request, <any>response)
       expect(cloneControllerObjectSpy.called).toBe(true)
       expect(endpointSpy.called).toBe(true)
-      expect(handleEndpointResultStub.calledWith(request, response, undefined, [])).toBe(true)
+      expect(handleEndpointResultStub.calledWith(request, response, undefined)).toBe(true)
+      expect(typeof handleEndpointResultStub.lastCall.args[3] === 'object').toBe(true)
+      expect(handleEndpointResultStub.lastCall.args[4]).toEqual([])
+
       cloneControllerObjectSpy.restore()
       endpointSpy.restore()
       handleEndpointResultStub.restore()
@@ -536,7 +543,9 @@ describe('ExpressHttpDriver', function() {
       expect(handlerSpy.firstCall.args[0] === request).toBe(true)
       expect(handlerSpy.firstCall.args[1] === response).toBe(true)
 
-      expect(handleEndpointResultStub.calledWith(request, response, undefined, [])).toBe(true)
+      expect(handleEndpointResultStub.calledWith(request, response, undefined)).toBe(true)
+      expect(handleEndpointResultStub.lastCall.args[3]).toBeInstanceOf(Controller)
+      expect(handleEndpointResultStub.lastCall.args[4]).toEqual([])
       handleEndpointResultStub.restore()
     })
   })
@@ -573,7 +582,7 @@ describe('ExpressHttpDriver', function() {
       const request = {}
       const response = {}
       const driver = new ExpressHttpDriver()
-      driver['handleEndpointResult'](<any>request, <any>response, undefined, [])
+      driver['handleEndpointResult'](<any>request, <any>response, undefined, <any>{}, [])
     })
 
     it('calls await if result is a Promise like', async function() {
@@ -588,7 +597,7 @@ describe('ExpressHttpDriver', function() {
       const request = {}
       const response = {}
       const driver = new ExpressHttpDriver()
-      await driver['handleEndpointResult'](<any>request, <any>response, promise, [])
+      await driver['handleEndpointResult'](<any>request, <any>response, promise, <any>{}, [])
       expect(iResponseSpy.calledWith(request, response, driver)).toBe(true)
     })
 
@@ -601,7 +610,7 @@ describe('ExpressHttpDriver', function() {
       const request = {}
       const response = {}
       const driver = new ExpressHttpDriver()
-      await driver['handleEndpointResult'](<any>request, <any>response, iResponse, [])
+      await driver['handleEndpointResult'](<any>request, <any>response, iResponse, <any>{}, [])
       expect(iResponseSpy.calledWith(request, response, driver)).toBe(true)
     })
   })
@@ -609,13 +618,13 @@ describe('ExpressHttpDriver', function() {
   describe('protected .applyAfterMiddlewareWrapper()', function() {
     it('returns a promise', function() {
       const driver = new ExpressHttpDriver()
-      expect(isPromise(driver['applyAfterMiddlewareWrapper']([], <any>{}, <any>{}, undefined))).toBe(true)
+      expect(isPromise(driver['applyAfterMiddlewareWrapper']([], <any>{}, <any>{}, undefined, <any>{}))).toBe(true)
     })
 
     it('returns value if middleware list is empty', async function() {
       const value = {}
       const driver = new ExpressHttpDriver()
-      expect((await driver['applyAfterMiddlewareWrapper']([], <any>{}, <any>{}, value)) === value).toBe(true)
+      expect((await driver['applyAfterMiddlewareWrapper']([], <any>{}, <any>{}, value, <any>{})) === value).toBe(true)
     })
 
     it('skips if middleware has no .after() function, can receive new instance of result', async function() {
@@ -641,7 +650,8 @@ describe('ExpressHttpDriver', function() {
         [hasAfterMiddleware, hasNoAfterMiddleware],
         <any>request,
         <any>response,
-        result
+        result,
+        <any>{}
       )
 
       expect(afterSpy.calledWith(request, response, result)).toBe(true)
@@ -665,7 +675,8 @@ describe('ExpressHttpDriver', function() {
         [hasAfterMiddleware],
         <any>request,
         <any>response,
-        result
+        result,
+        <any>{}
       )
       expect(received === result).toBe(true)
     })
