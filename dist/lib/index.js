@@ -67,6 +67,8 @@ var ExpressCsurfMiddleware_1 = require("./http/middleware/ExpressCsurfMiddleware
 exports.ExpressCsurfMiddleware = ExpressCsurfMiddleware_1.ExpressCsurfMiddleware;
 var ExpressCorsMiddleware_1 = require("./http/middleware/ExpressCorsMiddleware");
 exports.ExpressCorsMiddleware = ExpressCorsMiddleware_1.ExpressCorsMiddleware;
+var SessionMiddleware_1 = require("./http/middleware/SessionMiddleware");
+exports.SessionMiddleware = SessionMiddleware_1.SessionMiddleware;
 var najs_facade_1 = require("najs-facade");
 exports.Facade = najs_facade_1.Facade;
 var najs_facade_2 = require("najs-facade");
@@ -133,6 +135,8 @@ var HandlebarsHelper_1 = require("./view/handlebars/HandlebarsHelper");
 exports.HandlebarsHelper = HandlebarsHelper_1.HandlebarsHelper;
 var HandlebarsViewResponse_1 = require("./view/handlebars/HandlebarsViewResponse");
 exports.HandlebarsViewResponse = HandlebarsViewResponse_1.HandlebarsViewResponse;
+var SessionHandlebarsHelper_1 = require("./view/handlebars/helpers/SessionHandlebarsHelper");
+exports.SessionHandlebarsHelper = SessionHandlebarsHelper_1.SessionHandlebarsHelper;
 // internal service providers
 var ExpressHttpDriverServiceProvider_1 = require("./service-providers/ExpressHttpDriverServiceProvider");
 exports.ExpressHttpDriverServiceProvider = ExpressHttpDriverServiceProvider_1.ExpressHttpDriverServiceProvider;

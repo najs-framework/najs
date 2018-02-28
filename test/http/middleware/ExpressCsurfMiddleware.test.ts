@@ -25,7 +25,7 @@ describe('ExpressCsurfMiddleware', function() {
   })
 
   it('implements IAutoload interface with class name "ExpressCsurfMiddleware"', function() {
-    expect(new Middleware.ExpressCsurfMiddleware().getClassName()).toEqual('ExpressCsurfMiddleware')
+    expect(new Middleware.ExpressCsurfMiddleware().getClassName()).toEqual('Najs.ExpressCsurfMiddleware')
   })
 
   describe('.before()', function() {

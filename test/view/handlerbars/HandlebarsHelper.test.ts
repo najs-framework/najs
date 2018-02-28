@@ -1,10 +1,13 @@
 import 'jest'
 import * as Sinon from 'sinon'
+import { register } from 'najs-binding'
 import { HandlebarsHelper } from '../../../lib/view/handlebars/HandlebarsHelper'
 
 class TestHelper extends HandlebarsHelper {
+  static className = 'TestHelper'
   run() {}
 }
+register(TestHelper)
 
 describe('HandlebarsHelper', function() {
   describe('constructor()', function() {
@@ -33,6 +36,19 @@ describe('HandlebarsHelper', function() {
 
       helper['options'] = { fn: function() {} }
       expect(helper.isBlockHelper()).toBe(true)
+    })
+  })
+
+  describe('.renderChildren()', function() {
+    it('calls "this.options.fn"', function() {
+      const context = {}
+      const options = { fn: () => {}, data: 'anything' }
+      const optionsFnSpy = Sinon.spy(options, 'fn')
+
+      const helper: TestHelper = Reflect.construct(TestHelper, [context])
+      helper['options'] = options
+      helper.renderChildren(['test'])
+      expect(optionsFnSpy.calledWith(helper['context'], { data: options.data, blockParams: ['test'] })).toBe(true)
     })
   })
 

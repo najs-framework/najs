@@ -2,10 +2,13 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
+const najs_binding_1 = require("najs-binding");
 const HandlebarsHelper_1 = require("../../../lib/view/handlebars/HandlebarsHelper");
 class TestHelper extends HandlebarsHelper_1.HandlebarsHelper {
     run() { }
 }
+TestHelper.className = 'TestHelper';
+najs_binding_1.register(TestHelper);
 describe('HandlebarsHelper', function () {
     describe('constructor()', function () {
         it('assigns context in param to "context", and assigns controller if exists', function () {
@@ -28,6 +31,17 @@ describe('HandlebarsHelper', function () {
             expect(helper.isBlockHelper()).toBe(false);
             helper['options'] = { fn: function () { } };
             expect(helper.isBlockHelper()).toBe(true);
+        });
+    });
+    describe('.renderChildren()', function () {
+        it('calls "this.options.fn"', function () {
+            const context = {};
+            const options = { fn: () => { }, data: 'anything' };
+            const optionsFnSpy = Sinon.spy(options, 'fn');
+            const helper = Reflect.construct(TestHelper, [context]);
+            helper['options'] = options;
+            helper.renderChildren(['test']);
+            expect(optionsFnSpy.calledWith(helper['context'], { data: options.data, blockParams: ['test'] })).toBe(true);
         });
     });
     describe('static create()', function () {

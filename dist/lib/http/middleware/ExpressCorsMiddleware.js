@@ -27,6 +27,6 @@ class ExpressCorsMiddleware {
         });
     }
 }
-ExpressCorsMiddleware.className = 'ExpressCorsMiddleware';
+ExpressCorsMiddleware.className = 'Najs.ExpressCorsMiddleware';
 exports.ExpressCorsMiddleware = ExpressCorsMiddleware;
 najs_binding_1.register(ExpressCorsMiddleware);

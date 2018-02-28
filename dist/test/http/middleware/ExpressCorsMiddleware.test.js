@@ -22,7 +22,7 @@ describe('ExpressCorsMiddleware', function () {
         expect(getOptionsSpy.called).toBe(false);
     });
     it('implements IAutoload interface with class name "ExpressCorsMiddleware"', function () {
-        expect(new Middleware.ExpressCorsMiddleware().getClassName()).toEqual('ExpressCorsMiddleware');
+        expect(new Middleware.ExpressCorsMiddleware().getClassName()).toEqual('Najs.ExpressCorsMiddleware');
     });
     describe('.before()', function () {
         it('returns a promise, which calls CsurfProtection with request, response and fake next function', async function () {

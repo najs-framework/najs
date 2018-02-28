@@ -39,6 +39,6 @@ class ExpressCsurfMiddleware {
         return result;
     }
 }
-ExpressCsurfMiddleware.className = 'ExpressCsurfMiddleware';
+ExpressCsurfMiddleware.className = 'Najs.ExpressCsurfMiddleware';
 exports.ExpressCsurfMiddleware = ExpressCsurfMiddleware;
 najs_binding_1.register(ExpressCsurfMiddleware);

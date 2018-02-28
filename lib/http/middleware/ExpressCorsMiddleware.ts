@@ -8,7 +8,7 @@ import * as CORS from 'cors'
 export let CorsEnable: Express.RequestHandler
 
 export class ExpressCorsMiddleware implements IExpressMiddleware, IAutoload {
-  static className: string = 'ExpressCorsMiddleware'
+  static className: string = 'Najs.ExpressCorsMiddleware'
 
   constructor() {
     if (!CorsEnable) {

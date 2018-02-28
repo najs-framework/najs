@@ -10,7 +10,7 @@ import * as Express from 'express'
 export let CsurfProtection: Express.RequestHandler
 
 export class ExpressCsurfMiddleware implements IExpressMiddleware, IAutoload {
-  static className: string = 'ExpressCsurfMiddleware'
+  static className: string = 'Najs.ExpressCsurfMiddleware'
 
   constructor() {
     if (!CsurfProtection) {

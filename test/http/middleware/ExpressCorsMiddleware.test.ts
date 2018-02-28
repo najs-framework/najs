@@ -24,7 +24,7 @@ describe('ExpressCorsMiddleware', function() {
   })
 
   it('implements IAutoload interface with class name "ExpressCorsMiddleware"', function() {
-    expect(new Middleware.ExpressCorsMiddleware().getClassName()).toEqual('ExpressCorsMiddleware')
+    expect(new Middleware.ExpressCorsMiddleware().getClassName()).toEqual('Najs.ExpressCorsMiddleware')
   })
 
   describe('.before()', function() {
