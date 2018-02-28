@@ -1,12 +1,38 @@
+import { ExpressCorsMiddleware } from './middleware/ExpressCorsMiddleware'
+import { ExpressCsurfMiddleware } from './middleware/ExpressCsurfMiddleware'
+import { SessionMiddleware } from './middleware/SessionMiddleware'
+import { RequestDataMiddleware } from './middleware/RequestDataMiddleware'
 import { IAutoload, make, register } from 'najs-binding'
 import { IMiddleware } from './middleware/IMiddleware'
 import { isString } from 'lodash'
 import { SystemClass } from '../constants'
 
 export class HttpKernel implements IAutoload {
+  protected globalMiddleware: {
+    [key: string]: string | string[]
+  } = {
+    cors: ExpressCorsMiddleware.className,
+    csrf: ExpressCsurfMiddleware.className,
+    session: SessionMiddleware.className,
+    input: RequestDataMiddleware.className,
+    'request-data': RequestDataMiddleware.className
+  }
+
   protected middleware: {
     [key: string]: string | string[]
   } = {}
+
+  protected findMiddlewareByName(name: string): string | string[] | undefined {
+    if (typeof this.middleware[name] !== 'undefined') {
+      return this.middleware[name]
+    }
+
+    if (typeof this.globalMiddleware[name] !== 'undefined') {
+      return this.globalMiddleware[name]
+    }
+
+    return undefined
+  }
 
   getClassName(): string {
     return SystemClass.HttpKernel
@@ -14,8 +40,9 @@ export class HttpKernel implements IAutoload {
 
   getMiddleware(name: string): IMiddleware[] {
     const result: IMiddleware[] = []
-    if (Array.isArray(this.middleware[name])) {
-      const middlewareList: string[] = <string[]>this.middleware[name]
+    const middlewareSettings = this.findMiddlewareByName(name)
+    if (Array.isArray(middlewareSettings)) {
+      const middlewareList: string[] = <string[]>middlewareSettings
       middlewareList.forEach((className: string) => {
         const middleware = make(className)
         if (middleware) {
@@ -24,8 +51,8 @@ export class HttpKernel implements IAutoload {
       })
     }
 
-    if (isString(this.middleware[name])) {
-      const middleware = make(this.middleware[name])
+    if (isString(middlewareSettings)) {
+      const middleware = make(middlewareSettings)
       if (middleware) {
         result.push(middleware)
       }

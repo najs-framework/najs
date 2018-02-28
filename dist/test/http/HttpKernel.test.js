@@ -13,6 +13,38 @@ describe('HttpKernel', function () {
         const instance = new HttpKernel_1.HttpKernel();
         expect(instance.getClassName() === constants_1.SystemClass.HttpKernel);
     });
+    describe('findMiddlewareByName()', function () {
+        it('returns middleware in "this.middleware" if found', function () {
+            const instance = new HttpKernel_1.HttpKernel();
+            instance['middleware'] = {
+                'custom-middleware': 'CustomMiddleware'
+            };
+            instance['globalMiddleware'] = {
+                'custom-middleware': 'GlobalMiddleware'
+            };
+            expect(instance['findMiddlewareByName']('custom-middleware')).toEqual('CustomMiddleware');
+        });
+        it('returns middleware in "this.globalMiddleware" if "this.middleware" not found', function () {
+            const instance = new HttpKernel_1.HttpKernel();
+            instance['middleware'] = {
+                'custom-middleware': 'CustomMiddleware'
+            };
+            instance['globalMiddleware'] = {
+                middleware: 'GlobalMiddleware'
+            };
+            expect(instance['findMiddlewareByName']('middleware')).toEqual('GlobalMiddleware');
+        });
+        it('returns undefined if not found in "this.middleware" AND "this.globalMiddleware"', function () {
+            const instance = new HttpKernel_1.HttpKernel();
+            instance['middleware'] = {
+                'custom-middleware': 'CustomMiddleware'
+            };
+            instance['globalMiddleware'] = {
+                middleware: 'GlobalMiddleware'
+            };
+            expect(instance['findMiddlewareByName']('not-found')).toBeUndefined();
+        });
+    });
     describe('getMiddleware()', function () {
         it('returns empty array if middleware not found', function () {
             const instance = new HttpKernel_1.HttpKernel();
