@@ -33,6 +33,7 @@ class SessionHandlebarsHelper extends HandlebarsHelper_1.HandlebarsHelper {
             case 'has':
             case 'exists':
             case 'pull':
+            case 'all':
                 return Reflect.apply(this.controller.session[command], this.controller.session, Array.from(arguments).slice(1, arguments.length));
             default:
                 if (arguments.length === 2) {

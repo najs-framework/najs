@@ -44,6 +44,7 @@ export class SessionHandlebarsHelper extends HandlebarsHelper<any, ExpressContro
       case 'has':
       case 'exists':
       case 'pull':
+      case 'all':
         return Reflect.apply(
           this.controller.session[command],
           this.controller.session,

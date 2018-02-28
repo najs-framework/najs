@@ -57,6 +57,7 @@ export { IExpressMiddleware } from './http/middleware/IExpressMiddleware'
 export { ExpressCsurfMiddleware } from './http/middleware/ExpressCsurfMiddleware'
 export { ExpressCorsMiddleware } from './http/middleware/ExpressCorsMiddleware'
 export { SessionMiddleware } from './http/middleware/SessionMiddleware'
+export { RequestDataMiddleware } from './http/middleware/RequestDataMiddleware'
 
 // najs-facade package
 export {
@@ -120,6 +121,7 @@ export { route } from './helpers/route'
 export { HandlebarsHelper } from './view/handlebars/HandlebarsHelper'
 export { HandlebarsViewResponse } from './view/handlebars/HandlebarsViewResponse'
 export { SessionHandlebarsHelper } from './view/handlebars/helpers/SessionHandlebarsHelper'
+export { RequestDataReaderHandlebarsHelper } from './view/handlebars/helpers/RequestDataReaderHandlebarsHelper'
 
 // internal service providers
 export { ExpressHttpDriverServiceProvider } from './service-providers/ExpressHttpDriverServiceProvider'

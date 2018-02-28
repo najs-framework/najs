@@ -25,10 +25,11 @@ export abstract class HandlebarsHelper<Context extends Object = {}, Ctrl extends
 
   static create(helper: typeof HandlebarsHelper): Function
   static create(helper: typeof HandlebarsHelper, controller: Controller): Function
-  static create(helper: typeof HandlebarsHelper, controller?: Controller): Function {
+  static create(helper: typeof HandlebarsHelper, controller: Controller, ...args: any[]): Function
+  static create(helper: typeof HandlebarsHelper, controller?: Controller, ...args: any[]): Function {
     return function(this: any) {
       const options = arguments[arguments.length - 1]
-      const instance: HandlebarsHelper = make(helper, [this, controller])
+      const instance: HandlebarsHelper = make(helper, [this, controller, ...args])
       instance.options = options
       return instance.run.apply(instance, arguments)
     }

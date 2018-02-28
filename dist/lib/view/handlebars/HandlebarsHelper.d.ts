@@ -10,4 +10,5 @@ export declare abstract class HandlebarsHelper<Context extends Object = {}, Ctrl
     renderChildren(blockParams: any[]): any;
     static create(helper: typeof HandlebarsHelper): Function;
     static create(helper: typeof HandlebarsHelper, controller: Controller): Function;
+    static create(helper: typeof HandlebarsHelper, controller: Controller, ...args: any[]): Function;
 }
