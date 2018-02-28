@@ -58,6 +58,10 @@ export { ExpressCsurfMiddleware } from './http/middleware/ExpressCsurfMiddleware
 export { ExpressCorsMiddleware } from './http/middleware/ExpressCorsMiddleware'
 export { SessionMiddleware } from './http/middleware/SessionMiddleware'
 export { RequestDataMiddleware } from './http/middleware/RequestDataMiddleware'
+export { InputMiddleware } from './http/middleware/InputMiddleware'
+export { BodyMiddleware } from './http/middleware/BodyMiddleware'
+export { QueryMiddleware } from './http/middleware/QueryMiddleware'
+export { ParamsMiddleware } from './http/middleware/ParamsMiddleware'
 
 // najs-facade package
 export {
