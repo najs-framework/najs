@@ -4,6 +4,12 @@ export declare const SystemClass: {
     HttpDriver: string;
     ExpressSessionStore: string;
 };
+export declare const AuthClass: {
+    Auth: string;
+    SessionGuard: string;
+    JwtGuard: string;
+    UserProvider: string;
+};
 export declare const ContextualFacadeClass: {
     Input: string;
     Session: string;

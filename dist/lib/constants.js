@@ -6,6 +6,12 @@ exports.SystemClass = {
     HttpDriver: 'Najs.HttpDriver',
     ExpressSessionStore: 'Najs.ExpressSessionStore'
 };
+exports.AuthClass = {
+    Auth: 'Najs.Auth',
+    SessionGuard: 'Najs.SessionGuard',
+    JwtGuard: 'Najs.JwtGuard',
+    UserProvider: 'Najs.UserProvider'
+};
 exports.ContextualFacadeClass = {
     Input: 'Najs.RequestInput',
     Session: 'Najs.Session'

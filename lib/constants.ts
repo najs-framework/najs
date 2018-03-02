@@ -6,6 +6,13 @@ export const SystemClass = {
   ExpressSessionStore: 'Najs.ExpressSessionStore'
 }
 
+export const AuthClass = {
+  Auth: 'Najs.Auth',
+  SessionGuard: 'Najs.SessionGuard',
+  JwtGuard: 'Najs.JwtGuard',
+  UserProvider: 'Najs.UserProvider'
+}
+
 export const ContextualFacadeClass = {
   Input: 'Najs.RequestInput',
   Session: 'Najs.Session'
