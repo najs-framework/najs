@@ -6,6 +6,11 @@ exports.SystemClass = {
     HttpDriver: 'Najs.HttpDriver',
     ExpressSessionStore: 'Najs.ExpressSessionStore'
 };
+exports.AuthEvent = {
+    Login: 'auth.login',
+    Logout: 'auth.logout',
+    Attempt: 'auth.attempt'
+};
 exports.AuthClass = {
     Auth: 'Najs.Auth',
     SessionGuard: 'Najs.SessionGuard',

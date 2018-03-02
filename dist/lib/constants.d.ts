@@ -4,6 +4,11 @@ export declare const SystemClass: {
     HttpDriver: string;
     ExpressSessionStore: string;
 };
+export declare const AuthEvent: {
+    Login: string;
+    Logout: string;
+    Attempt: string;
+};
 export declare const AuthClass: {
     Auth: string;
     SessionGuard: string;

@@ -6,6 +6,12 @@ export const SystemClass = {
   ExpressSessionStore: 'Najs.ExpressSessionStore'
 }
 
+export const AuthEvent = {
+  Login: 'auth.login',
+  Logout: 'auth.logout',
+  Attempt: 'auth.attempt'
+}
+
 export const AuthClass = {
   Auth: 'Najs.Auth',
   SessionGuard: 'Najs.SessionGuard',

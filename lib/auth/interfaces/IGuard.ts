@@ -14,7 +14,7 @@ export interface IGuard {
   /**
    * Get the currently authenticated user.
    */
-  user<T extends IAuthenticatable = IAuthenticatable>(): T
+  user<T extends IAuthenticatable = IAuthenticatable>(): T | undefined
 
   /**
    * Get the ID for the currently authenticated user.
@@ -26,7 +26,7 @@ export interface IGuard {
    *
    * @param {Object} credentials
    */
-  validate(credentials: Object): boolean
+  validate(credentials: Object): Promise<boolean>
 
   /**
    * Set the current user.
