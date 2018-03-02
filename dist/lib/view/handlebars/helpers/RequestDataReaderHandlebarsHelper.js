@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const najs_binding_1 = require("najs-binding");
 const HandlebarsHelper_1 = require("../HandlebarsHelper");
 class RequestDataReaderHandlebarsHelper extends HandlebarsHelper_1.HandlebarsHelper {
     constructor(context, controller, property) {
@@ -37,3 +38,4 @@ class RequestDataReaderHandlebarsHelper extends HandlebarsHelper_1.HandlebarsHel
 }
 RequestDataReaderHandlebarsHelper.className = 'Najs.RequestDataReaderHandlebarsHelper';
 exports.RequestDataReaderHandlebarsHelper = RequestDataReaderHandlebarsHelper;
+najs_binding_1.register(RequestDataReaderHandlebarsHelper);

@@ -1,4 +1,4 @@
-import { IAutoload } from 'najs-binding'
+import { register, IAutoload } from 'najs-binding'
 import { HandlebarsHelper } from '../HandlebarsHelper'
 import { ExpressController } from '../../../http/controller/ExpressController'
 
@@ -53,3 +53,4 @@ export class RequestDataReaderHandlebarsHelper extends HandlebarsHelper<any, Exp
     }
   }
 }
+register(RequestDataReaderHandlebarsHelper)
