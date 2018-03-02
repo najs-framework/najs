@@ -66,7 +66,7 @@ describe('HttpKernel', function() {
       const result = instance.getMiddleware('test')
       expect(result).toHaveLength(1)
       expect(result[0] === middleware).toBe(true)
-      expect(makeStub.calledWith('something'))
+      expect(makeStub.calledWith('something', []))
       makeStub.restore()
     })
 
@@ -78,7 +78,7 @@ describe('HttpKernel', function() {
       instance['middleware']['test'] = 'something'
       const result = instance.getMiddleware('test')
       expect(result).toHaveLength(0)
-      expect(makeStub.calledWith('something'))
+      expect(makeStub.calledWith('something', []))
       makeStub.restore()
     })
 
@@ -93,7 +93,23 @@ describe('HttpKernel', function() {
       const result = instance.getMiddleware('test')
       expect(result).toHaveLength(1)
       expect(result[0] === middleware).toBe(true)
-      expect(makeStub.calledWith('something'))
+      expect(makeStub.calledWith('something', []))
+      makeStub.restore()
+    })
+
+    it('splits the middleware name by ":", first-part is real middleware name, second-part is parameter', function() {
+      const middleware = {}
+      const makeStub = Sinon.stub(NajsBinding, 'make')
+      makeStub.withArgs('something').returns(middleware)
+      makeStub.withArgs('not-found').returns(undefined)
+
+      const instance = new HttpKernel()
+      instance['middleware']['test'] = ['something', 'not-found']
+      const result = instance.getMiddleware('test:param')
+      expect(result).toHaveLength(1)
+      expect(result[0] === middleware).toBe(true)
+      expect(makeStub.calledWith('something', ['param']))
+      expect(makeStub.lastCall.args[1]).toEqual(['param'])
       makeStub.restore()
     })
   })

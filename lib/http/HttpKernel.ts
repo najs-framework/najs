@@ -48,11 +48,18 @@ export class HttpKernel implements IAutoload {
 
   getMiddleware(name: string): IMiddleware[] {
     const result: IMiddleware[] = []
+    const params: string[] = []
+    const index: number = name.indexOf(':')
+    if (index !== -1) {
+      params.push(name.substr(index + 1))
+      name = name.substr(0, index)
+    }
+
     const middlewareSettings = this.findMiddlewareByName(name)
     if (Array.isArray(middlewareSettings)) {
       const middlewareList: string[] = <string[]>middlewareSettings
       middlewareList.forEach((className: string) => {
-        const middleware = make(className)
+        const middleware: IMiddleware | undefined = make(className, params)
         if (middleware) {
           result.push(middleware)
         }
@@ -60,7 +67,7 @@ export class HttpKernel implements IAutoload {
     }
 
     if (isString(middlewareSettings)) {
-      const middleware = make(middlewareSettings)
+      const middleware: IMiddleware | undefined = make(middlewareSettings, params)
       if (middleware) {
         result.push(middleware)
       }

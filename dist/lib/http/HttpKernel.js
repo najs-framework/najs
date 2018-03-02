@@ -40,18 +40,24 @@ class HttpKernel {
     }
     getMiddleware(name) {
         const result = [];
+        const params = [];
+        const index = name.indexOf(':');
+        if (index !== -1) {
+            params.push(name.substr(index + 1));
+            name = name.substr(0, index);
+        }
         const middlewareSettings = this.findMiddlewareByName(name);
         if (Array.isArray(middlewareSettings)) {
             const middlewareList = middlewareSettings;
             middlewareList.forEach((className) => {
-                const middleware = najs_binding_1.make(className);
+                const middleware = najs_binding_1.make(className, params);
                 if (middleware) {
                     result.push(middleware);
                 }
             });
         }
         if (lodash_1.isString(middlewareSettings)) {
-            const middleware = najs_binding_1.make(middlewareSettings);
+            const middleware = najs_binding_1.make(middlewareSettings, params);
             if (middleware) {
                 result.push(middleware);
             }
