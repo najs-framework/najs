@@ -62,6 +62,9 @@ exports.ConfigurationKeys = {
         storage: 'path.storage',
         view: 'path.view'
     },
+    Auth: {
+        guards: 'auth.guards'
+    },
     Middleware: {
         csurfOptions: 'middleware.csurf',
         corsOptions: 'middleware.cors'

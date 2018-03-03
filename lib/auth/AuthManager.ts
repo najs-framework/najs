@@ -1,11 +1,11 @@
 import { ContextualFacade } from 'najs-facade'
-import { IGuard } from './interfaces/IGuard'
+import { IGuard, GuardConfiguration } from './interfaces/IGuard'
 import { IAuth } from './interfaces/IAuth'
-import { IUserProvider } from './interfaces/IUserProvider'
 import { IAuthenticatable } from './interfaces/IAuthenticatable'
 import { Controller } from '../http/controller/Controller'
-import { Event } from '../facades/global/EventFacade'
-import { AuthEvent } from '../constants'
+import { EventFacade } from '../facades/global/EventFacade'
+import { ConfigFacade } from './../facades/global/ConfigFacade'
+import { AuthEvent, ConfigurationKeys } from '../constants'
 
 export class AuthManager extends ContextualFacade<Controller> implements IAuth {
   /**
@@ -17,16 +17,104 @@ export class AuthManager extends ContextualFacade<Controller> implements IAuth {
    */
   protected currentGuard: IGuard
   /**
-   * The user provider implementation.
-   */
-  protected provider: IUserProvider
-  /**
    * Indicates if the logout method has been called.
    */
   protected loggedOut = false
+  /**
+   * Guard's configuration
+   */
+  protected configurations: {
+    [key: string]: GuardConfiguration
+  }
+  /**
+   * guard's instance bag
+   */
+  protected guardBag: { [key: string]: IGuard }
 
   constructor(controller: Controller) {
     super(controller)
+    this.guardBag = {}
+    this.configurations = ConfigFacade.get(ConfigurationKeys.Auth.guards, {
+      web: {
+        driver: 'Najs.SessionGuard',
+        provider: 'Najs.GenericUser',
+        default: true
+      }
+    })
+    this.guard(this.findDefaultGuardName())
+  }
+
+  findDefaultGuardName(): string {
+    let firstName: string | undefined
+    for (const name in this.configurations) {
+      if (!this.configurations[name].isDefault) {
+        if (!firstName) {
+          firstName = name
+        }
+        continue
+      }
+      return name
+    }
+    return <string>firstName
+  }
+
+  resolveGuard(name: string): IGuard | undefined {
+    return <IGuard>{}
+  }
+
+  getCurrentGuard(): IGuard {
+    return this.currentGuard
+  }
+
+  guard(name: string): IAuth {
+    if (!this.guardBag[name]) {
+      this.currentGuard = this.guardBag[name]
+    } else {
+      const guard = this.resolveGuard(name)
+      if (guard) {
+        this.guardBag[name] = guard
+        this.currentGuard = this.guardBag[name]
+      }
+    }
+    return this
+  }
+
+  async login(user: IAuthenticatable): Promise<void>
+  async login(user: IAuthenticatable, remember: boolean): Promise<void>
+  async login(user: IAuthenticatable, remember: boolean = false): Promise<void> {
+    EventFacade.emit(AuthEvent.Login, user, remember)
+
+    this.currentGuard.attachUser(user, remember)
+    this.setUser(user)
+  }
+
+  async logout(): Promise<void> {
+    EventFacade.emit(AuthEvent.Logout, this.currentUser)
+
+    if (!this.loggedOut && this.currentUser) {
+      if (this.currentGuard.hasUser(this.currentUser)) {
+        this.currentGuard.detachUser(this.currentUser)
+      }
+      this.currentUser = undefined
+      this.loggedOut = true
+    }
+  }
+
+  async attempt(credentials: Object, remember: boolean = false, login: boolean = true): Promise<boolean> {
+    EventFacade.emit(AuthEvent.Attempt, credentials, remember, login)
+
+    const user = await this.currentGuard.getUserProvider().retrieveByCredentials(credentials)
+    if (user && this.currentGuard.getUserProvider().validateCredentials(user, credentials)) {
+      if (login) {
+        this.login(user, remember)
+      }
+      return true
+    }
+    return false
+  }
+
+  async validate(credentials: Object): Promise<boolean> {
+    return this.attempt(credentials, false, false)
   }
 
   check(): boolean {
@@ -38,10 +126,7 @@ export class AuthManager extends ContextualFacade<Controller> implements IAuth {
   }
 
   user<T extends IAuthenticatable = IAuthenticatable>(): T | undefined {
-    if (this.loggedOut) {
-      return undefined
-    }
-    return <T>this.currentUser
+    return this.getUser()
   }
 
   id<T extends any = string>(): T | undefined {
@@ -51,35 +136,15 @@ export class AuthManager extends ContextualFacade<Controller> implements IAuth {
     return this.currentUser.getAuthIdentifier()
   }
 
-  async validate(credentials: Object): Promise<boolean> {
-    return this.attempt(credentials, false, false)
+  getUser<T extends IAuthenticatable = IAuthenticatable>(): T | undefined {
+    if (this.loggedOut) {
+      return undefined
+    }
+    return <T>this.currentUser
   }
 
   setUser<T extends IAuthenticatable = IAuthenticatable>(user: T): void {
     this.currentUser = user
     this.loggedOut = false
-  }
-
-  guard(name: string): IAuth
-  guard(name: Function): IAuth
-  guard(name: any): IAuth {
-    return this
-  }
-
-  login(user: IAuthenticatable, remember: boolean = false): void {
-    Event.emit(AuthEvent.Login, user, remember)
-
-    this.setUser(user)
-  }
-
-  logout(user: IAuthenticatable): void {
-    Event.emit(AuthEvent.Logout, user)
-
-    this.currentUser = undefined
-    this.loggedOut = true
-  }
-
-  async attempt(credentials: Object, remember: boolean = false, login: boolean = true): Promise<boolean> {
-    return false
   }
 }

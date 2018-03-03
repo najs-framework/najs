@@ -60,6 +60,9 @@ export declare const ConfigurationKeys: {
         storage: string;
         view: string;
     };
+    Auth: {
+        guards: string;
+    };
     Middleware: {
         csurfOptions: string;
         corsOptions: string;

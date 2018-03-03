@@ -10,13 +10,25 @@ function test_normal() {
 const suite = new Benchmark.Suite();
 suite
     .add('use await for test_promise', {
+    defer: true,
     fn: async function (defer) {
         await test_promise();
+        defer.resolve();
+    }
+})
+    .add('.then for test_promise', {
+    defer: true,
+    fn: function (defer) {
+        test_promise().then(function () {
+            defer.resolve();
+        });
     }
 })
     .add('use await for test_normal', {
+    defer: true,
     fn: async function (defer) {
         await test_normal();
+        defer.resolve();
     }
 })
     .add('call test_normal sync', {
@@ -30,4 +42,4 @@ suite
     .on('complete', function () {
     console.log('Fastest is ' + this.filter('fastest').map('name'));
 });
-suite.run({ async: false });
+suite.run({ async: true });

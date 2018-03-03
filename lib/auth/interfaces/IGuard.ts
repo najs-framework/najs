@@ -1,37 +1,67 @@
 import { IAuthenticatable } from './IAuthenticatable'
+import { IUserProvider } from './IUserProvider'
+import { Controller } from '../../http/controller/Controller'
+
+export type GuardConfiguration = {
+  driver: string
+  provider: string
+  isDefault?: boolean
+}
 
 export interface IGuard {
   /**
-   * Determine if the current user is authenticated.
+   * Create new instance of IGuard
    */
-  check(): boolean
+  new (controller: Controller, provider: IUserProvider): void
 
   /**
-   * Determine if the current user is a guest.
+   * Get user provider.
    */
-  guest(): boolean
+  getUserProvider(): IUserProvider
+
+  /**
+   * Determine if there is a user in request.
+   */
+  hasUser(): boolean
+  /**
+   * Determine if there is a user in request.
+   */
+  hasUser<T extends IAuthenticatable = IAuthenticatable>(user: T): boolean
 
   /**
    * Get the currently authenticated user.
    */
-  user<T extends IAuthenticatable = IAuthenticatable>(): T | undefined
+  retrieveUser<T extends IAuthenticatable = IAuthenticatable>(): Promise<T | undefined>
 
   /**
-   * Get the ID for the currently authenticated user.
-   */
-  id<T extends any = string>(): T | undefined
-
-  /**
-   * Validate a user's credentials.
+   * Save the user to request.
    *
-   * @param {Object} credentials
+   * @param {IAuthenticatable} user
+   * @param {boolean} remember
    */
-  validate(credentials: Object): Promise<boolean>
+  attachUser<T extends IAuthenticatable = IAuthenticatable>(user: T, remember: boolean): Promise<void>
 
   /**
-   * Set the current user.
+   * Remove the user and out of request.
    *
    * @param {IAuthenticatable} user
    */
-  setUser<T extends IAuthenticatable = IAuthenticatable>(user: T): void
+  detachUser<T extends IAuthenticatable = IAuthenticatable>(user: T): Promise<void>
 }
+
+// hasUser(user): boolean
+// async retrieveUser()
+// async attachUser()
+// async detachUser()
+// async validate()
+
+// async Auth.login(user): login as a user => calls Guard.attachUser()
+// async Auth.logout(): logout user => calls Guard.detachUser() if current user is logged in via guard
+// async Auth.attempt(): calls Guard.validate() and if login call Guard.attach()
+// async Auth.validate(): calls Guard.validate()
+// Auth.check(): check
+// Auth.user(): get current user, an alias of .getUser()
+// Auth.guest():
+// Auth.id(): get current user's id
+// Auth.setUser(): set current user only, do not call Guard.remember()
+// Auth.getUser(): get current user
