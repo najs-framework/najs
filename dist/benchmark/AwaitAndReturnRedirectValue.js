@@ -32,7 +32,7 @@ suite
     }
 })
     .add('call test_normal sync', {
-    fn: async function (defer) {
+    fn: function (defer) {
         test_normal();
     }
 })
