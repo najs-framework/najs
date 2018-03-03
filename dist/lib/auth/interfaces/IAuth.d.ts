@@ -1,7 +1,6 @@
 import { IGuard } from './IGuard';
 import { IAuthenticatable } from './IAuthenticatable';
-import { ContextualFacade } from 'najs-facade';
-export interface IAuth extends ContextualFacade {
+export interface IAuth {
     /**
      * Get current guard instance
      */

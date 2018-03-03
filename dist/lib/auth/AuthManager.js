@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const najs_binding_1 = require("najs-binding");
 const najs_facade_1 = require("najs-facade");
 const EventFacade_1 = require("../facades/global/EventFacade");
 const ConfigFacade_1 = require("./../facades/global/ConfigFacade");
@@ -20,6 +21,9 @@ class AuthManager extends najs_facade_1.ContextualFacade {
             }
         });
         this.guard(this.findDefaultGuardName());
+    }
+    getClassName() {
+        return constants_1.ContextualFacadeClass.Auth;
     }
     findDefaultGuardName() {
         let firstName;
@@ -108,4 +112,6 @@ class AuthManager extends najs_facade_1.ContextualFacade {
         this.loggedOut = false;
     }
 }
+AuthManager.className = constants_1.ContextualFacadeClass.Auth;
 exports.AuthManager = AuthManager;
+najs_binding_1.register(AuthManager);

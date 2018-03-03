@@ -20,6 +20,7 @@ export const AuthClass = {
 }
 
 export const ContextualFacadeClass = {
+  Auth: 'Najs.AuthManager',
   Input: 'Najs.RequestInput',
   Session: 'Najs.Session'
 }

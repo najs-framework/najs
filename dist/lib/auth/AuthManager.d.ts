@@ -1,9 +1,11 @@
+import { IAutoload } from 'najs-binding';
 import { ContextualFacade } from 'najs-facade';
 import { IGuard, GuardConfiguration } from './interfaces/IGuard';
 import { IAuth } from './interfaces/IAuth';
 import { IAuthenticatable } from './interfaces/IAuthenticatable';
 import { Controller } from '../http/controller/Controller';
-export declare class AuthManager extends ContextualFacade<Controller> implements IAuth {
+export declare class AuthManager extends ContextualFacade<Controller> implements IAuth, IAutoload {
+    static className: string;
     /**
      * The currently authenticated user.
      */
@@ -29,6 +31,7 @@ export declare class AuthManager extends ContextualFacade<Controller> implements
         [key: string]: IGuard;
     };
     constructor(controller: Controller);
+    getClassName(): string;
     findDefaultGuardName(): string;
     resolveGuard(name: string): IGuard | undefined;
     getCurrentGuard(): IGuard;
