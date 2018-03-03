@@ -95,6 +95,7 @@
     "@types/joi": "^13.0.5",
     "@types/lodash": "^4.14.91",
     "@types/mongoose": "^5.0.2",
+    "@types/passport": "^0.4.3",
     "@types/redis": "^2.8.5",
     "@types/sinon": "^4.1.2",
     "@types/winston": "^2.3.7",

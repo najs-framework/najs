@@ -1,27 +1,7 @@
-import { IAuthenticatable } from './IAuthenticatable';
-import { IUserProvider } from './IUserProvider';
-import { Controller } from '../../http/controller/Controller';
-export declare type GuardConfiguration = {
-    driver: string;
-    provider: string;
-    isDefault?: boolean;
-};
-export interface IGuard {
-    /**
-     * Create new instance of IGuard
-     */
-    constructor(controller: Controller, provider: IUserProvider): any;
-    /**
-     * Get user provider.
-     */
-    getUserProvider(): IUserProvider;
-    /**
-     * Determine if there is a user in request.
-     */
+import { Guard } from './Guard';
+import { IAuthenticatable } from '../interfaces/IAuthenticatable';
+export declare class PassportGuard extends Guard {
     hasUser(): boolean;
-    /**
-     * Determine if there is a user in request.
-     */
     hasUser<T extends IAuthenticatable = IAuthenticatable>(user: T): boolean;
     /**
      * Get the currently authenticated user.
