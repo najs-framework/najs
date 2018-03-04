@@ -23,8 +23,7 @@ export const ContextualFacadeClass = {
   Auth: 'Najs.AuthManager',
   Input: 'Najs.RequestInput',
   Session: 'Najs.Session',
-  Cookie: 'Najs.Cookie',
-  SingedCookie: 'Najs.SingedCookie'
+  Cookie: 'Najs.Cookie'
 }
 
 export const ResponseTypeClass = {

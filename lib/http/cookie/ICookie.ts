@@ -117,58 +117,65 @@ export interface ICookie {
    *
    * @param {string} name
    * @param {mixed} value
-   * @param {number} minutes
    */
-  make(name: string, value: any, minutes: number): this
+  make(name: string, value: any): this
   /**
    * makes a cookie
    *
    * @param {string} name
    * @param {mixed} value
-   * @param {number} minutes
    * @param {boolean} signed
    */
-  make(name: string, value: any, minutes: number, signed: boolean): this
+  make(name: string, value: any, signed: boolean): this
   /**
    * makes a cookie
    *
    * @param {string} name
    * @param {mixed} value
-   * @param {number} minutes
    * @param {boolean} signed
+   * @param {number} minutes
+   */
+  make(name: string, value: any, signed: boolean, minutes: number): this
+  /**
+   * makes a cookie
+   *
+   * @param {string} name
+   * @param {mixed} value
+   * @param {boolean} signed
+   * @param {number} minutes
    * @param {string} path
    */
-  make(name: string, value: any, minutes: number, signed: boolean, path: string): this
+  make(name: string, value: any, signed: boolean, minutes: number, path: string): this
   /**
    * makes a cookie
    *
    * @param {string} name
    * @param {mixed} value
-   * @param {number} minutes
    * @param {boolean} signed
+   * @param {number} minutes
    * @param {string} path
    * @param {string} domain
    */
-  make(name: string, value: any, minutes: number, signed: boolean, path: string, domain: string): this
+  make(name: string, value: any, signed: boolean, minutes: number, path: string, domain: string): this
   /**
    * makes a cookie
    *
    * @param {string} name
    * @param {mixed} value
-   * @param {number} minutes
    * @param {boolean} signed
+   * @param {number} minutes
    * @param {string} path
    * @param {string} domain
    * @param {boolean} secure
    */
-  make(name: string, value: any, minutes: number, signed: boolean, path: string, domain: string, secure: boolean): this
+  make(name: string, value: any, signed: boolean, minutes: number, path: string, domain: string, secure: boolean): this
   /**
    * makes a cookie
    *
    * @param {string} name
    * @param {mixed} value
-   * @param {number} minutes
    * @param {boolean} signed
+   * @param {number} minutes
    * @param {string} path
    * @param {string} domain
    * @param {boolean} secure
@@ -177,8 +184,8 @@ export interface ICookie {
   make(
     name: string,
     value: any,
-    minutes: number,
     signed: boolean,
+    minutes: number,
     path: string,
     domain: string,
     secure: boolean,

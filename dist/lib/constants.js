@@ -21,8 +21,7 @@ exports.ContextualFacadeClass = {
     Auth: 'Najs.AuthManager',
     Input: 'Najs.RequestInput',
     Session: 'Najs.Session',
-    Cookie: 'Najs.Cookie',
-    SingedCookie: 'Najs.SingedCookie'
+    Cookie: 'Najs.Cookie'
 };
 exports.ResponseTypeClass = {
     Back: 'Najs.BackResponse',

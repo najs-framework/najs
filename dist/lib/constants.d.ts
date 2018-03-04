@@ -20,7 +20,6 @@ export declare const ContextualFacadeClass: {
     Input: string;
     Session: string;
     Cookie: string;
-    SingedCookie: string;
 };
 export declare const ResponseTypeClass: {
     Back: string;
