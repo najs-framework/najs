@@ -53,7 +53,7 @@ export { Session as NajsSession } from './http/session/Session'
 export { ExpressSessionMemoryStore } from './http/session/ExpressSessionMemoryStore'
 
 export { ICookie } from './http/cookie/ICookie'
-export { Cookie } from './http/cookie/Cookie'
+export { Cookie as NajsCookie } from './http/cookie/Cookie'
 
 export { IMiddleware } from './http/middleware/IMiddleware'
 export { IExpressMiddleware } from './http/middleware/IExpressMiddleware'
@@ -98,6 +98,7 @@ export { RouteFacade, Route } from './facades/global/RouteFacade'
 
 export { InputContextualFacade, Input } from './facades/contextual/InputContextualFacade'
 export { SessionContextualFacade, Session } from './facades/contextual/SessionContextualFacade'
+export { CookieContextualFacade, Cookie } from './facades/contextual/CookieContextualFacade'
 
 // event package
 export { IEventEmitter } from './event/IEventEmitter'

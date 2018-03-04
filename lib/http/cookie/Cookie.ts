@@ -1,5 +1,5 @@
 import { ContextualFacadeClass } from '../../constants'
-import { IAutoload } from 'najs-binding'
+import { register, IAutoload } from 'najs-binding'
 import { ContextualFacade } from 'najs-facade'
 import { SetCookieOptions, ICookie } from './ICookie'
 import { Controller } from '../controller/Controller'
@@ -208,3 +208,4 @@ export class Cookie extends ContextualFacade<Controller> implements ICookie, IAu
     return this.make(name, value, optionsOrSigned, 157680000000, <any>path, <any>domain, <any>secure, <any>httpOnly)
   }
 }
+register(Cookie)
