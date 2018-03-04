@@ -17,7 +17,7 @@ class Cookie extends najs_facade_1.ContextualFacade {
         }
     }
     getClassName() {
-        return constants_1.ContextualFacadeClass.Session;
+        return constants_1.ContextualFacadeClass.Cookie;
     }
     getResponse() {
         return this.context.response;
@@ -68,6 +68,10 @@ class Cookie extends najs_facade_1.ContextualFacade {
         return RequestDataReader_1.RequestDataReader.prototype.except.apply(this, arguments);
     }
     forget(name, arg1, arg2) {
+        if (typeof arg1 === 'undefined') {
+            this.getResponse().clearCookie(name);
+            return this;
+        }
         const opts = typeof arg1 === 'object' ? arg1 : {};
         if (typeof arg1 === 'string') {
             opts.path = arg1;

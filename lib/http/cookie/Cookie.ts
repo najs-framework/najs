@@ -15,7 +15,7 @@ export class Cookie extends ContextualFacade<Controller> implements ICookie, IAu
 
   constructor(controller: Controller) {
     super(controller)
-    controller.cookie = <any>this
+    controller.cookie = this
     if (controller instanceof ExpressController) {
       const request: Request = (controller as ExpressController).request
       this.data = Object.assign({}, request.cookies, request.signedCookies)
@@ -25,7 +25,7 @@ export class Cookie extends ContextualFacade<Controller> implements ICookie, IAu
   }
 
   getClassName() {
-    return ContextualFacadeClass.Session
+    return ContextualFacadeClass.Cookie
   }
 
   protected getResponse(): Response {
@@ -63,18 +63,7 @@ export class Cookie extends ContextualFacade<Controller> implements ICookie, IAu
     return RequestDataReader.prototype.has.apply(this, arguments)
   }
 
-  /**
-   * returns true if the item is present
-   *
-   * @param {string} path
-   */
   exists(path: string): boolean
-  /**
-   * returns true if the item is present
-   *
-   * @param {string} path
-   * @param {boolean} signed
-   */
   exists(path: string, signed: boolean): boolean
   exists(path: string, signed?: boolean): boolean {
     if (signed === true) {
@@ -98,13 +87,9 @@ export class Cookie extends ContextualFacade<Controller> implements ICookie, IAu
     return this.data
   }
 
-  /**
-   * gets items defined in params list
-   *
-   * @param {string} path
-   */
   only(path: string): Object
   only(paths: string[]): Object
+  only(...args: Array<string | string[]>): Object
   only(...args: Array<string | string[]>): Object {
     return RequestDataReader.prototype.only.apply(this, arguments)
   }
@@ -121,6 +106,11 @@ export class Cookie extends ContextualFacade<Controller> implements ICookie, IAu
   forget(name: string, path: string, domain: string): this
   forget(name: string, options: SetCookieOptions): this
   forget(name: string, arg1?: SetCookieOptions | string, arg2?: string): this {
+    if (typeof arg1 === 'undefined') {
+      this.getResponse().clearCookie(name)
+      return this
+    }
+
     const opts: SetCookieOptions = typeof arg1 === 'object' ? arg1 : {}
 
     if (typeof arg1 === 'string') {

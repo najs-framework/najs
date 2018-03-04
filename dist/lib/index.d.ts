@@ -37,6 +37,8 @@ export { RequestDataWriter } from './http/request/RequestDataWriter';
 export { ISession } from './http/session/ISession';
 export { Session as NajsSession } from './http/session/Session';
 export { ExpressSessionMemoryStore } from './http/session/ExpressSessionMemoryStore';
+export { ICookie } from './http/cookie/ICookie';
+export { Cookie } from './http/cookie/Cookie';
 export { IMiddleware } from './http/middleware/IMiddleware';
 export { IExpressMiddleware } from './http/middleware/IExpressMiddleware';
 export { ExpressCsurfMiddleware } from './http/middleware/ExpressCsurfMiddleware';

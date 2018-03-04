@@ -18,28 +18,13 @@ export declare class Cookie extends ContextualFacade<Controller> implements ICoo
     get<T extends any>(path: string, defaultValue: T): T;
     has(path: string): boolean;
     has(path: string, signed: boolean): boolean;
-    /**
-     * returns true if the item is present
-     *
-     * @param {string} path
-     */
     exists(path: string): boolean;
-    /**
-     * returns true if the item is present
-     *
-     * @param {string} path
-     * @param {boolean} signed
-     */
     exists(path: string, signed: boolean): boolean;
     all(): Object;
     all(signed: boolean): Object;
-    /**
-     * gets items defined in params list
-     *
-     * @param {string} path
-     */
     only(path: string): Object;
     only(paths: string[]): Object;
+    only(...args: Array<string | string[]>): Object;
     except(path: string): Object;
     except(paths: string[]): Object;
     except(...args: Array<string | string[]>): Object;
