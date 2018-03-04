@@ -22,7 +22,9 @@ export const AuthClass = {
 export const ContextualFacadeClass = {
   Auth: 'Najs.AuthManager',
   Input: 'Najs.RequestInput',
-  Session: 'Najs.Session'
+  Session: 'Najs.Session',
+  Cookie: 'Najs.Cookie',
+  SingedCookie: 'Najs.SingedCookie'
 }
 
 export const ResponseTypeClass = {
@@ -70,6 +72,9 @@ export const ConfigurationKeys = {
   },
   Auth: {
     guards: 'auth.guards'
+  },
+  Cookie: {
+    secret: 'cookie.secret'
   },
   Middleware: {
     csurfOptions: 'middleware.csurf',

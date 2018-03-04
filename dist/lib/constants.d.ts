@@ -19,6 +19,8 @@ export declare const ContextualFacadeClass: {
     Auth: string;
     Input: string;
     Session: string;
+    Cookie: string;
+    SingedCookie: string;
 };
 export declare const ResponseTypeClass: {
     Back: string;
@@ -63,6 +65,9 @@ export declare const ConfigurationKeys: {
     };
     Auth: {
         guards: string;
+    };
+    Cookie: {
+        secret: string;
     };
     Middleware: {
         csurfOptions: string;

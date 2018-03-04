@@ -20,7 +20,9 @@ exports.AuthClass = {
 exports.ContextualFacadeClass = {
     Auth: 'Najs.AuthManager',
     Input: 'Najs.RequestInput',
-    Session: 'Najs.Session'
+    Session: 'Najs.Session',
+    Cookie: 'Najs.Cookie',
+    SingedCookie: 'Najs.SingedCookie'
 };
 exports.ResponseTypeClass = {
     Back: 'Najs.BackResponse',
@@ -65,6 +67,9 @@ exports.ConfigurationKeys = {
     },
     Auth: {
         guards: 'auth.guards'
+    },
+    Cookie: {
+        secret: 'cookie.secret'
     },
     Middleware: {
         csurfOptions: 'middleware.csurf',

@@ -50,7 +50,7 @@ class ExpressHttpDriver {
         app.use(BodyParser.urlencoded({ extended: true }));
     }
     setupCookieParser(app) {
-        app.use(CookieParser());
+        app.use(CookieParser(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Cookie.secret, 'najs')));
     }
     setupSession(app) {
         app.use(Session(Object.assign({}, {

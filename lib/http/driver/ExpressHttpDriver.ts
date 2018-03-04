@@ -95,7 +95,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   }
 
   protected setupCookieParser(app: ExpressApp) {
-    app.use(CookieParser())
+    app.use(CookieParser(ConfigFacade.get(ConfigurationKeys.Cookie.secret, 'najs')))
   }
 
   protected setupSession(app: ExpressApp) {
