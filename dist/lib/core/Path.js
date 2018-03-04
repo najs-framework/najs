@@ -11,34 +11,34 @@ class Path extends najs_facade_1.Facade {
         return Path.className;
     }
     get(...args) {
-        return SystemPath.resolve(Najs_1.Najs['cwd'], ...args);
+        return this.cwd(...args);
     }
     cwd(...args) {
         return SystemPath.resolve(Najs_1.Najs['cwd'], ...args);
     }
     app(...args) {
-        return SystemPath.resolve(Najs_1.Najs['cwd'], ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.app, 'app'), ...args);
+        return this.cwd(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.app, 'app'), ...args);
     }
     config(...args) {
-        return SystemPath.resolve(Najs_1.Najs['cwd'], ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.config, 'config'), ...args);
+        return this.cwd(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.config, 'config'), ...args);
     }
     layout(...args) {
-        return SystemPath.resolve(Najs_1.Najs['cwd'], ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.layout, SystemPath.join('resources', 'view', 'layout')), ...args);
+        return this.cwd(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.layout, SystemPath.join('resources', 'view', 'layout')), ...args);
     }
     public(...args) {
-        return SystemPath.resolve(Najs_1.Najs['cwd'], ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.public, 'public'), ...args);
+        return this.cwd(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.public, 'public'), ...args);
     }
     resource(...args) {
-        return SystemPath.resolve(Najs_1.Najs['cwd'], ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.resource, 'resources'), ...args);
+        return this.cwd(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.resource, 'resources'), ...args);
     }
     route(...args) {
-        return SystemPath.resolve(Najs_1.Najs['cwd'], ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.route, 'routes'), ...args);
+        return this.cwd(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.route, 'routes'), ...args);
     }
     storage(...args) {
-        return SystemPath.resolve(Najs_1.Najs['cwd'], ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.storage, SystemPath.join('app', 'storage')), ...args);
+        return this.cwd(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.storage, SystemPath.join('app', 'storage')), ...args);
     }
     view(...args) {
-        return SystemPath.resolve(Najs_1.Najs['cwd'], ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.view, SystemPath.join('resources', 'view')), ...args);
+        return this.cwd(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths.view, SystemPath.join('resources', 'view')), ...args);
     }
 }
 Path.className = constants_1.GlobalFacadeClass.Path;

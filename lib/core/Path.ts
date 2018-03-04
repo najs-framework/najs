@@ -14,7 +14,7 @@ export class Path extends Facade implements IPath, IAutoload {
   }
 
   get(...args: string[]): string {
-    return SystemPath.resolve(Najs['cwd'], ...args)
+    return this.cwd(...args)
   }
 
   cwd(...args: string[]): string {
@@ -22,47 +22,38 @@ export class Path extends Facade implements IPath, IAutoload {
   }
 
   app(...args: string[]): string {
-    return SystemPath.resolve(Najs['cwd'], ConfigFacade.get(ConfigurationKeys.Paths.app, 'app'), ...args)
+    return this.cwd(ConfigFacade.get(ConfigurationKeys.Paths.app, 'app'), ...args)
   }
 
   config(...args: string[]): string {
-    return SystemPath.resolve(Najs['cwd'], ConfigFacade.get(ConfigurationKeys.Paths.config, 'config'), ...args)
+    return this.cwd(ConfigFacade.get(ConfigurationKeys.Paths.config, 'config'), ...args)
   }
 
   layout(...args: string[]): string {
-    return SystemPath.resolve(
-      Najs['cwd'],
+    return this.cwd(
       ConfigFacade.get(ConfigurationKeys.Paths.layout, SystemPath.join('resources', 'view', 'layout')),
       ...args
     )
   }
 
   public(...args: string[]): string {
-    return SystemPath.resolve(Najs['cwd'], ConfigFacade.get(ConfigurationKeys.Paths.public, 'public'), ...args)
+    return this.cwd(ConfigFacade.get(ConfigurationKeys.Paths.public, 'public'), ...args)
   }
 
   resource(...args: string[]): string {
-    return SystemPath.resolve(Najs['cwd'], ConfigFacade.get(ConfigurationKeys.Paths.resource, 'resources'), ...args)
+    return this.cwd(ConfigFacade.get(ConfigurationKeys.Paths.resource, 'resources'), ...args)
   }
 
   route(...args: string[]): string {
-    return SystemPath.resolve(Najs['cwd'], ConfigFacade.get(ConfigurationKeys.Paths.route, 'routes'), ...args)
+    return this.cwd(ConfigFacade.get(ConfigurationKeys.Paths.route, 'routes'), ...args)
   }
 
   storage(...args: string[]): string {
-    return SystemPath.resolve(
-      Najs['cwd'],
-      ConfigFacade.get(ConfigurationKeys.Paths.storage, SystemPath.join('app', 'storage')),
-      ...args
-    )
+    return this.cwd(ConfigFacade.get(ConfigurationKeys.Paths.storage, SystemPath.join('app', 'storage')), ...args)
   }
 
   view(...args: string[]): string {
-    return SystemPath.resolve(
-      Najs['cwd'],
-      ConfigFacade.get(ConfigurationKeys.Paths.view, SystemPath.join('resources', 'view')),
-      ...args
-    )
+    return this.cwd(ConfigFacade.get(ConfigurationKeys.Paths.view, SystemPath.join('resources', 'view')), ...args)
   }
 }
 register(Path, GlobalFacadeClass.Path)
