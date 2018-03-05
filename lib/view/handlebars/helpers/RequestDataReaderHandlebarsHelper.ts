@@ -27,18 +27,11 @@ export class RequestDataReaderHandlebarsHelper extends HandlebarsHelper<any, Exp
     }
 
     switch (command.toLowerCase()) {
-      case 'except':
-      case 'only':
-        Reflect.apply(
-          this.controller[this.property][command],
-          this.controller[this.property],
-          Array.from(arguments).slice(1, arguments.length)
-        )
-        return undefined
-
       case 'has':
       case 'exists':
       case 'all':
+      case 'except':
+      case 'only':
         return Reflect.apply(
           this.controller[this.property][command],
           this.controller[this.property],

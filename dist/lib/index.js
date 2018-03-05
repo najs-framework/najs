@@ -71,6 +71,8 @@ var ExpressCorsMiddleware_1 = require("./http/middleware/ExpressCorsMiddleware")
 exports.ExpressCorsMiddleware = ExpressCorsMiddleware_1.ExpressCorsMiddleware;
 var SessionMiddleware_1 = require("./http/middleware/SessionMiddleware");
 exports.SessionMiddleware = SessionMiddleware_1.SessionMiddleware;
+var CookieMiddleware_1 = require("./http/middleware/CookieMiddleware");
+exports.CookieMiddleware = CookieMiddleware_1.CookieMiddleware;
 var RequestDataMiddleware_1 = require("./http/middleware/RequestDataMiddleware");
 exports.RequestDataMiddleware = RequestDataMiddleware_1.RequestDataMiddleware;
 var InputMiddleware_1 = require("./http/middleware/InputMiddleware");
@@ -154,6 +156,8 @@ var SessionHandlebarsHelper_1 = require("./view/handlebars/helpers/SessionHandle
 exports.SessionHandlebarsHelper = SessionHandlebarsHelper_1.SessionHandlebarsHelper;
 var RequestDataReaderHandlebarsHelper_1 = require("./view/handlebars/helpers/RequestDataReaderHandlebarsHelper");
 exports.RequestDataReaderHandlebarsHelper = RequestDataReaderHandlebarsHelper_1.RequestDataReaderHandlebarsHelper;
+var CookieHandlebarsHelper_1 = require("./view/handlebars/helpers/CookieHandlebarsHelper");
+exports.CookieHandlebarsHelper = CookieHandlebarsHelper_1.CookieHandlebarsHelper;
 // internal service providers
 var ExpressHttpDriverServiceProvider_1 = require("./service-providers/ExpressHttpDriverServiceProvider");
 exports.ExpressHttpDriverServiceProvider = ExpressHttpDriverServiceProvider_1.ExpressHttpDriverServiceProvider;

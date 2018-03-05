@@ -1,6 +1,7 @@
 import { ExpressCorsMiddleware } from './middleware/ExpressCorsMiddleware'
 import { ExpressCsurfMiddleware } from './middleware/ExpressCsurfMiddleware'
 import { SessionMiddleware } from './middleware/SessionMiddleware'
+import { CookieMiddleware } from './middleware/CookieMiddleware'
 import { RequestDataMiddleware } from './middleware/RequestDataMiddleware'
 import { InputMiddleware } from './middleware/InputMiddleware'
 import { BodyMiddleware } from './middleware/BodyMiddleware'
@@ -15,10 +16,16 @@ export class HttpKernel implements IAutoload {
   protected globalMiddleware: {
     [key: string]: string | string[]
   } = {
-    default: [ExpressCsurfMiddleware.className, SessionMiddleware.className, RequestDataMiddleware.className],
+    default: [
+      ExpressCsurfMiddleware.className,
+      SessionMiddleware.className,
+      CookieMiddleware.className,
+      RequestDataMiddleware.className
+    ],
     cors: ExpressCorsMiddleware.className,
     csrf: ExpressCsurfMiddleware.className,
     session: SessionMiddleware.className,
+    cookie: CookieMiddleware.className,
     input: InputMiddleware.className,
     body: BodyMiddleware.className,
     query: QueryMiddleware.className,

@@ -2,22 +2,22 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
-const RequestDataReaderHandlebarsHelper_1 = require("../../../../lib/view/handlebars/helpers/RequestDataReaderHandlebarsHelper");
-describe('RequestDataReaderHandlebarsHelper', function () {
+const CookieHandlebarsHelper_1 = require("../../../../lib/view/handlebars/helpers/CookieHandlebarsHelper");
+describe('CookieHandlebarsHelper', function () {
     it('implements IAutoload interface', function () {
-        const helper = Reflect.construct(RequestDataReaderHandlebarsHelper_1.RequestDataReaderHandlebarsHelper, []);
-        expect(helper.getClassName()).toEqual('Najs.RequestDataReaderHandlebarsHelper');
+        const helper = Reflect.construct(CookieHandlebarsHelper_1.CookieHandlebarsHelper, []);
+        expect(helper.getClassName()).toEqual('Najs.CookieHandlebarsHelper');
     });
-    describe('BlockHelper: {{#Input ...}} body {{/Input}}', function () {
+    describe('BlockHelper: {{#Cookie ...}} body {{/Cookie}}', function () {
         it('does nothing if the controller not found, return undefined', function () {
-            const helper = Reflect.construct(RequestDataReaderHandlebarsHelper_1.RequestDataReaderHandlebarsHelper, []);
+            const helper = Reflect.construct(CookieHandlebarsHelper_1.CookieHandlebarsHelper, []);
             const isBlockHelperStub = Sinon.stub(helper, 'isBlockHelper');
             isBlockHelperStub.returns(true);
             expect(helper.run('test')).toBeUndefined();
             isBlockHelperStub.restore();
         });
-        it('does nothing if input (or body/query/params) in the controller not found, return undefined', function () {
-            const helper = Reflect.construct(RequestDataReaderHandlebarsHelper_1.RequestDataReaderHandlebarsHelper, []);
+        it('does nothing if cookie in the controller not found, return undefined', function () {
+            const helper = Reflect.construct(CookieHandlebarsHelper_1.CookieHandlebarsHelper, []);
             helper['controller'] = {};
             const isBlockHelperStub = Sinon.stub(helper, 'isBlockHelper');
             isBlockHelperStub.returns(true);
@@ -25,13 +25,13 @@ describe('RequestDataReaderHandlebarsHelper', function () {
             isBlockHelperStub.restore();
         });
         it('proxies "has" function if it is a block helper', function () { });
-        it('calls .renderChildren() if has key in input (or body/query/params)', function () {
-            const helper = Reflect.construct(RequestDataReaderHandlebarsHelper_1.RequestDataReaderHandlebarsHelper, []);
+        it('calls .renderChildren() if has key in cookie', function () {
+            const helper = Reflect.construct(CookieHandlebarsHelper_1.CookieHandlebarsHelper, []);
             const isBlockHelperStub = Sinon.stub(helper, 'isBlockHelper');
             isBlockHelperStub.returns(true);
-            helper['property'] = 'input';
+            helper['property'] = 'cookie';
             helper['controller'] = {
-                input: {
+                cookie: {
                     has() {
                         return true;
                     }
@@ -43,13 +43,12 @@ describe('RequestDataReaderHandlebarsHelper', function () {
             isBlockHelperStub.restore();
             renderChildrenStub.restore();
         });
-        it('returns undefined if has no key in input (or body/query/params)', function () {
-            const helper = Reflect.construct(RequestDataReaderHandlebarsHelper_1.RequestDataReaderHandlebarsHelper, []);
+        it('returns undefined if has no key in cookie (or body/query/params)', function () {
+            const helper = Reflect.construct(CookieHandlebarsHelper_1.CookieHandlebarsHelper, []);
             const isBlockHelperStub = Sinon.stub(helper, 'isBlockHelper');
             isBlockHelperStub.returns(true);
-            helper['property'] = 'input';
             helper['controller'] = {
-                input: {
+                cookie: {
                     has() {
                         return false;
                     }
@@ -62,16 +61,16 @@ describe('RequestDataReaderHandlebarsHelper', function () {
             renderChildrenStub.restore();
         });
     });
-    describe('Helper: {{Input ...}}', function () {
+    describe('Helper: {{Cookie ...}}', function () {
         it('does nothing if the controller not found, return empty string', function () {
-            const helper = Reflect.construct(RequestDataReaderHandlebarsHelper_1.RequestDataReaderHandlebarsHelper, []);
+            const helper = Reflect.construct(CookieHandlebarsHelper_1.CookieHandlebarsHelper, []);
             const isBlockHelperStub = Sinon.stub(helper, 'isBlockHelper');
             isBlockHelperStub.returns(false);
             expect(helper.run('test')).toEqual('');
             isBlockHelperStub.restore();
         });
         it('does nothing if the controller not found, return empty string', function () {
-            const helper = Reflect.construct(RequestDataReaderHandlebarsHelper_1.RequestDataReaderHandlebarsHelper, []);
+            const helper = Reflect.construct(CookieHandlebarsHelper_1.CookieHandlebarsHelper, []);
             helper['controller'] = {};
             const isBlockHelperStub = Sinon.stub(helper, 'isBlockHelper');
             isBlockHelperStub.returns(false);
@@ -80,81 +79,80 @@ describe('RequestDataReaderHandlebarsHelper', function () {
         });
         const returnSomethingActions = ['all', 'has', 'exists', 'except', 'only'];
         for (const action of returnSomethingActions) {
-            describe('{{Input ' + action + ' ...}}', function () {
+            describe('{{Cookie ' + action + ' ...}}', function () {
                 it('proxies "' + action + '" returns the result', function () {
-                    const helper = Reflect.construct(RequestDataReaderHandlebarsHelper_1.RequestDataReaderHandlebarsHelper, []);
+                    const helper = Reflect.construct(CookieHandlebarsHelper_1.CookieHandlebarsHelper, []);
                     const isBlockHelperStub = Sinon.stub(helper, 'isBlockHelper');
                     isBlockHelperStub.returns(false);
-                    const input = {
+                    const cookie = {
                         [action]: function () {
                             return 'anything';
                         }
                     };
-                    helper['property'] = 'input';
                     helper['controller'] = {
-                        input
+                        cookie
                     };
-                    const actionSpy = Sinon.spy(helper['controller']['input'], action);
+                    const actionSpy = Sinon.spy(helper['controller']['cookie'], action);
                     expect(helper.run(action)).toEqual('anything');
                     expect(actionSpy.calledWith()).toBe(true);
-                    expect(actionSpy.lastCall.thisValue === input).toBe(true);
+                    expect(actionSpy.lastCall.thisValue === cookie).toBe(true);
                     expect(helper.run(action, 'first')).toEqual('anything');
                     expect(actionSpy.calledWith('first')).toBe(true);
-                    expect(actionSpy.lastCall.thisValue === input).toBe(true);
+                    expect(actionSpy.lastCall.thisValue === cookie).toBe(true);
                     expect(helper.run(action, 'first', 'second')).toEqual('anything');
                     expect(actionSpy.calledWith('first', 'second')).toBe(true);
-                    expect(actionSpy.lastCall.thisValue === input).toBe(true);
+                    expect(actionSpy.lastCall.thisValue === cookie).toBe(true);
                     expect(helper.run(action, 'first', 'second', 'third')).toEqual('anything');
                     expect(actionSpy.calledWith('first', 'second', 'third')).toBe(true);
-                    expect(actionSpy.lastCall.thisValue === input).toBe(true);
+                    expect(actionSpy.lastCall.thisValue === cookie).toBe(true);
                     expect(helper.run(action, 'first', ['second', 'third'])).toEqual('anything');
                     expect(actionSpy.calledWith('first', ['second', 'third'])).toBe(true);
-                    expect(actionSpy.lastCall.thisValue === input).toBe(true);
+                    expect(actionSpy.lastCall.thisValue === cookie).toBe(true);
                     isBlockHelperStub.restore();
                     actionSpy.restore();
                 });
             });
         }
-        describe('{{Input get [key]}}', function () {
+        describe('{{Cookie get [key]}}', function () {
             it('proxies "get" returns the result', function () {
-                const helper = Reflect.construct(RequestDataReaderHandlebarsHelper_1.RequestDataReaderHandlebarsHelper, []);
+                const helper = Reflect.construct(CookieHandlebarsHelper_1.CookieHandlebarsHelper, []);
                 const isBlockHelperStub = Sinon.stub(helper, 'isBlockHelper');
                 isBlockHelperStub.returns(false);
-                const input = {
+                const cookie = {
                     get() {
                         return 'anything';
                     }
                 };
-                helper['property'] = 'input';
+                helper['property'] = 'cookie';
                 helper['controller'] = {
-                    input
+                    cookie
                 };
-                const actionSpy = Sinon.spy(helper['controller']['input'], 'get');
+                const actionSpy = Sinon.spy(helper['controller']['cookie'], 'get');
                 expect(helper.run('get', 'something', {})).toEqual('anything');
                 expect(actionSpy.calledWith('something')).toBe(true);
-                expect(actionSpy.lastCall.thisValue === input).toBe(true);
+                expect(actionSpy.lastCall.thisValue === cookie).toBe(true);
                 isBlockHelperStub.restore();
                 actionSpy.restore();
             });
         });
-        describe('{{Input [key]}}', function () {
+        describe('{{Cookie [key]}}', function () {
             it('proxies "get" returns the result', function () {
-                const helper = Reflect.construct(RequestDataReaderHandlebarsHelper_1.RequestDataReaderHandlebarsHelper, []);
+                const helper = Reflect.construct(CookieHandlebarsHelper_1.CookieHandlebarsHelper, []);
                 const isBlockHelperStub = Sinon.stub(helper, 'isBlockHelper');
                 isBlockHelperStub.returns(false);
-                const input = {
+                const cookie = {
                     get() {
                         return 'anything';
                     }
                 };
-                helper['property'] = 'input';
+                helper['property'] = 'cookie';
                 helper['controller'] = {
-                    input
+                    cookie
                 };
-                const actionSpy = Sinon.spy(helper['controller']['input'], 'get');
+                const actionSpy = Sinon.spy(helper['controller']['cookie'], 'get');
                 expect(helper.run('something', {})).toEqual('anything');
                 expect(actionSpy.calledWith('something')).toBe(true);
-                expect(actionSpy.lastCall.thisValue === input).toBe(true);
+                expect(actionSpy.lastCall.thisValue === cookie).toBe(true);
                 isBlockHelperStub.restore();
                 actionSpy.restore();
             });

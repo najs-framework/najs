@@ -20,13 +20,11 @@ class RequestDataReaderHandlebarsHelper extends HandlebarsHelper_1.HandlebarsHel
             return this.controller[this.property].has(command) ? this.renderChildren([]) : undefined;
         }
         switch (command.toLowerCase()) {
-            case 'except':
-            case 'only':
-                Reflect.apply(this.controller[this.property][command], this.controller[this.property], Array.from(arguments).slice(1, arguments.length));
-                return undefined;
             case 'has':
             case 'exists':
             case 'all':
+            case 'except':
+            case 'only':
                 return Reflect.apply(this.controller[this.property][command], this.controller[this.property], Array.from(arguments).slice(1, arguments.length));
             default:
                 if (arguments.length === 2) {

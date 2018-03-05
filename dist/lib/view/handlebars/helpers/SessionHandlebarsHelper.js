@@ -6,42 +6,48 @@ class SessionHandlebarsHelper extends HandlebarsHelper_1.HandlebarsHelper {
     getClassName() {
         return SessionHandlebarsHelper.className;
     }
+    isValid() {
+        return !this.controller || !this.controller.session ? false : true;
+    }
+    handleBlockHelper(key) {
+        if (!this.isValid()) {
+            return undefined;
+        }
+        return this.controller.session.has(key) ? this.renderChildren([]) : undefined;
+    }
+    handleHelper(command, ...args) {
+        if (!this.isValid()) {
+            return '';
+        }
+        const modifyActions = [
+            'reflash',
+            'keep',
+            'flash',
+            'clear',
+            'flush',
+            'delete',
+            'remove',
+            'forget',
+            'set',
+            'put',
+            'push'
+        ];
+        const getResultActions = ['has', 'exists', 'pull', 'all', 'except', 'only'];
+        const isGetResultAction = getResultActions.indexOf(command) !== -1;
+        if (modifyActions.indexOf(command) !== -1 || isGetResultAction) {
+            const result = Reflect.apply(this.controller.session[command], this.controller.session, Array.from(arguments).slice(1, arguments.length));
+            return isGetResultAction ? result : undefined;
+        }
+        if (arguments.length === 2) {
+            return this.controller.session.get(command);
+        }
+        return this.controller.session.get(arguments[1]);
+    }
     run(command, ...args) {
-        const isBlockHelper = this.isBlockHelper();
-        if (!this.controller || !this.controller.session) {
-            return isBlockHelper ? undefined : '';
+        if (this.isBlockHelper()) {
+            return this.handleBlockHelper(command);
         }
-        // if this is block helper, it's perform "has" function
-        if (isBlockHelper) {
-            return this.controller.session.has(command) ? this.renderChildren([]) : undefined;
-        }
-        switch (command.toLowerCase()) {
-            case 'reflash':
-            case 'keep':
-            case 'flash':
-            case 'clear':
-            case 'flush':
-            case 'delete':
-            case 'remove':
-            case 'forget':
-            case 'set':
-            case 'put':
-            case 'push':
-            case 'except':
-            case 'only':
-                Reflect.apply(this.controller.session[command], this.controller.session, Array.from(arguments).slice(1, arguments.length));
-                return undefined;
-            case 'has':
-            case 'exists':
-            case 'pull':
-            case 'all':
-                return Reflect.apply(this.controller.session[command], this.controller.session, Array.from(arguments).slice(1, arguments.length));
-            default:
-                if (arguments.length === 2) {
-                    return this.controller.session.get(command);
-                }
-                return this.controller.session.get(arguments[1]);
-        }
+        return this.handleHelper(command, ...args);
     }
 }
 SessionHandlebarsHelper.className = 'Najs.SessionHandlebarsHelper';

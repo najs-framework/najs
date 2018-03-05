@@ -108,9 +108,7 @@ describe('SessionHandlebarsHelper', function() {
       'forget',
       'set',
       'put',
-      'push',
-      'except',
-      'only'
+      'push'
     ]
     for (const action of doSomethingActions) {
       describe('{{Session ' + action + ' ...}}', function() {
@@ -156,7 +154,7 @@ describe('SessionHandlebarsHelper', function() {
       })
     }
 
-    const returnSomethingActions = ['all', 'has', 'exists', 'pull']
+    const returnSomethingActions = ['all', 'has', 'exists', 'pull', 'except', 'only']
     for (const action of returnSomethingActions) {
       describe('{{Session ' + action + ' ...}}', function() {
         it('proxies "' + action + '" returns the result', function() {
