@@ -15,7 +15,8 @@ exports.AuthClass = {
     Auth: 'Najs.Auth',
     SessionGuard: 'Najs.SessionGuard',
     JwtGuard: 'Najs.JwtGuard',
-    UserProvider: 'Najs.UserProvider'
+    UserProvider: 'Najs.UserProvider',
+    GenericUser: 'Najs.GenericUser'
 };
 exports.ContextualFacadeClass = {
     Auth: 'Najs.AuthManager',

@@ -16,7 +16,8 @@ export const AuthClass = {
   Auth: 'Najs.Auth',
   SessionGuard: 'Najs.SessionGuard',
   JwtGuard: 'Najs.JwtGuard',
-  UserProvider: 'Najs.UserProvider'
+  UserProvider: 'Najs.UserProvider',
+  GenericUser: 'Najs.GenericUser'
 }
 
 export const ContextualFacadeClass = {

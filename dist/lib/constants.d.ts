@@ -14,6 +14,7 @@ export declare const AuthClass: {
     SessionGuard: string;
     JwtGuard: string;
     UserProvider: string;
+    GenericUser: string;
 };
 export declare const ContextualFacadeClass: {
     Auth: string;
