@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-require("../session/ExpressSessionMemoryStore");
 const constants_1 = require("../../constants");
 const najs_binding_1 = require("najs-binding");
 const index_1 = require("../../index");
@@ -16,7 +15,6 @@ const PathFacade_1 = require("../../facades/global/PathFacade");
 const Express = require("express");
 const Http = require("http");
 const BodyParser = require("body-parser");
-const Session = require("express-session");
 const ExpressHandlebars = require("express-handlebars");
 const addRequestIdMiddleware = require('express-request-id')();
 class ExpressHttpDriver {
@@ -36,7 +34,6 @@ class ExpressHttpDriver {
     setup() {
         const app = Express();
         this.setupBodyParser(app);
-        this.setupSession(app);
         this.setupViewEngine(app);
         this.setupStaticAssets(app);
         app.use(ExpressHttpDriver.addRequestIdMiddleware());
@@ -46,16 +43,6 @@ class ExpressHttpDriver {
     setupBodyParser(app) {
         app.use(BodyParser.json());
         app.use(BodyParser.urlencoded({ extended: true }));
-    }
-    setupSession(app) {
-        app.use(Session(Object.assign({}, {
-            store: najs_binding_1.make(constants_1.SystemClass.ExpressSessionStore)
-        }, ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Session, {
-            secret: 'najs',
-            resave: false,
-            unset: 'destroy',
-            saveUninitialized: true
-        }))));
     }
     setupViewEngine(app) {
         const viewEngine = ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.ViewEngineName, 'hbs');

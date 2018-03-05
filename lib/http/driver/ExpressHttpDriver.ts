@@ -1,4 +1,3 @@
-import '../session/ExpressSessionMemoryStore'
 import { HttpKernel } from './../HttpKernel'
 import { SystemClass, ConfigurationKeys } from '../../constants'
 import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver'
@@ -18,7 +17,6 @@ import { PathFacade } from '../../facades/global/PathFacade'
 import * as Express from 'express'
 import * as Http from 'http'
 import * as BodyParser from 'body-parser'
-import * as Session from 'express-session'
 import * as ExpressHandlebars from 'express-handlebars'
 
 const addRequestIdMiddleware = require('express-request-id')()
@@ -79,7 +77,6 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   protected setup(): ExpressApp {
     const app: ExpressApp = Express()
     this.setupBodyParser(app)
-    this.setupSession(app)
     this.setupViewEngine(app)
     this.setupStaticAssets(app)
     app.use(ExpressHttpDriver.addRequestIdMiddleware())
@@ -90,25 +87,6 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   protected setupBodyParser(app: ExpressApp) {
     app.use(BodyParser.json())
     app.use(BodyParser.urlencoded({ extended: true }))
-  }
-
-  protected setupSession(app: ExpressApp) {
-    app.use(
-      Session(
-        Object.assign(
-          {},
-          {
-            store: make(SystemClass.ExpressSessionStore)
-          },
-          ConfigFacade.get(ConfigurationKeys.Session, {
-            secret: 'najs',
-            resave: false,
-            unset: 'destroy',
-            saveUninitialized: true
-          })
-        )
-      )
-    )
   }
 
   protected setupViewEngine(app: ExpressApp) {
