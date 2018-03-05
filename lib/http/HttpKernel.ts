@@ -17,10 +17,10 @@ export class HttpKernel implements IAutoload {
     [key: string]: string | string[]
   } = {
     default: [
-      ExpressCsurfMiddleware.className,
-      SessionMiddleware.className,
       CookieMiddleware.className,
-      RequestDataMiddleware.className
+      ExpressCsurfMiddleware.className,
+      RequestDataMiddleware.className,
+      SessionMiddleware.className
     ],
     cors: ExpressCorsMiddleware.className,
     csrf: ExpressCsurfMiddleware.className,

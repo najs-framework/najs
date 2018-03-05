@@ -69,7 +69,8 @@ exports.ConfigurationKeys = {
         guards: 'auth.guards'
     },
     Cookie: {
-        secret: 'cookie.secret'
+        secret: 'cookie.secret',
+        options: 'cookie.options'
     },
     Middleware: {
         csurfOptions: 'middleware.csurf',

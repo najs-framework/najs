@@ -701,12 +701,6 @@ describe('ExpressHttpDriver', function() {
       expect(setupSession.calledWith(driver['express'])).toBe(true)
     })
 
-    it('calls .setupCookieParser()', function() {
-      const setupCookieParser = Sinon.spy(ExpressHttpDriver.prototype, <any>'setupCookieParser')
-      const driver = new ExpressHttpDriver()
-      expect(setupCookieParser.calledWith(driver['express'])).toBe(true)
-    })
-
     it('calls .setupViewEngine() for setting up the view engine', function() {
       const setupViewEngine = Sinon.spy(ExpressHttpDriver.prototype, <any>'setupViewEngine')
       const driver = new ExpressHttpDriver()

@@ -16,7 +16,6 @@ const PathFacade_1 = require("../../facades/global/PathFacade");
 const Express = require("express");
 const Http = require("http");
 const BodyParser = require("body-parser");
-const CookieParser = require("cookie-parser");
 const Session = require("express-session");
 const ExpressHandlebars = require("express-handlebars");
 const addRequestIdMiddleware = require('express-request-id')();
@@ -38,7 +37,6 @@ class ExpressHttpDriver {
         const app = Express();
         this.setupBodyParser(app);
         this.setupSession(app);
-        this.setupCookieParser(app);
         this.setupViewEngine(app);
         this.setupStaticAssets(app);
         app.use(ExpressHttpDriver.addRequestIdMiddleware());
@@ -48,9 +46,6 @@ class ExpressHttpDriver {
     setupBodyParser(app) {
         app.use(BodyParser.json());
         app.use(BodyParser.urlencoded({ extended: true }));
-    }
-    setupCookieParser(app) {
-        app.use(CookieParser(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Cookie.secret, 'najs')));
     }
     setupSession(app) {
         app.use(Session(Object.assign({}, {

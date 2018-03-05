@@ -16,10 +16,10 @@ class HttpKernel {
     constructor() {
         this.globalMiddleware = {
             default: [
-                ExpressCsurfMiddleware_1.ExpressCsurfMiddleware.className,
-                SessionMiddleware_1.SessionMiddleware.className,
                 CookieMiddleware_1.CookieMiddleware.className,
-                RequestDataMiddleware_1.RequestDataMiddleware.className
+                ExpressCsurfMiddleware_1.ExpressCsurfMiddleware.className,
+                RequestDataMiddleware_1.RequestDataMiddleware.className,
+                SessionMiddleware_1.SessionMiddleware.className
             ],
             cors: ExpressCorsMiddleware_1.ExpressCorsMiddleware.className,
             csrf: ExpressCsurfMiddleware_1.ExpressCsurfMiddleware.className,

@@ -68,6 +68,7 @@ export declare const ConfigurationKeys: {
     };
     Cookie: {
         secret: string;
+        options: string;
     };
     Middleware: {
         csurfOptions: string;

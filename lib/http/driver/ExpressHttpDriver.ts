@@ -18,7 +18,6 @@ import { PathFacade } from '../../facades/global/PathFacade'
 import * as Express from 'express'
 import * as Http from 'http'
 import * as BodyParser from 'body-parser'
-import * as CookieParser from 'cookie-parser'
 import * as Session from 'express-session'
 import * as ExpressHandlebars from 'express-handlebars'
 
@@ -81,7 +80,6 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     const app: ExpressApp = Express()
     this.setupBodyParser(app)
     this.setupSession(app)
-    this.setupCookieParser(app)
     this.setupViewEngine(app)
     this.setupStaticAssets(app)
     app.use(ExpressHttpDriver.addRequestIdMiddleware())
@@ -92,10 +90,6 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   protected setupBodyParser(app: ExpressApp) {
     app.use(BodyParser.json())
     app.use(BodyParser.urlencoded({ extended: true }))
-  }
-
-  protected setupCookieParser(app: ExpressApp) {
-    app.use(CookieParser(ConfigFacade.get(ConfigurationKeys.Cookie.secret, 'najs')))
   }
 
   protected setupSession(app: ExpressApp) {
