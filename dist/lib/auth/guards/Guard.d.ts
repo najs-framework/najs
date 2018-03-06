@@ -2,6 +2,10 @@ import { IGuard } from '../interfaces/IGuard';
 import { IUserProvider } from '../interfaces/IUserProvider';
 import { IAuthenticatable } from '../interfaces/IAuthenticatable';
 import { Controller } from '../../http/controller/Controller';
+export declare type RememberData = {
+    id: any;
+    token: string;
+};
 export declare abstract class Guard implements IGuard {
     protected controller: Controller;
     protected provider: IUserProvider;
@@ -10,6 +14,9 @@ export declare abstract class Guard implements IGuard {
      * Get user provider.
      */
     getUserProvider(): IUserProvider;
+    protected getCookieRememberKey(): string;
+    protected getRememberData(): RememberData;
+    protected rememberUser<T extends IAuthenticatable = IAuthenticatable>(cookieKey: string, user: T): Promise<void>;
     /**
      * Determine if there is a user in request.
      */

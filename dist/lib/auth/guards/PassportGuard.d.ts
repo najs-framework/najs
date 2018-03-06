@@ -1,6 +1,7 @@
 import { Guard } from './Guard';
 import { IAuthenticatable } from '../interfaces/IAuthenticatable';
 export declare class PassportGuard extends Guard {
+    protected getSessionKey(): string;
     hasUser(): boolean;
     hasUser<T extends IAuthenticatable = IAuthenticatable>(user: T): boolean;
     /**

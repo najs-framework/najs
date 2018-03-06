@@ -2,6 +2,12 @@ import { IGuard } from '../interfaces/IGuard'
 import { IUserProvider } from '../interfaces/IUserProvider'
 import { IAuthenticatable } from '../interfaces/IAuthenticatable'
 import { Controller } from '../../http/controller/Controller'
+import * as Crypto from 'crypto'
+
+export type RememberData = {
+  id: any
+  token: string
+}
 
 export abstract class Guard implements IGuard {
   protected controller: Controller
@@ -19,6 +25,23 @@ export abstract class Guard implements IGuard {
    */
   getUserProvider(): IUserProvider {
     return this.provider
+  }
+
+  protected getCookieRememberKey() {
+    return 'user'
+  }
+
+  protected getRememberData(): RememberData {
+    return this.controller.cookie.get<RememberData>(this.getCookieRememberKey(), { id: undefined, token: '' })
+  }
+
+  protected async rememberUser<T extends IAuthenticatable = IAuthenticatable>(
+    cookieKey: string,
+    user: T
+  ): Promise<void> {
+    const token = Crypto.randomBytes(48).toString('base64')
+    await this.provider.updateRememberToken(user, token)
+    this.controller.cookie.forever(cookieKey, { id: user.getAuthIdentifier(), token: token })
   }
 
   /**
