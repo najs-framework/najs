@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { IHttpDriver } from '../driver/IHttpDriver';
 import { IncomingMessage, ServerResponse } from 'http';
 export interface IResponse {

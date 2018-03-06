@@ -65,6 +65,7 @@ export declare const ConfigurationKeys: {
     };
     Auth: {
         guards: string;
+        jwtGuard: string;
     };
     Cookie: {
         secret: string;

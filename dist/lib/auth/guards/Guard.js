@@ -7,6 +7,7 @@ class Guard {
     "constructor"(controller, provider) {
         this.controller = controller;
         this.provider = provider;
+        this.initialize();
     }
     /**
      * Get user provider.
@@ -14,6 +15,7 @@ class Guard {
     getUserProvider() {
         return this.provider;
     }
+    initialize() { }
     getCookieRememberKey() {
         return 'user';
     }

@@ -1,4 +1,3 @@
-/// <reference types="node" />
 import { IAutoload } from 'najs-binding';
 import { IRequestDataReader } from '../request/IRequestDataReader';
 import { ISession } from '../session/ISession';

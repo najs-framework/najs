@@ -18,6 +18,7 @@ export abstract class Guard implements IGuard {
   "constructor"(controller: Controller, provider: IUserProvider) {
     this.controller = controller
     this.provider = provider
+    this.initialize()
   }
 
   /**
@@ -26,6 +27,8 @@ export abstract class Guard implements IGuard {
   getUserProvider(): IUserProvider {
     return this.provider
   }
+
+  protected initialize() {}
 
   protected getCookieRememberKey() {
     return 'user'

@@ -10,7 +10,7 @@ export declare class GenericUser extends GenericUserBase implements IAuthenticat
     getSchema(): Schema;
     protected isValidCredentials(credentials: Object): any;
     protected createQueryByCredentials(credentials: Object): any;
-    protected hashPassword(password: string, passwordSalt: string): string;
+    protected hashPassword(password: string, passwordSalt: string): any;
     getAuthIdentifierName(): string;
     getAuthIdentifier(): any;
     getAuthPassword(): string;

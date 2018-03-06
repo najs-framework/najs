@@ -66,7 +66,8 @@ exports.ConfigurationKeys = {
         view: 'path.view'
     },
     Auth: {
-        guards: 'auth.guards'
+        guards: 'auth.guards',
+        jwtGuard: 'auth.JwtGuardOptions'
     },
     Cookie: {
         secret: 'cookie.secret',
