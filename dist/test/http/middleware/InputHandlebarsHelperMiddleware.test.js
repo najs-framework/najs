@@ -2,14 +2,19 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
-const BodyMiddleware_1 = require("../../../lib/http/middleware/BodyMiddleware");
+const BodyParserMiddleware_1 = require("../../../lib/http/middleware/BodyParserMiddleware");
+const InputHandlebarsHelperMiddleware_1 = require("../../../lib/http/middleware/InputHandlebarsHelperMiddleware");
 const isPromise_1 = require("../../../lib/private/isPromise");
 const ViewResponse_1 = require("../../../lib/http/response/types/ViewResponse");
 const HandlebarsHelper_1 = require("../../../lib/view/handlebars/HandlebarsHelper");
 const HandlebarsViewResponse_1 = require("../../../lib/view/handlebars/HandlebarsViewResponse");
-describe('BodyMiddleware', function () {
+describe('InputHandlebarsHelperMiddleware', function () {
     it('is fit for najs-binding', function () {
-        expect(BodyMiddleware_1.BodyMiddleware.className).toEqual('Najs.BodyMiddleware');
+        expect(InputHandlebarsHelperMiddleware_1.InputHandlebarsHelperMiddleware.className).toEqual('Najs.InputHandlebarsHelperMiddleware');
+    });
+    it('extends BodyParserMiddleware', function () {
+        const instance = new InputHandlebarsHelperMiddleware_1.InputHandlebarsHelperMiddleware();
+        expect(instance).toBeInstanceOf(BodyParserMiddleware_1.BodyParserMiddleware);
     });
     describe('.after()', function () {
         it('returns a promise', async function () {
@@ -17,7 +22,7 @@ describe('BodyMiddleware', function () {
             const response = {};
             const controller = {};
             const result = {};
-            const instance = new BodyMiddleware_1.BodyMiddleware();
+            const instance = new InputHandlebarsHelperMiddleware_1.InputHandlebarsHelperMiddleware();
             const returnValue = instance.after(request, response, result, controller);
             expect(isPromise_1.isPromise(returnValue)).toBe(true);
         });
@@ -26,11 +31,11 @@ describe('BodyMiddleware', function () {
             const response = {};
             const controller = {};
             const result = new ViewResponse_1.ViewResponse('test');
-            const instance = new BodyMiddleware_1.BodyMiddleware();
+            const instance = new InputHandlebarsHelperMiddleware_1.InputHandlebarsHelperMiddleware();
             const returnValue = await instance.after(request, response, result, controller);
             expect(returnValue === result).toBe(true);
         });
-        it('calls result.helper and add "Body" helper if the view is HandlebarsViewResponse', async function () {
+        it('calls result.helper and add "Input" helper if the view is HandlebarsViewResponse', async function () {
             const request = {};
             const response = {};
             const controller = {};
@@ -38,10 +43,10 @@ describe('BodyMiddleware', function () {
             const helper = () => { };
             const createHelperStub = Sinon.stub(HandlebarsHelper_1.HandlebarsHelper, 'create');
             createHelperStub.returns(helper);
-            const instance = new BodyMiddleware_1.BodyMiddleware();
+            const instance = new InputHandlebarsHelperMiddleware_1.InputHandlebarsHelperMiddleware();
             expect(result.getVariables()).toEqual({});
             const returnValue = await instance.after(request, response, result, controller);
-            expect(result.getVariables()).toEqual({ helpers: { Body: helper } });
+            expect(result.getVariables()).toEqual({ helpers: { Input: helper } });
             expect(returnValue === result).toBe(true);
             expect(createHelperStub.callCount).toEqual(1);
             createHelperStub.restore();

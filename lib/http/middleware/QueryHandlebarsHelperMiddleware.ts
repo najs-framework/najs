@@ -5,14 +5,14 @@ import { HandlebarsViewResponse } from '../../view/handlebars/HandlebarsViewResp
 import { HandlebarsHelper } from '../../view/handlebars/HandlebarsHelper'
 import { RequestDataReaderHandlebarsHelper } from '../../view/handlebars/helpers/RequestDataReaderHandlebarsHelper'
 
-export class InputMiddleware implements IExpressMiddleware {
-  static className: string = 'Najs.InputMiddleware'
+export class QueryHandlebarsHelperMiddleware implements IExpressMiddleware {
+  static className: string = 'Najs.QueryHandlebarsHelperMiddleware'
 
   async after(request: Express.Request, response: Express.Response, result: any, controller: ExpressController) {
     if (result instanceof HandlebarsViewResponse) {
-      result.helper('Input', HandlebarsHelper.create(<any>RequestDataReaderHandlebarsHelper, controller, 'input'))
+      result.helper('Query', HandlebarsHelper.create(<any>RequestDataReaderHandlebarsHelper, controller, 'query'))
     }
     return result
   }
 }
-register(InputMiddleware)
+register(QueryHandlebarsHelperMiddleware)

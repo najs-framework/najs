@@ -16,7 +16,6 @@ import { ConfigFacade } from '../../facades/global/ConfigFacade'
 import { PathFacade } from '../../facades/global/PathFacade'
 import * as Express from 'express'
 import * as Http from 'http'
-import * as BodyParser from 'body-parser'
 import * as ExpressHandlebars from 'express-handlebars'
 
 const addRequestIdMiddleware = require('express-request-id')()
@@ -76,17 +75,11 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
 
   protected setup(): ExpressApp {
     const app: ExpressApp = Express()
-    this.setupBodyParser(app)
     this.setupViewEngine(app)
     this.setupStaticAssets(app)
     app.use(ExpressHttpDriver.addRequestIdMiddleware())
     app.use(ExpressHttpDriver.setXPoweredByMiddleware())
     return app
-  }
-
-  protected setupBodyParser(app: ExpressApp) {
-    app.use(BodyParser.json())
-    app.use(BodyParser.urlencoded({ extended: true }))
   }
 
   protected setupViewEngine(app: ExpressApp) {

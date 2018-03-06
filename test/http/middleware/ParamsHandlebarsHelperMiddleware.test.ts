@@ -1,14 +1,14 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import { QueryMiddleware } from '../../../lib/http/middleware/QueryMiddleware'
+import { ParamsHandlebarsHelperMiddleware } from '../../../lib/http/middleware/ParamsHandlebarsHelperMiddleware'
 import { isPromise } from '../../../lib/private/isPromise'
 import { ViewResponse } from '../../../lib/http/response/types/ViewResponse'
 import { HandlebarsHelper } from '../../../lib/view/handlebars/HandlebarsHelper'
 import { HandlebarsViewResponse } from '../../../lib/view/handlebars/HandlebarsViewResponse'
 
-describe('QueryMiddleware', function() {
+describe('ParamsHandlebarsHelperMiddleware', function() {
   it('is fit for najs-binding', function() {
-    expect(QueryMiddleware.className).toEqual('Najs.QueryMiddleware')
+    expect(ParamsHandlebarsHelperMiddleware.className).toEqual('Najs.ParamsHandlebarsHelperMiddleware')
   })
 
   describe('.after()', function() {
@@ -17,7 +17,7 @@ describe('QueryMiddleware', function() {
       const response = {}
       const controller = {}
       const result = {}
-      const instance = new QueryMiddleware()
+      const instance = new ParamsHandlebarsHelperMiddleware()
 
       const returnValue = instance.after(<any>request, <any>response, result, <any>controller)
       expect(isPromise(returnValue)).toBe(true)
@@ -28,13 +28,13 @@ describe('QueryMiddleware', function() {
       const response = {}
       const controller = {}
       const result = new ViewResponse('test')
-      const instance = new QueryMiddleware()
+      const instance = new ParamsHandlebarsHelperMiddleware()
 
       const returnValue = await instance.after(<any>request, <any>response, result, <any>controller)
       expect(returnValue === result).toBe(true)
     })
 
-    it('calls result.helper and add "Query" helper if the view is HandlebarsViewResponse', async function() {
+    it('calls result.helper and add "Params" helper if the view is HandlebarsViewResponse', async function() {
       const request = {}
       const response = {}
       const controller = {}
@@ -44,11 +44,11 @@ describe('QueryMiddleware', function() {
       const createHelperStub = Sinon.stub(HandlebarsHelper, 'create')
       createHelperStub.returns(helper)
 
-      const instance = new QueryMiddleware()
+      const instance = new ParamsHandlebarsHelperMiddleware()
 
       expect(result.getVariables()).toEqual({})
       const returnValue = await instance.after(<any>request, <any>response, result, <any>controller)
-      expect(result.getVariables()).toEqual({ helpers: { Query: helper } })
+      expect(result.getVariables()).toEqual({ helpers: { Params: helper } })
       expect(returnValue === result).toBe(true)
 
       expect(createHelperStub.callCount).toEqual(1)

@@ -1,12 +1,13 @@
+import { BodyParserMiddleware } from './middleware/BodyParserMiddleware'
 import { ExpressCorsMiddleware } from './middleware/ExpressCorsMiddleware'
 import { ExpressCsurfMiddleware } from './middleware/ExpressCsurfMiddleware'
 import { SessionMiddleware } from './middleware/SessionMiddleware'
 import { CookieMiddleware } from './middleware/CookieMiddleware'
 import { RequestDataMiddleware } from './middleware/RequestDataMiddleware'
-import { InputMiddleware } from './middleware/InputMiddleware'
-import { BodyMiddleware } from './middleware/BodyMiddleware'
-import { QueryMiddleware } from './middleware/QueryMiddleware'
-import { ParamsMiddleware } from './middleware/ParamsMiddleware'
+import { InputHandlebarsHelperMiddleware } from './middleware/InputHandlebarsHelperMiddleware'
+import { BodyHandlebarsHelperMiddleware } from './middleware/BodyHandlebarsHelperMiddleware'
+import { QueryHandlebarsHelperMiddleware } from './middleware/QueryHandlebarsHelperMiddleware'
+import { ParamsHandlebarsHelperMiddleware } from './middleware/ParamsHandlebarsHelperMiddleware'
 import { IAutoload, make, register } from 'najs-binding'
 import { IMiddleware } from './middleware/IMiddleware'
 import { isString } from 'lodash'
@@ -17,6 +18,7 @@ export class HttpKernel implements IAutoload {
     [key: string]: string | string[]
   } = {
     default: [
+      BodyParserMiddleware.className,
       CookieMiddleware.className,
       ExpressCsurfMiddleware.className,
       RequestDataMiddleware.className,
@@ -26,10 +28,11 @@ export class HttpKernel implements IAutoload {
     csrf: ExpressCsurfMiddleware.className,
     session: SessionMiddleware.className,
     cookie: CookieMiddleware.className,
-    input: InputMiddleware.className,
-    body: BodyMiddleware.className,
-    query: QueryMiddleware.className,
-    params: ParamsMiddleware.className,
+    'body-parser': BodyParserMiddleware.className,
+    'input-helper': InputHandlebarsHelperMiddleware.className,
+    'body-helper': BodyHandlebarsHelperMiddleware.className,
+    'query-helper': QueryHandlebarsHelperMiddleware.className,
+    'params-helper': ParamsHandlebarsHelperMiddleware.className,
     'request-data': RequestDataMiddleware.className
   }
 

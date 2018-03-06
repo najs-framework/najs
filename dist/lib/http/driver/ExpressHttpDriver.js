@@ -14,7 +14,6 @@ const ConfigFacade_1 = require("../../facades/global/ConfigFacade");
 const PathFacade_1 = require("../../facades/global/PathFacade");
 const Express = require("express");
 const Http = require("http");
-const BodyParser = require("body-parser");
 const ExpressHandlebars = require("express-handlebars");
 const addRequestIdMiddleware = require('express-request-id')();
 class ExpressHttpDriver {
@@ -33,16 +32,11 @@ class ExpressHttpDriver {
     }
     setup() {
         const app = Express();
-        this.setupBodyParser(app);
         this.setupViewEngine(app);
         this.setupStaticAssets(app);
         app.use(ExpressHttpDriver.addRequestIdMiddleware());
         app.use(ExpressHttpDriver.setXPoweredByMiddleware());
         return app;
-    }
-    setupBodyParser(app) {
-        app.use(BodyParser.json());
-        app.use(BodyParser.urlencoded({ extended: true }));
     }
     setupViewEngine(app) {
         const viewEngine = ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.ViewEngineName, 'hbs');

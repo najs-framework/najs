@@ -1,3 +1,4 @@
+import { BodyParserMiddleware } from './BodyParserMiddleware'
 import { IExpressMiddleware } from './IExpressMiddleware'
 import { register } from 'najs-binding'
 import { ExpressController } from '../controller/ExpressController'
@@ -5,14 +6,14 @@ import { HandlebarsViewResponse } from '../../view/handlebars/HandlebarsViewResp
 import { HandlebarsHelper } from '../../view/handlebars/HandlebarsHelper'
 import { RequestDataReaderHandlebarsHelper } from '../../view/handlebars/helpers/RequestDataReaderHandlebarsHelper'
 
-export class ParamsMiddleware implements IExpressMiddleware {
-  static className: string = 'Najs.ParamsMiddleware'
+export class InputHandlebarsHelperMiddleware extends BodyParserMiddleware implements IExpressMiddleware {
+  static className: string = 'Najs.InputHandlebarsHelperMiddleware'
 
   async after(request: Express.Request, response: Express.Response, result: any, controller: ExpressController) {
     if (result instanceof HandlebarsViewResponse) {
-      result.helper('Params', HandlebarsHelper.create(<any>RequestDataReaderHandlebarsHelper, controller, 'params'))
+      result.helper('Input', HandlebarsHelper.create(<any>RequestDataReaderHandlebarsHelper, controller, 'input'))
     }
     return result
   }
 }
-register(ParamsMiddleware)
+register(InputHandlebarsHelperMiddleware)
