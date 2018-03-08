@@ -18,24 +18,31 @@ class GenericUser extends exports.GenericUserBase {
             remember_token: { type: String }
         }, { collection: 'users' });
     }
-    isValidCredentials(credentials) {
-        return credentials['email'] && credentials['password'];
+    set password(password) {
+        this.attributes['password'] = this.hashPassword(password);
     }
-    createQueryByCredentials(credentials) {
-        return this.where('email', credentials['email']);
+    get password_salt() {
+        if (!this.attributes['password_salt']) {
+            this.attributes['password_salt'] = Crypto.randomBytes(24).toString('base64');
+        }
+        return this.attributes['password_salt'];
     }
-    hashPassword(password, passwordSalt) {
+    hashPassword(password) {
         const hash = Crypto.createHmac('sha512', this.password_salt);
         hash.update(password);
         return hash.digest('base64');
     }
+    // -------------------------------------------------------------------------------------------------------------------
     getAuthIdentifierName() {
         return 'id';
     }
     getAuthIdentifier() {
         return this.id;
     }
-    getAuthPassword() {
+    getAuthPassword(password) {
+        if (password) {
+            return this.hashPassword(password);
+        }
         return this.password;
     }
     getRememberToken() {
@@ -46,29 +53,6 @@ class GenericUser extends exports.GenericUserBase {
     }
     getRememberTokenName() {
         return 'remember_token';
-    }
-    async retrieveById(identifier) {
-        return this.where('id', identifier).first();
-    }
-    async retrieveByToken(identifier, token) {
-        return this.where(this.getAuthIdentifierName(), identifier)
-            .where(this.getRememberTokenName(), token)
-            .first();
-    }
-    async updateRememberToken(user, token) {
-        this.where(user.getAuthIdentifierName(), user.getAuthIdentifier()).update({
-            [user.getRememberTokenName()]: token
-        });
-    }
-    async retrieveByCredentials(credentials) {
-        if (this.isValidCredentials(credentials)) {
-            return this.createQueryByCredentials(credentials).first();
-        }
-        return undefined;
-    }
-    async validateCredentials(user, credentials) {
-        const hashedPassword = this.hashPassword(credentials['password'], user['password_salt']);
-        return hashedPassword === user.getAuthPassword();
     }
 }
 GenericUser.className = constants_1.AuthClass.GenericUser;

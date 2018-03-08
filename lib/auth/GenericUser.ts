@@ -1,7 +1,6 @@
 import { register } from 'najs-binding'
 import { IGenericUser } from './interfaces/IGenericUser'
 import { IAuthenticatable } from './interfaces/IAuthenticatable'
-import { IUserProvider } from './interfaces/IUserProvider'
 import { AuthClass } from '../constants'
 import { Eloquent, EloquentMongooseSpec } from 'najs-eloquent'
 import { Schema } from 'mongoose'
@@ -11,7 +10,7 @@ export const GenericUserBase: EloquentMongooseSpec<IGenericUser, GenericUser> = 
   IGenericUser,
   GenericUser
 >()
-export class GenericUser extends GenericUserBase implements IAuthenticatable, IUserProvider {
+export class GenericUser extends GenericUserBase implements IAuthenticatable {
   static className: string = AuthClass.GenericUser
 
   getClassName() {
@@ -30,19 +29,24 @@ export class GenericUser extends GenericUserBase implements IAuthenticatable, IU
     )
   }
 
-  protected isValidCredentials(credentials: Object) {
-    return credentials['email'] && credentials['password']
+  set password(password: string) {
+    this.attributes['password'] = this.hashPassword(password)
   }
 
-  protected createQueryByCredentials(credentials: Object): any {
-    return this.where('email', credentials['email'])
+  get password_salt(): string {
+    if (!this.attributes['password_salt']) {
+      this.attributes['password_salt'] = Crypto.randomBytes(24).toString('base64')
+    }
+    return this.attributes['password_salt']
   }
 
-  protected hashPassword(password: string, passwordSalt: string) {
+  protected hashPassword(password: string) {
     const hash: Crypto.Hmac = Crypto.createHmac('sha512', this.password_salt)
     hash.update(password)
     return hash.digest('base64')
   }
+
+  // -------------------------------------------------------------------------------------------------------------------
 
   getAuthIdentifierName(): string {
     return 'id'
@@ -52,7 +56,10 @@ export class GenericUser extends GenericUserBase implements IAuthenticatable, IU
     return this.id
   }
 
-  getAuthPassword(): string {
+  getAuthPassword(password?: string): string {
+    if (password) {
+      return this.hashPassword(password)
+    }
     return this.password
   }
 
@@ -66,42 +73,6 @@ export class GenericUser extends GenericUserBase implements IAuthenticatable, IU
 
   getRememberTokenName(): string {
     return 'remember_token'
-  }
-
-  async retrieveById<T extends IAuthenticatable = IAuthenticatable>(identifier: any): Promise<T | undefined> {
-    return this.where('id', identifier).first()
-  }
-
-  async retrieveByToken<T extends IAuthenticatable = IAuthenticatable>(
-    identifier: any,
-    token: string
-  ): Promise<T | undefined> {
-    return this.where(this.getAuthIdentifierName(), identifier)
-      .where(this.getRememberTokenName(), token)
-      .first()
-  }
-
-  async updateRememberToken<T extends IAuthenticatable = IAuthenticatable>(user: T, token: string): Promise<void> {
-    this.where(user.getAuthIdentifierName(), user.getAuthIdentifier()).update({
-      [user.getRememberTokenName()]: token
-    })
-  }
-
-  async retrieveByCredentials<T extends IAuthenticatable = IAuthenticatable>(
-    credentials: Object
-  ): Promise<T | undefined> {
-    if (this.isValidCredentials(credentials)) {
-      return this.createQueryByCredentials(credentials).first()
-    }
-    return undefined
-  }
-
-  async validateCredentials<T extends IAuthenticatable = IAuthenticatable>(
-    user: T,
-    credentials: Object
-  ): Promise<boolean> {
-    const hashedPassword = this.hashPassword(credentials['password'], user['password_salt'])
-    return hashedPassword === user.getAuthPassword()
   }
 }
 register(GenericUser)

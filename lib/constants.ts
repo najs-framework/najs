@@ -16,7 +16,7 @@ export const AuthClass = {
   Auth: 'Najs.Auth',
   SessionGuard: 'Najs.SessionGuard',
   JwtGuard: 'Najs.JwtGuard',
-  UserProvider: 'Najs.UserProvider',
+  EloquentUserProvider: 'Najs.EloquentUserProvider',
   GenericUser: 'Najs.GenericUser'
 }
 

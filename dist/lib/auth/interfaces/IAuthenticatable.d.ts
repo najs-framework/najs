@@ -10,7 +10,7 @@ export interface IAuthenticatable {
     /**
      * Get the password for the user.
      */
-    getAuthPassword(): string;
+    getAuthPassword(password?: string): string;
     /**
      * Get the token value for the "remember me" session.
      */

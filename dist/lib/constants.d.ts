@@ -13,7 +13,7 @@ export declare const AuthClass: {
     Auth: string;
     SessionGuard: string;
     JwtGuard: string;
-    UserProvider: string;
+    EloquentUserProvider: string;
     GenericUser: string;
 };
 export declare const ContextualFacadeClass: {
