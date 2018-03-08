@@ -31,20 +31,17 @@ export abstract class Guard implements IGuard {
   protected initialize() {}
 
   protected getCookieRememberKey() {
-    return 'user'
+    return 'auth'
   }
 
   protected getRememberData(): RememberData {
     return this.controller.cookie.get<RememberData>(this.getCookieRememberKey(), { id: undefined, token: '' })
   }
 
-  protected async rememberUser<T extends IAuthenticatable = IAuthenticatable>(
-    cookieKey: string,
-    user: T
-  ): Promise<void> {
+  protected async rememberUser<T extends IAuthenticatable = IAuthenticatable>(user: T): Promise<void> {
     const token = Crypto.randomBytes(48).toString('base64')
     await this.provider.updateRememberToken(user, token)
-    this.controller.cookie.forever(cookieKey, { id: user.getAuthIdentifier(), token: token })
+    this.controller.cookie.forever(this.getCookieRememberKey(), { id: user.getAuthIdentifier(), token: token })
   }
 
   /**

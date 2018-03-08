@@ -16,14 +16,14 @@ export class SessionGuard extends Guard {
     }
 
     if (this.controller.session.has(sessionKey)) {
-      return this.controller.session[sessionKey] === user.getAuthIdentifier()
+      return this.controller.session.get(sessionKey) === user.getAuthIdentifier()
     }
     return this.getRememberData().id === user.getAuthIdentifier()
   }
 
   async retrieveUser<T extends IAuthenticatable = IAuthenticatable>(): Promise<T | undefined> {
     if (this.hasUser()) {
-      const user = await this.provider.retrieveById<T>(this.controller.session[this.getSessionKey()])
+      const user = await this.provider.retrieveById<T>(this.controller.session.get(this.getSessionKey()))
       if (!user) {
         const rememberData = this.getRememberData()
         return this.provider.retrieveByToken<T>(rememberData.id, rememberData.token)
@@ -36,7 +36,7 @@ export class SessionGuard extends Guard {
   async attachUser<T extends IAuthenticatable = IAuthenticatable>(user: T, remember: boolean): Promise<void> {
     this.controller.session.put(this.getSessionKey(), user.getAuthIdentifier())
     if (remember) {
-      await this.rememberUser(this.getCookieRememberKey(), user)
+      await this.rememberUser(user)
     }
   }
 

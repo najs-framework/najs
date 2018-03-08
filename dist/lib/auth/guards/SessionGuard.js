@@ -12,13 +12,13 @@ class SessionGuard extends Guard_1.Guard {
             return this.controller.session.has(sessionKey) || this.controller.cookie.has(cookieKey);
         }
         if (this.controller.session.has(sessionKey)) {
-            return this.controller.session[sessionKey] === user.getAuthIdentifier();
+            return this.controller.session.get(sessionKey) === user.getAuthIdentifier();
         }
         return this.getRememberData().id === user.getAuthIdentifier();
     }
     async retrieveUser() {
         if (this.hasUser()) {
-            const user = await this.provider.retrieveById(this.controller.session[this.getSessionKey()]);
+            const user = await this.provider.retrieveById(this.controller.session.get(this.getSessionKey()));
             if (!user) {
                 const rememberData = this.getRememberData();
                 return this.provider.retrieveByToken(rememberData.id, rememberData.token);
@@ -30,7 +30,7 @@ class SessionGuard extends Guard_1.Guard {
     async attachUser(user, remember) {
         this.controller.session.put(this.getSessionKey(), user.getAuthIdentifier());
         if (remember) {
-            await this.rememberUser(this.getCookieRememberKey(), user);
+            await this.rememberUser(user);
         }
     }
     async detachUser(user) {

@@ -47,7 +47,7 @@ export class PassportGuard extends Guard {
   async attachUser<T extends IAuthenticatable = IAuthenticatable>(user: T, remember: boolean): Promise<void> {
     this.controller.request['login'](user)
     if (remember) {
-      await this.rememberUser(this.getCookieRememberKey(), user)
+      await this.rememberUser(user)
     }
   }
 

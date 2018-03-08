@@ -17,15 +17,15 @@ class Guard {
     }
     initialize() { }
     getCookieRememberKey() {
-        return 'user';
+        return 'auth';
     }
     getRememberData() {
         return this.controller.cookie.get(this.getCookieRememberKey(), { id: undefined, token: '' });
     }
-    async rememberUser(cookieKey, user) {
+    async rememberUser(user) {
         const token = Crypto.randomBytes(48).toString('base64');
         await this.provider.updateRememberToken(user, token);
-        this.controller.cookie.forever(cookieKey, { id: user.getAuthIdentifier(), token: token });
+        this.controller.cookie.forever(this.getCookieRememberKey(), { id: user.getAuthIdentifier(), token: token });
     }
 }
 exports.Guard = Guard;

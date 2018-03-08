@@ -138,3 +138,6 @@ export { CookieHandlebarsHelper } from './view/handlebars/helpers/CookieHandleba
 export { ExpressHttpDriverServiceProvider } from './service-providers/ExpressHttpDriverServiceProvider'
 export { HandlebarsViewServiceProvider } from './service-providers/HandlebarsViewServiceProvider'
 export { MongooseServiceProvider } from './service-providers/MongooseServiceProvider'
+
+// auth package
+export { Guard } from './auth/guards/Guard'

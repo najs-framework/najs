@@ -17,7 +17,7 @@ export declare abstract class Guard implements IGuard {
     protected initialize(): void;
     protected getCookieRememberKey(): string;
     protected getRememberData(): RememberData;
-    protected rememberUser<T extends IAuthenticatable = IAuthenticatable>(cookieKey: string, user: T): Promise<void>;
+    protected rememberUser<T extends IAuthenticatable = IAuthenticatable>(user: T): Promise<void>;
     /**
      * Determine if there is a user in request.
      */

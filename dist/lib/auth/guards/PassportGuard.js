@@ -40,7 +40,7 @@ class PassportGuard extends Guard_1.Guard {
     async attachUser(user, remember) {
         this.controller.request['login'](user);
         if (remember) {
-            await this.rememberUser(this.getCookieRememberKey(), user);
+            await this.rememberUser(user);
         }
     }
     /**
