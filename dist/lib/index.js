@@ -170,3 +170,5 @@ exports.MongooseServiceProvider = MongooseServiceProvider_1.MongooseServiceProvi
 // auth package
 var Guard_1 = require("./auth/guards/Guard");
 exports.Guard = Guard_1.Guard;
+var SessionGuard_1 = require("./auth/guards/SessionGuard");
+exports.SessionGuard = SessionGuard_1.SessionGuard;

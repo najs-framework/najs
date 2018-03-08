@@ -91,3 +91,4 @@ export { ExpressHttpDriverServiceProvider } from './service-providers/ExpressHtt
 export { HandlebarsViewServiceProvider } from './service-providers/HandlebarsViewServiceProvider';
 export { MongooseServiceProvider } from './service-providers/MongooseServiceProvider';
 export { Guard } from './auth/guards/Guard';
+export { SessionGuard } from './auth/guards/SessionGuard';
