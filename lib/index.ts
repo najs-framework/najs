@@ -142,3 +142,4 @@ export { MongooseServiceProvider } from './service-providers/MongooseServiceProv
 // auth package
 export { Guard } from './auth/guards/Guard'
 export { SessionGuard } from './auth/guards/SessionGuard'
+export { GenericUser } from './auth/GenericUser'

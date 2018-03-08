@@ -46,6 +46,21 @@ export class GenericUser extends GenericUserBase implements IAuthenticatable {
     return hash.digest('base64')
   }
 
+  protected cleanSecretAttribute(value: Object) {
+    delete value['remember_token']
+    delete value['password']
+    delete value['password_salt']
+    return value
+  }
+
+  toObject() {
+    return this.cleanSecretAttribute(super.toObject())
+  }
+
+  toJson() {
+    return this.cleanSecretAttribute(super.toJson())
+  }
+
   // -------------------------------------------------------------------------------------------------------------------
 
   getAuthIdentifierName(): string {
@@ -60,7 +75,7 @@ export class GenericUser extends GenericUserBase implements IAuthenticatable {
     if (password) {
       return this.hashPassword(password)
     }
-    return this.password
+    return this.attributes['password']
   }
 
   getRememberToken(): string {

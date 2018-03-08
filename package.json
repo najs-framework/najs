@@ -24,23 +24,14 @@
         "statements": 100
       }
     },
-    "moduleFileExtensions": [
-      "js",
-      "ts",
-      "json"
-    ],
+    "moduleFileExtensions": ["js", "ts", "json"],
     "transform": {
       "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js"
     },
-    "testMatch": [
-      "**/test/**/*.test.ts",
-      "**/test/**/*.test.js"
-    ],
+    "testMatch": ["**/test/**/*.test.ts", "**/test/**/*.test.js"],
     "testEnvironment": "node"
   },
-  "files": [
-    "dist/**/*"
-  ],
+  "files": ["dist/**/*"],
   "main": "./dist/lib/index.js",
   "types": "./dist/lib/index.d.ts",
   "repository": {
@@ -107,7 +98,7 @@
     "@types/joi": "^13.0.5",
     "@types/jsonwebtoken": "^7.2.5",
     "@types/lodash": "^4.14.91",
-    "@types/mongoose": "^5.0.5",
+    "@types/mongoose": "^5.0.6",
     "@types/passport": "^0.4.3",
     "@types/redis": "^2.8.5",
     "@types/sinon": "^4.1.2",
@@ -126,7 +117,7 @@
     "handlebars": "^4.0.11",
     "handlebars-helpers": "^0.10.0",
     "jest": "^21.2.1",
-    "mongoose": "^5.0.8",
+    "mongoose": "^5.0.9",
     "najs-eloquent": "^0.2.15",
     "redis": "^2.8.0",
     "ts-jest": "^21.2.3",

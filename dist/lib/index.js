@@ -172,3 +172,5 @@ var Guard_1 = require("./auth/guards/Guard");
 exports.Guard = Guard_1.Guard;
 var SessionGuard_1 = require("./auth/guards/SessionGuard");
 exports.SessionGuard = SessionGuard_1.SessionGuard;
+var GenericUser_1 = require("./auth/GenericUser");
+exports.GenericUser = GenericUser_1.GenericUser;

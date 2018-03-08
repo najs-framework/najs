@@ -32,6 +32,18 @@ class GenericUser extends exports.GenericUserBase {
         hash.update(password);
         return hash.digest('base64');
     }
+    cleanSecretAttribute(value) {
+        delete value['remember_token'];
+        delete value['password'];
+        delete value['password_salt'];
+        return value;
+    }
+    toObject() {
+        return this.cleanSecretAttribute(super.toObject());
+    }
+    toJson() {
+        return this.cleanSecretAttribute(super.toJson());
+    }
     // -------------------------------------------------------------------------------------------------------------------
     getAuthIdentifierName() {
         return 'id';
@@ -43,7 +55,7 @@ class GenericUser extends exports.GenericUserBase {
         if (password) {
             return this.hashPassword(password);
         }
-        return this.password;
+        return this.attributes['password'];
     }
     getRememberToken() {
         return this.remember_token;

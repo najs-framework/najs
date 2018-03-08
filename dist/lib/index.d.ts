@@ -92,3 +92,4 @@ export { HandlebarsViewServiceProvider } from './service-providers/HandlebarsVie
 export { MongooseServiceProvider } from './service-providers/MongooseServiceProvider';
 export { Guard } from './auth/guards/Guard';
 export { SessionGuard } from './auth/guards/SessionGuard';
+export { GenericUser } from './auth/GenericUser';

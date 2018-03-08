@@ -10,6 +10,9 @@ export declare class GenericUser extends GenericUserBase implements IAuthenticat
     password: string;
     readonly password_salt: string;
     protected hashPassword(password: string): any;
+    protected cleanSecretAttribute(value: Object): Object;
+    toObject(): Object;
+    toJson(): Object;
     getAuthIdentifierName(): string;
     getAuthIdentifier(): any;
     getAuthPassword(password?: string): string;
