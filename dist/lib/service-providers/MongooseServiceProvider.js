@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const constants_1 = require("./../constants");
-const ConfigFacade_1 = require("./../facades/global/ConfigFacade");
+const constants_1 = require("../constants");
+const ConfigFacade_1 = require("../facades/global/ConfigFacade");
 const ServiceProvider_1 = require("../core/ServiceProvider");
 const najs_binding_1 = require("najs-binding");
 const mongoose = require('mongoose');

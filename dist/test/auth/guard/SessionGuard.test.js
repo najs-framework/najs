@@ -4,7 +4,7 @@ require("jest");
 const Sinon = require("sinon");
 const Guard_1 = require("../../../lib/auth/guards/Guard");
 const SessionGuard_1 = require("../../../lib/auth/guards/SessionGuard");
-const constants_1 = require("./../../../lib/constants");
+const constants_1 = require("../../../lib/constants");
 describe('SessionGuard', function () {
     it('extends Guard', function () {
         const controller = {};

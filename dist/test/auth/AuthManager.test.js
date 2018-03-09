@@ -5,7 +5,7 @@ require("../../lib/auth/guards/SessionGuard");
 require("../../lib/auth/GenericUser");
 const Sinon = require("sinon");
 const najs_facade_1 = require("najs-facade");
-const constants_1 = require("./../../lib/constants");
+const constants_1 = require("../../lib/constants");
 const SessionGuard_1 = require("../../lib/auth/guards/SessionGuard");
 const AuthManager_1 = require("../../lib/auth/AuthManager");
 const constants_2 = require("../../lib/constants");

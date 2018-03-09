@@ -1,6 +1,6 @@
 import { register, make, IAutoload } from 'najs-binding'
 import { GenericUser } from './GenericUser'
-import { AuthClass } from './../constants'
+import { AuthClass } from '../constants'
 import { IAuthenticatable } from './interfaces/IAuthenticatable'
 import { IUserProvider } from './interfaces/IUserProvider'
 

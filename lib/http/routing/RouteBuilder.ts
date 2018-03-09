@@ -1,4 +1,4 @@
-import { HttpMethod } from './../HttpMethod'
+import { HttpMethod } from '../HttpMethod'
 import { IRouteBuilder } from './interfaces/IRouteBuilder'
 import { IRouteData } from './interfaces/IRouteData'
 import {

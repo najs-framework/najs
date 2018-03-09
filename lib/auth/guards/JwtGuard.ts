@@ -1,4 +1,4 @@
-import { ConfigurationKeys } from './../../constants'
+import { ConfigurationKeys } from '../../constants'
 import { ConfigFacade } from '../../facades/global/ConfigFacade'
 import { Guard } from './Guard'
 import { IAuthenticatable } from '../interfaces/IAuthenticatable'

@@ -1,4 +1,4 @@
-import { HttpKernel } from './../HttpKernel'
+import { HttpKernel } from '../HttpKernel'
 import { SystemClass, ConfigurationKeys } from '../../constants'
 import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver'
 import { IAutoload, make } from 'najs-binding'

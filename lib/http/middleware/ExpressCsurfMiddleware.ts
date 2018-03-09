@@ -1,5 +1,5 @@
 import { ConfigFacade } from '../../facades/global/ConfigFacade'
-import { ConfigurationKeys } from './../../constants'
+import { ConfigurationKeys } from '../../constants'
 import { IAutoload } from 'najs-binding'
 import { IExpressMiddleware } from './IExpressMiddleware'
 import { register } from 'najs-binding'

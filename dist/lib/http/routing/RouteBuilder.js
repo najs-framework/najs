@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const HttpMethod_1 = require("./../HttpMethod");
+const HttpMethod_1 = require("../HttpMethod");
 const lodash_1 = require("lodash");
 const RouteData_1 = require("./RouteData");
 /**

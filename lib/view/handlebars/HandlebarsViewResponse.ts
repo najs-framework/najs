@@ -1,5 +1,5 @@
 import { register } from 'najs-binding'
-import { ResponseTypeClass } from './../../constants'
+import { ResponseTypeClass } from '../../constants'
 import { ViewResponse } from '../../http/response/types/ViewResponse'
 
 export class HandlebarsViewResponse<T extends Object = {}> extends ViewResponse<T> {

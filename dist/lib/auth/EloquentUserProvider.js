@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const najs_binding_1 = require("najs-binding");
 const GenericUser_1 = require("./GenericUser");
-const constants_1 = require("./../constants");
+const constants_1 = require("../constants");
 class EloquentUserProvider {
     constructor() {
         this.model = najs_binding_1.make(this.getModelName());

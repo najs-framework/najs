@@ -5,7 +5,7 @@ import { IAuth } from './interfaces/IAuth'
 import { IAuthenticatable } from './interfaces/IAuthenticatable'
 import { Controller } from '../http/controller/Controller'
 import { EventFacade } from '../facades/global/EventFacade'
-import { ConfigFacade } from './../facades/global/ConfigFacade'
+import { ConfigFacade } from '../facades/global/ConfigFacade'
 import { AuthEvent, ConfigurationKeys, ContextualFacadeClass } from '../constants'
 
 export class AuthManager extends ContextualFacade<Controller> implements IAuth, IAutoload {
@@ -36,6 +36,7 @@ export class AuthManager extends ContextualFacade<Controller> implements IAuth, 
 
   constructor(controller: Controller) {
     super(controller)
+    controller.auth = this
     this.guardBag = {}
     this.configurations = ConfigFacade.get(ConfigurationKeys.Auth.guards, {
       web: {

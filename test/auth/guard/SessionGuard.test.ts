@@ -2,7 +2,7 @@ import 'jest'
 import * as Sinon from 'sinon'
 import { Guard } from '../../../lib/auth/guards/Guard'
 import { SessionGuard } from '../../../lib/auth/guards/SessionGuard'
-import { AuthClass } from './../../../lib/constants'
+import { AuthClass } from '../../../lib/constants'
 
 describe('SessionGuard', function() {
   it('extends Guard', function() {

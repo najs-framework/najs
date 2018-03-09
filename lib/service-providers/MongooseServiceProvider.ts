@@ -1,5 +1,5 @@
-import { ConfigurationKeys } from './../constants'
-import { ConfigFacade } from './../facades/global/ConfigFacade'
+import { ConfigurationKeys } from '../constants'
+import { ConfigFacade } from '../facades/global/ConfigFacade'
 import { ServiceProvider } from '../core/ServiceProvider'
 import { register, bind } from 'najs-binding'
 import { Schema, Document, Model } from 'mongoose'

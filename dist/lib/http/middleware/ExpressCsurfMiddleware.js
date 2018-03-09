@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ConfigFacade_1 = require("../../facades/global/ConfigFacade");
-const constants_1 = require("./../../constants");
+const constants_1 = require("../../constants");
 const najs_binding_1 = require("najs-binding");
 const ViewResponse_1 = require("../response/types/ViewResponse");
 const Csurf = require("csurf");

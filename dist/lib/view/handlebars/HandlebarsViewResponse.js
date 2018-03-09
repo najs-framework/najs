@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const najs_binding_1 = require("najs-binding");
-const constants_1 = require("./../../constants");
+const constants_1 = require("../../constants");
 const ViewResponse_1 = require("../../http/response/types/ViewResponse");
 class HandlebarsViewResponse extends ViewResponse_1.ViewResponse {
     getClassName() {

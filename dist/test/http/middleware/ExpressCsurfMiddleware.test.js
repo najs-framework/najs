@@ -5,7 +5,7 @@ const Sinon = require("sinon");
 const Middleware = require("../../../lib/http/middleware/ExpressCsurfMiddleware");
 const najs_binding_1 = require("najs-binding");
 const isPromise_1 = require("../../../lib/private/isPromise");
-const ViewResponse_1 = require("./../../../lib/http/response/types/ViewResponse");
+const ViewResponse_1 = require("../../../lib/http/response/types/ViewResponse");
 describe('ExpressCsurfMiddleware', function () {
     it('has shared Express.RequestHandler called CsurfProtection which not init by default', function () {
         expect(Middleware.CsurfProtection).toBeUndefined();

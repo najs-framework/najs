@@ -1,5 +1,5 @@
 /// <reference types="express" />
-import { HttpKernel } from './../HttpKernel';
+import { HttpKernel } from '../HttpKernel';
 import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver';
 import { IAutoload } from 'najs-binding';
 import { IRouteData } from '../routing/interfaces/IRouteData';

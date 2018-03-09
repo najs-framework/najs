@@ -1,4 +1,4 @@
-import { AuthClass } from './../../constants'
+import { AuthClass } from '../../constants'
 import { register, IAutoload } from 'najs-binding'
 import { Guard } from './Guard'
 import { IAuthenticatable } from '../interfaces/IAuthenticatable'

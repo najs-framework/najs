@@ -1,4 +1,4 @@
-import { ContextualFacadeClass } from './../../constants'
+import { ContextualFacadeClass } from '../../constants'
 import { IAutoload, register } from 'najs-binding'
 import { ContextualFacade } from 'najs-facade'
 import { Controller } from '../controller/Controller'

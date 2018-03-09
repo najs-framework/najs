@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const najs_binding_1 = require("najs-binding");
 const najs_facade_1 = require("najs-facade");
 const EventFacade_1 = require("../facades/global/EventFacade");
-const ConfigFacade_1 = require("./../facades/global/ConfigFacade");
+const ConfigFacade_1 = require("../facades/global/ConfigFacade");
 const constants_1 = require("../constants");
 class AuthManager extends najs_facade_1.ContextualFacade {
     constructor(controller) {
@@ -12,6 +12,7 @@ class AuthManager extends najs_facade_1.ContextualFacade {
          * Indicates if the logout method has been called.
          */
         this.loggedOut = false;
+        controller.auth = this;
         this.guardBag = {};
         this.configurations = ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Auth.guards, {
             web: {

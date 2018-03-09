@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const constants_1 = require("./../../constants");
+const constants_1 = require("../../constants");
 const najs_binding_1 = require("najs-binding");
 const najs_facade_1 = require("najs-facade");
 const RequestDataWriter_1 = require("../request/RequestDataWriter");
