@@ -1,5 +1,6 @@
+import { register, make, IAutoload } from 'najs-binding'
+import { GenericUser } from './GenericUser'
 import { AuthClass } from './../constants'
-import { register, IAutoload } from 'najs-binding'
 import { IAuthenticatable } from './interfaces/IAuthenticatable'
 import { IUserProvider } from './interfaces/IUserProvider'
 
@@ -12,24 +13,32 @@ export class EloquentUserProvider implements IUserProvider, IAutoload {
 
   model: IAuthenticatable & EloquentQuery
 
+  constructor() {
+    this.model = make(this.getModelName())
+  }
+
   getClassName() {
     return AuthClass.EloquentUserProvider
   }
 
-  protected getAuthLoginName() {
+  getModelName() {
+    return GenericUser.className
+  }
+
+  getLoginName() {
     return 'email'
   }
 
-  protected getAuthPasswordName() {
+  getPasswordName() {
     return 'password'
   }
 
   protected isValidCredentials(credentials: Object) {
-    return credentials[this.getAuthLoginName()] && credentials[this.getAuthPasswordName()]
+    return !!credentials[this.getLoginName()] && !!credentials[this.getPasswordName()]
   }
 
   async retrieveById<T extends IAuthenticatable = IAuthenticatable>(identifier: any): Promise<T | undefined> {
-    return this.model.where(this.model.getAuthIdentifier(), identifier).first()
+    return this.model.where(this.model.getAuthIdentifierName(), identifier).first()
   }
 
   async retrieveByToken<T extends IAuthenticatable = IAuthenticatable>(
@@ -52,7 +61,7 @@ export class EloquentUserProvider implements IUserProvider, IAutoload {
     credentials: Object
   ): Promise<T | undefined> {
     if (this.isValidCredentials(credentials)) {
-      return this.model.where(this.getAuthLoginName(), credentials[this.getAuthLoginName()]).first()
+      return this.model.where(this.getLoginName(), credentials[this.getLoginName()]).first()
     }
     return undefined
   }
@@ -61,7 +70,7 @@ export class EloquentUserProvider implements IUserProvider, IAutoload {
     user: T,
     credentials: Object
   ): Promise<boolean> {
-    return user.getAuthPassword(credentials[this.getAuthPasswordName()]) === user.getAuthPassword()
+    return user.getAuthPassword(credentials[this.getPasswordName()]) === user.getAuthPassword()
   }
 }
 register(EloquentUserProvider)

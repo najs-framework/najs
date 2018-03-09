@@ -1,22 +1,29 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const constants_1 = require("./../constants");
 const najs_binding_1 = require("najs-binding");
+const GenericUser_1 = require("./GenericUser");
+const constants_1 = require("./../constants");
 class EloquentUserProvider {
+    constructor() {
+        this.model = najs_binding_1.make(this.getModelName());
+    }
     getClassName() {
         return constants_1.AuthClass.EloquentUserProvider;
     }
-    getAuthLoginName() {
+    getModelName() {
+        return GenericUser_1.GenericUser.className;
+    }
+    getLoginName() {
         return 'email';
     }
-    getAuthPasswordName() {
+    getPasswordName() {
         return 'password';
     }
     isValidCredentials(credentials) {
-        return credentials[this.getAuthLoginName()] && credentials[this.getAuthPasswordName()];
+        return !!credentials[this.getLoginName()] && !!credentials[this.getPasswordName()];
     }
     async retrieveById(identifier) {
-        return this.model.where(this.model.getAuthIdentifier(), identifier).first();
+        return this.model.where(this.model.getAuthIdentifierName(), identifier).first();
     }
     async retrieveByToken(identifier, token) {
         return this.model
@@ -31,12 +38,12 @@ class EloquentUserProvider {
     }
     async retrieveByCredentials(credentials) {
         if (this.isValidCredentials(credentials)) {
-            return this.model.where(this.getAuthLoginName(), credentials[this.getAuthLoginName()]).first();
+            return this.model.where(this.getLoginName(), credentials[this.getLoginName()]).first();
         }
         return undefined;
     }
     async validateCredentials(user, credentials) {
-        return user.getAuthPassword(credentials[this.getAuthPasswordName()]) === user.getAuthPassword();
+        return user.getAuthPassword(credentials[this.getPasswordName()]) === user.getAuthPassword();
     }
 }
 EloquentUserProvider.className = constants_1.AuthClass.EloquentUserProvider;

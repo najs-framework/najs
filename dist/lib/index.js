@@ -174,3 +174,5 @@ var SessionGuard_1 = require("./auth/guards/SessionGuard");
 exports.SessionGuard = SessionGuard_1.SessionGuard;
 var GenericUser_1 = require("./auth/GenericUser");
 exports.GenericUser = GenericUser_1.GenericUser;
+var EloquentUserProvider_1 = require("./auth/EloquentUserProvider");
+exports.EloquentUserProvider = EloquentUserProvider_1.EloquentUserProvider;

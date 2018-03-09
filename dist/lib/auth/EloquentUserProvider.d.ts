@@ -7,10 +7,12 @@ export declare type EloquentQuery = {
 export declare class EloquentUserProvider implements IUserProvider, IAutoload {
     static className: string;
     model: IAuthenticatable & EloquentQuery;
+    constructor();
     getClassName(): string;
-    protected getAuthLoginName(): string;
-    protected getAuthPasswordName(): string;
-    protected isValidCredentials(credentials: Object): any;
+    getModelName(): string;
+    getLoginName(): string;
+    getPasswordName(): string;
+    protected isValidCredentials(credentials: Object): boolean;
     retrieveById<T extends IAuthenticatable = IAuthenticatable>(identifier: any): Promise<T | undefined>;
     retrieveByToken<T extends IAuthenticatable = IAuthenticatable>(identifier: any, token: string): Promise<T | undefined>;
     updateRememberToken<T extends IAuthenticatable = IAuthenticatable>(user: T, token: string): Promise<void>;
