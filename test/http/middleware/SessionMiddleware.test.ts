@@ -16,7 +16,7 @@ describe('SessionMiddleware', function() {
     expect(Middleware.Session).toBeUndefined()
   })
 
-  it('creates CookieParser from "express-session" module when constructor called', function() {
+  it('creates Session from "express-session" module when constructor called', function() {
     const makeStoreSpy = Sinon.spy(Middleware.SessionMiddleware.prototype, <any>'makeStore')
     const getOptionsSpy = Sinon.spy(Middleware.SessionMiddleware.prototype, <any>'getOptions')
     make(Middleware.SessionMiddleware.className)

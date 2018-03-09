@@ -59,6 +59,7 @@ export { IMiddleware } from './http/middleware/IMiddleware'
 export { IExpressMiddleware } from './http/middleware/IExpressMiddleware'
 export { ExpressCsurfMiddleware } from './http/middleware/ExpressCsurfMiddleware'
 export { ExpressCorsMiddleware } from './http/middleware/ExpressCorsMiddleware'
+export { AuthMiddleware } from './http/middleware/AuthMiddleware'
 export { SessionMiddleware } from './http/middleware/SessionMiddleware'
 export { CookieMiddleware } from './http/middleware/CookieMiddleware'
 export { BodyParserMiddleware } from './http/middleware/BodyParserMiddleware'
@@ -100,6 +101,7 @@ export { RouteFacade, Route } from './facades/global/RouteFacade'
 
 export { InputContextualFacade, Input } from './facades/contextual/InputContextualFacade'
 export { SessionContextualFacade, Session } from './facades/contextual/SessionContextualFacade'
+export { AuthContextualFacade, Auth } from './facades/contextual/AuthContextualFacade'
 export { CookieContextualFacade, Cookie } from './facades/contextual/CookieContextualFacade'
 
 // event package

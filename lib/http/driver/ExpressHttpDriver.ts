@@ -142,7 +142,6 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     const middlewareList: IMiddleware[] = Array.from(new Set(flatten(middlewareListBucket)))
     if (middlewareList.length > 0) {
       this.createNativeMiddlewareWrapper(middlewareList)
-      handlers.push(this.createBeforeMiddlewareWrapper(middlewareList))
     }
 
     if (isFunction(route.endpoint)) {
@@ -169,21 +168,6 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     return []
   }
 
-  protected createBeforeMiddlewareWrapper(middlewareList: IMiddleware[]) {
-    return async (request: Express.Request, response: Express.Response, next: Express.NextFunction) => {
-      for (const middleware of middlewareList) {
-        if (isFunction(middleware.before)) {
-          try {
-            await Reflect.apply(middleware.before, middleware, [request, response])
-          } catch (error) {
-            return next(error)
-          }
-        }
-      }
-      next()
-    }
-  }
-
   protected createNativeMiddlewareWrapper(middlewareList: IMiddleware[]) {
     for (const middleware of middlewareList) {
       if (isFunction(middleware.native)) {
@@ -197,8 +181,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
       const controller = make<Controller>(controllerName, [request, response])
       const endpoint: any = Reflect.get(controller, endpointName)
       if (isFunction(endpoint)) {
-        const result = Reflect.apply(endpoint, controller, [request, response])
-        await this.handleEndpointResult(request, response, result, controller, middleware)
+        await this.triggerEndpoint(<any>controller, endpoint, request, response, middleware)
       }
     }
   }
@@ -208,8 +191,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
       const controller: Object = this.cloneControllerObject(controllerObject, request, response)
       const endpoint: any = Reflect.get(controller, endpointName)
       if (isFunction(endpoint)) {
-        const result = Reflect.apply(endpoint, controller, [request, response])
-        await this.handleEndpointResult(request, response, result, <any>controller, middleware)
+        await this.triggerEndpoint(<any>controller, endpoint, request, response, middleware)
       }
     }
   }
@@ -225,12 +207,40 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     return async (request: Express.Request, response: Express.Response) => {
       // Can not use make for default ExpressController
       const controller = Reflect.construct(ExpressController, [request, response])
-      const result = Reflect.apply(endpoint, controller, [request, response])
-      await this.handleEndpointResult(request, response, result, controller, middleware)
+      await this.triggerEndpoint(<any>controller, endpoint, request, response, middleware)
     }
   }
 
-  protected async applyAfterMiddlewareWrapper(
+  protected async triggerEndpoint(
+    controller: Controller,
+    endpoint: Function,
+    request: Express.Request,
+    response: Express.Response,
+    middleware: IMiddleware[]
+  ) {
+    await this.applyBeforeMiddleware(middleware, request, response, controller)
+    const result = Reflect.apply(endpoint, controller, [request, response])
+    return this.handleEndpointResult(request, response, result, controller, middleware)
+  }
+
+  protected async applyBeforeMiddleware(
+    middlewareList: IMiddleware[],
+    request: Express.Request,
+    response: Express.Response,
+    controller: Controller
+  ) {
+    if (middlewareList.length === 0) {
+      return
+    }
+
+    for (const middleware of middlewareList) {
+      if (isFunction(middleware.before)) {
+        await Reflect.apply(middleware.before, middleware, [request, response, controller])
+      }
+    }
+  }
+
+  protected async applyAfterMiddleware(
     middlewareList: IMiddleware[],
     request: Express.Request,
     response: Express.Response,
@@ -258,7 +268,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     middleware: IMiddleware[]
   ) {
     const rawValue: any = isPromise(result) ? await (result as Promise<any>) : result
-    const value: any = await this.applyAfterMiddlewareWrapper(middleware, request, response, rawValue, controller)
+    const value: any = await this.applyAfterMiddleware(middleware, request, response, rawValue, controller)
     if (isIResponse(value)) {
       return value.respond(request, response, this)
     }

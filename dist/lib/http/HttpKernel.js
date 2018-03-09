@@ -13,6 +13,7 @@ const ParamsHandlebarsHelperMiddleware_1 = require("./middleware/ParamsHandlebar
 const najs_binding_1 = require("najs-binding");
 const lodash_1 = require("lodash");
 const constants_1 = require("../constants");
+const AuthMiddleware_1 = require("./middleware/AuthMiddleware");
 class HttpKernel {
     constructor() {
         this.globalMiddleware = {
@@ -23,6 +24,7 @@ class HttpKernel {
                 RequestDataMiddleware_1.RequestDataMiddleware.className,
                 SessionMiddleware_1.SessionMiddleware.className
             ],
+            auth: AuthMiddleware_1.AuthMiddleware.className,
             cors: ExpressCorsMiddleware_1.ExpressCorsMiddleware.className,
             csrf: ExpressCsurfMiddleware_1.ExpressCsurfMiddleware.className,
             session: SessionMiddleware_1.SessionMiddleware.className,

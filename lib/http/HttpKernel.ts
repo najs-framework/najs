@@ -12,6 +12,7 @@ import { IAutoload, make, register } from 'najs-binding'
 import { IMiddleware } from './middleware/IMiddleware'
 import { isString } from 'lodash'
 import { SystemClass } from '../constants'
+import { AuthMiddleware } from './middleware/AuthMiddleware'
 
 export class HttpKernel implements IAutoload {
   protected globalMiddleware: {
@@ -24,6 +25,7 @@ export class HttpKernel implements IAutoload {
       RequestDataMiddleware.className,
       SessionMiddleware.className
     ],
+    auth: AuthMiddleware.className,
     cors: ExpressCorsMiddleware.className,
     csrf: ExpressCsurfMiddleware.className,
     session: SessionMiddleware.className,

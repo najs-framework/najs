@@ -15,7 +15,7 @@ describe('SessionMiddleware', function () {
     it('has shared Express.RequestHandler called Session which not init by default', function () {
         expect(Middleware.Session).toBeUndefined();
     });
-    it('creates CookieParser from "express-session" module when constructor called', function () {
+    it('creates Session from "express-session" module when constructor called', function () {
         const makeStoreSpy = Sinon.spy(Middleware.SessionMiddleware.prototype, 'makeStore');
         const getOptionsSpy = Sinon.spy(Middleware.SessionMiddleware.prototype, 'getOptions');
         najs_binding_1.make(Middleware.SessionMiddleware.className);

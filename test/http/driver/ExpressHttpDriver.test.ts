@@ -147,7 +147,7 @@ describe('ExpressHttpDriver', function() {
       expect(handlers[0] === middleware).toBe(true)
     })
 
-    it('creates middlewareList and calls createNativeMiddlewareWrapper(), createBeforeMiddlewareWrapper() if the list not empty', function() {
+    it('creates middlewareList and calls createNativeMiddlewareWrapper() if the list not empty', function() {
       function handler() {}
       const middleware = {}
       const route = {
@@ -162,12 +162,10 @@ describe('ExpressHttpDriver', function() {
       getMiddlewareStub.returns([middleware, middleware, middleware, middleware])
 
       const createNativeMiddlewareWrapperSpy = Sinon.spy(driver, <any>'createNativeMiddlewareWrapper')
-      const createBeforeMiddlewareWrapperSpy = Sinon.spy(driver, <any>'createBeforeMiddlewareWrapper')
 
       const handlers = driver['getEndpointHandlers']('any', 'any', <any>route)
-      expect(handlers).toHaveLength(2)
+      expect(handlers).toHaveLength(1)
       expect(createNativeMiddlewareWrapperSpy.calledWith([middleware])).toBe(true)
-      expect(createBeforeMiddlewareWrapperSpy.calledWith([middleware])).toBe(true)
       getMiddlewareStub.restore()
     })
 
@@ -269,66 +267,6 @@ describe('ExpressHttpDriver', function() {
     })
   })
 
-  describe('protected .createBeforeMiddlewareWrapper()', function() {
-    it('returns an async function', function() {
-      const driver = new ExpressHttpDriver()
-      expect(typeof driver['createBeforeMiddlewareWrapper']([]) === 'function').toBe(true)
-    })
-
-    it('skipped if the middleware does not have .before() function', async function() {
-      const hasBeforeMiddleware = {
-        async before(request: any): Promise<any> {}
-      }
-      const hasNoBeforeMiddleware = {
-        async after(request: any, response: any): Promise<any> {}
-      }
-      const next = function() {}
-
-      const beforeSpy = Sinon.spy(hasBeforeMiddleware, 'before')
-      const afterSpy = Sinon.spy(hasNoBeforeMiddleware, 'after')
-      const nextSpy = Sinon.spy(next)
-
-      const driver = new ExpressHttpDriver()
-      const wrapper = driver['createBeforeMiddlewareWrapper']([hasBeforeMiddleware, hasNoBeforeMiddleware])
-
-      const request = {}
-      const response = {}
-      await wrapper(<any>request, <any>response, nextSpy)
-      expect(beforeSpy.calledWith(request, response)).toBe(true)
-      expect(beforeSpy.firstCall.thisValue === hasBeforeMiddleware).toBe(true)
-      expect(afterSpy.called).toBe(false)
-      expect(nextSpy.called).toBe(true)
-    })
-
-    it('calls next() with error if there is any error in middleware', async function() {
-      const error = new Error()
-      const beforeOneMiddleware = {
-        async before(request: any): Promise<any> {
-          throw error
-        }
-      }
-      const beforeTwoMiddleware = {
-        async before(request: any): Promise<any> {}
-      }
-      const next = function() {}
-
-      const beforeOneSpy = Sinon.spy(beforeOneMiddleware, 'before')
-      const beforeTwoSpy = Sinon.spy(beforeTwoMiddleware, 'before')
-      const nextSpy = Sinon.spy(next)
-
-      const driver = new ExpressHttpDriver()
-      const wrapper = driver['createBeforeMiddlewareWrapper']([beforeOneMiddleware, beforeTwoMiddleware])
-
-      const request = {}
-      const response = {}
-      await wrapper(<any>request, <any>response, nextSpy)
-      expect(beforeOneSpy.calledWith(request, response)).toBe(true)
-      expect(beforeOneSpy.firstCall.thisValue === beforeOneMiddleware).toBe(true)
-      expect(beforeTwoSpy.called).toBe(false)
-      expect(nextSpy.calledWith(error)).toBe(true)
-    })
-  })
-
   describe('protected .createNativeMiddlewareWrapper()', function() {
     it('returns undefined', function() {
       const driver = new ExpressHttpDriver()
@@ -401,7 +339,7 @@ describe('ExpressHttpDriver', function() {
       endpointSpy.restore()
     })
 
-    it('creates instance of Controller via make, calls endpoint and calls handleEndpointResult()', function() {
+    it('creates instance of Controller via make, calls endpoint and calls handleEndpointResult()', async function() {
       const makeSpy = Sinon.spy(NajsBinding, 'make')
       const endpointSpy = Sinon.spy(TestControllerA.prototype, 'endpoint')
       const driver = new ExpressHttpDriver()
@@ -410,7 +348,7 @@ describe('ExpressHttpDriver', function() {
       const result = driver['createEndpointWrapper']('TestControllerA', 'endpoint', [])
       const request = {}
       const response = {}
-      result(<any>request, <any>response)
+      await result(<any>request, <any>response)
       expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true)
       expect(endpointSpy.called).toBe(true)
       expect(handleEndpointResultStub.calledWith(request, response, undefined)).toBe(true)
@@ -458,7 +396,7 @@ describe('ExpressHttpDriver', function() {
 
       const request = {}
       const response = {}
-      result(<any>request, <any>response)
+      await result(<any>request, <any>response)
       expect(cloneControllerObjectSpy.called).toBe(true)
       expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true)
       expect(handleEndpointResultStub.calledWith(request, response, undefined)).toBe(true)
@@ -528,8 +466,8 @@ describe('ExpressHttpDriver', function() {
       expect(typeof result).toEqual('function')
     })
 
-    it('creates new Controller with request, response', function() {
-      result(<any>request, <any>response)
+    it('creates new Controller with request, response', async function() {
+      await result(<any>request, <any>response)
 
       expect(handlerSpy.callCount).toEqual(1)
       const thisValue = handlerSpy.firstCall.thisValue
@@ -615,16 +553,50 @@ describe('ExpressHttpDriver', function() {
     })
   })
 
-  describe('protected .applyAfterMiddlewareWrapper()', function() {
+  describe('protected .applyBeforeMiddleware()', function() {
     it('returns a promise', function() {
       const driver = new ExpressHttpDriver()
-      expect(isPromise(driver['applyAfterMiddlewareWrapper']([], <any>{}, <any>{}, undefined, <any>{}))).toBe(true)
+      expect(isPromise(driver['applyBeforeMiddleware']([], <any>{}, <any>{}, <any>{}))).toBe(true)
+    })
+
+    it('skipped if the middleware does not have .before() function', async function() {
+      const hasBeforeMiddleware = {
+        async before(request: any): Promise<any> {}
+      }
+      const hasNoBeforeMiddleware = {
+        async after(request: any, response: any): Promise<any> {}
+      }
+
+      const beforeSpy = Sinon.spy(hasBeforeMiddleware, 'before')
+      const afterSpy = Sinon.spy(hasNoBeforeMiddleware, 'after')
+
+      const driver = new ExpressHttpDriver()
+
+      const request = {}
+      const response = {}
+      const controller = {}
+      await driver['applyBeforeMiddleware'](
+        [hasBeforeMiddleware, hasNoBeforeMiddleware],
+        <any>request,
+        <any>response,
+        <any>controller
+      )
+      expect(beforeSpy.calledWith(request, response, controller)).toBe(true)
+      expect(beforeSpy.firstCall.thisValue === hasBeforeMiddleware).toBe(true)
+      expect(afterSpy.called).toBe(false)
+    })
+  })
+
+  describe('protected .applyAfterMiddleware()', function() {
+    it('returns a promise', function() {
+      const driver = new ExpressHttpDriver()
+      expect(isPromise(driver['applyAfterMiddleware']([], <any>{}, <any>{}, undefined, <any>{}))).toBe(true)
     })
 
     it('returns value if middleware list is empty', async function() {
       const value = {}
       const driver = new ExpressHttpDriver()
-      expect((await driver['applyAfterMiddlewareWrapper']([], <any>{}, <any>{}, value, <any>{})) === value).toBe(true)
+      expect((await driver['applyAfterMiddleware']([], <any>{}, <any>{}, value, <any>{})) === value).toBe(true)
     })
 
     it('skips if middleware has no .after() function, can receive new instance of result', async function() {
@@ -646,7 +618,7 @@ describe('ExpressHttpDriver', function() {
       const result = {}
 
       const driver = new ExpressHttpDriver()
-      const received = await driver['applyAfterMiddlewareWrapper'](
+      const received = await driver['applyAfterMiddleware'](
         [hasAfterMiddleware, hasNoAfterMiddleware],
         <any>request,
         <any>response,
@@ -671,7 +643,7 @@ describe('ExpressHttpDriver', function() {
       const result = {}
 
       const driver = new ExpressHttpDriver()
-      const received = await driver['applyAfterMiddlewareWrapper'](
+      const received = await driver['applyAfterMiddleware'](
         [hasAfterMiddleware],
         <any>request,
         <any>response,
