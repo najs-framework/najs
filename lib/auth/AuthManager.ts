@@ -1,4 +1,4 @@
-import { IAutoload, register } from 'najs-binding'
+import { IAutoload, register, make } from 'najs-binding'
 import { ContextualFacade } from 'najs-facade'
 import { IGuard, GuardConfiguration } from './interfaces/IGuard'
 import { IAuth } from './interfaces/IAuth'
@@ -41,7 +41,7 @@ export class AuthManager extends ContextualFacade<Controller> implements IAuth, 
       web: {
         driver: 'Najs.SessionGuard',
         provider: 'Najs.GenericUser',
-        default: true
+        isDefault: true
       }
     })
     this.guard(this.findDefaultGuardName())
@@ -66,7 +66,12 @@ export class AuthManager extends ContextualFacade<Controller> implements IAuth, 
   }
 
   resolveGuard(name: string): IGuard | undefined {
-    return <IGuard>{}
+    let config = this.configurations[name]
+    if (!config) {
+      config = this.configurations[this.findDefaultGuardName()]
+    }
+    const provider = make(config.provider)
+    return make<IGuard>(config.driver, [this.context, provider])
   }
 
   getCurrentGuard(): IGuard {
@@ -74,7 +79,7 @@ export class AuthManager extends ContextualFacade<Controller> implements IAuth, 
   }
 
   guard(name: string): IAuth {
-    if (!this.guardBag[name]) {
+    if (this.guardBag[name]) {
       this.currentGuard = this.guardBag[name]
     } else {
       const guard = this.resolveGuard(name)
@@ -113,7 +118,7 @@ export class AuthManager extends ContextualFacade<Controller> implements IAuth, 
     const user = await this.currentGuard.getUserProvider().retrieveByCredentials(credentials)
     if (user && this.currentGuard.getUserProvider().validateCredentials(user, credentials)) {
       if (login) {
-        this.login(user, remember)
+        await this.login(user, remember)
       }
       return true
     }
@@ -125,7 +130,7 @@ export class AuthManager extends ContextualFacade<Controller> implements IAuth, 
   }
 
   check(): boolean {
-    return !!this.user()
+    return !!this.getUser()
   }
 
   guest(): boolean {

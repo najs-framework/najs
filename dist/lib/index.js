@@ -168,6 +168,8 @@ exports.HandlebarsViewServiceProvider = HandlebarsViewServiceProvider_1.Handleba
 var MongooseServiceProvider_1 = require("./service-providers/MongooseServiceProvider");
 exports.MongooseServiceProvider = MongooseServiceProvider_1.MongooseServiceProvider;
 // auth package
+var AuthManager_1 = require("./auth/AuthManager");
+exports.AuthManager = AuthManager_1.AuthManager;
 var Guard_1 = require("./auth/guards/Guard");
 exports.Guard = Guard_1.Guard;
 var SessionGuard_1 = require("./auth/guards/SessionGuard");

@@ -1,7 +1,15 @@
+import { AuthClass } from './../../constants'
+import { register, IAutoload } from 'najs-binding'
 import { Guard } from './Guard'
 import { IAuthenticatable } from '../interfaces/IAuthenticatable'
 
-export class SessionGuard extends Guard {
+export class SessionGuard extends Guard implements IAutoload {
+  static className: string = AuthClass.SessionGuard
+
+  getClassName() {
+    return AuthClass.SessionGuard
+  }
+
   protected getSessionKey() {
     return 'user'
   }
@@ -45,3 +53,4 @@ export class SessionGuard extends Guard {
     this.controller.cookie.forget(this.getCookieRememberKey())
   }
 }
+register(SessionGuard)

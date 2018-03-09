@@ -2,6 +2,7 @@ import 'jest'
 import * as Sinon from 'sinon'
 import { Guard } from '../../../lib/auth/guards/Guard'
 import { SessionGuard } from '../../../lib/auth/guards/SessionGuard'
+import { AuthClass } from './../../../lib/constants'
 
 describe('SessionGuard', function() {
   it('extends Guard', function() {
@@ -9,6 +10,13 @@ describe('SessionGuard', function() {
     const provider = {}
     const guard = Reflect.construct(SessionGuard, [controller, provider])
     expect(guard).toBeInstanceOf(Guard)
+  })
+
+  it('implements IAutoload', function() {
+    const controller = {}
+    const provider = {}
+    const guard = Reflect.construct(SessionGuard, [controller, provider])
+    expect(guard.getClassName()).toEqual(AuthClass.SessionGuard)
   })
 
   describe('.hasUser()', function() {

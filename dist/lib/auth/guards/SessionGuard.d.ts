@@ -1,6 +1,9 @@
+import { IAutoload } from 'najs-binding';
 import { Guard } from './Guard';
 import { IAuthenticatable } from '../interfaces/IAuthenticatable';
-export declare class SessionGuard extends Guard {
+export declare class SessionGuard extends Guard implements IAutoload {
+    static className: string;
+    getClassName(): string;
     protected getSessionKey(): string;
     hasUser(): boolean;
     hasUser<T extends IAuthenticatable = IAuthenticatable>(user: T): boolean;

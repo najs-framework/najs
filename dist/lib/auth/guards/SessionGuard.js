@@ -1,7 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const constants_1 = require("./../../constants");
+const najs_binding_1 = require("najs-binding");
 const Guard_1 = require("./Guard");
 class SessionGuard extends Guard_1.Guard {
+    getClassName() {
+        return constants_1.AuthClass.SessionGuard;
+    }
     getSessionKey() {
         return 'user';
     }
@@ -38,4 +43,6 @@ class SessionGuard extends Guard_1.Guard {
         this.controller.cookie.forget(this.getCookieRememberKey());
     }
 }
+SessionGuard.className = constants_1.AuthClass.SessionGuard;
 exports.SessionGuard = SessionGuard;
+najs_binding_1.register(SessionGuard);

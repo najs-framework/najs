@@ -4,12 +4,19 @@ require("jest");
 const Sinon = require("sinon");
 const Guard_1 = require("../../../lib/auth/guards/Guard");
 const SessionGuard_1 = require("../../../lib/auth/guards/SessionGuard");
+const constants_1 = require("./../../../lib/constants");
 describe('SessionGuard', function () {
     it('extends Guard', function () {
         const controller = {};
         const provider = {};
         const guard = Reflect.construct(SessionGuard_1.SessionGuard, [controller, provider]);
         expect(guard).toBeInstanceOf(Guard_1.Guard);
+    });
+    it('implements IAutoload', function () {
+        const controller = {};
+        const provider = {};
+        const guard = Reflect.construct(SessionGuard_1.SessionGuard, [controller, provider]);
+        expect(guard.getClassName()).toEqual(constants_1.AuthClass.SessionGuard);
     });
     describe('.hasUser()', function () {
         it('returns true if there is a "getSessionKey" in session', function () {

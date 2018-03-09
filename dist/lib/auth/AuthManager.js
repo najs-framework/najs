@@ -17,7 +17,7 @@ class AuthManager extends najs_facade_1.ContextualFacade {
             web: {
                 driver: 'Najs.SessionGuard',
                 provider: 'Najs.GenericUser',
-                default: true
+                isDefault: true
             }
         });
         this.guard(this.findDefaultGuardName());
@@ -39,13 +39,18 @@ class AuthManager extends najs_facade_1.ContextualFacade {
         return firstName;
     }
     resolveGuard(name) {
-        return {};
+        let config = this.configurations[name];
+        if (!config) {
+            config = this.configurations[this.findDefaultGuardName()];
+        }
+        const provider = najs_binding_1.make(config.provider);
+        return najs_binding_1.make(config.driver, [this.context, provider]);
     }
     getCurrentGuard() {
         return this.currentGuard;
     }
     guard(name) {
-        if (!this.guardBag[name]) {
+        if (this.guardBag[name]) {
             this.currentGuard = this.guardBag[name];
         }
         else {
@@ -77,7 +82,7 @@ class AuthManager extends najs_facade_1.ContextualFacade {
         const user = await this.currentGuard.getUserProvider().retrieveByCredentials(credentials);
         if (user && this.currentGuard.getUserProvider().validateCredentials(user, credentials)) {
             if (login) {
-                this.login(user, remember);
+                await this.login(user, remember);
             }
             return true;
         }
@@ -87,7 +92,7 @@ class AuthManager extends najs_facade_1.ContextualFacade {
         return this.attempt(credentials, false, false);
     }
     check() {
-        return !!this.user();
+        return !!this.getUser();
     }
     guest() {
         return !this.check();
