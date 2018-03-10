@@ -97,3 +97,4 @@ export { Guard } from './auth/guards/Guard';
 export { SessionGuard } from './auth/guards/SessionGuard';
 export { GenericUser } from './auth/GenericUser';
 export { EloquentUserProvider } from './auth/EloquentUserProvider';
+export { LoginController } from './auth/controller/LoginController';

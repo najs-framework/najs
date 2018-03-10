@@ -15,6 +15,7 @@ export declare const AuthClass: {
     JwtGuard: string;
     EloquentUserProvider: string;
     GenericUser: string;
+    LoginController: string;
 };
 export declare const ContextualFacadeClass: {
     Auth: string;
@@ -66,6 +67,7 @@ export declare const ConfigurationKeys: {
     Auth: {
         guards: string;
         jwtGuard: string;
+        url: string;
     };
     Cookie: {
         secret: string;

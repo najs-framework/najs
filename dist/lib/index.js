@@ -183,3 +183,5 @@ var GenericUser_1 = require("./auth/GenericUser");
 exports.GenericUser = GenericUser_1.GenericUser;
 var EloquentUserProvider_1 = require("./auth/EloquentUserProvider");
 exports.EloquentUserProvider = EloquentUserProvider_1.EloquentUserProvider;
+var LoginController_1 = require("./auth/controller/LoginController");
+exports.LoginController = LoginController_1.LoginController;

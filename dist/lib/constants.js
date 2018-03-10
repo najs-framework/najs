@@ -16,7 +16,8 @@ exports.AuthClass = {
     SessionGuard: 'Najs.SessionGuard',
     JwtGuard: 'Najs.JwtGuard',
     EloquentUserProvider: 'Najs.EloquentUserProvider',
-    GenericUser: 'Najs.GenericUser'
+    GenericUser: 'Najs.GenericUser',
+    LoginController: 'Najs.LoginController'
 };
 exports.ContextualFacadeClass = {
     Auth: 'Najs.AuthManager',
@@ -67,7 +68,8 @@ exports.ConfigurationKeys = {
     },
     Auth: {
         guards: 'auth.guards',
-        jwtGuard: 'auth.JwtGuardOptions'
+        jwtGuard: 'auth.JwtGuardOptions',
+        url: 'auth.url'
     },
     Cookie: {
         secret: 'cookie.secret',
