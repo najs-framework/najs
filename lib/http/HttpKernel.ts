@@ -60,14 +60,10 @@ export class HttpKernel implements IAutoload {
 
   getMiddleware(name: string): IMiddleware[] {
     const result: IMiddleware[] = []
-    const params: string[] = []
-    const index: number = name.indexOf(':')
-    if (index !== -1) {
-      params.push(name.substr(index + 1))
-      name = name.substr(0, index)
-    }
+    const params: string[] = name.split(':')
+    const className = params[0]
 
-    const middlewareSettings = this.findMiddlewareByName(name)
+    const middlewareSettings = this.findMiddlewareByName(className)
     if (Array.isArray(middlewareSettings)) {
       const middlewareList: string[] = <string[]>middlewareSettings
       middlewareList.forEach((className: string) => {

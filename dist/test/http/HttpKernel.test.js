@@ -59,7 +59,7 @@ describe('HttpKernel', function () {
             const result = instance.getMiddleware('test');
             expect(result).toHaveLength(1);
             expect(result[0] === middleware).toBe(true);
-            expect(makeStub.calledWith('something', []));
+            expect(makeStub.calledWith('something', ['test'])).toBe(true);
             makeStub.restore();
         });
         it('calls make() and does not push middleware to result if middleware instance not exists', function () {
@@ -69,7 +69,7 @@ describe('HttpKernel', function () {
             instance['middleware']['test'] = 'something';
             const result = instance.getMiddleware('test');
             expect(result).toHaveLength(0);
-            expect(makeStub.calledWith('something', []));
+            expect(makeStub.calledWith('something', ['test'])).toBe(true);
             makeStub.restore();
         });
         it('maps all if the middleware is an array, does the same thing as string param', function () {
@@ -82,10 +82,10 @@ describe('HttpKernel', function () {
             const result = instance.getMiddleware('test');
             expect(result).toHaveLength(1);
             expect(result[0] === middleware).toBe(true);
-            expect(makeStub.calledWith('something', []));
+            expect(makeStub.calledWith('something', ['test'])).toBe(true);
             makeStub.restore();
         });
-        it('splits the middleware name by ":", first-part is real middleware name, second-part is parameter', function () {
+        it('splits the middleware name by ":" and pass all to middleware constructor', function () {
             const middleware = {};
             const makeStub = Sinon.stub(NajsBinding, 'make');
             makeStub.withArgs('something').returns(middleware);
@@ -95,8 +95,8 @@ describe('HttpKernel', function () {
             const result = instance.getMiddleware('test:param');
             expect(result).toHaveLength(1);
             expect(result[0] === middleware).toBe(true);
-            expect(makeStub.calledWith('something', ['param']));
-            expect(makeStub.lastCall.args[1]).toEqual(['param']);
+            expect(makeStub.calledWith('something', ['test', 'param'])).toBe(true);
+            expect(makeStub.lastCall.args[1]).toEqual(['test', 'param']);
             makeStub.restore();
         });
     });

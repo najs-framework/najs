@@ -52,13 +52,9 @@ class HttpKernel {
     }
     getMiddleware(name) {
         const result = [];
-        const params = [];
-        const index = name.indexOf(':');
-        if (index !== -1) {
-            params.push(name.substr(index + 1));
-            name = name.substr(0, index);
-        }
-        const middlewareSettings = this.findMiddlewareByName(name);
+        const params = name.split(':');
+        const className = params[0];
+        const middlewareSettings = this.findMiddlewareByName(className);
         if (Array.isArray(middlewareSettings)) {
             const middlewareList = middlewareSettings;
             middlewareList.forEach((className) => {
