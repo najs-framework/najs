@@ -40,7 +40,7 @@ describe('SessionMiddleware', function() {
       const sessionStub = Sinon.stub(Middleware, 'Session')
       sessionStub.callsFake(fakeSession)
 
-      const result = instance.before(<any>request, <any>response)
+      const result = instance.before(<any>request, <any>response, <any>{})
 
       expect(isPromise(result)).toBe(true)
       expect(sessionStub.firstCall.args[0] === request).toBe(true)
@@ -59,7 +59,7 @@ describe('SessionMiddleware', function() {
       const sessionStub = Sinon.stub(Middleware, 'Session')
       sessionStub.callsFake(fakeSession)
       try {
-        await instance.before(<any>{}, <any>{})
+        await instance.before(<any>{}, <any>{}, <any>{})
       } catch (error) {
         expect(error.message).toEqual('Test')
         sessionStub.restore()

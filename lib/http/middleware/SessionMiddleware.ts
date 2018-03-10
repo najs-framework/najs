@@ -11,6 +11,8 @@ import { ConfigFacade } from '../../facades/global/ConfigFacade'
 import { ConfigurationKeys } from '../../constants'
 import * as ExpressSession from 'express-session'
 import * as Express from 'express'
+import { Controller } from '../../http/controller/Controller'
+import { SessionContextualFacade } from './../../facades/contextual/SessionContextualFacade'
 
 export let Session: Express.RequestHandler
 
@@ -44,12 +46,13 @@ export class SessionMiddleware implements IExpressMiddleware {
     })
   }
 
-  before(request: Express.Request, response: Express.Response) {
+  before(request: Express.Request, response: Express.Response, controller: Controller) {
     return new Promise(function(resolve: any, reject: any) {
       Session(request, response, function(error: any) {
         if (error) {
           return reject(error)
         }
+        SessionContextualFacade.of(controller)
         return resolve()
       })
     })

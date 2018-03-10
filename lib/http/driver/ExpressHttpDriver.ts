@@ -5,15 +5,17 @@ import { IAutoload, make } from 'najs-binding'
 import { IRouteData } from '../routing/interfaces/IRouteData'
 import { register } from '../../index'
 import { LogFacade as Log } from '../../facades/global/LogFacade'
-import { flatten, isFunction, isString, isObject } from 'lodash'
+import { isFunction, isString } from 'lodash'
 import { Controller } from '../controller/Controller'
 import { ExpressController } from '../controller/ExpressController'
 import { RouteCollection } from '../routing/RouteCollection'
 import { isIResponse } from '../response/IResponse'
 import { isPromise } from '../../private/isPromise'
 import { IMiddleware } from '../middleware/IMiddleware'
+import { NativeMiddleware } from './../middleware/IMiddleware'
 import { ConfigFacade } from '../../facades/global/ConfigFacade'
 import { PathFacade } from '../../facades/global/PathFacade'
+import { RouteMiddlewareUtil } from './private/RouteMiddlewareUtil'
 import * as Express from 'express'
 import * as Http from 'http'
 import * as ExpressHandlebars from 'express-handlebars'
@@ -128,21 +130,8 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   }
 
   protected getEndpointHandlers(method: string, path: string, route: IRouteData): ExpressHandlers {
-    const handlers: ExpressHandlers = []
-    // create middleware handlers
-    const middlewareListBucket: IMiddleware[][] = []
-    for (const middleware of route.middleware) {
-      if (isFunction(middleware)) {
-        handlers.push(middleware)
-        continue
-      }
-      middlewareListBucket.push(this.getMiddlewareList(middleware))
-    }
-
-    const middlewareList: IMiddleware[] = Array.from(new Set(flatten(middlewareListBucket)))
-    if (middlewareList.length > 0) {
-      this.createNativeMiddlewareWrapper(middlewareList)
-    }
+    const middlewareList: IMiddleware[] = RouteMiddlewareUtil.getMiddlewareListOfRoute(route, this.httpKernel)
+    const handlers: ExpressHandlers = this.createHandlersForRoute(route, middlewareList)
 
     if (isFunction(route.endpoint)) {
       handlers.push(this.createEndpointWrapperByFunction(route.endpoint, middlewareList))
@@ -158,22 +147,21 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     return handlers
   }
 
-  protected getMiddlewareList(middleware: any): IMiddleware[] {
-    if (isString(middleware)) {
-      return this.httpKernel.getMiddleware(middleware)
-    }
-    if (isObject(middleware)) {
-      return [middleware]
-    }
-    return []
-  }
+  protected createHandlersForRoute(route: IRouteData, middlewareList: IMiddleware[]): ExpressHandlers {
+    const handlers: ExpressHandlers = <ExpressHandlers>route.middleware.filter(function(middleware) {
+      return isFunction(middleware)
+    })
 
-  protected createNativeMiddlewareWrapper(middlewareList: IMiddleware[]) {
-    for (const middleware of middlewareList) {
-      if (isFunction(middleware.native)) {
-        Reflect.apply(middleware.native, middleware, [this])
+    if (middlewareList.length > 0) {
+      const nativeMiddleware: NativeMiddleware[] = RouteMiddlewareUtil.createNativeMiddlewareHandlers(
+        middlewareList,
+        this
+      )
+      if (nativeMiddleware.length > 0) {
+        return handlers.concat(nativeMiddleware)
       }
     }
+    return handlers
   }
 
   protected createEndpointWrapper(controllerName: string, endpointName: string, middleware: IMiddleware[]) {
@@ -218,46 +206,9 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     response: Express.Response,
     middleware: IMiddleware[]
   ) {
-    await this.applyBeforeMiddleware(middleware, request, response, controller)
+    await RouteMiddlewareUtil.applyBeforeMiddleware(middleware, request, response, controller)
     const result = Reflect.apply(endpoint, controller, [request, response])
     return this.handleEndpointResult(request, response, result, controller, middleware)
-  }
-
-  protected async applyBeforeMiddleware(
-    middlewareList: IMiddleware[],
-    request: Express.Request,
-    response: Express.Response,
-    controller: Controller
-  ) {
-    if (middlewareList.length === 0) {
-      return
-    }
-
-    for (const middleware of middlewareList) {
-      if (isFunction(middleware.before)) {
-        await Reflect.apply(middleware.before, middleware, [request, response, controller])
-      }
-    }
-  }
-
-  protected async applyAfterMiddleware(
-    middlewareList: IMiddleware[],
-    request: Express.Request,
-    response: Express.Response,
-    value: any,
-    controller: Controller
-  ): Promise<any> {
-    if (middlewareList.length === 0) {
-      return value
-    }
-
-    let result: any = value
-    for (const middleware of middlewareList) {
-      if (isFunction(middleware.after)) {
-        result = await Reflect.apply(middleware.after, middleware, [request, response, result, controller])
-      }
-    }
-    return result
   }
 
   protected async handleEndpointResult(
@@ -268,7 +219,13 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     middleware: IMiddleware[]
   ) {
     const rawValue: any = isPromise(result) ? await (result as Promise<any>) : result
-    const value: any = await this.applyAfterMiddleware(middleware, request, response, rawValue, controller)
+    const value: any = await RouteMiddlewareUtil.applyAfterMiddleware(
+      middleware,
+      request,
+      response,
+      rawValue,
+      controller
+    )
     if (isIResponse(value)) {
       return value.respond(request, response, this)
     }

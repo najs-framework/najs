@@ -10,6 +10,7 @@ const SessionHandlebarsHelper_1 = require("../../view/handlebars/helpers/Session
 const ConfigFacade_1 = require("../../facades/global/ConfigFacade");
 const constants_2 = require("../../constants");
 const ExpressSession = require("express-session");
+const SessionContextualFacade_1 = require("./../../facades/contextual/SessionContextualFacade");
 class SessionMiddleware {
     constructor() {
         if (!exports.Session) {
@@ -29,12 +30,13 @@ class SessionMiddleware {
             saveUninitialized: true
         });
     }
-    before(request, response) {
+    before(request, response, controller) {
         return new Promise(function (resolve, reject) {
             exports.Session(request, response, function (error) {
                 if (error) {
                     return reject(error);
                 }
+                SessionContextualFacade_1.SessionContextualFacade.of(controller);
                 return resolve();
             });
         });

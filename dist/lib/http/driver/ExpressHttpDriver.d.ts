@@ -25,15 +25,12 @@ export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
     getNativeDriver(): ExpressApp;
     route(route: IRouteData): void;
     protected getEndpointHandlers(method: string, path: string, route: IRouteData): ExpressHandlers;
-    protected getMiddlewareList(middleware: any): IMiddleware[];
-    protected createNativeMiddlewareWrapper(middlewareList: IMiddleware[]): void;
+    protected createHandlersForRoute(route: IRouteData, middlewareList: IMiddleware[]): ExpressHandlers;
     protected createEndpointWrapper(controllerName: string, endpointName: string, middleware: IMiddleware[]): (request: Express.Request, response: Express.Response) => Promise<void>;
     protected createEndpointWrapperByObject(controllerObject: Object, endpointName: string, middleware: IMiddleware[]): (request: Express.Request, response: Express.Response) => Promise<void>;
     protected cloneControllerObject(controller: Object, request: Express.Request, response: Express.Response): Object;
     protected createEndpointWrapperByFunction(endpoint: Function, middleware: IMiddleware[]): (request: Express.Request, response: Express.Response) => Promise<void>;
     protected triggerEndpoint(controller: Controller, endpoint: Function, request: Express.Request, response: Express.Response, middleware: IMiddleware[]): Promise<any>;
-    protected applyBeforeMiddleware(middlewareList: IMiddleware[], request: Express.Request, response: Express.Response, controller: Controller): Promise<void>;
-    protected applyAfterMiddleware(middlewareList: IMiddleware[], request: Express.Request, response: Express.Response, value: any, controller: Controller): Promise<any>;
     protected handleEndpointResult(request: Express.Request, response: Express.Response, result: any, controller: Controller, middleware: IMiddleware[]): Promise<any>;
     start(options?: HttpDriverStartOptions): void;
     respondView(response: Express.Response, view: string, variables: Object): void;
