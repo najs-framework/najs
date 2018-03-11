@@ -41,6 +41,7 @@ export { ICookie } from './http/cookie/ICookie';
 export { Cookie as NajsCookie } from './http/cookie/Cookie';
 export { IMiddleware } from './http/middleware/IMiddleware';
 export { IExpressMiddleware } from './http/middleware/IExpressMiddleware';
+export { ExpressMiddlewareBase } from './http/middleware/ExpressMiddlewareBase';
 export { ExpressCsurfMiddleware } from './http/middleware/ExpressCsurfMiddleware';
 export { ExpressCorsMiddleware } from './http/middleware/ExpressCorsMiddleware';
 export { AuthMiddleware } from './http/middleware/AuthMiddleware';

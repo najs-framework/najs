@@ -8,17 +8,23 @@ export class ExpressMiddlewareBase implements IExpressMiddleware {
   protected isAppLevel: boolean
   protected meta: string
 
-  constructor(name: string, level: string) {
+  constructor(name: string, level?: string) {
     this.name = name
     this.parseLevel(level)
     this.parseParams(...arguments)
-    this.identify = Array.from(arguments).join(':')
+    this.parseIdentify(...arguments)
+  }
+
+  protected parseIdentify(...args: string[]): string {
+    this.identify = args.join(':')
+    return this.identify
   }
 
   protected parseParams(...args: any[]) {}
 
-  protected parseLevel(level: string) {
+  protected parseLevel(level?: string): boolean {
     this.isAppLevel = level === 'global' || level === 'app' || level === 'app-level'
+    return this.isAppLevel
   }
 
   createMiddleware(): Express.Handler | Express.Handler[] | undefined {
@@ -39,7 +45,7 @@ export class ExpressMiddlewareBase implements IExpressMiddleware {
 
     if (!app['_najsMiddleware'][this.identify]) {
       const handlers: Express.Handler[] = Array.isArray(middleware) ? middleware : [middleware]
-      for (const handler in handlers) {
+      for (const handler of handlers) {
         app.use(handler)
       }
       app['_najsMiddleware'][this.identify] = handlers

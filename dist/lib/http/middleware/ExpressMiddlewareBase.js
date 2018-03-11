@@ -5,11 +5,16 @@ class ExpressMiddlewareBase {
         this.name = name;
         this.parseLevel(level);
         this.parseParams(...arguments);
-        this.identify = Array.from(arguments).join(':');
+        this.parseIdentify(...arguments);
+    }
+    parseIdentify(...args) {
+        this.identify = args.join(':');
+        return this.identify;
     }
     parseParams(...args) { }
     parseLevel(level) {
         this.isAppLevel = level === 'global' || level === 'app' || level === 'app-level';
+        return this.isAppLevel;
     }
     createMiddleware() {
         return undefined;
@@ -26,7 +31,7 @@ class ExpressMiddlewareBase {
         }
         if (!app['_najsMiddleware'][this.identify]) {
             const handlers = Array.isArray(middleware) ? middleware : [middleware];
-            for (const handler in handlers) {
+            for (const handler of handlers) {
                 app.use(handler);
             }
             app['_najsMiddleware'][this.identify] = handlers;
