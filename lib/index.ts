@@ -23,7 +23,7 @@ export { SystemClass, GlobalFacadeClass, ContextualFacadeClass, ResponseTypeClas
 // http package
 export { IHttpDriver } from './http/driver/IHttpDriver'
 export { HttpDriverStartOptions } from './http/driver/IHttpDriver'
-export { HttpKernel } from './http/HttpKernel'
+export { HttpKernel, MiddlewareDefinition, MiddlewareGroupDefinition } from './http/HttpKernel'
 
 export { RouteCollection } from './http/routing/RouteCollection'
 export { ExpressHttpDriver } from './http/driver/ExpressHttpDriver'

@@ -15,7 +15,7 @@ describe('HttpKernel', function() {
     expect(instance.getClassName() === SystemClass.HttpKernel)
   })
 
-  describe('findMiddlewareByName()', function() {
+  describe('.findMiddlewareByName()', function() {
     it('returns middleware in "this.middleware" if found', function() {
       const instance = new HttpKernel()
       instance['middleware'] = {
@@ -50,7 +50,38 @@ describe('HttpKernel', function() {
     })
   })
 
-  describe('getMiddleware()', function() {
+  describe('.getMiddleware()', function() {
+    it('calls .findMiddlewareByName() then call .createMiddleware() if the result of findMiddlewareByName() is array or string', function() {
+      const instance = new HttpKernel()
+      const findMiddlewareByNameStub = Sinon.stub(instance, <any>'findMiddlewareByName')
+      const createMiddlewareStub = Sinon.stub(instance, <any>'createMiddleware')
+      const createGroupMiddlewareStub = Sinon.stub(instance, <any>'createGroupMiddleware')
+
+      findMiddlewareByNameStub.returns([])
+      instance.getMiddleware('test')
+      expect(createMiddlewareStub.called).toBe(true)
+      expect(createGroupMiddlewareStub.called).toBe(false)
+
+      findMiddlewareByNameStub.returns('test')
+      instance.getMiddleware('test')
+      expect(createMiddlewareStub.called).toBe(true)
+      expect(createGroupMiddlewareStub.called).toBe(false)
+    })
+
+    it('calls .findMiddlewareByName() then call .createGroupMiddleware() if the result of findMiddlewareByName() is object', function() {
+      const instance = new HttpKernel()
+      const findMiddlewareByNameStub = Sinon.stub(instance, <any>'findMiddlewareByName')
+      const createMiddlewareStub = Sinon.stub(instance, <any>'createMiddleware')
+      const createGroupMiddlewareStub = Sinon.stub(instance, <any>'createGroupMiddleware')
+
+      findMiddlewareByNameStub.returns({})
+      instance.getMiddleware('test')
+      expect(createMiddlewareStub.called).toBe(false)
+      expect(createGroupMiddlewareStub.called).toBe(true)
+    })
+  })
+
+  describe('protected .createMiddleware()', function() {
     it('returns empty array if middleware not found', function() {
       const instance = new HttpKernel()
       expect(instance.getMiddleware('not-found')).toEqual([])
@@ -110,6 +141,31 @@ describe('HttpKernel', function() {
       expect(result[0] === middleware).toBe(true)
       expect(makeStub.calledWith('something', ['test', 'param'])).toBe(true)
       expect(makeStub.lastCall.args[1]).toEqual(['test', 'param'])
+      makeStub.restore()
+    })
+  })
+
+  describe('protected .createGroupMiddleware()', function() {
+    it('does same behavior of .createMiddleware() but with name is key of settings', function() {
+      const middleware = {}
+      const makeStub = Sinon.stub(NajsBinding, 'make')
+      makeStub.withArgs('something').returns(middleware)
+      makeStub.withArgs('not-found').returns(undefined)
+
+      const instance = new HttpKernel()
+      instance['middleware']['group'] = {
+        a: 'something',
+        'a:options': 'something',
+        'b:api': 'not-found'
+      }
+
+      const result = instance.getMiddleware('group')
+      expect(result).toHaveLength(2)
+      expect(result[0] === middleware).toBe(true)
+      expect(result[1] === middleware).toBe(true)
+      expect(makeStub.firstCall.calledWith('something', ['a'])).toBe(true)
+      expect(makeStub.secondCall.calledWith('something', ['a', 'options'])).toBe(true)
+      expect(makeStub.lastCall.calledWith('not-found', ['b', 'api'])).toBe(true)
       makeStub.restore()
     })
   })

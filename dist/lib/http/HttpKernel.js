@@ -14,16 +14,20 @@ const najs_binding_1 = require("najs-binding");
 const lodash_1 = require("lodash");
 const constants_1 = require("../constants");
 const AuthMiddleware_1 = require("./middleware/AuthMiddleware");
+const lodash_2 = require("lodash");
 class HttpKernel {
     constructor() {
+        this.middlewareGroup = {
+            web: ['body-parser', 'cookie-parser', 'csrf', 'request-data', 'session']
+        };
         this.globalMiddleware = {
-            default: [
-                BodyParserMiddleware_1.BodyParserMiddleware.className,
-                CookieMiddleware_1.CookieMiddleware.className,
-                ExpressCsurfMiddleware_1.ExpressCsurfMiddleware.className,
-                RequestDataMiddleware_1.RequestDataMiddleware.className,
-                SessionMiddleware_1.SessionMiddleware.className
-            ],
+            default: {
+                'body-parser': BodyParserMiddleware_1.BodyParserMiddleware.className,
+                'cookie-parser': CookieMiddleware_1.CookieMiddleware.className,
+                'request-data': RequestDataMiddleware_1.RequestDataMiddleware.className,
+                csrf: ExpressCsurfMiddleware_1.ExpressCsurfMiddleware.className,
+                session: SessionMiddleware_1.SessionMiddleware.className
+            },
             auth: AuthMiddleware_1.AuthMiddleware.className,
             cors: ExpressCorsMiddleware_1.ExpressCorsMiddleware.className,
             csrf: ExpressCsurfMiddleware_1.ExpressCsurfMiddleware.className,
@@ -51,12 +55,27 @@ class HttpKernel {
         return constants_1.SystemClass.HttpKernel;
     }
     getMiddleware(name) {
-        const result = [];
         const params = name.split(':');
         const className = params[0];
         const middlewareSettings = this.findMiddlewareByName(className);
-        if (Array.isArray(middlewareSettings)) {
-            const middlewareList = middlewareSettings;
+        if (lodash_2.isPlainObject(middlewareSettings)) {
+            return this.createGroupMiddleware(middlewareSettings);
+        }
+        return this.createMiddleware(middlewareSettings, className, params);
+    }
+    createGroupMiddleware(settings) {
+        const result = [];
+        for (const name in settings) {
+            const params = name.split(':');
+            const className = params[0];
+            result.push(this.createMiddleware(settings[name], className, params));
+        }
+        return lodash_2.flatten(result);
+    }
+    createMiddleware(settings, className, params) {
+        const result = [];
+        if (Array.isArray(settings)) {
+            const middlewareList = settings;
             middlewareList.forEach((className) => {
                 const middleware = najs_binding_1.make(className, params);
                 if (middleware) {
@@ -64,8 +83,8 @@ class HttpKernel {
                 }
             });
         }
-        if (lodash_1.isString(middlewareSettings)) {
-            const middleware = najs_binding_1.make(middlewareSettings, params);
+        if (lodash_1.isString(settings)) {
+            const middleware = najs_binding_1.make(settings, params);
             if (middleware) {
                 result.push(middleware);
             }

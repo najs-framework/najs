@@ -13,18 +13,31 @@ import { IMiddleware } from './middleware/IMiddleware'
 import { isString } from 'lodash'
 import { SystemClass } from '../constants'
 import { AuthMiddleware } from './middleware/AuthMiddleware'
+import { isPlainObject, flatten } from 'lodash'
+
+export type MiddlewareGroupDefinition = {
+  [key: string]: string | string[]
+}
+
+export type MiddlewareDefinition = {
+  [key: string]: string | string[] | MiddlewareGroupDefinition
+}
 
 export class HttpKernel implements IAutoload {
-  protected globalMiddleware: {
-    [key: string]: string | string[]
+  protected middlewareGroup: {
+    [key: string]: string[]
   } = {
-    default: [
-      BodyParserMiddleware.className,
-      CookieMiddleware.className,
-      ExpressCsurfMiddleware.className,
-      RequestDataMiddleware.className,
-      SessionMiddleware.className
-    ],
+    web: ['body-parser', 'cookie-parser', 'csrf', 'request-data', 'session']
+  }
+
+  protected globalMiddleware: MiddlewareDefinition = {
+    default: {
+      'body-parser': BodyParserMiddleware.className,
+      'cookie-parser': CookieMiddleware.className,
+      'request-data': RequestDataMiddleware.className,
+      csrf: ExpressCsurfMiddleware.className,
+      session: SessionMiddleware.className
+    },
     auth: AuthMiddleware.className,
     cors: ExpressCorsMiddleware.className,
     csrf: ExpressCsurfMiddleware.className,
@@ -38,11 +51,9 @@ export class HttpKernel implements IAutoload {
     'request-data': RequestDataMiddleware.className
   }
 
-  protected middleware: {
-    [key: string]: string | string[]
-  } = {}
+  protected middleware: MiddlewareDefinition = {}
 
-  protected findMiddlewareByName(name: string): string | string[] | undefined {
+  protected findMiddlewareByName(name: string): string | string[] | MiddlewareGroupDefinition | undefined {
     if (typeof this.middleware[name] !== 'undefined') {
       return this.middleware[name]
     }
@@ -59,13 +70,30 @@ export class HttpKernel implements IAutoload {
   }
 
   getMiddleware(name: string): IMiddleware[] {
-    const result: IMiddleware[] = []
     const params: string[] = name.split(':')
     const className = params[0]
 
     const middlewareSettings = this.findMiddlewareByName(className)
-    if (Array.isArray(middlewareSettings)) {
-      const middlewareList: string[] = <string[]>middlewareSettings
+    if (isPlainObject(middlewareSettings)) {
+      return this.createGroupMiddleware(<MiddlewareGroupDefinition>middlewareSettings)
+    }
+    return this.createMiddleware(<string | string[]>middlewareSettings, className, params)
+  }
+
+  protected createGroupMiddleware(settings: MiddlewareGroupDefinition): IMiddleware[] {
+    const result: IMiddleware[][] = []
+    for (const name in settings) {
+      const params: string[] = name.split(':')
+      const className = params[0]
+      result.push(this.createMiddleware(settings[name], className, params))
+    }
+    return flatten(result)
+  }
+
+  protected createMiddleware(settings: string[] | string, className: string, params: string[]) {
+    const result: IMiddleware[] = []
+    if (Array.isArray(settings)) {
+      const middlewareList: string[] = <string[]>settings
       middlewareList.forEach((className: string) => {
         const middleware: IMiddleware | undefined = make(className, params)
         if (middleware) {
@@ -74,8 +102,8 @@ export class HttpKernel implements IAutoload {
       })
     }
 
-    if (isString(middlewareSettings)) {
-      const middleware: IMiddleware | undefined = make(middlewareSettings, params)
+    if (isString(settings)) {
+      const middleware: IMiddleware | undefined = make(settings, params)
       if (middleware) {
         result.push(middleware)
       }
