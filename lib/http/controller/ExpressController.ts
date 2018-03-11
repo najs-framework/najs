@@ -6,6 +6,8 @@ import { IRequestDataReader } from '../request/IRequestDataReader'
 import { Request, Response } from 'express'
 import { RequestDataReader } from '../request/RequestDataReader'
 import { Input } from '../../facades/contextual/InputContextualFacade'
+import { CookieContextualFacade } from '../../facades/contextual/CookieContextualFacade'
+import { SessionContextualFacade } from './../../facades/contextual/SessionContextualFacade'
 
 export type RequestIdAutoloadMetadata = {
   readonly requestId: string
@@ -23,6 +25,17 @@ const SessionProxySetting = {
   returnPromiseUndefined: ['regenerate']
 }
 
+const CookieWarningMessage = 'Please use CookieMiddleware if you are using this.cookie.{{key}}() in controller'
+const CookieProxySetting = {
+  get(path: string, defaultValue: any) {
+    Log.warning(CookieWarningMessage.replace('{{key}}', 'get'))
+    return defaultValue
+  },
+  chainable: ['forget', 'make', 'forever'],
+  returnFalse: ['isSigned', 'has', 'exists'],
+  returnEmptyObject: ['all', 'only', 'except']
+}
+
 export abstract class ExpressController extends Controller<Request, Response>
   implements IAutoloadMetadata<RequestIdAutoloadMetadata> {
   __autoloadMetadata: RequestIdAutoloadMetadata
@@ -35,8 +48,21 @@ export abstract class ExpressController extends Controller<Request, Response>
     this.body = new RequestDataReader(request.body || {})
     this.params = new RequestDataReader(request.params || {})
     this.query = new RequestDataReader(request.query || {})
+
     this.input = Input.of(this)
-    this.session = <any>new MemberProxy(SessionWarningMessage, SessionProxySetting)
+
+    if (this.request.session) {
+      this.session = SessionContextualFacade.of(this)
+    } else {
+      this.session = <any>new MemberProxy(SessionWarningMessage, SessionProxySetting)
+    }
+
+    if (this.request.cookies || this.request.signedCookies) {
+      this.cookie = CookieContextualFacade.of(this)
+    } else {
+      this.cookie = <any>new MemberProxy(CookieWarningMessage, CookieProxySetting)
+    }
+
     this.__autoloadMetadata = {
       requestId: request['id']
     }

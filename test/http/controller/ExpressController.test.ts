@@ -1,7 +1,9 @@
 import 'jest'
+import { ContextualFacade } from 'najs-facade'
 import { ExpressController } from '../../../lib/http/controller/ExpressController'
 import { MemberProxy } from '../../../lib/http/controller/MemberProxy'
-import { ContextualFacade } from 'najs-facade'
+import { Session } from './../../../lib/http/session/Session'
+import { Cookie } from '../../../lib/http/cookie/Cookie'
 
 describe('ExpressController', function() {
   describe('.constructor()', function() {
@@ -46,6 +48,35 @@ describe('ExpressController', function() {
       const expressController: ExpressController = Reflect.construct(ExpressController, [request, {}])
       expect(expressController.session).toBeInstanceOf(MemberProxy)
       expect(expressController.session.get('something', 123)).toEqual(123)
+    })
+
+    it('should be an instance of Session if there is session in request', function() {
+      const request = {
+        method: 'get',
+        session: {}
+      }
+      const expressController: ExpressController = Reflect.construct(ExpressController, [request, {}])
+      expect(expressController.session).toBeInstanceOf(Session)
+    })
+  })
+
+  describe('.cookie', function() {
+    it('should be an instance of MemberProxy by default, .get() always returns a defaultValue', function() {
+      const request = {
+        method: 'get'
+      }
+      const expressController: ExpressController = Reflect.construct(ExpressController, [request, {}])
+      expect(expressController.cookie).toBeInstanceOf(MemberProxy)
+      expect(expressController.cookie.get('something', 123)).toEqual(123)
+    })
+
+    it('should be an instance of Cookie if there is cookies || signedCookie in request', function() {
+      const request = {
+        method: 'get',
+        cookies: {}
+      }
+      const expressController: ExpressController = Reflect.construct(ExpressController, [request, {}])
+      expect(expressController.cookie).toBeInstanceOf(Cookie)
     })
   })
 })
