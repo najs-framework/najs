@@ -14,22 +14,17 @@ class RouteData {
         //   1. method not found or empty
         //   2. path not found or empty
         //   3. have no controller & endpoint
-        if (typeof this.method === 'undefined' || this.method === '') {
+        if (!this.hasRequiredData()) {
             return false;
         }
-        if (typeof this.path === 'undefined' || this.path === '') {
-            return false;
-        }
-        if (typeof this.endpoint === 'undefined') {
-            return false;
-        }
+        // if endpoint is a function, it's is valid
         if (lodash_1.isFunction(this.endpoint)) {
             return true;
         }
-        if (!lodash_1.isString(this.endpoint)) {
-            return false;
-        }
-        if (typeof this.controller === 'undefined') {
+        return this.hasEndpointInController();
+    }
+    hasEndpointInController() {
+        if (!lodash_1.isString(this.endpoint) || typeof this.controller === 'undefined') {
             return false;
         }
         if (lodash_1.isFunction(this.controller) && !lodash_1.isFunction(this.controller.prototype[this.endpoint])) {
@@ -39,6 +34,13 @@ class RouteData {
             return false;
         }
         return true;
+    }
+    hasRequiredData() {
+        return (typeof this.method !== 'undefined' &&
+            this.method !== '' &&
+            typeof this.path !== 'undefined' &&
+            this.path !== '' &&
+            typeof this.endpoint !== 'undefined');
     }
     mergeParentData(parent) {
         if (parent) {

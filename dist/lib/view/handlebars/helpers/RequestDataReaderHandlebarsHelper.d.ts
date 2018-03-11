@@ -6,5 +6,8 @@ export declare class RequestDataReaderHandlebarsHelper extends HandlebarsHelper<
     protected property: string;
     constructor(context: any, controller: ExpressController, property?: string);
     getClassName(): string;
+    protected isValid(): boolean;
+    protected handleBlockHelper(key: string): any;
+    protected handleHelper(command: string, ...args: any[]): any;
     run(command: string, ...args: any[]): undefined | boolean | string;
 }

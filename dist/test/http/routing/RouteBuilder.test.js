@@ -390,10 +390,22 @@ describe('RouteBuilder', function () {
                 }
                 expect('should not reach here').toEqual('hmm');
             });
-            it('throws TypeError if somehow use method in wrong way', function () {
+            it('throws TypeError if somehow use method in wrong way with 3 params', function () {
                 const builder = new RouteBuilder_1.RouteBuilder();
                 try {
                     builder.method(HttpMethod_1.HttpMethod.POST, '/path', 123);
+                }
+                catch (error) {
+                    expect(error).toBeInstanceOf(TypeError);
+                    expect(error.message).toEqual('Invalid Route');
+                    return;
+                }
+                expect('should not reach here').toEqual('hmm');
+            });
+            it('throws TypeError if somehow use method in wrong way with 4 params', function () {
+                const builder = new RouteBuilder_1.RouteBuilder();
+                try {
+                    builder.method(HttpMethod_1.HttpMethod.POST, '/path', 123, 'test');
                 }
                 catch (error) {
                     expect(error).toBeInstanceOf(TypeError);

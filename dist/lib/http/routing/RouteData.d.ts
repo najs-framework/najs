@@ -12,6 +12,8 @@ export declare class RouteData implements Partial<IRouteData> {
     isPrefixMerged: boolean;
     constructor(method?: HttpMethod | 'all' | string, path?: string);
     isValid(): boolean;
+    private hasEndpointInController();
+    private hasRequiredData();
     mergeParentData(parent?: RouteData): void;
     getData(parent?: RouteData): IRouteData | undefined;
 }

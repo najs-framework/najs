@@ -135,22 +135,36 @@ export class RouteBuilder
     this.data.path = path
 
     if (typeof arg1 === 'undefined') {
-      if (isString(arg0)) {
-        const parts: string[] = (arg0 as string).split('@')
-        if (parts.length !== 2) {
-          throw new Error('Target "' + arg0 + '" is invalid. Correct format: ControllerName@endpointName')
-        }
-        this.data.controller = parts[0]
-        this.data.endpoint = parts[1]
-        return this
-      }
+      return this.method_overload_3_params(method, path, arg0)
+    }
+    return this.method_overload_4_params(method, path, arg0, arg1)
+  }
 
-      if (isFunction(arg0)) {
-        this.data.endpoint = arg0
-        return this
+  private method_overload_3_params(method: HttpMethod, path: string, arg0: HttpMethodTarget): RouteGrammarVerbChain {
+    if (isString(arg0)) {
+      const parts: string[] = (arg0 as string).split('@')
+      if (parts.length !== 2) {
+        throw new Error('Target "' + arg0 + '" is invalid. Correct format: ControllerName@endpointName')
       }
+      this.data.controller = parts[0]
+      this.data.endpoint = parts[1]
+      return this
     }
 
+    if (isFunction(arg0)) {
+      this.data.endpoint = arg0
+      return this
+    }
+
+    throw new TypeError('Invalid Route')
+  }
+
+  private method_overload_4_params(
+    method: HttpMethod,
+    path: string,
+    arg0: HttpMethodTarget,
+    arg1?: any
+  ): RouteGrammarVerbChain {
     if (isFunction(arg0)) {
       if (!isFunction(Reflect.get(arg0.prototype, arg1))) {
         throw new ReferenceError('Endpoint ' + arg1 + ' not found')

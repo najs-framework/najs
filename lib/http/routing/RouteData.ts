@@ -25,25 +25,20 @@ export class RouteData implements Partial<IRouteData> {
     //   1. method not found or empty
     //   2. path not found or empty
     //   3. have no controller & endpoint
-    if (typeof this.method === 'undefined' || this.method === '') {
-      return false
-    }
-    if (typeof this.path === 'undefined' || this.path === '') {
-      return false
-    }
-    if (typeof this.endpoint === 'undefined') {
+    if (!this.hasRequiredData()) {
       return false
     }
 
+    // if endpoint is a function, it's is valid
     if (isFunction(this.endpoint)) {
       return true
     }
 
-    if (!isString(this.endpoint)) {
-      return false
-    }
+    return this.hasEndpointInController()
+  }
 
-    if (typeof this.controller === 'undefined') {
+  private hasEndpointInController(): boolean {
+    if (!isString(this.endpoint) || typeof this.controller === 'undefined') {
       return false
     }
 
@@ -55,6 +50,16 @@ export class RouteData implements Partial<IRouteData> {
       return false
     }
     return true
+  }
+
+  private hasRequiredData() {
+    return (
+      typeof this.method !== 'undefined' &&
+      this.method !== '' &&
+      typeof this.path !== 'undefined' &&
+      this.path !== '' &&
+      typeof this.endpoint !== 'undefined'
+    )
   }
 
   mergeParentData(parent?: RouteData) {

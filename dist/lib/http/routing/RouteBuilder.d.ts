@@ -37,6 +37,8 @@ export declare class RouteBuilder implements IRouteBuilder, IRouteGrammarControl
     method(method: HttpMethod | 'all', path: string, endpoint: Function): RouteGrammarVerbChain;
     method(method: HttpMethod | 'all', path: string, controller: Controller, endpoint: string): RouteGrammarVerbChain;
     method(method: HttpMethod | 'all', path: string, controller: Object, endpoint: string): RouteGrammarVerbChain;
+    private method_overload_3_params(method, path, arg0);
+    private method_overload_4_params(method, path, arg0, arg1?);
     all(path: string, target: string): RouteGrammarVerbChain;
     all(path: string, endpoint: Function): RouteGrammarVerbChain;
     all(path: string, controller: Controller, endpoint: string): RouteGrammarVerbChain;

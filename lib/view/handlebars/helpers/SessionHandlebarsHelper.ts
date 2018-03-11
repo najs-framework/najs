@@ -2,6 +2,21 @@ import { register, IAutoload } from 'najs-binding'
 import { HandlebarsHelper } from '../HandlebarsHelper'
 import { ExpressController } from '../../../http/controller/ExpressController'
 
+const MODIFY_ACTIONS = [
+  'reflash',
+  'keep',
+  'flash',
+  'clear',
+  'flush',
+  'delete',
+  'remove',
+  'forget',
+  'set',
+  'put',
+  'push'
+]
+const GET_RESULT_ACTIONS = ['has', 'exists', 'pull', 'all', 'except', 'only']
+
 export class SessionHandlebarsHelper extends HandlebarsHelper<any, ExpressController> implements IAutoload {
   static className: string = 'Najs.SessionHandlebarsHelper'
 
@@ -25,23 +40,8 @@ export class SessionHandlebarsHelper extends HandlebarsHelper<any, ExpressContro
       return ''
     }
 
-    const modifyActions = [
-      'reflash',
-      'keep',
-      'flash',
-      'clear',
-      'flush',
-      'delete',
-      'remove',
-      'forget',
-      'set',
-      'put',
-      'push'
-    ]
-    const getResultActions = ['has', 'exists', 'pull', 'all', 'except', 'only']
-
-    const isGetResultAction = getResultActions.indexOf(command) !== -1
-    if (modifyActions.indexOf(command) !== -1 || isGetResultAction) {
+    const isGetResultAction = GET_RESULT_ACTIONS.indexOf(command) !== -1
+    if (MODIFY_ACTIONS.indexOf(command) !== -1 || isGetResultAction) {
       const result = Reflect.apply(
         (this.controller as ExpressController).session[command],
         (this.controller as ExpressController).session,
