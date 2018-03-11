@@ -17,11 +17,8 @@ const AuthMiddleware_1 = require("./middleware/AuthMiddleware");
 const lodash_2 = require("lodash");
 class HttpKernel {
     constructor() {
-        this.middlewareGroup = {
-            web: ['body-parser', 'cookie-parser', 'csrf', 'request-data', 'session']
-        };
         this.globalMiddleware = {
-            default: {
+            web: {
                 'body-parser': BodyParserMiddleware_1.BodyParserMiddleware.className,
                 'cookie-parser': CookieMiddleware_1.CookieMiddleware.className,
                 'request-data': RequestDataMiddleware_1.RequestDataMiddleware.className,

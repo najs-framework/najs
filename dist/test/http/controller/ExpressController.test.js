@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const ExpressController_1 = require("../../../lib/http/controller/ExpressController");
+const MemberProxy_1 = require("../../../lib/http/controller/MemberProxy");
 const najs_facade_1 = require("najs-facade");
 describe('ExpressController', function () {
     describe('.constructor()', function () {
@@ -33,6 +34,16 @@ describe('ExpressController', function () {
             const expressController = Reflect.construct(ExpressController_1.ExpressController, [request, {}]);
             expect(expressController.input).toBeInstanceOf(najs_facade_1.ContextualFacade);
             expect(expressController.input['context'] === expressController).toBe(true);
+        });
+    });
+    describe('.session', function () {
+        it('should be an instance of MemberProxy by default, .get() always returns a defaultValue', function () {
+            const request = {
+                method: 'get'
+            };
+            const expressController = Reflect.construct(ExpressController_1.ExpressController, [request, {}]);
+            expect(expressController.session).toBeInstanceOf(MemberProxy_1.MemberProxy);
+            expect(expressController.session.get('something', 123)).toEqual(123);
         });
     });
 });

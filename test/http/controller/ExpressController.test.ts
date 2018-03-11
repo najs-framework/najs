@@ -1,5 +1,6 @@
 import 'jest'
 import { ExpressController } from '../../../lib/http/controller/ExpressController'
+import { MemberProxy } from '../../../lib/http/controller/MemberProxy'
 import { ContextualFacade } from 'najs-facade'
 
 describe('ExpressController', function() {
@@ -34,6 +35,17 @@ describe('ExpressController', function() {
       const expressController: ExpressController = Reflect.construct(ExpressController, [request, {}])
       expect(expressController.input).toBeInstanceOf(ContextualFacade)
       expect(expressController.input['context'] === expressController).toBe(true)
+    })
+  })
+
+  describe('.session', function() {
+    it('should be an instance of MemberProxy by default, .get() always returns a defaultValue', function() {
+      const request = {
+        method: 'get'
+      }
+      const expressController: ExpressController = Reflect.construct(ExpressController, [request, {}])
+      expect(expressController.session).toBeInstanceOf(MemberProxy)
+      expect(expressController.session.get('something', 123)).toEqual(123)
     })
   })
 })

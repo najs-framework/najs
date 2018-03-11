@@ -24,14 +24,8 @@ export type MiddlewareDefinition = {
 }
 
 export class HttpKernel implements IAutoload {
-  protected middlewareGroup: {
-    [key: string]: string[]
-  } = {
-    web: ['body-parser', 'cookie-parser', 'csrf', 'request-data', 'session']
-  }
-
   protected globalMiddleware: MiddlewareDefinition = {
-    default: {
+    web: {
       'body-parser': BodyParserMiddleware.className,
       'cookie-parser': CookieMiddleware.className,
       'request-data': RequestDataMiddleware.className,

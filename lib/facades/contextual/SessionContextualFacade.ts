@@ -5,9 +5,10 @@ import { IContextualFacadeVerbOf } from 'najs-facade'
 import { Session as SessionClass } from '../../http/session/Session'
 import { Controller } from '../../http/controller/Controller'
 import { ContextualFacadeClass } from '../../constants'
+import { MemberProxy } from '../../http/controller/MemberProxy'
 
 const facade = Facade.create<SessionClass, Controller>(function(context: Controller) {
-  if (!context.session) {
+  if (!context.session || context.session instanceof MemberProxy) {
     return make<SessionClass>(ContextualFacadeClass.Session, [context])
   }
   return <SessionClass>context.session

@@ -1,7 +1,6 @@
 import '../session/ExpressSessionMemoryStore'
 import { make } from 'najs-binding'
 import { SystemClass } from '../../constants'
-import { IExpressMiddleware } from './IExpressMiddleware'
 import { register } from 'najs-binding'
 import { ExpressController } from '../controller/ExpressController'
 import { HandlebarsViewResponse } from '../../view/handlebars/HandlebarsViewResponse'
@@ -9,28 +8,22 @@ import { HandlebarsHelper } from '../../view/handlebars/HandlebarsHelper'
 import { SessionHandlebarsHelper } from '../../view/handlebars/helpers/SessionHandlebarsHelper'
 import { ConfigFacade } from '../../facades/global/ConfigFacade'
 import { ConfigurationKeys } from '../../constants'
-import * as ExpressSession from 'express-session'
-import * as Express from 'express'
 import { Controller } from '../../http/controller/Controller'
 import { SessionContextualFacade } from './../../facades/contextual/SessionContextualFacade'
+import { ExpressMiddlewareBase } from './ExpressMiddlewareBase'
+import * as ExpressSession from 'express-session'
+import * as Express from 'express'
 
 export let Session: Express.RequestHandler
 
-export class SessionMiddleware implements IExpressMiddleware {
+export class SessionMiddleware extends ExpressMiddlewareBase {
   static className: string = 'Najs.SessionMiddleware'
 
-  constructor() {
+  createMiddleware(): Express.Handler | Express.Handler[] | undefined {
     if (!Session) {
-      Session = ExpressSession(
-        Object.assign(
-          {},
-          {
-            store: this.makeStore()
-          },
-          this.getOptions()
-        )
-      )
+      Session = ExpressSession(Object.assign({}, { store: this.makeStore() }, this.getOptions()))
     }
+    return Session
   }
 
   protected makeStore(): any {
@@ -47,15 +40,7 @@ export class SessionMiddleware implements IExpressMiddleware {
   }
 
   before(request: Express.Request, response: Express.Response, controller: Controller) {
-    return new Promise(function(resolve: any, reject: any) {
-      Session(request, response, function(error: any) {
-        if (error) {
-          return reject(error)
-        }
-        SessionContextualFacade.of(controller)
-        return resolve()
-      })
-    })
+    SessionContextualFacade.of(controller)
   }
 
   async after(request: Express.Request, response: Express.Response, result: any, controller: ExpressController) {

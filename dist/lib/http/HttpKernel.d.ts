@@ -7,9 +7,6 @@ export declare type MiddlewareDefinition = {
     [key: string]: string | string[] | MiddlewareGroupDefinition;
 };
 export declare class HttpKernel implements IAutoload {
-    protected middlewareGroup: {
-        [key: string]: string[];
-    };
     protected globalMiddleware: MiddlewareDefinition;
     protected middleware: MiddlewareDefinition;
     protected findMiddlewareByName(name: string): string | string[] | MiddlewareGroupDefinition | undefined;

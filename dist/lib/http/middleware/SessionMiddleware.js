@@ -9,15 +9,15 @@ const HandlebarsHelper_1 = require("../../view/handlebars/HandlebarsHelper");
 const SessionHandlebarsHelper_1 = require("../../view/handlebars/helpers/SessionHandlebarsHelper");
 const ConfigFacade_1 = require("../../facades/global/ConfigFacade");
 const constants_2 = require("../../constants");
-const ExpressSession = require("express-session");
 const SessionContextualFacade_1 = require("./../../facades/contextual/SessionContextualFacade");
-class SessionMiddleware {
-    constructor() {
+const ExpressMiddlewareBase_1 = require("./ExpressMiddlewareBase");
+const ExpressSession = require("express-session");
+class SessionMiddleware extends ExpressMiddlewareBase_1.ExpressMiddlewareBase {
+    createMiddleware() {
         if (!exports.Session) {
-            exports.Session = ExpressSession(Object.assign({}, {
-                store: this.makeStore()
-            }, this.getOptions()));
+            exports.Session = ExpressSession(Object.assign({}, { store: this.makeStore() }, this.getOptions()));
         }
+        return exports.Session;
     }
     makeStore() {
         return najs_binding_1.make(constants_1.SystemClass.ExpressSessionStore);
@@ -31,15 +31,7 @@ class SessionMiddleware {
         });
     }
     before(request, response, controller) {
-        return new Promise(function (resolve, reject) {
-            exports.Session(request, response, function (error) {
-                if (error) {
-                    return reject(error);
-                }
-                SessionContextualFacade_1.SessionContextualFacade.of(controller);
-                return resolve();
-            });
-        });
+        SessionContextualFacade_1.SessionContextualFacade.of(controller);
     }
     async after(request, response, result, controller) {
         if (result instanceof HandlebarsViewResponse_1.HandlebarsViewResponse) {
