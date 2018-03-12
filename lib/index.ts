@@ -59,6 +59,10 @@ export { IMiddleware } from './http/middleware/IMiddleware'
 export { IExpressMiddleware } from './http/middleware/IExpressMiddleware'
 export { ExpressMiddlewareBase } from './http/middleware/ExpressMiddlewareBase'
 
+// core middleware
+export { PoweredByMiddleware } from './http/middleware/PoweredByMiddleware'
+export { RequestIdMiddleware } from './http/middleware/RequestIdMiddleware'
+
 export { ExpressCsurfMiddleware } from './http/middleware/ExpressCsurfMiddleware'
 export { ExpressCorsMiddleware } from './http/middleware/ExpressCorsMiddleware'
 export { AuthMiddleware } from './http/middleware/AuthMiddleware'

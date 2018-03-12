@@ -10,32 +10,6 @@ const Controller_1 = require("../../../lib/http/controller/Controller");
 const ExpressController_1 = require("../../../lib/http/controller/ExpressController");
 const RouteMiddlewareUtil_1 = require("../../../lib/http/driver/private/RouteMiddlewareUtil");
 describe('ExpressHttpDriver', function () {
-    describe('static .setXPoweredByMiddleware()', function () {
-        it('returns a middleware that sets X-Powered-By header', function () {
-            const middleware = ExpressHttpDriver_1.ExpressHttpDriver.setXPoweredByMiddleware();
-            expect(typeof middleware === 'function').toBe(true);
-        });
-        it('has default value is Najs/Express', function () {
-            const response = {
-                setHeader() { }
-            };
-            function next() { }
-            const setHeaderStub = Sinon.stub(response, 'setHeader');
-            const middleware = ExpressHttpDriver_1.ExpressHttpDriver.setXPoweredByMiddleware();
-            middleware.call(undefined, {}, response, next);
-            expect(setHeaderStub.calledWith('X-Powered-By', 'Najs/Express'));
-        });
-        it('can be used with custom name', function () {
-            const response = {
-                setHeader() { }
-            };
-            function next() { }
-            const setHeaderStub = Sinon.stub(response, 'setHeader');
-            const middleware = ExpressHttpDriver_1.ExpressHttpDriver.setXPoweredByMiddleware('Any name');
-            middleware.call(undefined, {}, response, next);
-            expect(setHeaderStub.calledWith('X-Powered-By', 'Any name'));
-        });
-    });
     describe('.getClassName()', function () {
         it('returns ExpressHttpDriver', function () {
             const driver = new ExpressHttpDriver_1.ExpressHttpDriver();

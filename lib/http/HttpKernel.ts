@@ -1,3 +1,5 @@
+import { PoweredByMiddleware } from './middleware/PoweredByMiddleware'
+import { RequestIdMiddleware } from './middleware/RequestIdMiddleware'
 import { BodyParserMiddleware } from './middleware/BodyParserMiddleware'
 import { ExpressCorsMiddleware } from './middleware/ExpressCorsMiddleware'
 import { ExpressCsurfMiddleware } from './middleware/ExpressCsurfMiddleware'
@@ -25,7 +27,13 @@ export type MiddlewareDefinition = {
 
 export class HttpKernel implements IAutoload {
   protected globalMiddleware: MiddlewareDefinition = {
+    core: {
+      'powered-by:Najs/Express': PoweredByMiddleware.className,
+      'request-id': RequestIdMiddleware.className
+    },
     web: {
+      'powered-by:Najs/Express': PoweredByMiddleware.className,
+      'request-id': RequestIdMiddleware.className,
       'body-parser': BodyParserMiddleware.className,
       'cookie-parser': CookieMiddleware.className,
       'request-data': RequestDataMiddleware.className,

@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const PoweredByMiddleware_1 = require("./middleware/PoweredByMiddleware");
+const RequestIdMiddleware_1 = require("./middleware/RequestIdMiddleware");
 const BodyParserMiddleware_1 = require("./middleware/BodyParserMiddleware");
 const ExpressCorsMiddleware_1 = require("./middleware/ExpressCorsMiddleware");
 const ExpressCsurfMiddleware_1 = require("./middleware/ExpressCsurfMiddleware");
@@ -18,7 +20,13 @@ const lodash_2 = require("lodash");
 class HttpKernel {
     constructor() {
         this.globalMiddleware = {
+            core: {
+                'powered-by:Najs/Express': PoweredByMiddleware_1.PoweredByMiddleware.className,
+                'request-id': RequestIdMiddleware_1.RequestIdMiddleware.className
+            },
             web: {
+                'powered-by:Najs/Express': PoweredByMiddleware_1.PoweredByMiddleware.className,
+                'request-id': RequestIdMiddleware_1.RequestIdMiddleware.className,
                 'body-parser': BodyParserMiddleware_1.BodyParserMiddleware.className,
                 'cookie-parser': CookieMiddleware_1.CookieMiddleware.className,
                 'request-data': RequestDataMiddleware_1.RequestDataMiddleware.className,

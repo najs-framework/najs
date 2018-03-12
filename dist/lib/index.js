@@ -67,6 +67,11 @@ var Cookie_1 = require("./http/cookie/Cookie");
 exports.NajsCookie = Cookie_1.Cookie;
 var ExpressMiddlewareBase_1 = require("./http/middleware/ExpressMiddlewareBase");
 exports.ExpressMiddlewareBase = ExpressMiddlewareBase_1.ExpressMiddlewareBase;
+// core middleware
+var PoweredByMiddleware_1 = require("./http/middleware/PoweredByMiddleware");
+exports.PoweredByMiddleware = PoweredByMiddleware_1.PoweredByMiddleware;
+var RequestIdMiddleware_1 = require("./http/middleware/RequestIdMiddleware");
+exports.RequestIdMiddleware = RequestIdMiddleware_1.RequestIdMiddleware;
 var ExpressCsurfMiddleware_1 = require("./http/middleware/ExpressCsurfMiddleware");
 exports.ExpressCsurfMiddleware = ExpressCsurfMiddleware_1.ExpressCsurfMiddleware;
 var ExpressCorsMiddleware_1 = require("./http/middleware/ExpressCorsMiddleware");

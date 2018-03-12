@@ -20,8 +20,6 @@ import * as Express from 'express'
 import * as Http from 'http'
 import * as ExpressHandlebars from 'express-handlebars'
 
-const addRequestIdMiddleware = require('express-request-id')()
-
 export type ExpressApp = Express.Express
 
 export type ExpressHandlers = Array<Express.RequestHandler | Express.ErrorRequestHandler>
@@ -55,17 +53,6 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   ]
   static className: string = 'ExpressHttpDriver'
 
-  static setXPoweredByMiddleware(poweredBy: string = 'Najs/Express') {
-    return function(request: Express.Request, response: Express.Response, next: Express.NextFunction) {
-      response.setHeader('X-Powered-By', poweredBy)
-      next()
-    }
-  }
-
-  static addRequestIdMiddleware(poweredBy: string = 'Najs/Express') {
-    return addRequestIdMiddleware
-  }
-
   protected express: ExpressApp
   protected server: Http.Server
   protected httpKernel: HttpKernel
@@ -79,8 +66,6 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     const app: ExpressApp = Express()
     this.setupViewEngine(app)
     this.setupStaticAssets(app)
-    app.use(ExpressHttpDriver.addRequestIdMiddleware())
-    app.use(ExpressHttpDriver.setXPoweredByMiddleware())
     return app
   }
 

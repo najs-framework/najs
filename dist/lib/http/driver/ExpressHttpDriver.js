@@ -16,27 +16,15 @@ const RouteMiddlewareUtil_1 = require("./private/RouteMiddlewareUtil");
 const Express = require("express");
 const Http = require("http");
 const ExpressHandlebars = require("express-handlebars");
-const addRequestIdMiddleware = require('express-request-id')();
 class ExpressHttpDriver {
     constructor() {
         this.express = this.setup();
         this.httpKernel = najs_binding_1.make(constants_1.SystemClass.HttpKernel);
     }
-    static setXPoweredByMiddleware(poweredBy = 'Najs/Express') {
-        return function (request, response, next) {
-            response.setHeader('X-Powered-By', poweredBy);
-            next();
-        };
-    }
-    static addRequestIdMiddleware(poweredBy = 'Najs/Express') {
-        return addRequestIdMiddleware;
-    }
     setup() {
         const app = Express();
         this.setupViewEngine(app);
         this.setupStaticAssets(app);
-        app.use(ExpressHttpDriver.addRequestIdMiddleware());
-        app.use(ExpressHttpDriver.setXPoweredByMiddleware());
         return app;
     }
     setupViewEngine(app) {

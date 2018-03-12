@@ -12,8 +12,6 @@ export declare type ExpressHandlers = Array<Express.RequestHandler | Express.Err
 export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
     static METHODS: string[];
     static className: string;
-    static setXPoweredByMiddleware(poweredBy?: string): (request: Express.Request, response: Express.Response, next: Express.NextFunction) => void;
-    static addRequestIdMiddleware(poweredBy?: string): any;
     protected express: ExpressApp;
     protected server: Http.Server;
     protected httpKernel: HttpKernel;
