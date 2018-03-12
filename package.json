@@ -1,6 +1,6 @@
 {
   "name": "najs",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "scripts": {
     "build": "npm run build-ts && npm run tslint",
     "build-ts": "tsc -d",
@@ -24,14 +24,23 @@
         "statements": 100
       }
     },
-    "moduleFileExtensions": ["js", "ts", "json"],
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "json"
+    ],
     "transform": {
       "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js"
     },
-    "testMatch": ["**/test/**/*.test.ts", "**/test/**/*.test.js"],
+    "testMatch": [
+      "**/test/**/*.test.ts",
+      "**/test/**/*.test.js"
+    ],
     "testEnvironment": "node"
   },
-  "files": ["dist/**/*"],
+  "files": [
+    "dist/**/*"
+  ],
   "main": "./dist/lib/index.js",
   "types": "./dist/lib/index.d.ts",
   "repository": {
@@ -48,14 +57,9 @@
   },
   "peerDependencies": {
     "ajv": "^6.1.1",
-    "body-parser": "^1.18.2",
     "config": "^1.29.2",
-    "cookie-parser": "^1.4.3",
-    "cors": "^2.8.4",
-    "csurf": "^1.9.0",
     "express": "^4.16.2",
     "express-handlebars": "^3.0.0",
-    "express-session": "^1.15.6",
     "handlebars": "^4.0.11",
     "handlebars-helpers": "^0.10.0",
     "jest": "^21.2.1",
@@ -71,9 +75,14 @@
   },
   "dependencies": {
     "base64url": "^2.0.0",
+    "body-parser": "^1.18.2",
     "collect.js": "^4.0.4",
     "connect-redis": "^3.3.3",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.4",
+    "csurf": "^1.9.0",
     "express-request-id": "^1.4.0",
+    "express-session": "^1.15.6",
     "jsonwebtoken": "^8.2.0",
     "lodash": "^4.17.4",
     "moment": "^2.21.0",
@@ -105,15 +114,10 @@
     "@types/winston": "^2.3.7",
     "ajv": "^6.1.1",
     "benchmark": "^2.1.4",
-    "body-parser": "^1.18.2",
     "config": "^1.29.2",
-    "cookie-parser": "^1.4.3",
-    "cors": "^2.8.4",
     "coveralls": "^3.0.0",
-    "csurf": "^1.9.0",
     "express": "^4.16.2",
     "express-handlebars": "^3.0.0",
-    "express-session": "^1.15.6",
     "handlebars": "^4.0.11",
     "handlebars-helpers": "^0.10.0",
     "jest": "^21.2.1",

@@ -69,14 +69,9 @@ export { CorsMiddleware } from './http/middleware/built-ins/CorsMiddleware'
 export { CsurfMiddleware } from './http/middleware/built-ins/CsurfMiddleware'
 export { SessionMiddleware } from './http/middleware/built-ins/SessionMiddleware'
 export { CookieMiddleware } from './http/middleware/built-ins/CookieMiddleware'
+export { BodyParserMiddleware } from './http/middleware/built-ins/BodyParserMiddleware'
 
 export { AuthMiddleware } from './http/middleware/AuthMiddleware'
-export { BodyParserMiddleware } from './http/middleware/BodyParserMiddleware'
-export { RequestDataMiddleware } from './http/middleware/RequestDataMiddleware'
-export { InputHandlebarsHelperMiddleware } from './http/middleware/InputHandlebarsHelperMiddleware'
-export { BodyHandlebarsHelperMiddleware } from './http/middleware/BodyHandlebarsHelperMiddleware'
-export { QueryHandlebarsHelperMiddleware } from './http/middleware/QueryHandlebarsHelperMiddleware'
-export { ParamsHandlebarsHelperMiddleware } from './http/middleware/ParamsHandlebarsHelperMiddleware'
 
 // najs-facade package
 export {

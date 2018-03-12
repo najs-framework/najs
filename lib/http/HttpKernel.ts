@@ -5,13 +5,8 @@ import { CorsMiddleware as Cors } from './middleware/built-ins/CorsMiddleware'
 import { CsurfMiddleware as Csurf } from './middleware/built-ins/CsurfMiddleware'
 import { SessionMiddleware as Session } from './middleware/built-ins/SessionMiddleware'
 import { CookieMiddleware as Cookie } from './middleware/built-ins/CookieMiddleware'
+import { BodyParserMiddleware as BodyParser } from './middleware/built-ins/BodyParserMiddleware'
 
-import { BodyParserMiddleware } from './middleware/BodyParserMiddleware'
-import { RequestDataMiddleware } from './middleware/RequestDataMiddleware'
-import { InputHandlebarsHelperMiddleware } from './middleware/InputHandlebarsHelperMiddleware'
-import { BodyHandlebarsHelperMiddleware } from './middleware/BodyHandlebarsHelperMiddleware'
-import { QueryHandlebarsHelperMiddleware } from './middleware/QueryHandlebarsHelperMiddleware'
-import { ParamsHandlebarsHelperMiddleware } from './middleware/ParamsHandlebarsHelperMiddleware'
 import { IAutoload, make, register } from 'najs-binding'
 import { IMiddleware } from './middleware/IMiddleware'
 import { isString } from 'lodash'
@@ -37,9 +32,8 @@ export class HttpKernel implements IAutoload {
       'powered-by:Najs/Express': PoweredBy.className,
       'request-id': RequestId.className,
       static: Static.className,
-      'body-parser': BodyParserMiddleware.className,
+      'body-parser': BodyParser.className,
       'cookie-parser': Cookie.className,
-      'request-data': RequestDataMiddleware.className,
       csrf: Csurf.className,
       session: Session.className
     },
@@ -50,13 +44,8 @@ export class HttpKernel implements IAutoload {
     session: Session.className,
     cookie: Cookie.className,
     static: Static.className,
-    'body-parser': BodyParserMiddleware.className,
-    'input-helper': InputHandlebarsHelperMiddleware.className,
-    'body-helper': BodyHandlebarsHelperMiddleware.className,
-    'query-helper': QueryHandlebarsHelperMiddleware.className,
-    'params-helper': ParamsHandlebarsHelperMiddleware.className,
-    'request-id': RequestId.className,
-    'request-data': RequestDataMiddleware.className
+    'body-parser': BodyParser.className,
+    'request-id': RequestId.className
   }
 
   protected middleware: MiddlewareDefinition = {}

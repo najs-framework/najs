@@ -52,3 +52,6 @@ exclude_patterns:
 - "**/tests/"
 - "**/vendor/"
 - "**/*.d.ts"
+- "syntax/"
+- "lib/http/routing/interfaces/IRouteGrammars.ts"
+- "lib/redis/IRedis.ts"
