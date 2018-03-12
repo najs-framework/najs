@@ -1,8 +1,8 @@
-import { PoweredByMiddleware } from './middleware/PoweredByMiddleware'
-import { RequestIdMiddleware } from './middleware/RequestIdMiddleware'
+import { PoweredByMiddleware as PoweredBy } from './middleware/built-ins/PoweredByMiddleware'
+import { RequestIdMiddleware as RequestId } from './middleware/built-ins/RequestIdMiddleware'
 import { BodyParserMiddleware } from './middleware/BodyParserMiddleware'
-import { ExpressCorsMiddleware } from './middleware/ExpressCorsMiddleware'
-import { ExpressCsurfMiddleware } from './middleware/ExpressCsurfMiddleware'
+import { CorsMiddleware as Cors } from './middleware/built-ins/CorsMiddleware'
+import { CsurfMiddleware as Csurf } from './middleware/built-ins/CsurfMiddleware'
 import { SessionMiddleware } from './middleware/SessionMiddleware'
 import { CookieMiddleware } from './middleware/CookieMiddleware'
 import { RequestDataMiddleware } from './middleware/RequestDataMiddleware'
@@ -28,21 +28,22 @@ export type MiddlewareDefinition = {
 export class HttpKernel implements IAutoload {
   protected globalMiddleware: MiddlewareDefinition = {
     core: {
-      'powered-by:Najs/Express': PoweredByMiddleware.className,
-      'request-id': RequestIdMiddleware.className
+      'powered-by:Najs/Express': PoweredBy.className,
+      'request-id': RequestId.className
     },
     web: {
-      'powered-by:Najs/Express': PoweredByMiddleware.className,
-      'request-id': RequestIdMiddleware.className,
+      'powered-by:Najs/Express': PoweredBy.className,
+      'request-id': RequestId.className,
       'body-parser': BodyParserMiddleware.className,
       'cookie-parser': CookieMiddleware.className,
       'request-data': RequestDataMiddleware.className,
-      csrf: ExpressCsurfMiddleware.className,
+      csrf: Csurf.className,
       session: SessionMiddleware.className
     },
     auth: AuthMiddleware.className,
-    cors: ExpressCorsMiddleware.className,
-    csrf: ExpressCsurfMiddleware.className,
+    cors: Cors.className,
+    csrf: Csurf.className,
+    csurf: Csurf.className,
     session: SessionMiddleware.className,
     cookie: CookieMiddleware.className,
     'body-parser': BodyParserMiddleware.className,

@@ -1,9 +1,18 @@
 import 'jest'
-import * as Middleware from '../../../lib/http/middleware/RequestIdMiddleware'
+import { ClassRegistry } from 'najs-binding'
+import * as Middleware from '../../../../lib/http/middleware/built-ins/RequestIdMiddleware'
+import { ExpressMiddlewareBase } from '../../../../lib/http/middleware/ExpressMiddlewareBase'
 
 describe('RequestIdMiddleware', function() {
-  it('is fit for najs-binding', function() {
-    expect(Middleware.RequestIdMiddleware.className).toEqual('Najs.RequestIdMiddleware')
+  it('extends ExpressMiddlewareBase', function() {
+    const middleware = new Middleware.RequestIdMiddleware('test')
+    expect(middleware).toBeInstanceOf(ExpressMiddlewareBase)
+  })
+
+  it('implements IAutoload and register automatically', function() {
+    const middleware = new Middleware.RequestIdMiddleware('test')
+    expect(middleware.getClassName()).toEqual(Middleware.RequestIdMiddleware.className)
+    expect(ClassRegistry.has(Middleware.RequestIdMiddleware.className)).toBe(true)
   })
 
   describe('protected .parseIdentify()', function() {

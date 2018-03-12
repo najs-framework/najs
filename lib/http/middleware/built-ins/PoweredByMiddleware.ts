@@ -1,11 +1,16 @@
-import { ExpressMiddlewareBase } from './ExpressMiddlewareBase'
+import { ExpressMiddlewareBase } from '../ExpressMiddlewareBase'
+import { IAutoload, register } from 'najs-binding'
 import * as Express from 'express'
 
 export let PoweredBySetter: Express.Handler
 
-export class PoweredByMiddleware extends ExpressMiddlewareBase {
+export class PoweredByMiddleware extends ExpressMiddlewareBase implements IAutoload {
   static className: string = 'Najs.PoweredByMiddleware'
   protected poweredBy: string
+
+  getClassName() {
+    return PoweredByMiddleware.className
+  }
 
   protected parseIdentify(...args: string[]): string {
     return 'powered-by'
@@ -31,3 +36,4 @@ export class PoweredByMiddleware extends ExpressMiddlewareBase {
     return PoweredBySetter
   }
 }
+register(PoweredByMiddleware)

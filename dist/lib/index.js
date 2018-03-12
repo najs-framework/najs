@@ -67,15 +67,16 @@ var Cookie_1 = require("./http/cookie/Cookie");
 exports.NajsCookie = Cookie_1.Cookie;
 var ExpressMiddlewareBase_1 = require("./http/middleware/ExpressMiddlewareBase");
 exports.ExpressMiddlewareBase = ExpressMiddlewareBase_1.ExpressMiddlewareBase;
-// core middleware
-var PoweredByMiddleware_1 = require("./http/middleware/PoweredByMiddleware");
+// built-in core middleware
+var PoweredByMiddleware_1 = require("./http/middleware/built-ins/PoweredByMiddleware");
 exports.PoweredByMiddleware = PoweredByMiddleware_1.PoweredByMiddleware;
-var RequestIdMiddleware_1 = require("./http/middleware/RequestIdMiddleware");
+var RequestIdMiddleware_1 = require("./http/middleware/built-ins/RequestIdMiddleware");
 exports.RequestIdMiddleware = RequestIdMiddleware_1.RequestIdMiddleware;
-var ExpressCsurfMiddleware_1 = require("./http/middleware/ExpressCsurfMiddleware");
-exports.ExpressCsurfMiddleware = ExpressCsurfMiddleware_1.ExpressCsurfMiddleware;
-var ExpressCorsMiddleware_1 = require("./http/middleware/ExpressCorsMiddleware");
-exports.ExpressCorsMiddleware = ExpressCorsMiddleware_1.ExpressCorsMiddleware;
+// built-in middleware
+var CorsMiddleware_1 = require("./http/middleware/built-ins/CorsMiddleware");
+exports.CorsMiddleware = CorsMiddleware_1.CorsMiddleware;
+var CsurfMiddleware_1 = require("./http/middleware/built-ins/CsurfMiddleware");
+exports.CsurfMiddleware = CsurfMiddleware_1.CsurfMiddleware;
 var AuthMiddleware_1 = require("./http/middleware/AuthMiddleware");
 exports.AuthMiddleware = AuthMiddleware_1.AuthMiddleware;
 var SessionMiddleware_1 = require("./http/middleware/SessionMiddleware");

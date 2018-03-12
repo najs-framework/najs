@@ -2,10 +2,18 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
-const Middleware = require("../../../lib/http/middleware/PoweredByMiddleware");
+const najs_binding_1 = require("najs-binding");
+const Middleware = require("../../../../lib/http/middleware/built-ins/PoweredByMiddleware");
+const ExpressMiddlewareBase_1 = require("../../../../lib/http/middleware/ExpressMiddlewareBase");
 describe('PoweredByMiddleware', function () {
-    it('is fit for najs-binding', function () {
-        expect(Middleware.PoweredByMiddleware.className).toEqual('Najs.PoweredByMiddleware');
+    it('extends ExpressMiddlewareBase', function () {
+        const middleware = new Middleware.PoweredByMiddleware('test');
+        expect(middleware).toBeInstanceOf(ExpressMiddlewareBase_1.ExpressMiddlewareBase);
+    });
+    it('implements IAutoload and register automatically', function () {
+        const middleware = new Middleware.PoweredByMiddleware('test');
+        expect(middleware.getClassName()).toEqual(Middleware.PoweredByMiddleware.className);
+        expect(najs_binding_1.ClassRegistry.has(Middleware.PoweredByMiddleware.className)).toBe(true);
     });
     describe('protected .parseIdentify()', function () {
         it('always returns "powered-by"', function () {

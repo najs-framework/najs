@@ -1,10 +1,10 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const PoweredByMiddleware_1 = require("./middleware/PoweredByMiddleware");
-const RequestIdMiddleware_1 = require("./middleware/RequestIdMiddleware");
+const PoweredByMiddleware_1 = require("./middleware/built-ins/PoweredByMiddleware");
+const RequestIdMiddleware_1 = require("./middleware/built-ins/RequestIdMiddleware");
 const BodyParserMiddleware_1 = require("./middleware/BodyParserMiddleware");
-const ExpressCorsMiddleware_1 = require("./middleware/ExpressCorsMiddleware");
-const ExpressCsurfMiddleware_1 = require("./middleware/ExpressCsurfMiddleware");
+const CorsMiddleware_1 = require("./middleware/built-ins/CorsMiddleware");
+const CsurfMiddleware_1 = require("./middleware/built-ins/CsurfMiddleware");
 const SessionMiddleware_1 = require("./middleware/SessionMiddleware");
 const CookieMiddleware_1 = require("./middleware/CookieMiddleware");
 const RequestDataMiddleware_1 = require("./middleware/RequestDataMiddleware");
@@ -30,12 +30,13 @@ class HttpKernel {
                 'body-parser': BodyParserMiddleware_1.BodyParserMiddleware.className,
                 'cookie-parser': CookieMiddleware_1.CookieMiddleware.className,
                 'request-data': RequestDataMiddleware_1.RequestDataMiddleware.className,
-                csrf: ExpressCsurfMiddleware_1.ExpressCsurfMiddleware.className,
+                csrf: CsurfMiddleware_1.CsurfMiddleware.className,
                 session: SessionMiddleware_1.SessionMiddleware.className
             },
             auth: AuthMiddleware_1.AuthMiddleware.className,
-            cors: ExpressCorsMiddleware_1.ExpressCorsMiddleware.className,
-            csrf: ExpressCsurfMiddleware_1.ExpressCsurfMiddleware.className,
+            cors: CorsMiddleware_1.CorsMiddleware.className,
+            csrf: CsurfMiddleware_1.CsurfMiddleware.className,
+            csurf: CsurfMiddleware_1.CsurfMiddleware.className,
             session: SessionMiddleware_1.SessionMiddleware.className,
             cookie: CookieMiddleware_1.CookieMiddleware.className,
             'body-parser': BodyParserMiddleware_1.BodyParserMiddleware.className,

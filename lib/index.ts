@@ -59,12 +59,14 @@ export { IMiddleware } from './http/middleware/IMiddleware'
 export { IExpressMiddleware } from './http/middleware/IExpressMiddleware'
 export { ExpressMiddlewareBase } from './http/middleware/ExpressMiddlewareBase'
 
-// core middleware
-export { PoweredByMiddleware } from './http/middleware/PoweredByMiddleware'
-export { RequestIdMiddleware } from './http/middleware/RequestIdMiddleware'
+// built-in core middleware
+export { PoweredByMiddleware } from './http/middleware/built-ins/PoweredByMiddleware'
+export { RequestIdMiddleware } from './http/middleware/built-ins/RequestIdMiddleware'
 
-export { ExpressCsurfMiddleware } from './http/middleware/ExpressCsurfMiddleware'
-export { ExpressCorsMiddleware } from './http/middleware/ExpressCorsMiddleware'
+// built-in middleware
+export { CorsMiddleware } from './http/middleware/built-ins/CorsMiddleware'
+export { CsurfMiddleware } from './http/middleware/built-ins/CsurfMiddleware'
+
 export { AuthMiddleware } from './http/middleware/AuthMiddleware'
 export { SessionMiddleware } from './http/middleware/SessionMiddleware'
 export { CookieMiddleware } from './http/middleware/CookieMiddleware'

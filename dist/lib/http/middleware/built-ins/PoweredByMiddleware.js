@@ -1,7 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ExpressMiddlewareBase_1 = require("./ExpressMiddlewareBase");
+const ExpressMiddlewareBase_1 = require("../ExpressMiddlewareBase");
+const najs_binding_1 = require("najs-binding");
 class PoweredByMiddleware extends ExpressMiddlewareBase_1.ExpressMiddlewareBase {
+    getClassName() {
+        return PoweredByMiddleware.className;
+    }
     parseIdentify(...args) {
         return 'powered-by';
     }
@@ -25,3 +29,4 @@ class PoweredByMiddleware extends ExpressMiddlewareBase_1.ExpressMiddlewareBase 
 }
 PoweredByMiddleware.className = 'Najs.PoweredByMiddleware';
 exports.PoweredByMiddleware = PoweredByMiddleware;
+najs_binding_1.register(PoweredByMiddleware);

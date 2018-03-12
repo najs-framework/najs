@@ -1,11 +1,16 @@
-import { ExpressMiddlewareBase } from './ExpressMiddlewareBase'
+import { ExpressMiddlewareBase } from '../ExpressMiddlewareBase'
+import { IAutoload, register } from 'najs-binding'
 import * as Express from 'express'
 const ExpressRequestId = require('express-request-id')
 
 export let RequestIdGenerator: Express.Handler
 
-export class RequestIdMiddleware extends ExpressMiddlewareBase {
+export class RequestIdMiddleware extends ExpressMiddlewareBase implements IAutoload {
   static className: string = 'Najs.RequestIdMiddleware'
+
+  getClassName() {
+    return RequestIdMiddleware.className
+  }
 
   protected parseIdentify(...args: string[]): string {
     return 'request-id'
@@ -23,3 +28,4 @@ export class RequestIdMiddleware extends ExpressMiddlewareBase {
     return RequestIdGenerator
   }
 }
+register(RequestIdMiddleware)

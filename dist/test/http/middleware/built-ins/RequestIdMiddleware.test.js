@@ -1,10 +1,18 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
-const Middleware = require("../../../lib/http/middleware/RequestIdMiddleware");
+const najs_binding_1 = require("najs-binding");
+const Middleware = require("../../../../lib/http/middleware/built-ins/RequestIdMiddleware");
+const ExpressMiddlewareBase_1 = require("../../../../lib/http/middleware/ExpressMiddlewareBase");
 describe('RequestIdMiddleware', function () {
-    it('is fit for najs-binding', function () {
-        expect(Middleware.RequestIdMiddleware.className).toEqual('Najs.RequestIdMiddleware');
+    it('extends ExpressMiddlewareBase', function () {
+        const middleware = new Middleware.RequestIdMiddleware('test');
+        expect(middleware).toBeInstanceOf(ExpressMiddlewareBase_1.ExpressMiddlewareBase);
+    });
+    it('implements IAutoload and register automatically', function () {
+        const middleware = new Middleware.RequestIdMiddleware('test');
+        expect(middleware.getClassName()).toEqual(Middleware.RequestIdMiddleware.className);
+        expect(najs_binding_1.ClassRegistry.has(Middleware.RequestIdMiddleware.className)).toBe(true);
     });
     describe('protected .parseIdentify()', function () {
         it('always returns "request-id"', function () {

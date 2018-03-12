@@ -1,10 +1,19 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import * as Middleware from '../../../lib/http/middleware/PoweredByMiddleware'
+import { ClassRegistry } from 'najs-binding'
+import * as Middleware from '../../../../lib/http/middleware/built-ins/PoweredByMiddleware'
+import { ExpressMiddlewareBase } from '../../../../lib/http/middleware/ExpressMiddlewareBase'
 
 describe('PoweredByMiddleware', function() {
-  it('is fit for najs-binding', function() {
-    expect(Middleware.PoweredByMiddleware.className).toEqual('Najs.PoweredByMiddleware')
+  it('extends ExpressMiddlewareBase', function() {
+    const middleware = new Middleware.PoweredByMiddleware('test')
+    expect(middleware).toBeInstanceOf(ExpressMiddlewareBase)
+  })
+
+  it('implements IAutoload and register automatically', function() {
+    const middleware = new Middleware.PoweredByMiddleware('test')
+    expect(middleware.getClassName()).toEqual(Middleware.PoweredByMiddleware.className)
+    expect(ClassRegistry.has(Middleware.PoweredByMiddleware.className)).toBe(true)
   })
 
   describe('protected .parseIdentify()', function() {

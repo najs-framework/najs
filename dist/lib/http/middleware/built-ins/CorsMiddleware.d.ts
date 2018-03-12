@@ -1,12 +1,11 @@
 /// <reference types="express" />
 import { IAutoload } from 'najs-binding';
-import { IExpressMiddleware } from './IExpressMiddleware';
+import { ExpressMiddlewareBase } from '../ExpressMiddlewareBase';
 import * as Express from 'express';
 export declare let CorsEnable: Express.RequestHandler;
-export declare class ExpressCorsMiddleware implements IExpressMiddleware, IAutoload {
+export declare class CorsMiddleware extends ExpressMiddlewareBase implements IAutoload {
     static className: string;
-    constructor();
     getOptions(): {};
     getClassName(): string;
-    before(request: Express.Request, response: Express.Response): Promise<{}>;
+    createMiddleware(): Express.Handler | Express.Handler[] | undefined;
 }
