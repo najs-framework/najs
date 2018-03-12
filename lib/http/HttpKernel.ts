@@ -1,10 +1,12 @@
 import { PoweredByMiddleware as PoweredBy } from './middleware/built-ins/PoweredByMiddleware'
 import { RequestIdMiddleware as RequestId } from './middleware/built-ins/RequestIdMiddleware'
-import { BodyParserMiddleware } from './middleware/BodyParserMiddleware'
+import { StaticMiddleware as Static } from './middleware/built-ins/StaticMiddleware'
 import { CorsMiddleware as Cors } from './middleware/built-ins/CorsMiddleware'
 import { CsurfMiddleware as Csurf } from './middleware/built-ins/CsurfMiddleware'
-import { SessionMiddleware } from './middleware/SessionMiddleware'
-import { CookieMiddleware } from './middleware/CookieMiddleware'
+import { SessionMiddleware as Session } from './middleware/built-ins/SessionMiddleware'
+import { CookieMiddleware as Cookie } from './middleware/built-ins/CookieMiddleware'
+
+import { BodyParserMiddleware } from './middleware/BodyParserMiddleware'
 import { RequestDataMiddleware } from './middleware/RequestDataMiddleware'
 import { InputHandlebarsHelperMiddleware } from './middleware/InputHandlebarsHelperMiddleware'
 import { BodyHandlebarsHelperMiddleware } from './middleware/BodyHandlebarsHelperMiddleware'
@@ -34,23 +36,26 @@ export class HttpKernel implements IAutoload {
     web: {
       'powered-by:Najs/Express': PoweredBy.className,
       'request-id': RequestId.className,
+      static: Static.className,
       'body-parser': BodyParserMiddleware.className,
-      'cookie-parser': CookieMiddleware.className,
+      'cookie-parser': Cookie.className,
       'request-data': RequestDataMiddleware.className,
       csrf: Csurf.className,
-      session: SessionMiddleware.className
+      session: Session.className
     },
     auth: AuthMiddleware.className,
     cors: Cors.className,
     csrf: Csurf.className,
     csurf: Csurf.className,
-    session: SessionMiddleware.className,
-    cookie: CookieMiddleware.className,
+    session: Session.className,
+    cookie: Cookie.className,
+    static: Static.className,
     'body-parser': BodyParserMiddleware.className,
     'input-helper': InputHandlebarsHelperMiddleware.className,
     'body-helper': BodyHandlebarsHelperMiddleware.className,
     'query-helper': QueryHandlebarsHelperMiddleware.className,
     'params-helper': ParamsHandlebarsHelperMiddleware.className,
+    'request-id': RequestId.className,
     'request-data': RequestDataMiddleware.className
   }
 

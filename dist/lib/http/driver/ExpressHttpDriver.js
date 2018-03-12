@@ -24,7 +24,6 @@ class ExpressHttpDriver {
     setup() {
         const app = Express();
         this.setupViewEngine(app);
-        this.setupStaticAssets(app);
         return app;
     }
     setupViewEngine(app) {
@@ -36,9 +35,6 @@ class ExpressHttpDriver {
         })));
         app.set('view engine', viewEngine);
         app.set('views', PathFacade_1.PathFacade.view());
-    }
-    setupStaticAssets(app) {
-        app.use(Express.static(PathFacade_1.PathFacade.public()));
     }
     getClassName() {
         return ExpressHttpDriver.className;

@@ -8,7 +8,7 @@ export class ExpressMiddlewareBase implements IExpressMiddleware {
   protected isAppLevel: boolean
   protected meta: string
 
-  constructor(name: string, level?: string) {
+  constructor(name: string, level?: string, ...args: string[]) {
     this.name = name
     this.parseLevel(level)
     this.parseParams(...arguments)

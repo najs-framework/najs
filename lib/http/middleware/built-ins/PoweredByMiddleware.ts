@@ -13,7 +13,8 @@ export class PoweredByMiddleware extends ExpressMiddlewareBase implements IAutol
   }
 
   protected parseIdentify(...args: string[]): string {
-    return 'powered-by'
+    this.identify = 'powered-by'
+    return this.identify
   }
 
   protected parseLevel(level: string): boolean {

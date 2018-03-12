@@ -8,7 +8,8 @@ class RequestIdMiddleware extends ExpressMiddlewareBase_1.ExpressMiddlewareBase 
         return RequestIdMiddleware.className;
     }
     parseIdentify(...args) {
-        return 'request-id';
+        this.identify = 'request-id';
+        return this.identify;
     }
     parseLevel(level) {
         this.isAppLevel = true;

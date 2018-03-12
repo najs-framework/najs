@@ -1,16 +1,23 @@
-import { Session } from './../../../lib/http/session/Session'
 import 'jest'
 import * as Sinon from 'sinon'
-import * as Middleware from '../../../lib/http/middleware/SessionMiddleware'
-import { isPromise } from '../../../lib/private/isPromise'
-import { ViewResponse } from '../../../lib/http/response/types/ViewResponse'
-import { HandlebarsHelper } from '../../../lib/view/handlebars/HandlebarsHelper'
-import { HandlebarsViewResponse } from '../../../lib/view/handlebars/HandlebarsViewResponse'
-import { MemberProxy } from '../../../lib/http/controller/MemberProxy'
+import * as Middleware from '../../../../lib/http/middleware/built-ins/SessionMiddleware'
+import { Session } from '../../../../lib/http/session/Session'
+import { isPromise } from '../../../../lib/private/isPromise'
+import { ViewResponse } from '../../../../lib/http/response/types/ViewResponse'
+import { HandlebarsHelper } from '../../../../lib/view/handlebars/HandlebarsHelper'
+import { HandlebarsViewResponse } from '../../../../lib/view/handlebars/HandlebarsViewResponse'
+import { MemberProxy } from '../../../../lib/http/controller/MemberProxy'
+import { ExpressMiddlewareBase } from '../../../../lib/http/middleware/ExpressMiddlewareBase'
 
 describe('SessionMiddleware', function() {
-  it('is fit for najs-binding', function() {
-    expect(Middleware.SessionMiddleware.className).toEqual('Najs.SessionMiddleware')
+  it('extends ExpressMiddlewareBase', function() {
+    const middleware = new Middleware.SessionMiddleware('session')
+    expect(middleware).toBeInstanceOf(ExpressMiddlewareBase)
+  })
+
+  it('implements IAutoload', function() {
+    const middleware = new Middleware.SessionMiddleware('session')
+    expect(middleware.getClassName()).toEqual(Middleware.SessionMiddleware.className)
   })
 
   it('has shared Express.RequestHandler called Session which not init by default', function() {

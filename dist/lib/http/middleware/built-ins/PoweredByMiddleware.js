@@ -7,7 +7,8 @@ class PoweredByMiddleware extends ExpressMiddlewareBase_1.ExpressMiddlewareBase 
         return PoweredByMiddleware.className;
     }
     parseIdentify(...args) {
-        return 'powered-by';
+        this.identify = 'powered-by';
+        return this.identify;
     }
     parseLevel(level) {
         this.isAppLevel = true;

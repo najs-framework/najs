@@ -2,11 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const PoweredByMiddleware_1 = require("./middleware/built-ins/PoweredByMiddleware");
 const RequestIdMiddleware_1 = require("./middleware/built-ins/RequestIdMiddleware");
-const BodyParserMiddleware_1 = require("./middleware/BodyParserMiddleware");
+const StaticMiddleware_1 = require("./middleware/built-ins/StaticMiddleware");
 const CorsMiddleware_1 = require("./middleware/built-ins/CorsMiddleware");
 const CsurfMiddleware_1 = require("./middleware/built-ins/CsurfMiddleware");
-const SessionMiddleware_1 = require("./middleware/SessionMiddleware");
-const CookieMiddleware_1 = require("./middleware/CookieMiddleware");
+const SessionMiddleware_1 = require("./middleware/built-ins/SessionMiddleware");
+const CookieMiddleware_1 = require("./middleware/built-ins/CookieMiddleware");
+const BodyParserMiddleware_1 = require("./middleware/BodyParserMiddleware");
 const RequestDataMiddleware_1 = require("./middleware/RequestDataMiddleware");
 const InputHandlebarsHelperMiddleware_1 = require("./middleware/InputHandlebarsHelperMiddleware");
 const BodyHandlebarsHelperMiddleware_1 = require("./middleware/BodyHandlebarsHelperMiddleware");
@@ -27,6 +28,7 @@ class HttpKernel {
             web: {
                 'powered-by:Najs/Express': PoweredByMiddleware_1.PoweredByMiddleware.className,
                 'request-id': RequestIdMiddleware_1.RequestIdMiddleware.className,
+                static: StaticMiddleware_1.StaticMiddleware.className,
                 'body-parser': BodyParserMiddleware_1.BodyParserMiddleware.className,
                 'cookie-parser': CookieMiddleware_1.CookieMiddleware.className,
                 'request-data': RequestDataMiddleware_1.RequestDataMiddleware.className,
@@ -39,11 +41,13 @@ class HttpKernel {
             csurf: CsurfMiddleware_1.CsurfMiddleware.className,
             session: SessionMiddleware_1.SessionMiddleware.className,
             cookie: CookieMiddleware_1.CookieMiddleware.className,
+            static: StaticMiddleware_1.StaticMiddleware.className,
             'body-parser': BodyParserMiddleware_1.BodyParserMiddleware.className,
             'input-helper': InputHandlebarsHelperMiddleware_1.InputHandlebarsHelperMiddleware.className,
             'body-helper': BodyHandlebarsHelperMiddleware_1.BodyHandlebarsHelperMiddleware.className,
             'query-helper': QueryHandlebarsHelperMiddleware_1.QueryHandlebarsHelperMiddleware.className,
             'params-helper': ParamsHandlebarsHelperMiddleware_1.ParamsHandlebarsHelperMiddleware.className,
+            'request-id': RequestIdMiddleware_1.RequestIdMiddleware.className,
             'request-data': RequestDataMiddleware_1.RequestDataMiddleware.className
         };
         this.middleware = {};

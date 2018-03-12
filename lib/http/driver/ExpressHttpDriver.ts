@@ -65,7 +65,6 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   protected setup(): ExpressApp {
     const app: ExpressApp = Express()
     this.setupViewEngine(app)
-    this.setupStaticAssets(app)
     return app
   }
 
@@ -83,10 +82,6 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     )
     app.set('view engine', viewEngine)
     app.set('views', PathFacade.view())
-  }
-
-  protected setupStaticAssets(app: ExpressApp) {
-    app.use(Express.static(PathFacade.public()))
   }
 
   getClassName() {

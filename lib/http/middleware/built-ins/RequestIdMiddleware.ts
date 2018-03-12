@@ -13,7 +13,8 @@ export class RequestIdMiddleware extends ExpressMiddlewareBase implements IAutol
   }
 
   protected parseIdentify(...args: string[]): string {
-    return 'request-id'
+    this.identify = 'request-id'
+    return this.identify
   }
 
   protected parseLevel(level: string): boolean {

@@ -527,12 +527,6 @@ describe('ExpressHttpDriver', function() {
       const driver = new ExpressHttpDriver()
       expect(setupViewEngine.calledWith(driver['express'])).toBe(true)
     })
-
-    it('calls .setupStaticAssets() for setting up the view engine', function() {
-      const setupStaticAssets = Sinon.spy(ExpressHttpDriver.prototype, <any>'setupStaticAssets')
-      const driver = new ExpressHttpDriver()
-      expect(setupStaticAssets.calledWith(driver['express'])).toBe(true)
-    })
   })
 
   describe('.start()', function() {

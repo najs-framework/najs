@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class ExpressMiddlewareBase {
-    constructor(name, level) {
+    constructor(name, level, ...args) {
         this.name = name;
         this.parseLevel(level);
         this.parseParams(...arguments);

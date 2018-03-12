@@ -7,7 +7,7 @@ export declare class ExpressMiddlewareBase implements IExpressMiddleware {
     protected name: string;
     protected isAppLevel: boolean;
     protected meta: string;
-    constructor(name: string, level?: string);
+    constructor(name: string, level?: string, ...args: string[]);
     protected parseIdentify(...args: string[]): string;
     protected parseParams(...args: any[]): void;
     protected parseLevel(level?: string): boolean;
