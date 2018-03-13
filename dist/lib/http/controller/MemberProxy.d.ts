@@ -16,5 +16,5 @@ export declare class MemberProxy implements IAutoload {
     protected proxy: any;
     constructor(message: string, settings: MemberProxySetting);
     getClassName(): string;
-    protected createProxy(): MemberProxy;
+    protected createProxy(): any;
 }

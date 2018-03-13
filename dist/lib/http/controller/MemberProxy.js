@@ -19,14 +19,13 @@ class MemberProxy {
             members.push(supportedSettingKeys.indexOf(name) === -1 ? [name] : this.settings[name]);
         }
         this.members = Array.from(new Set(lodash_1.flatten(members)));
-        this.proxy = this.createProxy();
-        return this.proxy;
+        return this.createProxy();
     }
     getClassName() {
         return MemberProxy.className;
     }
     createProxy() {
-        const proxy = new Proxy(this, {
+        this.proxy = new Proxy(this, {
             get(target, key) {
                 const customReturns = {
                     chainable: target.proxy,
@@ -47,7 +46,7 @@ class MemberProxy {
                 return target.settings[key] || target[key];
             }
         });
-        return proxy;
+        return this.proxy;
     }
 }
 MemberProxy.className = 'Najs.MemberProxy';

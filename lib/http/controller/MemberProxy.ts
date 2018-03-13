@@ -37,8 +37,7 @@ export class MemberProxy implements IAutoload {
       members.push(supportedSettingKeys.indexOf(name) === -1 ? [name] : this.settings[name])
     }
     this.members = Array.from(new Set(flatten(members)))
-    this.proxy = this.createProxy()
-    return this.proxy
+    return this.createProxy()
   }
 
   getClassName() {
@@ -46,7 +45,7 @@ export class MemberProxy implements IAutoload {
   }
 
   protected createProxy() {
-    const proxy = new Proxy(this, {
+    this.proxy = new Proxy(this, {
       get(target: MemberProxy, key: string): any {
         const customReturns = {
           chainable: target.proxy,
@@ -67,6 +66,6 @@ export class MemberProxy implements IAutoload {
         return target.settings[key] || target[key]
       }
     })
-    return proxy
+    return this.proxy
   }
 }
