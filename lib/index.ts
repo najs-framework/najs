@@ -16,6 +16,7 @@ import { Najs } from './core/Najs'
 export { Najs }
 export default Najs
 export { ServiceProvider } from './core/ServiceProvider'
+export { Path as NajsPath } from './core/Path'
 
 // constants
 export { SystemClass, GlobalFacadeClass, ContextualFacadeClass, ResponseTypeClass } from './constants'

@@ -1,4 +1,10 @@
-export interface IPath {
+import { IAutoload } from 'najs-binding'
+
+export interface IPathConstructor {
+  new (): IPath
+}
+
+export interface IPath extends IAutoload {
   get(...args: string[]): string
   cwd(...args: string[]): string
   app(...args: string[]): string
