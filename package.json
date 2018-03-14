@@ -3,7 +3,7 @@
   "version": "0.5.3",
   "scripts": {
     "build": "npm run build-ts && npm run tslint",
-    "build-ts": "tsc -d",
+    "build-ts": "tsc -d && ./script/copy-custom-definitions.js",
     "coverage": "npm run build && jest ./dist/test --coverage --forceExit",
     "test": "jest ./dist/test --forceExit",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
@@ -24,23 +24,14 @@
         "statements": 100
       }
     },
-    "moduleFileExtensions": [
-      "js",
-      "ts",
-      "json"
-    ],
+    "moduleFileExtensions": ["js", "ts", "json"],
     "transform": {
       "^.+\\.(ts|tsx)$": "./node_modules/ts-jest/preprocessor.js"
     },
-    "testMatch": [
-      "**/test/**/*.test.ts",
-      "**/test/**/*.test.js"
-    ],
+    "testMatch": ["**/test/**/*.test.ts", "**/test/**/*.test.js"],
     "testEnvironment": "node"
   },
-  "files": [
-    "dist/**/*"
-  ],
+  "files": ["dist/**/*"],
   "main": "./dist/lib/index.js",
   "types": "./dist/lib/index.d.ts",
   "repository": {

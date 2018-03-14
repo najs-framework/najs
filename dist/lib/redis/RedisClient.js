@@ -5,6 +5,7 @@ const constants_1 = require("../constants");
 const najs_facade_1 = require("najs-facade");
 const ConfigFacade_1 = require("../facades/global/ConfigFacade");
 const Redis = require("redis");
+// implements IRedis implicitly
 class RedisClient extends najs_facade_1.Facade {
     constructor() {
         super();

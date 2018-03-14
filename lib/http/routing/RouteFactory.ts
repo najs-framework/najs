@@ -6,9 +6,9 @@ import { RouteBuilder } from './RouteBuilder'
 import { IRouteGenerateUrl } from './interfaces/IRouteGenerateUrl'
 import { IRouteData } from './interfaces/IRouteData'
 import * as PathToRegex from 'path-to-regexp'
-import { IRouteFactory, IRouteFactoryConstructor } from './interfaces/IRouteFactory'
 
-class RouteFactoryClass extends Facade implements IRouteGenerateUrl, IAutoload {
+// implements IRouteFactory implicitly
+export class RouteFactory extends Facade implements IRouteGenerateUrl, IAutoload {
   protected proxy: any
 
   constructor() {
@@ -18,7 +18,7 @@ class RouteFactoryClass extends Facade implements IRouteGenerateUrl, IAutoload {
 
   protected createProxy() {
     this.proxy = new Proxy(this, {
-      get(target: RouteFactoryClass, key: string): any {
+      get(target: RouteFactory, key: string): any {
         if (key !== 'hasOwnProperty' && typeof RouteBuilder.prototype[key] === 'function') {
           return function() {
             return RouteCollection.register<RouteBuilder>(new RouteBuilder())[key](...arguments)
@@ -45,6 +45,4 @@ class RouteFactoryClass extends Facade implements IRouteGenerateUrl, IAutoload {
 
   // redirect(...args: Array<any>): void {}
 }
-register(RouteFactoryClass)
-
-export const RouteFactory: IRouteFactory & IRouteFactoryConstructor = <any>RouteFactoryClass
+register(RouteFactory)

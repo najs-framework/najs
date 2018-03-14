@@ -16,10 +16,10 @@ const NajsPaths = {
     storage: SystemPath.join('app', 'storage'),
     view: SystemPath.join('resources', 'view')
 };
-// IPath is implements implicitly to reduce repetition
-class PathClass extends najs_facade_1.Facade {
+// implements IPath implicitly
+class Path extends najs_facade_1.Facade {
     getClassName() {
-        return PathClass.className;
+        return Path.className;
     }
     get(...args) {
         return this.cwd(...args);
@@ -28,11 +28,12 @@ class PathClass extends najs_facade_1.Facade {
         return SystemPath.resolve(Najs_1.Najs['cwd'], ...args);
     }
 }
-PathClass.className = constants_1.GlobalFacadeClass.Path;
+Path.className = constants_1.GlobalFacadeClass.Path;
+exports.Path = Path;
+// add missing IPath functions
 for (const name in NajsPaths) {
-    PathClass.prototype[name] = function (...args) {
+    Path.prototype[name] = function (...args) {
         return this.cwd(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Paths[name], NajsPaths[name]), ...args);
     };
 }
-najs_binding_1.register(PathClass, constants_1.GlobalFacadeClass.Path);
-exports.Path = PathClass;
+najs_binding_1.register(Path, constants_1.GlobalFacadeClass.Path);

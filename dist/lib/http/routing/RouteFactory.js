@@ -6,7 +6,8 @@ const constants_1 = require("../../constants");
 const RouteCollection_1 = require("./RouteCollection");
 const RouteBuilder_1 = require("./RouteBuilder");
 const PathToRegex = require("path-to-regexp");
-class RouteFactoryClass extends najs_facade_1.Facade {
+// implements IRouteFactory implicitly
+class RouteFactory extends najs_facade_1.Facade {
     constructor() {
         super();
         return this.createProxy();
@@ -33,5 +34,5 @@ class RouteFactoryClass extends najs_facade_1.Facade {
         return toPath(param, options);
     }
 }
-najs_binding_1.register(RouteFactoryClass);
-exports.RouteFactory = RouteFactoryClass;
+exports.RouteFactory = RouteFactory;
+najs_binding_1.register(RouteFactory);

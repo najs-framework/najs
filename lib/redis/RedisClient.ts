@@ -4,6 +4,7 @@ import { Facade } from 'najs-facade'
 import { ConfigFacade } from '../facades/global/ConfigFacade'
 import * as Redis from 'redis'
 
+// implements IRedis implicitly
 export class RedisClient extends Facade implements IAutoload {
   static className: string = GlobalFacadeClass.Redis
   protected bucket: {
