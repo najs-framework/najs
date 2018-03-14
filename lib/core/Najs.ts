@@ -56,8 +56,8 @@ class NajsFramework extends FacadeContainer implements INajs {
   async start(options?: HttpDriverStartOptions): Promise<void> {
     try {
       this.fireEventIfNeeded('start', this)
-      await this.registerServiceProviders()
-      await this.bootServiceProviders()
+      await this.applyServiceProviders(true, 'registered')
+      await this.applyServiceProviders(false, 'booted')
       this.httpDriver = this.app.make<IHttpDriver>(SystemClass.HttpDriver)
       this.httpDriver.start(options)
       this.fireEventIfNeeded('started', this)
@@ -78,25 +78,18 @@ class NajsFramework extends FacadeContainer implements INajs {
     throw error
   }
 
+  private async applyServiceProviders(register: boolean, event: string) {
+    for (const provider of this.serviceProviders) {
+      await (register ? provider.register() : provider.boot())
+      this.fireEventIfNeeded(event, this, provider)
+    }
+  }
+
   protected resolveProvider(provider: string | typeof ServiceProvider): ServiceProvider | undefined {
     if (typeof provider === 'string') {
       return make<ServiceProvider>(provider, [this.app])
     }
     return Reflect.construct(provider, [this.app])
-  }
-
-  protected async registerServiceProviders() {
-    for (const provider of this.serviceProviders) {
-      await provider.register()
-      this.fireEventIfNeeded('registered', this, provider)
-    }
-  }
-
-  protected async bootServiceProviders() {
-    for (const provider of this.serviceProviders) {
-      await provider.boot()
-      this.fireEventIfNeeded('booted', this, provider)
-    }
   }
 
   protected fireEventIfNeeded(event: string, ...args: any[]): boolean {

@@ -28,7 +28,7 @@ describe('RouteBuilder', function () {
             });
             it('returns data itself if there is no children', function () {
                 const builder = new RouteBuilder_1.RouteBuilder();
-                builder.get('/test', 'Controller@endpoint');
+                builder.method(HttpMethod_1.HttpMethod.GET, '/test', 'Controller@endpoint');
                 expect(builder.getRouteData()).toEqual([
                     {
                         method: 'GET',
@@ -47,9 +47,9 @@ describe('RouteBuilder', function () {
                 builder['data']['prefix'] = '/prefix';
                 builder['data']['middleware'] = [a, b, 'c'];
                 const childA = new RouteBuilder_1.RouteBuilder();
-                childA.get('/test', 'Controller@endpointGet');
+                childA.method(HttpMethod_1.HttpMethod.GET, '/test', 'Controller@endpointGet');
                 const childB = new RouteBuilder_1.RouteBuilder();
-                childB.post('/ok', 'Controller@endpointPost');
+                childB.method(HttpMethod_1.HttpMethod.POST, '/ok', 'Controller@endpointPost');
                 builder['children'].push(childA);
                 builder['children'].push(childB);
                 expect(builder.getRouteData()).toEqual([
@@ -78,12 +78,12 @@ describe('RouteBuilder', function () {
                 builder['data']['prefix'] = '/prefix';
                 builder['data']['middleware'] = [a, b, 'c'];
                 const childA = new RouteBuilder_1.RouteBuilder();
-                childA.get('/test', 'Controller@endpointGet');
+                childA.method(HttpMethod_1.HttpMethod.GET, '/test', 'Controller@endpointGet');
                 const childB = new RouteBuilder_1.RouteBuilder();
                 childB['data']['prefix'] = '/b';
                 childB['data']['middleware'] = ['d'];
                 const grantChild = new RouteBuilder_1.RouteBuilder();
-                grantChild.delete('/hum', 'Controller@endpointDelete');
+                grantChild.method(HttpMethod_1.HttpMethod.DELETE, '/hum', 'Controller@endpointDelete');
                 childB['children'].push(grantChild);
                 builder['children'].push(childA);
                 builder['children'].push(childB);

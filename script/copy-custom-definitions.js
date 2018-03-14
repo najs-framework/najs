@@ -8,6 +8,7 @@ const distBase = 'dist'
 const files = [
   ['lib', 'core', 'Path.d.ts'],
   ['lib', 'http', 'routing', 'RouteFactory.d.ts'],
+  ['lib', 'http', 'routing', 'RouteBuilder.d.ts'],
   ['lib', 'redis', 'RedisClient.d.ts']
 ]
 

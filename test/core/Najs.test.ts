@@ -91,21 +91,19 @@ describe('Najs', function() {
     })
 
     describe('.start()', function() {
-      it('fires event "start" then calls registerServiceProviders, then bootServiceProviders() and fires "started"', async function() {
-        const registerServiceProvidersSpy = Sinon.spy(Najs, <any>'registerServiceProviders')
-        const bootServiceProvidersSpy = Sinon.spy(Najs, <any>'bootServiceProviders')
+      it('fires event "start" then calls applyServiceProviders(register), then applyServiceProviders(boot) and fires "started"', async function() {
+        const applyServiceProvidersSpy = Sinon.spy(Najs, <any>'applyServiceProviders')
         const fireEventIfNeededSpy = Sinon.spy(Najs, <any>'fireEventIfNeeded')
         await Najs.start()
 
-        expect(registerServiceProvidersSpy.called).toBe(true)
-        expect(bootServiceProvidersSpy.called).toBe(true)
+        expect(applyServiceProvidersSpy.firstCall.calledWith(true, 'registered')).toBe(true)
+        expect(applyServiceProvidersSpy.secondCall.calledWith(false, 'booted')).toBe(true)
         expect(fireEventIfNeededSpy.firstCall.args[0] === 'start').toBe(true)
         expect(fireEventIfNeededSpy.firstCall.args[1] === Najs).toBe(true)
         expect(fireEventIfNeededSpy.secondCall.args[0] === 'started').toBe(true)
         expect(fireEventIfNeededSpy.secondCall.args[1] === Najs).toBe(true)
 
-        registerServiceProvidersSpy.restore()
-        bootServiceProvidersSpy.restore()
+        applyServiceProvidersSpy.restore()
         fireEventIfNeededSpy.restore()
       })
 
@@ -189,7 +187,7 @@ describe('Najs', function() {
       })
     })
 
-    describe('protected .registerServiceProviders()', function() {
+    describe('protected .applyServiceProviders()', function() {
       it('loops "serviceProviders" and call ServiceProvider.register(), fire "registered" for each one', async function() {
         const ServiceProviderOne = { async register() {} }
         const ServiceProviderTwo = { async register() {} }
@@ -198,7 +196,7 @@ describe('Najs', function() {
         const fireEventIfNeededSpy = Sinon.spy(Najs, <any>'fireEventIfNeeded')
 
         Najs['serviceProviders'] = [ServiceProviderOne, ServiceProviderTwo]
-        await Najs['registerServiceProviders']()
+        await Najs['applyServiceProviders'](true, 'registered')
 
         expect(registerOneSpy.called).toBe(true)
         expect(registerTwoSpy.called).toBe(true)
@@ -210,10 +208,8 @@ describe('Najs', function() {
         expect(fireEventIfNeededSpy.secondCall.args[2] === ServiceProviderTwo).toBe(true)
         fireEventIfNeededSpy.restore()
       })
-    })
 
-    describe('protected .bootServiceProviders()', function() {
-      it('loops "serviceProviders" and call ServiceProvider.register(), fire "registered" for each one', async function() {
+      it('loops "serviceProviders" and call ServiceProvider.boot(), fire "booted" for each one', async function() {
         const ServiceProviderOne = { async boot() {} }
         const ServiceProviderTwo = { async boot() {} }
         const bootOneSpy = Sinon.spy(ServiceProviderOne, 'boot')
@@ -221,7 +217,7 @@ describe('Najs', function() {
         const fireEventIfNeededSpy = Sinon.spy(Najs, <any>'fireEventIfNeeded')
 
         Najs['serviceProviders'] = [ServiceProviderOne, ServiceProviderTwo]
-        await Najs['bootServiceProviders']()
+        await Najs['applyServiceProviders'](false, 'booted')
 
         expect(bootOneSpy.called).toBe(true)
         expect(bootTwoSpy.called).toBe(true)

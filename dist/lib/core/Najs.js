@@ -41,8 +41,8 @@ class NajsFramework extends najs_facade_1.FacadeContainer {
     async start(options) {
         try {
             this.fireEventIfNeeded('start', this);
-            await this.registerServiceProviders();
-            await this.bootServiceProviders();
+            await this.applyServiceProviders(true, 'registered');
+            await this.applyServiceProviders(false, 'booted');
             this.httpDriver = this.app.make(constants_1.SystemClass.HttpDriver);
             this.httpDriver.start(options);
             this.fireEventIfNeeded('started', this);
@@ -60,23 +60,17 @@ class NajsFramework extends najs_facade_1.FacadeContainer {
         }
         throw error;
     }
+    async applyServiceProviders(register, event) {
+        for (const provider of this.serviceProviders) {
+            await (register ? provider.register() : provider.boot());
+            this.fireEventIfNeeded(event, this, provider);
+        }
+    }
     resolveProvider(provider) {
         if (typeof provider === 'string') {
             return najs_binding_1.make(provider, [this.app]);
         }
         return Reflect.construct(provider, [this.app]);
-    }
-    async registerServiceProviders() {
-        for (const provider of this.serviceProviders) {
-            await provider.register();
-            this.fireEventIfNeeded('registered', this, provider);
-        }
-    }
-    async bootServiceProviders() {
-        for (const provider of this.serviceProviders) {
-            await provider.boot();
-            this.fireEventIfNeeded('booted', this, provider);
-        }
     }
     fireEventIfNeeded(event, ...args) {
         if (events_1.EventEmitter.listenerCount(this.internalEventEmitter, event) > 0) {

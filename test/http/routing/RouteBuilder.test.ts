@@ -30,7 +30,7 @@ describe('RouteBuilder', function() {
 
       it('returns data itself if there is no children', function() {
         const builder = new RouteBuilder()
-        builder.get('/test', 'Controller@endpoint')
+        builder.method(HttpMethod.GET, '/test', 'Controller@endpoint')
         expect(builder.getRouteData()).toEqual([
           {
             method: 'GET',
@@ -51,9 +51,9 @@ describe('RouteBuilder', function() {
         builder['data']['middleware'] = [a, b, 'c']
 
         const childA = new RouteBuilder()
-        childA.get('/test', 'Controller@endpointGet')
+        childA.method(HttpMethod.GET, '/test', 'Controller@endpointGet')
         const childB = new RouteBuilder()
-        childB.post('/ok', 'Controller@endpointPost')
+        childB.method(HttpMethod.POST, '/ok', 'Controller@endpointPost')
 
         builder['children'].push(childA)
         builder['children'].push(childB)
@@ -86,13 +86,13 @@ describe('RouteBuilder', function() {
         builder['data']['middleware'] = [a, b, 'c']
 
         const childA = new RouteBuilder()
-        childA.get('/test', 'Controller@endpointGet')
+        childA.method(HttpMethod.GET, '/test', 'Controller@endpointGet')
 
         const childB = new RouteBuilder()
         childB['data']['prefix'] = '/b'
         childB['data']['middleware'] = ['d']
         const grantChild = new RouteBuilder()
-        grantChild.delete('/hum', 'Controller@endpointDelete')
+        grantChild.method(HttpMethod.DELETE, '/hum', 'Controller@endpointDelete')
         childB['children'].push(grantChild)
 
         builder['children'].push(childA)
