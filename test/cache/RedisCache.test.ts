@@ -2,7 +2,7 @@ import 'jest'
 import * as Redis from 'redis'
 import { RedisCache } from '../../lib/cache/RedisCache'
 import { Facade } from 'najs-facade'
-import { GlobalFacadeClass } from '../../lib/constants'
+import { Najs } from '../../lib/constants'
 import { ClassRegistry, make } from 'najs-binding'
 
 const PREVENT_FLAKY_PADDING = 10
@@ -17,14 +17,14 @@ describe('RedisCache', function() {
     const redisCache: RedisCache = new RedisCache()
     expect(redisCache).toBeInstanceOf(Facade)
     expect(redisCache.getClassName()).toEqual(RedisCache.className)
-    expect(ClassRegistry.has(GlobalFacadeClass.Cache)).toBe(true)
-    expect(make(GlobalFacadeClass.Cache)).toBeInstanceOf(RedisCache)
+    expect(ClassRegistry.has(Najs.Cache.RedisCache)).toBe(true)
+    expect(make(Najs.Cache.RedisCache)).toBeInstanceOf(RedisCache)
   })
 
   describe('.getClassName()', function() {
-    it('implements IAutoload interface', function() {
+    it('implements Autoload interface and returns "Najs.Cache.RedisCache', function() {
       const redisCache: RedisCache = new RedisCache()
-      expect(redisCache.getClassName()).toEqual(RedisCache.className)
+      expect(redisCache.getClassName()).toEqual('Najs.Cache.RedisCache')
     })
   })
 

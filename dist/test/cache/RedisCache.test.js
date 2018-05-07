@@ -16,13 +16,13 @@ describe('RedisCache', function () {
         const redisCache = new RedisCache_1.RedisCache();
         expect(redisCache).toBeInstanceOf(najs_facade_1.Facade);
         expect(redisCache.getClassName()).toEqual(RedisCache_1.RedisCache.className);
-        expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Cache)).toBe(true);
-        expect(najs_binding_1.make(constants_1.GlobalFacadeClass.Cache)).toBeInstanceOf(RedisCache_1.RedisCache);
+        expect(najs_binding_1.ClassRegistry.has(constants_1.Najs.Cache.RedisCache)).toBe(true);
+        expect(najs_binding_1.make(constants_1.Najs.Cache.RedisCache)).toBeInstanceOf(RedisCache_1.RedisCache);
     });
     describe('.getClassName()', function () {
-        it('implements IAutoload interface', function () {
+        it('implements Autoload interface and returns "Najs.Cache.RedisCache', function () {
             const redisCache = new RedisCache_1.RedisCache();
-            expect(redisCache.getClassName()).toEqual(RedisCache_1.RedisCache.className);
+            expect(redisCache.getClassName()).toEqual('Najs.Cache.RedisCache');
         });
     });
     describe('.get() | .set() | .has() | .clear()', function () {

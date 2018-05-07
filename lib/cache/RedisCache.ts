@@ -3,7 +3,7 @@
 import { Facade } from 'najs-facade'
 import { ConfigFacade } from '../facades/global/ConfigFacade'
 import { register } from 'najs-binding'
-import { GlobalFacadeClass, ConfigurationKeys } from '../constants'
+import { Najs, ConfigurationKeys } from '../constants'
 import * as Redis from 'redis'
 
 function get_tag_manage_key(tagName: string): string {
@@ -15,7 +15,7 @@ function get_tag_value_key(tagName: string, key: string): string {
 }
 
 export class RedisCache extends Facade implements Najs.Contracts.Cache {
-  static className: string = GlobalFacadeClass.Cache
+  static className: string = Najs.Cache.RedisCache
   redis: Redis.RedisClient
 
   constructor() {
@@ -29,7 +29,7 @@ export class RedisCache extends Facade implements Najs.Contracts.Cache {
   }
 
   getClassName(): string {
-    return RedisCache.className
+    return Najs.Cache.RedisCache
   }
 
   async get(key: string, defaultValue?: any): Promise<any> {
@@ -146,4 +146,3 @@ export class RedisCache extends Facade implements Najs.Contracts.Cache {
   }
 }
 register(RedisCache)
-register(RedisCache, GlobalFacadeClass.Cache)

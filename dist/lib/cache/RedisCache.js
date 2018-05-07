@@ -21,7 +21,7 @@ class RedisCache extends najs_facade_1.Facade {
         }));
     }
     getClassName() {
-        return RedisCache.className;
+        return constants_1.Najs.Cache.RedisCache;
     }
     async get(key, defaultValue) {
         return new Promise((resolve, reject) => {
@@ -124,7 +124,6 @@ class RedisCache extends najs_facade_1.Facade {
         return value;
     }
 }
-RedisCache.className = constants_1.GlobalFacadeClass.Cache;
+RedisCache.className = constants_1.Najs.Cache.RedisCache;
 exports.RedisCache = RedisCache;
 najs_binding_1.register(RedisCache);
-najs_binding_1.register(RedisCache, constants_1.GlobalFacadeClass.Cache);

@@ -1,6 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SchemaValidatorClass = 'SchemaValidator';
+exports.Najs = {
+    Cache: {
+        RedisCache: 'Najs.Cache.RedisCache'
+    }
+};
 exports.SystemClass = {
     HttpKernel: 'Najs.HttpKernel',
     HttpDriver: 'Najs.HttpDriver',
@@ -35,7 +40,6 @@ exports.ResponseTypeClass = {
 };
 exports.GlobalFacadeClass = {
     Application: 'Najs.Application',
-    Cache: 'Najs.Cache',
     Config: 'Najs.Config',
     Event: 'Najs.EventDispatcher',
     Log: 'Najs.WinstonLogger',

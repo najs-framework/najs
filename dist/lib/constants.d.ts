@@ -1,4 +1,9 @@
 export declare const SchemaValidatorClass: string;
+export declare const Najs: {
+    Cache: {
+        RedisCache: string;
+    };
+};
 export declare const SystemClass: {
     HttpKernel: string;
     HttpDriver: string;
@@ -33,7 +38,6 @@ export declare const ResponseTypeClass: {
 };
 export declare const GlobalFacadeClass: {
     Application: string;
-    Cache: string;
     Config: string;
     Event: string;
     Log: string;

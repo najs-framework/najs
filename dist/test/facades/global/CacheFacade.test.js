@@ -9,7 +9,7 @@ describe('CacheFacade', function () {
     it('calls make() to create new instance of RedisCache as a facade root', function () {
         const makeSpy = Sinon.spy(NajsBinding, 'make');
         CacheFacade_1.CacheFacade.reloadFacadeRoot();
-        expect(makeSpy.calledWith(constants_1.GlobalFacadeClass.Cache)).toBe(true);
+        expect(makeSpy.calledWith(constants_1.Najs.Cache.RedisCache)).toBe(true);
         expect(makeSpy.calledOnce).toBe(true);
     });
 });
