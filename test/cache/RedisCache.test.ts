@@ -1,6 +1,5 @@
 import 'jest'
 import * as Redis from 'redis'
-import { CacheFallback } from '../../lib/cache/ICache'
 import { RedisCache } from '../../lib/cache/RedisCache'
 import { Facade } from 'najs-facade'
 import { GlobalFacadeClass } from '../../lib/constants'
@@ -185,7 +184,7 @@ describe('RedisCache', function() {
     })
   })
 
-  function createFallback(value: any): CacheFallback<Promise<any>> {
+  function createFallback(value: any): () => Promise<any> {
     return async function(): Promise<any> {
       return new Promise(resolve => resolve(value))
     }

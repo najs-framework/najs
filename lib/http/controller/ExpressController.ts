@@ -1,6 +1,5 @@
 import { Log } from './../../facades/global/LogFacade'
 import { MemberProxy } from './MemberProxy'
-import { IAutoloadMetadata } from 'najs-binding'
 import { Controller } from './Controller'
 import { IRequestDataReader } from '../request/IRequestDataReader'
 import { Request, Response } from 'express'
@@ -36,8 +35,7 @@ const CookieProxySetting = {
   returnEmptyObject: ['all', 'only', 'except']
 }
 
-export abstract class ExpressController extends Controller<Request, Response>
-  implements IAutoloadMetadata<RequestIdAutoloadMetadata> {
+export abstract class ExpressController extends Controller<Request, Response> {
   __autoloadMetadata: RequestIdAutoloadMetadata
   protected body: IRequestDataReader
   protected query: IRequestDataReader

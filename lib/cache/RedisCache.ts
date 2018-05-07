@@ -1,7 +1,7 @@
+/// <reference path="../contracts/Cache.ts" />
+
 import { Facade } from 'najs-facade'
 import { ConfigFacade } from '../facades/global/ConfigFacade'
-import { ICache, CacheFallback } from './ICache'
-import { IAutoload } from 'najs-binding'
 import { register } from 'najs-binding'
 import { GlobalFacadeClass, ConfigurationKeys } from '../constants'
 import * as Redis from 'redis'
@@ -14,7 +14,7 @@ function get_tag_value_key(tagName: string, key: string): string {
   return `tag:${tagName}|${key}`
 }
 
-export class RedisCache extends Facade implements ICache, IAutoload {
+export class RedisCache extends Facade implements Najs.Contracts.Cache {
   static className: string = GlobalFacadeClass.Cache
   redis: Redis.RedisClient
 
@@ -32,10 +32,6 @@ export class RedisCache extends Facade implements ICache, IAutoload {
     return RedisCache.className
   }
 
-  async get(key: string): Promise<any>
-  async get<T>(key: string): Promise<T>
-  async get(key: string, defaultValue: any): Promise<any>
-  async get<T>(key: string, defaultValue: T): Promise<T>
   async get(key: string, defaultValue?: any): Promise<any> {
     return new Promise((resolve, reject) => {
       this.redis.GET(key, function(error, response) {
@@ -50,10 +46,6 @@ export class RedisCache extends Facade implements ICache, IAutoload {
     })
   }
 
-  async set(key: string, value: any): Promise<boolean>
-  async set<T>(key: string, value: T): Promise<boolean>
-  async set(key: string, value: any, ttl?: number): Promise<boolean>
-  async set<T>(key: string, value: T, ttl?: number): Promise<boolean>
   async set(key: string, value: any, ttl?: number): Promise<boolean> {
     return <Promise<boolean>>new Promise((resolve, reject) => {
       function callback(error: any, response: any) {
@@ -92,18 +84,10 @@ export class RedisCache extends Facade implements ICache, IAutoload {
     })
   }
 
-  async getTag(tag: string, key: string): Promise<any>
-  async getTag<T>(tag: string, key: string): Promise<T>
-  async getTag(tag: string, key: string, defaultValue: any): Promise<any>
-  async getTag<T>(tag: string, key: string, defaultValue: T): Promise<any>
   async getTag(tag: string, key: string, defaultValue?: any): Promise<any> {
     return this.get(get_tag_value_key(tag, key), defaultValue)
   }
 
-  async setTag(tag: string, key: string, value: any): Promise<boolean>
-  async setTag(tag: Array<string>, key: string, value: any): Promise<boolean>
-  async setTag(tag: string, key: string, value: any, ttl: number): Promise<boolean>
-  async setTag(tag: Array<string>, key: string, value: any, ttl: number): Promise<boolean>
   async setTag(tag: string | Array<string>, key: string, value: any, ttl?: number): Promise<any> {
     const tags: Array<string> = Array.isArray(tag) ? tag : [tag]
     for (const tagName of tags) {
@@ -121,8 +105,6 @@ export class RedisCache extends Facade implements ICache, IAutoload {
     return true
   }
 
-  async hasTag(tag: string): Promise<boolean>
-  async hasTag(tag: string, key: string): Promise<boolean>
   async hasTag(tag: string, key?: string): Promise<boolean> {
     if (!key) {
       return this.has(get_tag_manage_key(tag))
@@ -140,9 +122,7 @@ export class RedisCache extends Facade implements ICache, IAutoload {
     return true
   }
 
-  async cache(key: string, ttl: number, fallback: CacheFallback<Promise<any>>): Promise<any>
-  async cache<T>(key: string, ttl: number, fallback: CacheFallback<Promise<T>>): Promise<T>
-  async cache(key: string, ttl: number, fallback: CacheFallback<Promise<any>>): Promise<any> {
+  async cache(key: string, ttl: number, fallback: () => Promise<any>): Promise<any> {
     const hasKey: boolean = await this.has(key)
     if (hasKey) {
       return await this.get(key)
@@ -152,16 +132,7 @@ export class RedisCache extends Facade implements ICache, IAutoload {
     return value
   }
 
-  async cacheByTag<T>(tag: string, key: string, ttl: number, fallback: CacheFallback<Promise<T>>): Promise<T>
-  async cacheByTag<T>(tag: Array<string>, key: string, ttl: number, fallback: CacheFallback<Promise<T>>): Promise<T>
-  async cacheByTag(tag: string, key: string, ttl: number, fallback: CacheFallback<Promise<any>>): Promise<any>
-  async cacheByTag(tag: Array<string>, key: string, ttl: number, fallback: CacheFallback<Promise<any>>): Promise<any>
-  async cacheByTag(
-    tag: string | Array<string>,
-    key: string,
-    ttl: number,
-    fallback: CacheFallback<Promise<any>>
-  ): Promise<any> {
+  async cacheByTag(tag: string | Array<string>, key: string, ttl: number, fallback: () => Promise<any>): Promise<any> {
     const tags: Array<string> = Array.isArray(tag) ? tag : [tag]
     for (const tagName of tags) {
       const hasKey: boolean = await this.hasTag(tagName, key)

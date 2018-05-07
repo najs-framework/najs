@@ -1,5 +1,5 @@
+/// <reference path="../../contracts/Cache.d.ts" />
 import '../../../lib/cache/RedisCache';
 import { IFacade, IFacadeBase } from 'najs-facade';
-import { ICache } from '../../../lib/cache/ICache';
-export declare const Cache: ICache & IFacadeBase;
-export declare const CacheFacade: ICache & IFacade;
+export declare const Cache: Najs.Contracts.Cache & IFacadeBase;
+export declare const CacheFacade: Najs.Contracts.Cache & IFacade;

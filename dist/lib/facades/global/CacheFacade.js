@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="../../contracts/Cache.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 require("../../../lib/cache/RedisCache");
 const najs_facade_1 = require("najs-facade");

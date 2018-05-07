@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="contracts/Cache.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./cache/RedisCache");
 require("./log/WinstonLogger");
@@ -142,6 +143,7 @@ var EventDispatcher_1 = require("./event/EventDispatcher");
 exports.EventDispatcher = EventDispatcher_1.EventDispatcher;
 var EventSubscriber_1 = require("./event/EventSubscriber");
 exports.EventSubscriber = EventSubscriber_1.EventSubscriber;
+// cache package
 var RedisCache_1 = require("./cache/RedisCache");
 exports.RedisCache = RedisCache_1.RedisCache;
 // test package

@@ -1,3 +1,5 @@
+/// <reference path="contracts/Cache.ts" />
+
 import './cache/RedisCache'
 import './log/WinstonLogger'
 
@@ -9,7 +11,7 @@ export { singleton } from 'najs-binding'
 export { autoload } from 'najs-binding'
 export { extend, InstanceExtending } from 'najs-binding'
 export { ClassRegistry } from 'najs-binding'
-export { IAutoload, IAutoloadMetadata } from 'najs-binding'
+export { IAutoload } from 'najs-binding'
 
 // core package
 import { Najs } from './core/Najs'
@@ -116,7 +118,6 @@ export { EventDispatcher } from './event/EventDispatcher'
 export { EventSubscriber } from './event/EventSubscriber'
 
 // cache package
-export { ICache, CacheFallback } from './cache/ICache'
 export { RedisCache } from './cache/RedisCache'
 
 // test package
