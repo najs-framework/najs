@@ -3,6 +3,9 @@ export declare const Najs: {
     Cache: {
         RedisCache: string;
     };
+    FileSystem: {
+        Path: string;
+    };
 };
 export declare const SystemClass: {
     HttpKernel: string;
@@ -41,7 +44,6 @@ export declare const GlobalFacadeClass: {
     Config: string;
     Event: string;
     Log: string;
-    Path: string;
     Redis: string;
     Response: string;
     Route: string;

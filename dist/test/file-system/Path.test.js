@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const SystemPath = require("path");
 const ConfigFacade_1 = require("../../lib/facades/global/ConfigFacade");
-const Path_1 = require("../../lib/core/Path");
+const Path_1 = require("../../lib/file-system/Path");
 const Najs_1 = require("../../lib/core/Najs");
 const najs_facade_1 = require("najs-facade");
 const constants_1 = require("../../lib/constants");
@@ -12,8 +12,8 @@ describe('Path', function () {
     it('extends from Facade so it definitely a FacadeClass', function () {
         const path = new Path_1.Path();
         expect(path).toBeInstanceOf(najs_facade_1.Facade);
-        expect(path.getClassName()).toEqual(constants_1.GlobalFacadeClass.Path);
-        expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Path)).toBe(true);
+        expect(path.getClassName()).toEqual(constants_1.Najs.FileSystem.Path);
+        expect(najs_binding_1.ClassRegistry.has(constants_1.Najs.FileSystem.Path)).toBe(true);
     });
     describe('.get()', function () {
         it('resolve path based on this.workingDirectory', function () {

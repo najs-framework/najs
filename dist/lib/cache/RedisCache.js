@@ -126,4 +126,4 @@ class RedisCache extends najs_facade_1.Facade {
 }
 RedisCache.className = constants_1.Najs.Cache.RedisCache;
 exports.RedisCache = RedisCache;
-najs_binding_1.register(RedisCache);
+najs_binding_1.register(RedisCache, constants_1.Najs.Cache.RedisCache);

@@ -24,8 +24,6 @@ exports.Najs = Najs_1.Najs;
 exports.default = Najs_1.Najs;
 var ServiceProvider_1 = require("./core/ServiceProvider");
 exports.ServiceProvider = ServiceProvider_1.ServiceProvider;
-var Path_1 = require("./core/Path");
-exports.NajsPath = Path_1.Path;
 // constants
 var constants_1 = require("./constants");
 exports.SystemClass = constants_1.SystemClass;

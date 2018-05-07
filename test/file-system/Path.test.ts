@@ -1,18 +1,18 @@
 import 'jest'
 import * as SystemPath from 'path'
 import { ConfigFacade } from '../../lib/facades/global/ConfigFacade'
-import { Path } from '../../lib/core/Path'
+import { Path } from '../../lib/file-system/Path'
 import { Najs } from '../../lib/core/Najs'
 import { Facade } from 'najs-facade'
-import { GlobalFacadeClass } from '../../lib/constants'
+import { Najs as NajsClasses } from '../../lib/constants'
 import { ClassRegistry } from 'najs-binding'
 
 describe('Path', function() {
   it('extends from Facade so it definitely a FacadeClass', function() {
     const path = new Path()
     expect(path).toBeInstanceOf(Facade)
-    expect(path.getClassName()).toEqual(GlobalFacadeClass.Path)
-    expect(ClassRegistry.has(GlobalFacadeClass.Path)).toBe(true)
+    expect(path.getClassName()).toEqual(NajsClasses.FileSystem.Path)
+    expect(ClassRegistry.has(NajsClasses.FileSystem.Path)).toBe(true)
   })
 
   describe('.get()', function() {

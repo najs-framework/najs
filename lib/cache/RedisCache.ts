@@ -145,4 +145,4 @@ export class RedisCache extends Facade implements Najs.Contracts.Cache {
     return value
   }
 }
-register(RedisCache)
+register(RedisCache, Najs.Cache.RedisCache)

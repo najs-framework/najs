@@ -1,9 +1,11 @@
+/// <reference path="../contracts/Path.ts" />
+
 import { IAutoload, register } from 'najs-binding'
 import { Facade } from 'najs-facade'
 import { ConfigFacade } from '../facades/global/ConfigFacade'
-import { ConfigurationKeys, GlobalFacadeClass } from '../constants'
+import { ConfigurationKeys, Najs as NajsClasses } from '../constants'
 import * as SystemPath from 'path'
-import { Najs } from './Najs'
+import { Najs } from '../core/Najs'
 
 const NajsPaths = {
   app: 'app',
@@ -16,12 +18,12 @@ const NajsPaths = {
   view: SystemPath.join('resources', 'view')
 }
 
-// implements IPath implicitly
+export interface Path extends Najs.Contracts.Path {}
 export class Path extends Facade implements IAutoload {
-  static className: string = GlobalFacadeClass.Path
+  static className: string = NajsClasses.FileSystem.Path
 
   getClassName() {
-    return Path.className
+    return NajsClasses.FileSystem.Path
   }
 
   get(...args: string[]): string {
@@ -33,11 +35,10 @@ export class Path extends Facade implements IAutoload {
   }
 }
 
-// add missing IPath functions
 for (const name in NajsPaths) {
   Path.prototype[name] = function(...args: string[]): string {
     return this.cwd(ConfigFacade.get(ConfigurationKeys.Paths[name], NajsPaths[name]), ...args)
   }
 }
 
-register(Path, GlobalFacadeClass.Path)
+register(Path, NajsClasses.FileSystem.Path)
