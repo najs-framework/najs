@@ -79,7 +79,6 @@ export { RedisCache } from './cache/RedisCache';
 export { jest } from './test/jest';
 export { TestSuite } from './test/TestSuite';
 export { WinstonLogger } from './log/WinstonLogger';
-export { IRedis } from './redis/IRedis';
 export { RedisClient } from './redis/RedisClient';
 export { route } from './helpers/route';
 export { HandlebarsHelper } from './view/handlebars/HandlebarsHelper';

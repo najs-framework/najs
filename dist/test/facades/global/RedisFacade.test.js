@@ -9,7 +9,7 @@ describe('RedisFacade', function () {
     it('calls make() to create new instance of RedisClient as a facade root', function () {
         const makeSpy = Sinon.spy(NajsBinding, 'make');
         RedisFacade_1.RedisFacade.reloadFacadeRoot();
-        expect(makeSpy.calledWith(constants_1.GlobalFacadeClass.Redis)).toBe(true);
+        expect(makeSpy.calledWith(constants_1.Najs.Redis.RedisClient)).toBe(true);
         expect(makeSpy.calledOnce).toBe(true);
     });
 });

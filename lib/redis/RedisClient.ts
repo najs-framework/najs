@@ -1,12 +1,14 @@
-import { IAutoload, register } from 'najs-binding'
-import { ConfigurationKeys, GlobalFacadeClass } from '../constants'
+/// <reference path="../contracts/Redis.ts" />
+
+import { register } from 'najs-binding'
+import { ConfigurationKeys, Najs } from '../constants'
 import { Facade } from 'najs-facade'
 import { ConfigFacade } from '../facades/global/ConfigFacade'
 import * as Redis from 'redis'
 
-// implements IRedis implicitly
-export class RedisClient extends Facade implements IAutoload {
-  static className: string = GlobalFacadeClass.Redis
+export interface RedisClient extends Najs.Contracts.Redis<Redis.RedisClient> {}
+export class RedisClient extends Facade {
+  static className: string = Najs.Redis.RedisClient
   protected bucket: {
     [key: string]: Redis.RedisClient
   }
@@ -24,11 +26,10 @@ export class RedisClient extends Facade implements IAutoload {
       })
     )
     this.useClient('default')
-    return this.createProxy()
   }
 
   getClassName() {
-    return GlobalFacadeClass.Redis
+    return Najs.Redis.RedisClient
   }
 
   createClient(name: string, options: Redis.ClientOpts): Redis.RedisClient {
@@ -61,21 +62,7 @@ export class RedisClient extends Facade implements IAutoload {
     return !!this.bucket[name]
   }
 
-  protected createProxy() {
-    this.proxy = new Proxy(this, {
-      get(target: RedisClient, key: string): any {
-        if (key !== 'hasOwnProperty' && typeof Redis.RedisClient.prototype[key] === 'function') {
-          return function() {
-            return target.redisClientProxy(key, arguments)
-          }
-        }
-        return target[key]
-      }
-    })
-    return this.proxy
-  }
-
-  protected redisClientProxy(method: string, args: ArrayLike<any>): Promise<any> {
+  redisClientProxy(method: string, args: ArrayLike<any>): Promise<any> {
     return <any>new Promise((resolve, reject) => {
       Reflect.apply(
         Redis.RedisClient.prototype[method],
@@ -92,4 +79,16 @@ export class RedisClient extends Facade implements IAutoload {
     })
   }
 }
-register(RedisClient)
+
+// implements Najs.Contracts.Redis implicitly
+const functions = Object.getOwnPropertyNames(Redis.RedisClient.prototype)
+for (const name of functions) {
+  if (name === 'constructor') {
+    continue
+  }
+  RedisClient.prototype[name] = function() {
+    return this.redisClientProxy(name, arguments)
+  }
+}
+
+register(RedisClient, Najs.Redis.RedisClient)

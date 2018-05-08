@@ -127,7 +127,6 @@ export { TestSuite } from './test/TestSuite'
 export { WinstonLogger } from './log/WinstonLogger'
 
 // redis package
-export { IRedis } from './redis/IRedis'
 export { RedisClient } from './redis/RedisClient'
 
 // helpers package

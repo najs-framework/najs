@@ -10,6 +10,9 @@ export declare const Najs: {
     Log: {
         WinstonLogger: string;
     };
+    Redis: {
+        RedisClient: string;
+    };
 };
 export declare const SystemClass: {
     HttpKernel: string;
@@ -46,7 +49,6 @@ export declare const ResponseTypeClass: {
 export declare const GlobalFacadeClass: {
     Application: string;
     Event: string;
-    Redis: string;
     Response: string;
     Route: string;
 };

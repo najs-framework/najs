@@ -2,7 +2,7 @@ import 'jest'
 import * as Sinon from 'sinon'
 import * as Redis from 'redis'
 import { Facade, FacadeContainer } from 'najs-facade'
-import { GlobalFacadeClass } from '../../lib/constants'
+import { Najs } from '../../lib/constants'
 import { RedisClient } from '../../lib/redis/RedisClient'
 import { ClassRegistry } from 'najs-binding'
 import { isPromise } from '../../lib/private/isPromise'
@@ -17,8 +17,8 @@ describe('RedisClient', function() {
 
   it('extends from Facade so it definitely a FacadeClass', function() {
     expect(redisClient).toBeInstanceOf(Facade)
-    expect(redisClient.getClassName()).toEqual(GlobalFacadeClass.Redis)
-    expect(ClassRegistry.has(GlobalFacadeClass.Redis)).toBe(true)
+    expect(redisClient.getClassName()).toEqual(Najs.Redis.RedisClient)
+    expect(ClassRegistry.has(Najs.Redis.RedisClient)).toBe(true)
   })
 
   describe('constructor()', function() {

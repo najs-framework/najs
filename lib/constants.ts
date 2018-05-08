@@ -10,6 +10,9 @@ export const Najs = {
   },
   Log: {
     WinstonLogger: 'Najs.Log.WinstonLogger'
+  },
+  Redis: {
+    RedisClient: 'Najs.Redis.RedisClient'
   }
 }
 
@@ -53,7 +56,6 @@ export const ResponseTypeClass = {
 export const GlobalFacadeClass = {
   Application: 'Najs.Application',
   Event: 'Najs.EventDispatcher',
-  Redis: 'Najs.RedisClient',
   Response: 'Najs.ResponseFactory',
   Route: 'Najs.RouteFactory'
 }

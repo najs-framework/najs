@@ -11,6 +11,9 @@ exports.Najs = {
     },
     Log: {
         WinstonLogger: 'Najs.Log.WinstonLogger'
+    },
+    Redis: {
+        RedisClient: 'Najs.Redis.RedisClient'
     }
 };
 exports.SystemClass = {
@@ -48,7 +51,6 @@ exports.ResponseTypeClass = {
 exports.GlobalFacadeClass = {
     Application: 'Najs.Application',
     Event: 'Najs.EventDispatcher',
-    Redis: 'Najs.RedisClient',
     Response: 'Najs.ResponseFactory',
     Route: 'Najs.RouteFactory'
 };

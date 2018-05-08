@@ -17,8 +17,8 @@ describe('RedisClient', function () {
     });
     it('extends from Facade so it definitely a FacadeClass', function () {
         expect(redisClient).toBeInstanceOf(najs_facade_1.Facade);
-        expect(redisClient.getClassName()).toEqual(constants_1.GlobalFacadeClass.Redis);
-        expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Redis)).toBe(true);
+        expect(redisClient.getClassName()).toEqual(constants_1.Najs.Redis.RedisClient);
+        expect(najs_binding_1.ClassRegistry.has(constants_1.Najs.Redis.RedisClient)).toBe(true);
     });
     describe('constructor()', function () {
         it('calls createClient() with default and config get from ConfigFacade', function () {

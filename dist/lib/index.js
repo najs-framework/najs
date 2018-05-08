@@ -152,6 +152,7 @@ exports.TestSuite = TestSuite_1.TestSuite;
 // log package
 var WinstonLogger_1 = require("./log/WinstonLogger");
 exports.WinstonLogger = WinstonLogger_1.WinstonLogger;
+// redis package
 var RedisClient_1 = require("./redis/RedisClient");
 exports.RedisClient = RedisClient_1.RedisClient;
 // helpers package

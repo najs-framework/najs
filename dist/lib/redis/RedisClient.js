@@ -1,11 +1,11 @@
 "use strict";
+/// <reference path="../contracts/Redis.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../constants");
 const najs_facade_1 = require("najs-facade");
 const ConfigFacade_1 = require("../facades/global/ConfigFacade");
 const Redis = require("redis");
-// implements IRedis implicitly
 class RedisClient extends najs_facade_1.Facade {
     constructor() {
         super();
@@ -15,10 +15,9 @@ class RedisClient extends najs_facade_1.Facade {
             port: 6379
         }));
         this.useClient('default');
-        return this.createProxy();
     }
     getClassName() {
-        return constants_1.GlobalFacadeClass.Redis;
+        return constants_1.Najs.Redis.RedisClient;
     }
     createClient(name, options) {
         if (!this.bucket[name]) {
@@ -45,19 +44,6 @@ class RedisClient extends najs_facade_1.Facade {
     hasClient(name) {
         return !!this.bucket[name];
     }
-    createProxy() {
-        this.proxy = new Proxy(this, {
-            get(target, key) {
-                if (key !== 'hasOwnProperty' && typeof Redis.RedisClient.prototype[key] === 'function') {
-                    return function () {
-                        return target.redisClientProxy(key, arguments);
-                    };
-                }
-                return target[key];
-            }
-        });
-        return this.proxy;
-    }
     redisClientProxy(method, args) {
         return new Promise((resolve, reject) => {
             Reflect.apply(Redis.RedisClient.prototype[method], this.bucket[this.currentBucket], Array.from(args).concat([
@@ -71,6 +57,16 @@ class RedisClient extends najs_facade_1.Facade {
         });
     }
 }
-RedisClient.className = constants_1.GlobalFacadeClass.Redis;
+RedisClient.className = constants_1.Najs.Redis.RedisClient;
 exports.RedisClient = RedisClient;
-najs_binding_1.register(RedisClient);
+// implements Najs.Contracts.Redis implicitly
+const functions = Object.getOwnPropertyNames(Redis.RedisClient.prototype);
+for (const name of functions) {
+    if (name === 'constructor') {
+        continue;
+    }
+    RedisClient.prototype[name] = function () {
+        return this.redisClientProxy(name, arguments);
+    };
+}
+najs_binding_1.register(RedisClient, constants_1.Najs.Redis.RedisClient);
