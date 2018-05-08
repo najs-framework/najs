@@ -6,6 +6,9 @@ export const Najs = {
   },
   FileSystem: {
     Path: 'Najs.FileSystem.Path'
+  },
+  Log: {
+    WinstonLogger: 'Najs.Log.WinstonLogger'
   }
 }
 
@@ -50,7 +53,6 @@ export const GlobalFacadeClass = {
   Application: 'Najs.Application',
   Config: 'Najs.Config',
   Event: 'Najs.EventDispatcher',
-  Log: 'Najs.WinstonLogger',
   Redis: 'Najs.RedisClient',
   Response: 'Najs.ResponseFactory',
   Route: 'Najs.RouteFactory'

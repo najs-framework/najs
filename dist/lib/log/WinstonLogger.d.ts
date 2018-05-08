@@ -1,11 +1,11 @@
-import { IAutoload } from 'najs-binding';
-import { ILogger } from './ILogger';
+/// <reference path="../contracts/Log.d.ts" />
 import { Facade } from 'najs-facade';
 import * as Winston from 'winston';
-export declare class WinstonLogger extends Facade implements ILogger, IAutoload {
+export interface WinstonLogger extends Najs.Contracts.Log {
+}
+export declare class WinstonLogger extends Facade implements Najs.Contracts.Log {
     static className: string;
     protected logger: Winston.LoggerInstance;
-    private static levels;
     constructor();
     getClassName(): string;
     protected setup(): Winston.LoggerInstance;
@@ -15,22 +15,6 @@ export declare class WinstonLogger extends Facade implements ILogger, IAutoload 
         colors: Winston.SyslogConfigSetColors;
         levels: Winston.SyslogConfigSetLevels;
     };
-    emergency(message: string): this;
-    emergency(message: string, ...meta: any[]): this;
-    alert(message: string): this;
-    alert(message: string, ...meta: any[]): this;
-    critical(message: string): this;
-    critical(message: string, ...meta: any[]): this;
-    error(message: string): this;
-    error(message: string, ...meta: any[]): this;
-    warning(message: string): this;
-    warning(message: string, ...meta: any[]): this;
-    notice(message: string): this;
-    notice(message: string, ...meta: any[]): this;
-    info(message: string): this;
-    info(message: string, ...meta: any[]): this;
-    debug(message: string): this;
-    debug(message: string, ...meta: any[]): this;
-    log(level: string, message: string): this;
+    static readonly Levels: Najs.Log.LoggerLevels;
     log(level: string, message: string, ...meta: any[]): this;
 }

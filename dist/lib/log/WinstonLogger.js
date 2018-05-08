@@ -1,16 +1,27 @@
 "use strict";
+/// <reference path="../contracts/Log.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../constants");
 const najs_facade_1 = require("najs-facade");
 const Winston = require("winston");
+const SyslogLevels = {
+    emergency: 'emerg',
+    alert: 'alert',
+    critical: 'crit',
+    error: 'error',
+    warning: 'warning',
+    notice: 'notice',
+    info: 'info',
+    debug: 'debug'
+};
 class WinstonLogger extends najs_facade_1.Facade {
     constructor() {
         super();
         this.logger = this.setup();
     }
     getClassName() {
-        return constants_1.GlobalFacadeClass.Log;
+        return constants_1.Najs.Log.WinstonLogger;
     }
     setup() {
         const logger = new Winston.Logger(this.getDefaultOptions());
@@ -23,7 +34,7 @@ class WinstonLogger extends najs_facade_1.Facade {
                 new Winston.transports.Console({
                     colorize: true,
                     timestamp: true,
-                    stderrLevels: Object.values(WinstonLogger.levels)
+                    stderrLevels: Object.values(SyslogLevels)
                 })
                 // new Winston.transports.File({
                 //   name: 'info',
@@ -41,46 +52,20 @@ class WinstonLogger extends najs_facade_1.Facade {
         };
         return Object.assign({}, defaultOptions);
     }
-    emergency(message, ...meta) {
-        return this.log(WinstonLogger.levels.emergency, message, ...meta);
-    }
-    alert(message, ...meta) {
-        return this.log(WinstonLogger.levels.alert, message, ...meta);
-    }
-    critical(message, ...meta) {
-        return this.log(WinstonLogger.levels.critical, message, ...meta);
-    }
-    error(message, ...meta) {
-        return this.log(WinstonLogger.levels.error, message, ...meta);
-    }
-    warning(message, ...meta) {
-        return this.log(WinstonLogger.levels.warning, message, ...meta);
-    }
-    notice(message, ...meta) {
-        return this.log(WinstonLogger.levels.notice, message, ...meta);
-    }
-    info(message, ...meta) {
-        return this.log(WinstonLogger.levels.info, message, ...meta);
-    }
-    debug(message, ...meta) {
-        return this.log(WinstonLogger.levels.debug, message, ...meta);
+    static get Levels() {
+        return SyslogLevels;
     }
     log(level, message, ...meta) {
         this.logger.log(level, message, ...meta);
         return this;
     }
 }
-WinstonLogger.className = constants_1.GlobalFacadeClass.Log;
-WinstonLogger.levels = {
-    emergency: 'emerg',
-    alert: 'alert',
-    critical: 'crit',
-    error: 'error',
-    warning: 'warning',
-    notice: 'notice',
-    info: 'info',
-    debug: 'debug'
-};
+WinstonLogger.className = constants_1.Najs.Log.WinstonLogger;
 exports.WinstonLogger = WinstonLogger;
-najs_binding_1.register(WinstonLogger);
-najs_binding_1.register(WinstonLogger, constants_1.GlobalFacadeClass.Log);
+// implicit implements Najs.Contracts.Log
+for (const name in SyslogLevels) {
+    WinstonLogger.prototype[name] = function (message, ...meta) {
+        return this.log(SyslogLevels[name], message, ...meta);
+    };
+}
+najs_binding_1.register(WinstonLogger, constants_1.Najs.Log.WinstonLogger);

@@ -4,7 +4,6 @@ import * as Winston from 'winston'
 import { ClassRegistry } from 'najs-binding'
 import { WinstonLogger } from '../../lib/log/WinstonLogger'
 import { Facade } from 'najs-facade'
-import { GlobalFacadeClass } from '../../lib/constants'
 
 describe('WinstonLogger', function() {
   it('extends from Facade so it definitely a FacadeClass', function() {
@@ -13,10 +12,10 @@ describe('WinstonLogger', function() {
     expect(logger.getClassName()).toEqual(WinstonLogger.className)
   })
 
-  it('implements ILogger and registers to GlobalFacade.Log by default', function() {
+  it('implements contracts Najs.Contracts.Log and registers under name "Najs.Log.WinstonLogger"', function() {
     expect(ClassRegistry.has(WinstonLogger.className)).toBe(true)
-    expect(ClassRegistry.has(GlobalFacadeClass.Log)).toBe(true)
-    expect(ClassRegistry.findOrFail(GlobalFacadeClass.Log).instanceConstructor === WinstonLogger).toBe(true)
+    expect(ClassRegistry.has('Najs.Log.WinstonLogger')).toBe(true)
+    expect(ClassRegistry.findOrFail('Najs.Log.WinstonLogger').instanceConstructor === WinstonLogger).toBe(true)
   })
 
   it('calls .setup() and use .getDefaultOptions() to get options for Winston', function() {
@@ -27,27 +26,8 @@ describe('WinstonLogger', function() {
     expect(getDefaultOptionsSpy.called).toBe(true)
   })
 
-  describe('log functions', function() {
-    for (const functionName in WinstonLogger['levels']) {
-      it(
-        'implements .' +
-          functionName +
-          '() and pass all to .log with level "' +
-          WinstonLogger['levels'][functionName] +
-          '"',
-        function() {
-          const logger = new WinstonLogger()
-          logger['logger'].remove(Winston.transports.Console)
-          const logSpy = Sinon.spy(logger, 'log')
-          logger[functionName](functionName)
-          expect(logSpy.calledWith(WinstonLogger['levels'][functionName], functionName)).toBe(true)
-          logger[functionName](functionName, 1, 2, 3)
-          expect(logSpy.calledWith(WinstonLogger['levels'][functionName], functionName, 1, 2, 3)).toBe(true)
-        }
-      )
-    }
-
-    it('.log() calls WinstonInstance.log() and passes all data to it', function() {
+  describe('.log()', function() {
+    it('calls WinstonInstance.log() and passes all data to it', function() {
       const logger = new WinstonLogger()
       logger['logger'].remove(Winston.transports.Console)
       const logSpy = Sinon.spy(logger['logger'], 'log')
@@ -57,4 +37,18 @@ describe('WinstonLogger', function() {
       expect(logSpy.calledWith('emergency', 'test', 1, 2, 3)).toBe(true)
     })
   })
+
+  for (const level in WinstonLogger.Levels) {
+    describe('.' + level + '()', function() {
+      it(`implements .${level}() and passes all args to .logs with level "${level}"`, function() {
+        const logger = new WinstonLogger()
+        logger['logger'].remove(Winston.transports.Console)
+        const logSpy = Sinon.spy(logger, 'log')
+        logger[level](level)
+        expect(logSpy.calledWith(WinstonLogger.Levels[level], level)).toBe(true)
+        logger[level](level, 1, 2, 3)
+        expect(logSpy.calledWith(WinstonLogger.Levels[level], level, 1, 2, 3)).toBe(true)
+      })
+    })
+  }
 })

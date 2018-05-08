@@ -1,3 +1,4 @@
+import { WinstonLogger } from './log/WinstonLogger'
 import { Path } from './file-system/Path'
 import { RedisCache } from './cache/RedisCache'
 
@@ -7,5 +8,8 @@ export type BuiltinClasses = {
   }
   FileSystem: {
     Path: typeof Path
+  }
+  Log: {
+    WinstonLogger: typeof WinstonLogger
   }
 }

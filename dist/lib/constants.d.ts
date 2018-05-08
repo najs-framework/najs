@@ -6,6 +6,9 @@ export declare const Najs: {
     FileSystem: {
         Path: string;
     };
+    Log: {
+        WinstonLogger: string;
+    };
 };
 export declare const SystemClass: {
     HttpKernel: string;
@@ -43,7 +46,6 @@ export declare const GlobalFacadeClass: {
     Application: string;
     Config: string;
     Event: string;
-    Log: string;
     Redis: string;
     Response: string;
     Route: string;

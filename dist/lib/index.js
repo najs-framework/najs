@@ -149,6 +149,7 @@ var jest_1 = require("./test/jest");
 exports.jest = jest_1.jest;
 var TestSuite_1 = require("./test/TestSuite");
 exports.TestSuite = TestSuite_1.TestSuite;
+// log package
 var WinstonLogger_1 = require("./log/WinstonLogger");
 exports.WinstonLogger = WinstonLogger_1.WinstonLogger;
 var RedisClient_1 = require("./redis/RedisClient");

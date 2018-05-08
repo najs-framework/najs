@@ -124,7 +124,6 @@ export { jest } from './test/jest'
 export { TestSuite } from './test/TestSuite'
 
 // log package
-export { ILogger } from './log/ILogger'
 export { WinstonLogger } from './log/WinstonLogger'
 
 // redis package
