@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="../contracts/Config.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../constants");
 const najs_facade_1 = require("najs-facade");
@@ -10,18 +11,18 @@ class Config extends najs_facade_1.Facade {
         this.config = ConfigLib;
     }
     getClassName() {
-        return Config.className;
+        return constants_1.Najs.Config;
     }
-    get(setting, defaultValue) {
-        if (typeof defaultValue !== 'undefined' && !this.config.has(setting)) {
+    get(name, defaultValue) {
+        if (typeof defaultValue !== 'undefined' && !this.config.has(name)) {
             return defaultValue;
         }
-        return this.config.get(setting);
+        return this.config.get(name);
     }
     has(setting) {
         return this.config.has(setting);
     }
 }
-Config.className = constants_1.GlobalFacadeClass.Config;
+Config.className = constants_1.Najs.Config;
 exports.Config = Config;
-najs_binding_1.register(Config, constants_1.GlobalFacadeClass.Config);
+najs_binding_1.register(Config, constants_1.Najs.Config);

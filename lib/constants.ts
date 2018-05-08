@@ -1,6 +1,7 @@
 export const SchemaValidatorClass: string = 'SchemaValidator'
 
 export const Najs = {
+  Config: 'Najs.Config',
   Cache: {
     RedisCache: 'Najs.Cache.RedisCache'
   },
@@ -51,7 +52,6 @@ export const ResponseTypeClass = {
 
 export const GlobalFacadeClass = {
   Application: 'Najs.Application',
-  Config: 'Najs.Config',
   Event: 'Najs.EventDispatcher',
   Redis: 'Najs.RedisClient',
   Response: 'Najs.ResponseFactory',

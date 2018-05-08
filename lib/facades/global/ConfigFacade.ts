@@ -1,13 +1,14 @@
-import '../../../lib/config/Config'
-import { Facade, IFacade, IFacadeBase } from 'najs-facade'
-import { IConfig } from '../../../lib/config/IConfig'
-import { Najs } from '../../../lib/core/Najs'
-import { make } from 'najs-binding'
-import { GlobalFacadeClass } from '../../constants'
+/// <reference path="../../contracts/Config.ts" />
 
-const facade = Facade.create<IConfig>(<any>Najs, 'config', function() {
-  return make<IConfig>(GlobalFacadeClass.Config)
+import '../../config/Config'
+import { Facade, IFacade, IFacadeBase } from 'najs-facade'
+import { Najs } from '../../core/Najs'
+import { make } from 'najs-binding'
+import { Najs as NajsClasses } from '../../constants'
+
+const facade = Facade.create<Najs.Contracts.Config>(<any>Najs, 'config', function() {
+  return make<Najs.Contracts.Config>(NajsClasses.Config)
 })
 
-export const Config: IConfig & IFacadeBase = facade
-export const ConfigFacade: IConfig & IFacade = facade
+export const Config: Najs.Contracts.Config & IFacadeBase = facade
+export const ConfigFacade: Najs.Contracts.Config & IFacade = facade

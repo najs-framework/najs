@@ -1,28 +1,27 @@
-import { GlobalFacadeClass } from '../constants'
-import { Facade } from 'najs-facade'
-import { IConfig } from './IConfig'
-import * as ConfigLib from 'config'
-import { IAutoload, register } from 'najs-binding'
+/// <reference path="../contracts/Config.ts" />
 
-export class Config extends Facade implements IConfig, IAutoload {
-  static className: string = GlobalFacadeClass.Config
+import { Najs } from '../constants'
+import { Facade } from 'najs-facade'
+import * as ConfigLib from 'config'
+import { register } from 'najs-binding'
+
+export class Config extends Facade implements Najs.Contracts.Config {
+  static className: string = Najs.Config
   protected config: ConfigLib.IConfig = ConfigLib
 
   getClassName() {
-    return Config.className
+    return Najs.Config
   }
 
-  get<T>(setting: string): T | undefined
-  get<T>(setting: string, defaultValue: T): T
-  get<T>(setting: string, defaultValue?: T): T | undefined {
-    if (typeof defaultValue !== 'undefined' && !this.config.has(setting)) {
+  get<T>(name: string, defaultValue?: T): T | undefined {
+    if (typeof defaultValue !== 'undefined' && !this.config.has(name)) {
       return defaultValue
     }
-    return this.config.get<T>(setting)
+    return this.config.get<T>(name)
   }
 
   has(setting: string): boolean {
     return this.config.has(setting)
   }
 }
-register(Config, GlobalFacadeClass.Config)
+register(Config, Najs.Config)

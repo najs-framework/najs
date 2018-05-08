@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SchemaValidatorClass = 'SchemaValidator';
 exports.Najs = {
+    Config: 'Najs.Config',
     Cache: {
         RedisCache: 'Najs.Cache.RedisCache'
     },
@@ -46,7 +47,6 @@ exports.ResponseTypeClass = {
 };
 exports.GlobalFacadeClass = {
     Application: 'Najs.Application',
-    Config: 'Najs.Config',
     Event: 'Najs.EventDispatcher',
     Redis: 'Najs.RedisClient',
     Response: 'Najs.ResponseFactory',

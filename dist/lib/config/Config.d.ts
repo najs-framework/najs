@@ -1,12 +1,10 @@
+/// <reference path="../contracts/Config.d.ts" />
 import { Facade } from 'najs-facade';
-import { IConfig } from './IConfig';
 import * as ConfigLib from 'config';
-import { IAutoload } from 'najs-binding';
-export declare class Config extends Facade implements IConfig, IAutoload {
+export declare class Config extends Facade implements Najs.Contracts.Config {
     static className: string;
     protected config: ConfigLib.IConfig;
     getClassName(): string;
-    get<T>(setting: string): T | undefined;
-    get<T>(setting: string, defaultValue: T): T;
+    get<T>(name: string, defaultValue?: T): T | undefined;
     has(setting: string): boolean;
 }

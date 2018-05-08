@@ -1,12 +1,13 @@
 "use strict";
+/// <reference path="../../contracts/Config.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
-require("../../../lib/config/Config");
+require("../../config/Config");
 const najs_facade_1 = require("najs-facade");
-const Najs_1 = require("../../../lib/core/Najs");
+const Najs_1 = require("../../core/Najs");
 const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../../constants");
 const facade = najs_facade_1.Facade.create(Najs_1.Najs, 'config', function () {
-    return najs_binding_1.make(constants_1.GlobalFacadeClass.Config);
+    return najs_binding_1.make(constants_1.Najs.Config);
 });
 exports.Config = facade;
 exports.ConfigFacade = facade;

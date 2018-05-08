@@ -1,5 +1,6 @@
 export declare const SchemaValidatorClass: string;
 export declare const Najs: {
+    Config: string;
     Cache: {
         RedisCache: string;
     };
@@ -44,7 +45,6 @@ export declare const ResponseTypeClass: {
 };
 export declare const GlobalFacadeClass: {
     Application: string;
-    Config: string;
     Event: string;
     Redis: string;
     Response: string;
