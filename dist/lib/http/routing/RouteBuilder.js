@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="../../contracts/types/routing.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const HttpMethod_1 = require("../HttpMethod");
 const lodash_1 = require("lodash");

@@ -1,13 +1,8 @@
+/// <reference path="../../contracts/types/routing.ts" />
+
 import { HttpMethod } from '../HttpMethod'
 import { IRouteBuilder } from './interfaces/IRouteBuilder'
 import { IRouteData } from './interfaces/IRouteData'
-import {
-  RouteGrammarGroupChain,
-  RouteGrammarVerbChain,
-  IRouteGrammarControl,
-  IRouteGrammarGroup,
-  IRouteGrammarNamed
-} from './interfaces/IRouteGrammars'
 import { flatten, isString, isFunction, isObject } from 'lodash'
 import { Controller } from '../controller/Controller'
 import { RouteData } from './RouteData'
@@ -15,7 +10,8 @@ import { RouteData } from './RouteData'
 export type HttpMethodTarget = string | Controller | Function | Object
 
 // implements IRouteGrammarVerbs implicitly
-export class RouteBuilder implements IRouteBuilder, IRouteGrammarControl, IRouteGrammarGroup, IRouteGrammarNamed {
+export class RouteBuilder
+  implements IRouteBuilder, Najs.Http.Routing.Control, Najs.Http.Routing.Group, Najs.Http.Routing.Named {
   protected data: RouteData
   protected children: Array<IRouteBuilder>
 
@@ -92,7 +88,7 @@ export class RouteBuilder implements IRouteBuilder, IRouteGrammarControl, IRoute
     return this
   }
 
-  group(callback: () => void): RouteGrammarGroupChain {
+  group(callback: () => void): Najs.Http.Routing.GroupChain {
     if (!this.data.metadata) {
       this.data.metadata = {}
     }
@@ -107,7 +103,7 @@ export class RouteBuilder implements IRouteBuilder, IRouteGrammarControl, IRoute
     return this
   }
 
-  method(method: HttpMethod, path: string, arg0: HttpMethodTarget, arg1?: any): RouteGrammarVerbChain {
+  method(method: HttpMethod, path: string, arg0: HttpMethodTarget, arg1?: any): Najs.Http.Routing.VerbChain {
     this.data.method = method
     this.data.path = path
 
@@ -117,7 +113,11 @@ export class RouteBuilder implements IRouteBuilder, IRouteGrammarControl, IRoute
     return this.method_overload_4_params(method, path, arg0, arg1)
   }
 
-  private method_overload_3_params(method: HttpMethod, path: string, arg0: HttpMethodTarget): RouteGrammarVerbChain {
+  private method_overload_3_params(
+    method: HttpMethod,
+    path: string,
+    arg0: HttpMethodTarget
+  ): Najs.Http.Routing.VerbChain {
     if (isString(arg0)) {
       const parts: string[] = (arg0 as string).split('@')
       if (parts.length !== 2) {
@@ -141,7 +141,7 @@ export class RouteBuilder implements IRouteBuilder, IRouteGrammarControl, IRoute
     path: string,
     arg0: HttpMethodTarget,
     arg1?: any
-  ): RouteGrammarVerbChain {
+  ): Najs.Http.Routing.VerbChain {
     if (isFunction(arg0)) {
       if (!isFunction(Reflect.get(arg0.prototype, arg1))) {
         throw new ReferenceError('Endpoint ' + arg1 + ' not found')

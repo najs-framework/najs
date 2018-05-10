@@ -1,5 +1,5 @@
-import { RouteGrammarGroupChain, RouteGrammarNameChain, IRouteGrammarVerbs, IRouteGrammarControl } from './IRouteGrammars';
-export interface IRouteFactory extends IRouteGrammarVerbs, IRouteGrammarControl {
-    group(callback: () => void): RouteGrammarGroupChain;
-    name(name: string): RouteGrammarNameChain;
+/// <reference path="../../../contracts/types/routing.d.ts" />
+export interface IRouteFactory extends Najs.Http.Routing.Verbs, Najs.Http.Routing.Control {
+    group(callback: () => void): Najs.Http.Routing.GroupChain;
+    name(name: string): Najs.Http.Routing.NameChain;
 }
