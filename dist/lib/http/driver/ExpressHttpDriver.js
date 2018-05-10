@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="../../contracts/types/http.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../../constants");
 const najs_binding_1 = require("najs-binding");

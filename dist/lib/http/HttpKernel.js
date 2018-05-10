@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="../contracts/types/http.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const PoweredByMiddleware_1 = require("./middleware/built-ins/PoweredByMiddleware");
 const RequestIdMiddleware_1 = require("./middleware/built-ins/RequestIdMiddleware");

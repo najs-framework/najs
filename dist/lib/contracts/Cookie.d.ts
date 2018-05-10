@@ -1,16 +1,4 @@
-declare namespace Najs.Http {
-    interface CookieOptions {
-        maxAge?: number;
-        signed?: boolean;
-        expires?: Date | boolean;
-        httpOnly?: boolean;
-        path?: string;
-        domain?: string;
-        secure?: boolean | 'auto';
-        encode?: (val: string) => void;
-        sameSite?: boolean | string;
-    }
-}
+/// <reference path="types/http.d.ts" />
 declare namespace Najs.Contracts {
     interface Cookie extends Autoload {
         /**

@@ -1,12 +1,13 @@
+/// <reference path="../../../contracts/types/http.ts" />
+
 import { HttpKernel } from '../../HttpKernel'
 import { IHttpDriver } from '../IHttpDriver'
-import { IMiddleware, NativeMiddleware } from '../../middleware/IMiddleware'
 import { IRouteData } from '../../routing/interfaces/IRouteData'
 import { flatten, isFunction, isString, isObject } from 'lodash'
 
 export class RouteMiddlewareUtil {
-  static getMiddlewareListOfRoute(route: IRouteData, httpKernel: HttpKernel): IMiddleware[] {
-    const middlewareListBag: IMiddleware[][] = route.middleware
+  static getMiddlewareListOfRoute(route: IRouteData, httpKernel: HttpKernel): Najs.Http.IMiddleware[] {
+    const middlewareListBag: Najs.Http.IMiddleware[][] = route.middleware
       .filter(function(middleware) {
         return !isFunction(middleware)
       })
@@ -16,7 +17,7 @@ export class RouteMiddlewareUtil {
     return Array.from(new Set(flatten(middlewareListBag)))
   }
 
-  protected static getMiddlewareList(httpKernel: HttpKernel, middleware: any): IMiddleware[] {
+  protected static getMiddlewareList(httpKernel: HttpKernel, middleware: any): Najs.Http.IMiddleware[] {
     if (isString(middleware)) {
       return httpKernel.getMiddleware(middleware)
     }
@@ -26,12 +27,15 @@ export class RouteMiddlewareUtil {
     return []
   }
 
-  static createNativeMiddlewareHandlers(middlewareList: IMiddleware[], driver: IHttpDriver): NativeMiddleware[] {
-    const result: NativeMiddleware[][] = middlewareList
+  static createNativeMiddlewareHandlers(
+    middlewareList: Najs.Http.IMiddleware[],
+    driver: IHttpDriver
+  ): Najs.Http.NativeMiddleware[] {
+    const result: Najs.Http.NativeMiddleware[][] = middlewareList
       .filter(function(middleware) {
         return isFunction(middleware.native)
       })
-      .reduce<NativeMiddleware[][]>(function(memo, middleware) {
+      .reduce<Najs.Http.NativeMiddleware[][]>(function(memo, middleware) {
         const native = Reflect.apply(<Function>middleware.native, middleware, [driver])
         if (!native) {
           return memo
@@ -44,7 +48,12 @@ export class RouteMiddlewareUtil {
     return Array.from(new Set(flatten(result)))
   }
 
-  static async applyBeforeMiddleware(middlewareList: IMiddleware[], request: any, response: any, controller: any) {
+  static async applyBeforeMiddleware(
+    middlewareList: Najs.Http.IMiddleware[],
+    request: any,
+    response: any,
+    controller: any
+  ) {
     if (middlewareList.length === 0) {
       return
     }
@@ -57,7 +66,7 @@ export class RouteMiddlewareUtil {
   }
 
   static async applyAfterMiddleware(
-    middlewareList: IMiddleware[],
+    middlewareList: Najs.Http.IMiddleware[],
     request: any,
     response: any,
     value: any,

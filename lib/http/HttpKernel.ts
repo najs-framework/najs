@@ -1,3 +1,5 @@
+/// <reference path="../contracts/types/http.ts" />
+
 import { PoweredByMiddleware as PoweredBy } from './middleware/built-ins/PoweredByMiddleware'
 import { RequestIdMiddleware as RequestId } from './middleware/built-ins/RequestIdMiddleware'
 import { StaticMiddleware as Static } from './middleware/built-ins/StaticMiddleware'
@@ -8,7 +10,6 @@ import { CookieMiddleware as Cookie } from './middleware/built-ins/CookieMiddlew
 import { BodyParserMiddleware as BodyParser } from './middleware/built-ins/BodyParserMiddleware'
 
 import { IAutoload, make, register } from 'najs-binding'
-import { IMiddleware } from './middleware/IMiddleware'
 import { isString } from 'lodash'
 import { SystemClass } from '../constants'
 import { AuthMiddleware } from './middleware/AuthMiddleware'
@@ -66,7 +67,7 @@ export class HttpKernel implements IAutoload {
     return SystemClass.HttpKernel
   }
 
-  getMiddleware(name: string): IMiddleware[] {
+  getMiddleware(name: string): Najs.Http.IMiddleware[] {
     const params: string[] = name.split(':')
     const className = params[0]
 
@@ -77,8 +78,8 @@ export class HttpKernel implements IAutoload {
     return this.createMiddleware(<string | string[]>middlewareSettings, className, params)
   }
 
-  protected createGroupMiddleware(settings: MiddlewareGroupDefinition): IMiddleware[] {
-    const result: IMiddleware[][] = []
+  protected createGroupMiddleware(settings: MiddlewareGroupDefinition): Najs.Http.IMiddleware[] {
+    const result: Najs.Http.IMiddleware[][] = []
     for (const name in settings) {
       const params: string[] = name.split(':')
       const className = params[0]
@@ -88,11 +89,11 @@ export class HttpKernel implements IAutoload {
   }
 
   protected createMiddleware(settings: string[] | string, className: string, params: string[]) {
-    const result: IMiddleware[] = []
+    const result: Najs.Http.IMiddleware[] = []
     if (Array.isArray(settings)) {
       const middlewareList: string[] = <string[]>settings
       middlewareList.forEach((className: string) => {
-        const middleware: IMiddleware | undefined = make(className, params)
+        const middleware: Najs.Http.IMiddleware | undefined = make(className, params)
         if (middleware) {
           result.push(middleware)
         }
@@ -100,7 +101,7 @@ export class HttpKernel implements IAutoload {
     }
 
     if (isString(settings)) {
-      const middleware: IMiddleware | undefined = make(settings, params)
+      const middleware: Najs.Http.IMiddleware | undefined = make(settings, params)
       if (middleware) {
         result.push(middleware)
       }

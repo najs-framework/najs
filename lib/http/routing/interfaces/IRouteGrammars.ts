@@ -1,3 +1,5 @@
+/// <reference path="../../../contracts/types/http.ts" />
+
 /*
  * The purpose of this interface is create a grammar for Route, it affects nothing to implementation side
  * This file has test in ~/syntax/Routing.ts, if something went wrong errors will come out from build phase
@@ -7,7 +9,6 @@
  *   - Could not chain group() after using .name()
  *   - Could not chain group() after using .name()
  */
-import { IMiddleware } from '../../middleware/IMiddleware'
 import { HttpMethod } from '../../HttpMethod'
 import { Controller } from '../../controller/Controller'
 
@@ -25,23 +26,23 @@ export type RouteGrammarNameChainNoVerb = IRouteGrammarControlOnly
 
 export interface IRouteGrammarControl {
   use(middleware: string): RouteGrammarControlChain
-  use(middleware: IMiddleware): RouteGrammarControlChain
+  use(middleware: Najs.Http.IMiddleware): RouteGrammarControlChain
   use(middleware: Function): RouteGrammarControlChain
   use(middleware: string[]): RouteGrammarControlChain
-  use(middleware: IMiddleware[]): RouteGrammarControlChain
+  use(middleware: Najs.Http.IMiddleware[]): RouteGrammarControlChain
   use(middleware: Function[]): RouteGrammarControlChain
   use(
-    ...middleware: Array<string | string[] | IMiddleware | IMiddleware[] | Function | Function[]>
+    ...middleware: Array<string | string[] | Najs.Http.IMiddleware | Najs.Http.IMiddleware[] | Function | Function[]>
   ): RouteGrammarControlChain
 
   middleware(middleware: string): RouteGrammarControlChain
-  middleware(middleware: IMiddleware): RouteGrammarControlChain
+  middleware(middleware: Najs.Http.IMiddleware): RouteGrammarControlChain
   middleware(middleware: Function): RouteGrammarControlChain
   middleware(middleware: string[]): RouteGrammarControlChain
-  middleware(middleware: IMiddleware[]): RouteGrammarControlChain
+  middleware(middleware: Najs.Http.IMiddleware[]): RouteGrammarControlChain
   middleware(middleware: Function[]): RouteGrammarControlChain
   middleware(
-    ...middleware: Array<string | string[] | IMiddleware | IMiddleware[] | Function | Function[]>
+    ...middleware: Array<string | string[] | Najs.Http.IMiddleware | Najs.Http.IMiddleware[] | Function | Function[]>
   ): RouteGrammarControlChain
 
   prefix(prefix: string): RouteGrammarControlChain
@@ -49,23 +50,23 @@ export interface IRouteGrammarControl {
 
 export interface IRouteGrammarControlNoVerb {
   use(middleware: string): RouteGrammarControlNoVerbChain
-  use(middleware: IMiddleware): RouteGrammarControlNoVerbChain
+  use(middleware: Najs.Http.IMiddleware): RouteGrammarControlNoVerbChain
   use(middleware: Function): RouteGrammarControlNoVerbChain
   use(middleware: string[]): RouteGrammarControlNoVerbChain
-  use(middleware: IMiddleware[]): RouteGrammarControlNoVerbChain
+  use(middleware: Najs.Http.IMiddleware[]): RouteGrammarControlNoVerbChain
   use(middleware: Function[]): RouteGrammarControlNoVerbChain
   use(
-    ...middleware: Array<string | string[] | IMiddleware | IMiddleware[] | Function | Function[]>
+    ...middleware: Array<string | string[] | Najs.Http.IMiddleware | Najs.Http.IMiddleware[] | Function | Function[]>
   ): RouteGrammarControlNoVerbChain
 
   middleware(middleware: string): RouteGrammarControlNoVerbChain
-  middleware(middleware: IMiddleware): RouteGrammarControlNoVerbChain
+  middleware(middleware: Najs.Http.IMiddleware): RouteGrammarControlNoVerbChain
   middleware(middleware: Function): RouteGrammarControlNoVerbChain
   middleware(middleware: string[]): RouteGrammarControlNoVerbChain
-  middleware(middleware: IMiddleware[]): RouteGrammarControlNoVerbChain
+  middleware(middleware: Najs.Http.IMiddleware[]): RouteGrammarControlNoVerbChain
   middleware(middleware: Function[]): RouteGrammarControlNoVerbChain
   middleware(
-    ...middleware: Array<string | string[] | IMiddleware | IMiddleware[] | Function | Function[]>
+    ...middleware: Array<string | string[] | Najs.Http.IMiddleware | Najs.Http.IMiddleware[] | Function | Function[]>
   ): RouteGrammarControlNoVerbChain
 
   prefix(prefix: string): RouteGrammarControlNoVerbChain
@@ -73,23 +74,23 @@ export interface IRouteGrammarControlNoVerb {
 
 export interface IRouteGrammarControlOnly {
   use(middleware: string): IRouteGrammarControlOnly
-  use(middleware: IMiddleware): IRouteGrammarControlOnly
+  use(middleware: Najs.Http.IMiddleware): IRouteGrammarControlOnly
   use(middleware: Function): IRouteGrammarControlOnly
   use(middleware: string[]): IRouteGrammarControlOnly
-  use(middleware: IMiddleware[]): IRouteGrammarControlOnly
+  use(middleware: Najs.Http.IMiddleware[]): IRouteGrammarControlOnly
   use(middleware: Function[]): IRouteGrammarControlOnly
   use(
-    ...middleware: Array<string | string[] | IMiddleware | IMiddleware[] | Function | Function[]>
+    ...middleware: Array<string | string[] | Najs.Http.IMiddleware | Najs.Http.IMiddleware[] | Function | Function[]>
   ): IRouteGrammarControlOnly
 
   middleware(middleware: string): IRouteGrammarControlOnly
-  middleware(middleware: IMiddleware): IRouteGrammarControlOnly
+  middleware(middleware: Najs.Http.IMiddleware): IRouteGrammarControlOnly
   middleware(middleware: Function): IRouteGrammarControlOnly
   middleware(middleware: string[]): IRouteGrammarControlOnly
-  middleware(middleware: IMiddleware[]): IRouteGrammarControlOnly
+  middleware(middleware: Najs.Http.IMiddleware[]): IRouteGrammarControlOnly
   middleware(middleware: Function[]): IRouteGrammarControlOnly
   middleware(
-    ...middleware: Array<string | string[] | IMiddleware | IMiddleware[] | Function | Function[]>
+    ...middleware: Array<string | string[] | Najs.Http.IMiddleware | Najs.Http.IMiddleware[] | Function | Function[]>
   ): IRouteGrammarControlOnly
 
   prefix(prefix: string): IRouteGrammarControlOnly

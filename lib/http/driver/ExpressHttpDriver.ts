@@ -1,3 +1,5 @@
+/// <reference path="../../contracts/types/http.ts" />
+
 import { HttpKernel } from '../HttpKernel'
 import { SystemClass, ConfigurationKeys } from '../../constants'
 import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver'
@@ -11,8 +13,6 @@ import { ExpressController } from '../controller/ExpressController'
 import { RouteCollection } from '../routing/RouteCollection'
 import { isIResponse } from '../response/IResponse'
 import { isPromise } from '../../private/isPromise'
-import { IMiddleware } from '../middleware/IMiddleware'
-import { NativeMiddleware } from './../middleware/IMiddleware'
 import { ConfigFacade } from '../../facades/global/ConfigFacade'
 import { PathFacade } from '../../facades/global/PathFacade'
 import { RouteMiddlewareUtil } from './private/RouteMiddlewareUtil'
@@ -110,7 +110,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
   }
 
   protected getEndpointHandlers(method: string, path: string, route: IRouteData): ExpressHandlers {
-    const middlewareList: IMiddleware[] = RouteMiddlewareUtil.getMiddlewareListOfRoute(route, this.httpKernel)
+    const middlewareList: Najs.Http.IMiddleware[] = RouteMiddlewareUtil.getMiddlewareListOfRoute(route, this.httpKernel)
     const handlers: ExpressHandlers = this.createHandlersForRoute(route, middlewareList)
 
     if (isFunction(route.endpoint)) {
@@ -127,13 +127,13 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     return handlers
   }
 
-  protected createHandlersForRoute(route: IRouteData, middlewareList: IMiddleware[]): ExpressHandlers {
+  protected createHandlersForRoute(route: IRouteData, middlewareList: Najs.Http.IMiddleware[]): ExpressHandlers {
     const handlers: ExpressHandlers = <ExpressHandlers>route.middleware.filter(function(middleware) {
       return isFunction(middleware)
     })
 
     if (middlewareList.length > 0) {
-      const nativeMiddleware: NativeMiddleware[] = RouteMiddlewareUtil.createNativeMiddlewareHandlers(
+      const nativeMiddleware: Najs.Http.NativeMiddleware[] = RouteMiddlewareUtil.createNativeMiddlewareHandlers(
         middlewareList,
         this
       )
@@ -144,7 +144,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     return handlers
   }
 
-  protected createEndpointWrapper(controllerName: string, endpointName: string, middleware: IMiddleware[]) {
+  protected createEndpointWrapper(controllerName: string, endpointName: string, middleware: Najs.Http.IMiddleware[]) {
     return async (request: Express.Request, response: Express.Response) => {
       const controller = make<Controller>(controllerName, [request, response])
       const endpoint: any = Reflect.get(controller, endpointName)
@@ -154,7 +154,11 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     }
   }
 
-  protected createEndpointWrapperByObject(controllerObject: Object, endpointName: string, middleware: IMiddleware[]) {
+  protected createEndpointWrapperByObject(
+    controllerObject: Object,
+    endpointName: string,
+    middleware: Najs.Http.IMiddleware[]
+  ) {
     return async (request: Express.Request, response: Express.Response) => {
       const controller: Object = this.cloneControllerObject(controllerObject, request, response)
       const endpoint: any = Reflect.get(controller, endpointName)
@@ -171,7 +175,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     return Object.assign({}, controller, { request, response })
   }
 
-  protected createEndpointWrapperByFunction(endpoint: Function, middleware: IMiddleware[]) {
+  protected createEndpointWrapperByFunction(endpoint: Function, middleware: Najs.Http.IMiddleware[]) {
     return async (request: Express.Request, response: Express.Response) => {
       // Can not use make for default ExpressController
       const controller = Reflect.construct(ExpressController, [request, response])
@@ -184,7 +188,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     endpoint: Function,
     request: Express.Request,
     response: Express.Response,
-    middleware: IMiddleware[]
+    middleware: Najs.Http.IMiddleware[]
   ) {
     await RouteMiddlewareUtil.applyBeforeMiddleware(middleware, request, response, controller)
     const result = Reflect.apply(endpoint, controller, [request, response])
@@ -196,7 +200,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     response: Express.Response,
     result: any,
     controller: Controller,
-    middleware: IMiddleware[]
+    middleware: Najs.Http.IMiddleware[]
   ) {
     const rawValue: any = isPromise(result) ? await (result as Promise<any>) : result
     const value: any = await RouteMiddlewareUtil.applyAfterMiddleware(
