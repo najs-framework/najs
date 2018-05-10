@@ -64,8 +64,6 @@ var Session_1 = require("./http/session/Session");
 exports.NajsSession = Session_1.Session;
 var ExpressSessionMemoryStore_1 = require("./http/session/ExpressSessionMemoryStore");
 exports.ExpressSessionMemoryStore = ExpressSessionMemoryStore_1.ExpressSessionMemoryStore;
-var Cookie_1 = require("./http/cookie/Cookie");
-exports.NajsCookie = Cookie_1.Cookie;
 var ExpressMiddlewareBase_1 = require("./http/middleware/ExpressMiddlewareBase");
 exports.ExpressMiddlewareBase = ExpressMiddlewareBase_1.ExpressMiddlewareBase;
 // built-in core middleware

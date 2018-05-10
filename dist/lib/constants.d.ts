@@ -13,6 +13,9 @@ export declare const Najs: {
     Redis: {
         RedisClient: string;
     };
+    Http: {
+        Cookie: string;
+    };
 };
 export declare const SystemClass: {
     HttpKernel: string;
@@ -36,7 +39,6 @@ export declare const ContextualFacadeClass: {
     Auth: string;
     Input: string;
     Session: string;
-    Cookie: string;
 };
 export declare const ResponseTypeClass: {
     Back: string;

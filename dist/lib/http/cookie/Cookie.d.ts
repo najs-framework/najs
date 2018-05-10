@@ -1,10 +1,9 @@
+/// <reference path="../../contracts/Cookie.d.ts" />
 /// <reference types="express" />
-import { IAutoload } from 'najs-binding';
 import { ContextualFacade } from 'najs-facade';
-import { SetCookieOptions, ICookie } from './ICookie';
 import { Controller } from '../controller/Controller';
 import { Response } from 'express';
-export declare class Cookie extends ContextualFacade<Controller> implements ICookie, IAutoload {
+export declare class Cookie extends ContextualFacade<Controller> implements Najs.Contracts.Cookie {
     protected data: Object;
     protected cookies: Object;
     protected signedCookies: Object;
@@ -31,7 +30,7 @@ export declare class Cookie extends ContextualFacade<Controller> implements ICoo
     forget(name: string): this;
     forget(name: string, path: string): this;
     forget(name: string, path: string, domain: string): this;
-    forget(name: string, options: SetCookieOptions): this;
+    forget(name: string, options: Najs.Http.CookieOptions): this;
     make(name: string, value: any): this;
     make(name: string, value: any, signed: boolean): this;
     make(name: string, value: any, signed: boolean, minutes: number): this;
@@ -39,12 +38,12 @@ export declare class Cookie extends ContextualFacade<Controller> implements ICoo
     make(name: string, value: any, signed: boolean, minutes: number, path: string, domain: string): this;
     make(name: string, value: any, signed: boolean, minutes: number, path: string, domain: string, secure: boolean): this;
     make(name: string, value: any, signed: boolean, minutes: number, path: string, domain: string, secure: boolean, httpOnly: boolean): this;
-    make(name: string, value: any, options: SetCookieOptions): this;
+    make(name: string, value: any, options: Najs.Http.CookieOptions): this;
     forever(name: string, value: any): this;
     forever(name: string, value: any, signed: boolean): this;
     forever(name: string, value: any, signed: boolean, path: string): this;
     forever(name: string, value: any, signed: boolean, path: string, domain: string): this;
     forever(name: string, value: any, signed: boolean, path: string, domain: string, secure: boolean): this;
     forever(name: string, value: any, signed: boolean, path: string, domain: string, secure: boolean, httpOnly: boolean): this;
-    forever(name: string, value: any, options: SetCookieOptions): this;
+    forever(name: string, value: any, options: Najs.Http.CookieOptions): this;
 }

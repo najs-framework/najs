@@ -1,14 +1,15 @@
-import { ContextualFacadeClass } from '../../constants'
-import { register, IAutoload } from 'najs-binding'
+/// <reference path="../../contracts/Cookie.ts" />
+
+import { Najs } from '../../constants'
+import { register } from 'najs-binding'
 import { ContextualFacade } from 'najs-facade'
-import { SetCookieOptions, ICookie } from './ICookie'
 import { Controller } from '../controller/Controller'
 import { RequestDataReader } from '../request/RequestDataReader'
 import { ExpressController } from '../controller/ExpressController'
 import { has, get, flatten } from 'lodash'
 import { Request, Response } from 'express'
 
-export class Cookie extends ContextualFacade<Controller> implements ICookie, IAutoload {
+export class Cookie extends ContextualFacade<Controller> implements Najs.Contracts.Cookie {
   protected data: Object
   protected cookies: Object
   protected signedCookies: Object
@@ -25,7 +26,7 @@ export class Cookie extends ContextualFacade<Controller> implements ICookie, IAu
   }
 
   getClassName() {
-    return ContextualFacadeClass.Cookie
+    return Najs.Http.Cookie
   }
 
   protected getResponse(): Response {
@@ -104,14 +105,14 @@ export class Cookie extends ContextualFacade<Controller> implements ICookie, IAu
   forget(name: string): this
   forget(name: string, path: string): this
   forget(name: string, path: string, domain: string): this
-  forget(name: string, options: SetCookieOptions): this
-  forget(name: string, arg1?: SetCookieOptions | string, arg2?: string): this {
+  forget(name: string, options: Najs.Http.CookieOptions): this
+  forget(name: string, arg1?: Najs.Http.CookieOptions | string, arg2?: string): this {
     if (typeof arg1 === 'undefined') {
       this.getResponse().clearCookie(name)
       return this
     }
 
-    const opts: SetCookieOptions = typeof arg1 === 'object' ? arg1 : {}
+    const opts: Najs.Http.CookieOptions = typeof arg1 === 'object' ? arg1 : {}
 
     if (typeof arg1 === 'string') {
       opts.path = arg1
@@ -140,11 +141,11 @@ export class Cookie extends ContextualFacade<Controller> implements ICookie, IAu
     secure: boolean,
     httpOnly: boolean
   ): this
-  make(name: string, value: any, options: SetCookieOptions): this
+  make(name: string, value: any, options: Najs.Http.CookieOptions): this
   make(
     name: string,
     value: any,
-    optionsOrSigned: boolean | SetCookieOptions = false,
+    optionsOrSigned: boolean | Najs.Http.CookieOptions = false,
     minutes: number = 0,
     path: string | undefined = undefined,
     domain: string | undefined = undefined,
@@ -156,7 +157,7 @@ export class Cookie extends ContextualFacade<Controller> implements ICookie, IAu
       return this
     }
 
-    const opts: SetCookieOptions = { signed: optionsOrSigned }
+    const opts: Najs.Http.CookieOptions = { signed: optionsOrSigned }
     if (minutes > 0) {
       opts.maxAge = minutes * 60 * 1000
     }
@@ -190,11 +191,11 @@ export class Cookie extends ContextualFacade<Controller> implements ICookie, IAu
     secure: boolean,
     httpOnly: boolean
   ): this
-  forever(name: string, value: any, options: SetCookieOptions): this
+  forever(name: string, value: any, options: Najs.Http.CookieOptions): this
   forever(
     name: string,
     value: any,
-    optionsOrSigned: boolean | SetCookieOptions = false,
+    optionsOrSigned: boolean | Najs.Http.CookieOptions = false,
     path: string | undefined = undefined,
     domain: string | undefined = undefined,
     secure: boolean | undefined = undefined,
@@ -208,4 +209,4 @@ export class Cookie extends ContextualFacade<Controller> implements ICookie, IAu
     return this.make(name, value, optionsOrSigned, 157680000000, <any>path, <any>domain, <any>secure, <any>httpOnly)
   }
 }
-register(Cookie)
+register(Cookie, Najs.Http.Cookie)

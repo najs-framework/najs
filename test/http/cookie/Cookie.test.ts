@@ -1,7 +1,6 @@
 import 'jest'
 import * as Sinon from 'sinon'
 import { ContextualFacade } from 'najs-facade'
-import { ContextualFacadeClass } from '../../../lib/constants'
 import { Cookie } from '../../../lib/http/cookie/Cookie'
 import { ExpressController } from '../../../lib/http/controller/ExpressController'
 import { RequestDataReader } from '../../../lib/http/request/RequestDataReader'
@@ -13,10 +12,10 @@ describe('Cookie', function() {
     expect(cookie).toBeInstanceOf(ContextualFacade)
   })
 
-  it('implements IAutoload interface', function() {
+  it('implements Autoload contract with name "Najs.Http.Cookie"', function() {
     const controller = {}
     const cookie = new Cookie(<any>controller)
-    expect(cookie.getClassName()).toEqual(ContextualFacadeClass.Cookie)
+    expect(cookie.getClassName()).toEqual('Najs.Http.Cookie')
   })
 
   describe('constructor()', function() {

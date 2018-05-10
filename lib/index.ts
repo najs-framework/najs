@@ -54,9 +54,6 @@ export { ISession } from './http/session/ISession'
 export { Session as NajsSession } from './http/session/Session'
 export { ExpressSessionMemoryStore } from './http/session/ExpressSessionMemoryStore'
 
-export { ICookie } from './http/cookie/ICookie'
-export { Cookie as NajsCookie } from './http/cookie/Cookie'
-
 export { IMiddleware } from './http/middleware/IMiddleware'
 export { IExpressMiddleware } from './http/middleware/IExpressMiddleware'
 export { ExpressMiddlewareBase } from './http/middleware/ExpressMiddlewareBase'

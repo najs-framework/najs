@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="../../contracts/Cookie.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../../constants");
 const najs_binding_1 = require("najs-binding");
@@ -18,7 +19,7 @@ class Cookie extends najs_facade_1.ContextualFacade {
         }
     }
     getClassName() {
-        return constants_1.ContextualFacadeClass.Cookie;
+        return constants_1.Najs.Http.Cookie;
     }
     getResponse() {
         return this.context.response;
@@ -117,4 +118,4 @@ class Cookie extends najs_facade_1.ContextualFacade {
     }
 }
 exports.Cookie = Cookie;
-najs_binding_1.register(Cookie);
+najs_binding_1.register(Cookie, constants_1.Najs.Http.Cookie);

@@ -14,6 +14,9 @@ exports.Najs = {
     },
     Redis: {
         RedisClient: 'Najs.Redis.RedisClient'
+    },
+    Http: {
+        Cookie: 'Najs.Http.Cookie'
     }
 };
 exports.SystemClass = {
@@ -37,8 +40,7 @@ exports.AuthClass = {
 exports.ContextualFacadeClass = {
     Auth: 'Najs.AuthManager',
     Input: 'Najs.RequestInput',
-    Session: 'Najs.Session',
-    Cookie: 'Najs.Cookie'
+    Session: 'Najs.Session'
 };
 exports.ResponseTypeClass = {
     Back: 'Najs.BackResponse',

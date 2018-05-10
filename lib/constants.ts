@@ -13,6 +13,9 @@ export const Najs = {
   },
   Redis: {
     RedisClient: 'Najs.Redis.RedisClient'
+  },
+  Http: {
+    Cookie: 'Najs.Http.Cookie'
   }
 }
 
@@ -40,8 +43,7 @@ export const AuthClass = {
 export const ContextualFacadeClass = {
   Auth: 'Najs.AuthManager',
   Input: 'Najs.RequestInput',
-  Session: 'Najs.Session',
-  Cookie: 'Najs.Cookie'
+  Session: 'Najs.Session'
 }
 
 export const ResponseTypeClass = {

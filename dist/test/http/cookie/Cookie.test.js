@@ -3,7 +3,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
 const najs_facade_1 = require("najs-facade");
-const constants_1 = require("../../../lib/constants");
 const Cookie_1 = require("../../../lib/http/cookie/Cookie");
 const ExpressController_1 = require("../../../lib/http/controller/ExpressController");
 const RequestDataReader_1 = require("../../../lib/http/request/RequestDataReader");
@@ -13,10 +12,10 @@ describe('Cookie', function () {
         const cookie = new Cookie_1.Cookie(controller);
         expect(cookie).toBeInstanceOf(najs_facade_1.ContextualFacade);
     });
-    it('implements IAutoload interface', function () {
+    it('implements Autoload contract with name "Najs.Http.Cookie"', function () {
         const controller = {};
         const cookie = new Cookie_1.Cookie(controller);
-        expect(cookie.getClassName()).toEqual(constants_1.ContextualFacadeClass.Cookie);
+        expect(cookie.getClassName()).toEqual('Najs.Http.Cookie');
     });
     describe('constructor()', function () {
         it('assigns itself to controller', function () {

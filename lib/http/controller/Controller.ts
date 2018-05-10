@@ -1,7 +1,8 @@
+/// <reference path="../../contracts/Cookie.ts" />
+
 import { IAutoload } from 'najs-binding'
 import { IRequestDataReader } from '../request/IRequestDataReader'
 import { ISession } from '../session/ISession'
-import { ICookie } from '../cookie/ICookie'
 import { IAuth } from '../../auth/interfaces/IAuth'
 import { IncomingMessage, ServerResponse } from 'http'
 
@@ -14,7 +15,7 @@ export abstract class Controller<
   public input: IRequestDataReader
   public auth: IAuth
   public session: ISession
-  public cookie: ICookie
+  public cookie: Najs.Contracts.Cookie
 
   public constructor(request: Request, response: Response) {
     this.request = request
