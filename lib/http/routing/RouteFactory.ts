@@ -1,37 +1,19 @@
-import { IAutoload, register } from 'najs-binding'
+/// <reference path="../../contracts/RouteFactory.ts" />
+
+import { register } from 'najs-binding'
 import { Facade } from 'najs-facade'
-import { GlobalFacadeClass } from '../../constants'
+import { Najs } from '../../constants'
 import { RouteCollection } from './RouteCollection'
 import { RouteBuilder } from './RouteBuilder'
-import { IRouteGenerateUrl } from './interfaces/IRouteGenerateUrl'
 import { IRouteData } from './interfaces/IRouteData'
 import * as PathToRegex from 'path-to-regexp'
 
-// implements IRouteFactory implicitly
-export class RouteFactory extends Facade implements IRouteGenerateUrl, IAutoload {
-  protected proxy: any
-
-  constructor() {
-    super()
-    return this.createProxy()
-  }
-
-  protected createProxy() {
-    this.proxy = new Proxy(this, {
-      get(target: RouteFactory, key: string): any {
-        if (key !== 'hasOwnProperty' && typeof RouteBuilder.prototype[key] === 'function') {
-          return function() {
-            return RouteCollection.register<RouteBuilder>(new RouteBuilder())[key](...arguments)
-          }
-        }
-        return target[key]
-      }
-    })
-    return this.proxy
-  }
+export interface RouteFactory extends Najs.Contracts.RouteFactory {}
+export class RouteFactory extends Facade {
+  static className: string = Najs.Http.RouteFactory
 
   getClassName() {
-    return GlobalFacadeClass.Route
+    return Najs.Http.RouteFactory
   }
 
   createByName(name: string): string
@@ -45,4 +27,12 @@ export class RouteFactory extends Facade implements IRouteGenerateUrl, IAutoload
 
   // redirect(...args: Array<any>): void {}
 }
-register(RouteFactory)
+
+// implements Najs.Contracts.RouteFactory implicitly
+const functions = ['use', 'middleware', 'prefix', 'group', 'name', 'method'].concat(RouteBuilder.HttpVerbsSupported)
+for (const name of functions) {
+  RouteFactory.prototype[name] = function() {
+    return RouteCollection.register<RouteBuilder>(new RouteBuilder())[name](...arguments)
+  }
+}
+register(RouteFactory, Najs.Http.RouteFactory)

@@ -4,7 +4,32 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const HttpMethod_1 = require("../HttpMethod");
 const lodash_1 = require("lodash");
 const RouteData_1 = require("./RouteData");
-// implements IRouteGrammarVerbs implicitly
+const HTTP_VERBS = {
+    all: 'all',
+    checkout: HttpMethod_1.HttpMethod.CHECKOUT,
+    copy: HttpMethod_1.HttpMethod.COPY,
+    delete: HttpMethod_1.HttpMethod.DELETE,
+    get: HttpMethod_1.HttpMethod.GET,
+    head: HttpMethod_1.HttpMethod.HEAD,
+    lock: HttpMethod_1.HttpMethod.LOCK,
+    merge: HttpMethod_1.HttpMethod.MERGE,
+    mkactivity: HttpMethod_1.HttpMethod.MKACTIVITY,
+    mkcol: HttpMethod_1.HttpMethod.MKCOL,
+    move: HttpMethod_1.HttpMethod.MOVE,
+    msearch: HttpMethod_1.HttpMethod.M_SEARCH,
+    notify: HttpMethod_1.HttpMethod.NOTIFY,
+    options: HttpMethod_1.HttpMethod.OPTIONS,
+    patch: HttpMethod_1.HttpMethod.PATCH,
+    post: HttpMethod_1.HttpMethod.POST,
+    purge: HttpMethod_1.HttpMethod.PURGE,
+    put: HttpMethod_1.HttpMethod.PUT,
+    report: HttpMethod_1.HttpMethod.REPORT,
+    search: HttpMethod_1.HttpMethod.SEARCH,
+    subscribe: HttpMethod_1.HttpMethod.SUBSCRIBE,
+    trace: HttpMethod_1.HttpMethod.TRACE,
+    unlock: HttpMethod_1.HttpMethod.UNLOCK,
+    unsubscribe: HttpMethod_1.HttpMethod.UNSUBSCRIBE
+};
 class RouteBuilder {
     constructor(method, path) {
         this.data = new RouteData_1.RouteData(method, path);
@@ -119,35 +144,12 @@ class RouteBuilder {
         }
         throw new TypeError('Invalid Route');
     }
+    static get HttpVerbsSupported() {
+        return Object.keys(HTTP_VERBS);
+    }
 }
 exports.RouteBuilder = RouteBuilder;
-const HTTP_VERBS = {
-    all: 'all',
-    checkout: HttpMethod_1.HttpMethod.CHECKOUT,
-    copy: HttpMethod_1.HttpMethod.COPY,
-    delete: HttpMethod_1.HttpMethod.DELETE,
-    get: HttpMethod_1.HttpMethod.GET,
-    head: HttpMethod_1.HttpMethod.HEAD,
-    lock: HttpMethod_1.HttpMethod.LOCK,
-    merge: HttpMethod_1.HttpMethod.MERGE,
-    mkactivity: HttpMethod_1.HttpMethod.MKACTIVITY,
-    mkcol: HttpMethod_1.HttpMethod.MKCOL,
-    move: HttpMethod_1.HttpMethod.MOVE,
-    msearch: HttpMethod_1.HttpMethod.M_SEARCH,
-    notify: HttpMethod_1.HttpMethod.NOTIFY,
-    options: HttpMethod_1.HttpMethod.OPTIONS,
-    patch: HttpMethod_1.HttpMethod.PATCH,
-    post: HttpMethod_1.HttpMethod.POST,
-    purge: HttpMethod_1.HttpMethod.PURGE,
-    put: HttpMethod_1.HttpMethod.PUT,
-    report: HttpMethod_1.HttpMethod.REPORT,
-    search: HttpMethod_1.HttpMethod.SEARCH,
-    subscribe: HttpMethod_1.HttpMethod.SUBSCRIBE,
-    trace: HttpMethod_1.HttpMethod.TRACE,
-    unlock: HttpMethod_1.HttpMethod.UNLOCK,
-    unsubscribe: HttpMethod_1.HttpMethod.UNSUBSCRIBE
-};
-// implements IRouteGrammarVerbs
+// implements IRouteGrammarVerbs implicitly
 for (const name in HTTP_VERBS) {
     RouteBuilder.prototype[name] = function (arg0, arg1, arg2) {
         return this.method(HTTP_VERBS[name], arg0, arg1, arg2);

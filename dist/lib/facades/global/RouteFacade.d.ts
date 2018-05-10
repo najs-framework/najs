@@ -1,5 +1,5 @@
+/// <reference path="../../contracts/RouteFactory.d.ts" />
 import '../../../lib/http/routing/RouteFactory';
 import { IFacade, IFacadeBase } from 'najs-facade';
-import { IRouteFactory } from '../../../lib/http/routing/interfaces/IRouteFactory';
-export declare const Route: IRouteFactory & IFacadeBase;
-export declare const RouteFacade: IRouteFactory & IFacade;
+export declare const Route: Najs.Contracts.RouteFactory & IFacadeBase;
+export declare const RouteFacade: Najs.Contracts.RouteFactory & IFacade;

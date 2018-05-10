@@ -5,7 +5,7 @@ const Path = require('path')
 const cwd = Path.resolve(__dirname, '..')
 const distBase = 'dist'
 
-const files = [['lib', 'http', 'routing', 'RouteFactory.d.ts'], ['lib', 'http', 'routing', 'RouteBuilder.d.ts']]
+const files = []
 
 console.log('Start writing custom definitions...')
 for (const file of files) {

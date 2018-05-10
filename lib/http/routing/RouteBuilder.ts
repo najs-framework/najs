@@ -9,7 +9,34 @@ import { RouteData } from './RouteData'
 
 export type HttpMethodTarget = string | Controller | Function | Object
 
-// implements IRouteGrammarVerbs implicitly
+const HTTP_VERBS = {
+  all: 'all',
+  checkout: HttpMethod.CHECKOUT,
+  copy: HttpMethod.COPY,
+  delete: HttpMethod.DELETE,
+  get: HttpMethod.GET,
+  head: HttpMethod.HEAD,
+  lock: HttpMethod.LOCK,
+  merge: HttpMethod.MERGE,
+  mkactivity: HttpMethod.MKACTIVITY,
+  mkcol: HttpMethod.MKCOL,
+  move: HttpMethod.MOVE,
+  msearch: HttpMethod.M_SEARCH,
+  notify: HttpMethod.NOTIFY,
+  options: HttpMethod.OPTIONS,
+  patch: HttpMethod.PATCH,
+  post: HttpMethod.POST,
+  purge: HttpMethod.PURGE,
+  put: HttpMethod.PUT,
+  report: HttpMethod.REPORT,
+  search: HttpMethod.SEARCH,
+  subscribe: HttpMethod.SUBSCRIBE,
+  trace: HttpMethod.TRACE,
+  unlock: HttpMethod.UNLOCK,
+  unsubscribe: HttpMethod.UNSUBSCRIBE
+}
+
+export interface RouteBuilder extends Najs.Http.Routing.Verbs {}
 export class RouteBuilder
   implements IRouteBuilder, Najs.Http.Routing.Control, Najs.Http.Routing.Group, Najs.Http.Routing.Named {
   protected data: RouteData
@@ -162,36 +189,13 @@ export class RouteBuilder
 
     throw new TypeError('Invalid Route')
   }
+
+  static get HttpVerbsSupported(): string[] {
+    return Object.keys(HTTP_VERBS)
+  }
 }
 
-const HTTP_VERBS = {
-  all: 'all',
-  checkout: HttpMethod.CHECKOUT,
-  copy: HttpMethod.COPY,
-  delete: HttpMethod.DELETE,
-  get: HttpMethod.GET,
-  head: HttpMethod.HEAD,
-  lock: HttpMethod.LOCK,
-  merge: HttpMethod.MERGE,
-  mkactivity: HttpMethod.MKACTIVITY,
-  mkcol: HttpMethod.MKCOL,
-  move: HttpMethod.MOVE,
-  msearch: HttpMethod.M_SEARCH,
-  notify: HttpMethod.NOTIFY,
-  options: HttpMethod.OPTIONS,
-  patch: HttpMethod.PATCH,
-  post: HttpMethod.POST,
-  purge: HttpMethod.PURGE,
-  put: HttpMethod.PUT,
-  report: HttpMethod.REPORT,
-  search: HttpMethod.SEARCH,
-  subscribe: HttpMethod.SUBSCRIBE,
-  trace: HttpMethod.TRACE,
-  unlock: HttpMethod.UNLOCK,
-  unsubscribe: HttpMethod.UNSUBSCRIBE
-}
-
-// implements IRouteGrammarVerbs
+// implements IRouteGrammarVerbs implicitly
 for (const name in HTTP_VERBS) {
   RouteBuilder.prototype[name] = function(arg0: any, arg1: any, arg2: any) {
     return this.method(HTTP_VERBS[name], arg0, arg1, arg2)

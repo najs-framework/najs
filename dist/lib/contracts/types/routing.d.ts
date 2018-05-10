@@ -7,53 +7,17 @@ declare namespace Najs.Http.Routing {
     type NameChain = ControlOnly & Verbs;
     type NameChainNoVerb = ControlOnly;
     interface Control {
-        use(middleware: string): ControlChain;
-        use(middleware: IMiddleware): ControlChain;
-        use(middleware: Function): ControlChain;
-        use(middleware: string[]): ControlChain;
-        use(middleware: IMiddleware[]): ControlChain;
-        use(middleware: Function[]): ControlChain;
         use(...middleware: Array<string | string[] | IMiddleware | IMiddleware[] | Function | Function[]>): ControlChain;
-        middleware(middleware: string): ControlChain;
-        middleware(middleware: IMiddleware): ControlChain;
-        middleware(middleware: Function): ControlChain;
-        middleware(middleware: string[]): ControlChain;
-        middleware(middleware: IMiddleware[]): ControlChain;
-        middleware(middleware: Function[]): ControlChain;
         middleware(...middleware: Array<string | string[] | IMiddleware | IMiddleware[] | Function | Function[]>): ControlChain;
         prefix(prefix: string): ControlChain;
     }
     interface ControlNoVerb {
-        use(middleware: string): ControlNoVerbChain;
-        use(middleware: IMiddleware): ControlNoVerbChain;
-        use(middleware: Function): ControlNoVerbChain;
-        use(middleware: string[]): ControlNoVerbChain;
-        use(middleware: IMiddleware[]): ControlNoVerbChain;
-        use(middleware: Function[]): ControlNoVerbChain;
         use(...middleware: Array<string | string[] | IMiddleware | IMiddleware[] | Function | Function[]>): ControlNoVerbChain;
-        middleware(middleware: string): ControlNoVerbChain;
-        middleware(middleware: IMiddleware): ControlNoVerbChain;
-        middleware(middleware: Function): ControlNoVerbChain;
-        middleware(middleware: string[]): ControlNoVerbChain;
-        middleware(middleware: IMiddleware[]): ControlNoVerbChain;
-        middleware(middleware: Function[]): ControlNoVerbChain;
         middleware(...middleware: Array<string | string[] | IMiddleware | IMiddleware[] | Function | Function[]>): ControlNoVerbChain;
         prefix(prefix: string): ControlNoVerbChain;
     }
     interface ControlOnly {
-        use(middleware: string): ControlOnly;
-        use(middleware: IMiddleware): ControlOnly;
-        use(middleware: Function): ControlOnly;
-        use(middleware: string[]): ControlOnly;
-        use(middleware: IMiddleware[]): ControlOnly;
-        use(middleware: Function[]): ControlOnly;
         use(...middleware: Array<string | string[] | IMiddleware | IMiddleware[] | Function | Function[]>): ControlOnly;
-        middleware(middleware: string): ControlOnly;
-        middleware(middleware: IMiddleware): ControlOnly;
-        middleware(middleware: Function): ControlOnly;
-        middleware(middleware: string[]): ControlOnly;
-        middleware(middleware: IMiddleware[]): ControlOnly;
-        middleware(middleware: Function[]): ControlOnly;
         middleware(...middleware: Array<string | string[] | IMiddleware | IMiddleware[] | Function | Function[]>): ControlOnly;
         prefix(prefix: string): ControlOnly;
     }

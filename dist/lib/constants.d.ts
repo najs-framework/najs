@@ -15,6 +15,7 @@ export declare const Najs: {
     };
     Http: {
         Cookie: string;
+        RouteFactory: string;
     };
 };
 export declare const SystemClass: {
@@ -52,7 +53,6 @@ export declare const GlobalFacadeClass: {
     Application: string;
     Event: string;
     Response: string;
-    Route: string;
 };
 /**
  * This Object Configuration's key

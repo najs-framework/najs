@@ -1,6 +1,7 @@
 import 'jest'
 import * as Sinon from 'sinon'
 import * as PathToRegex from 'path-to-regexp'
+import { RouteFactory } from '../../../lib/http/routing/RouteFactory'
 import { RouteFacade as Route } from '../../../lib/facades/global/RouteFacade'
 import { RouteCollection } from '../../../lib/http/routing/RouteCollection'
 import { HttpMethod } from '../../../lib/http/HttpMethod'
@@ -32,6 +33,11 @@ function getRouteData(
 }
 
 describe('RouteFactory', function() {
+  it('implements Autoload contract with name "Najs.Http.RouteFactory"', function() {
+    const instance = new RouteFactory()
+    expect(instance.getClassName()).toEqual('Najs.Http.RouteFactory')
+  })
+
   describe('IRouteGenerateUrl', function() {
     it('calls "path-to-regex".compile() and passes params to generate url', function() {
       const toPath = function() {

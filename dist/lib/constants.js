@@ -16,7 +16,8 @@ exports.Najs = {
         RedisClient: 'Najs.Redis.RedisClient'
     },
     Http: {
-        Cookie: 'Najs.Http.Cookie'
+        Cookie: 'Najs.Http.Cookie',
+        RouteFactory: 'Najs.Http.RouteFactory'
     }
 };
 exports.SystemClass = {
@@ -53,8 +54,7 @@ exports.ResponseTypeClass = {
 exports.GlobalFacadeClass = {
     Application: 'Najs.Application',
     Event: 'Najs.EventDispatcher',
-    Response: 'Najs.ResponseFactory',
-    Route: 'Najs.RouteFactory'
+    Response: 'Najs.ResponseFactory'
 };
 /**
  * This Object Configuration's key
