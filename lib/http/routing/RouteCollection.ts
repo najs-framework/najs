@@ -1,5 +1,5 @@
-import { IRouteBuilder } from './interfaces/IRouteBuilder'
-import { IRouteData } from './interfaces/IRouteData'
+/// <reference path="../../contracts/types/http.ts" />
+
 import { flatten } from 'lodash'
 
 // type RoutingOptions = {
@@ -13,15 +13,15 @@ import { flatten } from 'lodash'
 export class RouteCollection {
   // private static options: RoutingOptions = DEFAULT_ROUTING_OPTIONS
   private static isChanged: boolean = false
-  private static routes: IRouteBuilder[] = []
-  private static routeData: IRouteData[] = []
+  private static routes: Najs.Http.IRouteBuilder[] = []
+  private static routeData: Najs.Http.IRouteData[] = []
   private static routeDataNamed: {
-    [key: string]: IRouteData
+    [key: string]: Najs.Http.IRouteData
   } = {}
 
-  static getData(): IRouteData[] {
+  static getData(): Najs.Http.IRouteData[] {
     if (this.isChanged) {
-      const result: IRouteData[][] = this.routes.map(route => route.getRouteData())
+      const result: Najs.Http.IRouteData[][] = this.routes.map(route => route.getRouteData())
       this.routeData = flatten(result)
       this.routeDataNamed = this.routeData.reduce((memo, item) => {
         if (item.name) {
@@ -37,7 +37,7 @@ export class RouteCollection {
     return this.routeData
   }
 
-  static register<T extends IRouteBuilder>(route: T): T {
+  static register<T extends Najs.Http.IRouteBuilder>(route: T): T {
     this.isChanged = true
     if (this.routes.length === 0) {
       this.routes.push(route)
@@ -58,7 +58,7 @@ export class RouteCollection {
     return typeof this.routeDataNamed[name] !== 'undefined'
   }
 
-  static findOrFail(name: string): IRouteData {
+  static findOrFail(name: string): Najs.Http.IRouteData {
     this.getData()
     if (!this.hasName(name)) {
       throw new Error('Route "' + name + '" not found')

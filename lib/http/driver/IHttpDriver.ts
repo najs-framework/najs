@@ -1,5 +1,3 @@
-import { IRouteData } from '../routing/interfaces/IRouteData'
-
 export type HttpDriverStartOptions = {
   createServer?: boolean
   port?: number
@@ -11,7 +9,7 @@ export interface IHttpDriver<T = any> {
 
   start(options?: HttpDriverStartOptions): void
 
-  route(data: IRouteData): void
+  route(data: any): void
 
   respondView(response: any, view: string, variables: Object): void
   respondJson(response: any, value: any): void

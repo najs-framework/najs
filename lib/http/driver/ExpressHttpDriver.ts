@@ -4,7 +4,6 @@ import { HttpKernel } from '../HttpKernel'
 import { SystemClass, ConfigurationKeys } from '../../constants'
 import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver'
 import { IAutoload, make } from 'najs-binding'
-import { IRouteData } from '../routing/interfaces/IRouteData'
 import { register } from '../../index'
 import { LogFacade as Log } from '../../facades/global/LogFacade'
 import { isFunction, isString } from 'lodash'
@@ -94,7 +93,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
 
   // -------------------------------------------------------------------------------------------------------------------
 
-  route(route: IRouteData) {
+  route(route: Najs.Http.IRouteData) {
     const method: string = route.method.toLowerCase()
     if (ExpressHttpDriver.METHODS.indexOf(method) === -1) {
       return
@@ -109,7 +108,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     Reflect.apply(Reflect.get(this.express, method), this.express, [path, ...handlers])
   }
 
-  protected getEndpointHandlers(method: string, path: string, route: IRouteData): ExpressHandlers {
+  protected getEndpointHandlers(method: string, path: string, route: Najs.Http.IRouteData): ExpressHandlers {
     const middlewareList: Najs.Http.IMiddleware[] = RouteMiddlewareUtil.getMiddlewareListOfRoute(route, this.httpKernel)
     const handlers: ExpressHandlers = this.createHandlersForRoute(route, middlewareList)
 
@@ -127,7 +126,10 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     return handlers
   }
 
-  protected createHandlersForRoute(route: IRouteData, middlewareList: Najs.Http.IMiddleware[]): ExpressHandlers {
+  protected createHandlersForRoute(
+    route: Najs.Http.IRouteData,
+    middlewareList: Najs.Http.IMiddleware[]
+  ): ExpressHandlers {
     const handlers: ExpressHandlers = <ExpressHandlers>route.middleware.filter(function(middleware) {
       return isFunction(middleware)
     })

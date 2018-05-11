@@ -2,11 +2,10 @@
 
 import { HttpKernel } from '../../HttpKernel'
 import { IHttpDriver } from '../IHttpDriver'
-import { IRouteData } from '../../routing/interfaces/IRouteData'
 import { flatten, isFunction, isString, isObject } from 'lodash'
 
 export class RouteMiddlewareUtil {
-  static getMiddlewareListOfRoute(route: IRouteData, httpKernel: HttpKernel): Najs.Http.IMiddleware[] {
+  static getMiddlewareListOfRoute(route: Najs.Http.IRouteData, httpKernel: HttpKernel): Najs.Http.IMiddleware[] {
     const middlewareListBag: Najs.Http.IMiddleware[][] = route.middleware
       .filter(function(middleware) {
         return !isFunction(middleware)

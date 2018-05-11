@@ -1,19 +1,17 @@
 /// <reference path="../../contracts/types/routing.d.ts" />
 import { HttpMethod } from '../HttpMethod';
-import { IRouteBuilder } from './interfaces/IRouteBuilder';
-import { IRouteData } from './interfaces/IRouteData';
 import { Controller } from '../controller/Controller';
 import { RouteData } from './RouteData';
 export declare type HttpMethodTarget = string | Controller | Function | Object;
 export interface RouteBuilder extends Najs.Http.Routing.Verbs {
 }
-export declare class RouteBuilder implements IRouteBuilder, Najs.Http.Routing.Control, Najs.Http.Routing.Group, Najs.Http.Routing.Named {
+export declare class RouteBuilder implements Najs.Http.IRouteBuilder, Najs.Http.Routing.Control, Najs.Http.Routing.Group, Najs.Http.Routing.Named {
     protected data: RouteData;
-    protected children: Array<IRouteBuilder>;
+    protected children: Array<Najs.Http.IRouteBuilder>;
     constructor();
     constructor(method: HttpMethod | 'all' | string, path: string);
-    getRouteData(parent?: RouteData): IRouteData[];
-    registerChildRoute(route: IRouteBuilder): void;
+    getRouteData(parent?: RouteData): Najs.Http.IRouteData[];
+    registerChildRoute(route: Najs.Http.IRouteBuilder): void;
     shouldRegisterChildRoute(): boolean;
     hasChildRoute(): boolean;
     use(...list: Array<any>): any;

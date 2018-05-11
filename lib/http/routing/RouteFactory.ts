@@ -1,3 +1,4 @@
+/// <reference path="../../contracts/types/http.ts" />
 /// <reference path="../../contracts/RouteFactory.ts" />
 
 import { register } from 'najs-binding'
@@ -5,7 +6,6 @@ import { Facade } from 'najs-facade'
 import { Najs } from '../../constants'
 import { RouteCollection } from './RouteCollection'
 import { RouteBuilder } from './RouteBuilder'
-import { IRouteData } from './interfaces/IRouteData'
 import * as PathToRegex from 'path-to-regexp'
 
 export interface RouteFactory extends Najs.Contracts.RouteFactory {}
@@ -20,7 +20,7 @@ export class RouteFactory extends Facade {
   createByName(name: string, param: Object): string
   createByName(name: string, param: Object, options: { encode: (value: string) => string }): string
   createByName(name: string, param?: Object, options?: { encode: (value: string) => string }): string {
-    const route: IRouteData = RouteCollection.findOrFail(name)
+    const route: Najs.Http.IRouteData = RouteCollection.findOrFail(name)
     const toPath = PathToRegex.compile(route.prefix + route.path)
     return toPath(param, options)
   }

@@ -1,8 +1,6 @@
 /// <reference path="../../contracts/types/routing.ts" />
 
 import { HttpMethod } from '../HttpMethod'
-import { IRouteBuilder } from './interfaces/IRouteBuilder'
-import { IRouteData } from './interfaces/IRouteData'
 import { flatten, isString, isFunction, isObject } from 'lodash'
 import { Controller } from '../controller/Controller'
 import { RouteData } from './RouteData'
@@ -38,9 +36,9 @@ const HTTP_VERBS = {
 
 export interface RouteBuilder extends Najs.Http.Routing.Verbs {}
 export class RouteBuilder
-  implements IRouteBuilder, Najs.Http.Routing.Control, Najs.Http.Routing.Group, Najs.Http.Routing.Named {
+  implements Najs.Http.IRouteBuilder, Najs.Http.Routing.Control, Najs.Http.Routing.Group, Najs.Http.Routing.Named {
   protected data: RouteData
-  protected children: Array<IRouteBuilder>
+  protected children: Array<Najs.Http.IRouteBuilder>
 
   constructor()
   constructor(method: HttpMethod | 'all' | string, path: string)
@@ -49,19 +47,19 @@ export class RouteBuilder
     this.children = []
   }
 
-  getRouteData(parent?: RouteData): IRouteData[] {
+  getRouteData(parent?: RouteData): Najs.Http.IRouteData[] {
     if (this.children.length === 0) {
-      const data: IRouteData | undefined = this.data.getData(parent)
+      const data: Najs.Http.IRouteData | undefined = this.data.getData(parent)
       return data ? [data] : []
     }
-    const result: IRouteData[][] = this.children.map(item => {
+    const result: Najs.Http.IRouteData[][] = this.children.map(item => {
       this.data.mergeParentData(parent)
       return item.getRouteData(this.data)
     })
     return flatten(result)
   }
 
-  registerChildRoute(route: IRouteBuilder): void {
+  registerChildRoute(route: Najs.Http.IRouteBuilder): void {
     if (this.children.length === 0) {
       this.children.push(route)
       return

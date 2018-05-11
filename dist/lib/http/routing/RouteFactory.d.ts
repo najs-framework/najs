@@ -1,3 +1,4 @@
+/// <reference path="../../contracts/types/http.d.ts" />
 /// <reference path="../../contracts/RouteFactory.d.ts" />
 import { Facade } from 'najs-facade';
 export interface RouteFactory extends Najs.Contracts.RouteFactory {

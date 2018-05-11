@@ -3,7 +3,6 @@
 import { HttpKernel } from '../HttpKernel';
 import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver';
 import { IAutoload } from 'najs-binding';
-import { IRouteData } from '../routing/interfaces/IRouteData';
 import { Controller } from '../controller/Controller';
 import * as Express from 'express';
 import * as Http from 'http';
@@ -20,9 +19,9 @@ export declare class ExpressHttpDriver implements IHttpDriver, IAutoload {
     protected setupViewEngine(app: ExpressApp): void;
     getClassName(): string;
     getNativeDriver(): ExpressApp;
-    route(route: IRouteData): void;
-    protected getEndpointHandlers(method: string, path: string, route: IRouteData): ExpressHandlers;
-    protected createHandlersForRoute(route: IRouteData, middlewareList: Najs.Http.IMiddleware[]): ExpressHandlers;
+    route(route: Najs.Http.IRouteData): void;
+    protected getEndpointHandlers(method: string, path: string, route: Najs.Http.IRouteData): ExpressHandlers;
+    protected createHandlersForRoute(route: Najs.Http.IRouteData, middlewareList: Najs.Http.IMiddleware[]): ExpressHandlers;
     protected createEndpointWrapper(controllerName: string, endpointName: string, middleware: Najs.Http.IMiddleware[]): (request: Express.Request, response: Express.Response) => Promise<void>;
     protected createEndpointWrapperByObject(controllerObject: Object, endpointName: string, middleware: Najs.Http.IMiddleware[]): (request: Express.Request, response: Express.Response) => Promise<void>;
     protected cloneControllerObject(controller: Object, request: Express.Request, response: Express.Response): Object;

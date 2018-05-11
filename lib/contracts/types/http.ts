@@ -55,15 +55,26 @@ namespace Najs.Http {
     after?(request: any, response: any, result: any, controller: any): Promise<any>
   }
 
+  export type RouteMiddleware = string | IMiddleware | NativeMiddleware
+  export type RouteController = string | IController<any, any> | Object
+  export type RouteEndpoint = string | Function
+
   export interface IRouteData {
     metadata?: Object
     name?: string
     method: HttpMethod | 'all' | string
     path: string
     prefix: string
-    middleware: Array<string | IMiddleware | NativeMiddleware>
+    middleware: Array<RouteMiddleware>
     controller?: string | IController<any, any> | Object
     endpoint?: string | Function
+  }
+
+  export interface IRouteBuilder {
+    getRouteData(parent?: Partial<IRouteData>): IRouteData[]
+    hasChildRoute(): boolean
+    registerChildRoute(route: IRouteBuilder): void
+    shouldRegisterChildRoute(): boolean
   }
 
   export interface IController<Request, Response> extends Najs.Contracts.Autoload {

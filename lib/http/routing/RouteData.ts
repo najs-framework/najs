@@ -1,16 +1,17 @@
-import { IRouteData, RouteMiddleware, RouteEndpoint, RouteController } from './interfaces/IRouteData'
+/// <reference path="../../contracts/types/http.ts" />
+
 import { HttpMethod } from '../HttpMethod'
 import { isString, isFunction } from 'lodash'
 
-export class RouteData implements Partial<IRouteData> {
+export class RouteData implements Partial<Najs.Http.IRouteData> {
   name?: string
   metadata?: Object
   method?: HttpMethod | 'all' | string
   path?: string
   prefix: string
-  middleware: Array<RouteMiddleware>
-  controller?: RouteController
-  endpoint?: RouteEndpoint
+  middleware: Array<Najs.Http.RouteMiddleware>
+  controller?: Najs.Http.RouteController
+  endpoint?: Najs.Http.RouteEndpoint
   isPrefixMerged: boolean = false
 
   constructor(method?: HttpMethod | 'all' | string, path?: string) {
@@ -72,7 +73,7 @@ export class RouteData implements Partial<IRouteData> {
     }
   }
 
-  getData(parent?: RouteData): IRouteData | undefined {
+  getData(parent?: RouteData): Najs.Http.IRouteData | undefined {
     if (!this.isValid()) {
       return undefined
     }
