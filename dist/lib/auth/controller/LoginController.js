@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-require("../../http/response/types/RedirectResponse");
+require("../../http/response/RedirectResponse");
 const constants_1 = require("../../constants");
 const ExpressController_1 = require("../../http/controller/ExpressController");
 const ConfigFacade_1 = require("../../facades/global/ConfigFacade");

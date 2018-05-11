@@ -1,5 +1,5 @@
-import '../../http/response/types/RedirectResponse'
-import { RedirectResponse } from '../../http/response/types/RedirectResponse'
+import '../../http/response/RedirectResponse'
+import { RedirectResponse } from '../../http/response/RedirectResponse'
 import { AuthClass, ConfigurationKeys } from '../../constants'
 import { ExpressController } from '../../http/controller/ExpressController'
 import { Config } from '../../facades/global/ConfigFacade'

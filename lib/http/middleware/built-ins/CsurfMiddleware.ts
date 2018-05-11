@@ -3,7 +3,7 @@ import { ConfigurationKeys } from '../../../constants'
 import { IAutoload } from 'najs-binding'
 import { ExpressMiddlewareBase } from '../ExpressMiddlewareBase'
 import { register } from 'najs-binding'
-import { ViewResponse } from '../../response/types/ViewResponse'
+import { ViewResponse } from '../../response/ViewResponse'
 import * as Csurf from 'csurf'
 import * as Express from 'express'
 

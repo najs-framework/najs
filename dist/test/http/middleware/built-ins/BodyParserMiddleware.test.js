@@ -6,7 +6,7 @@ const BodyParserMiddleware_1 = require("../../../../lib/http/middleware/built-in
 const najs_binding_1 = require("najs-binding");
 const isPromise_1 = require("../../../../lib/private/isPromise");
 const HandlebarsHelper_1 = require("../../../../lib/view/handlebars/HandlebarsHelper");
-const ViewResponse_1 = require("./../../../../lib/http/response/types/ViewResponse");
+const ViewResponse_1 = require("./../../../../lib/http/response/ViewResponse");
 const HandlebarsViewResponse_1 = require("./../../../../lib/view/handlebars/HandlebarsViewResponse");
 describe('BodyParserMiddleware', function () {
     it('implements IAutoload and auto register', function () {

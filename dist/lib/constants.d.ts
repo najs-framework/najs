@@ -14,13 +14,22 @@ export declare const Najs: {
         RedisClient: string;
     };
     Http: {
+        HttpDriver: string;
+        ExpressHttpDriver: string;
         Cookie: string;
         RouteFactory: string;
+        Response: {
+            BackResponse: string;
+            JsonResponse: string;
+            JsonpResponse: string;
+            RedirectResponse: string;
+            ViewResponse: string;
+            HandlebarsViewResponse: string;
+        };
     };
 };
 export declare const SystemClass: {
     HttpKernel: string;
-    HttpDriver: string;
     ExpressSessionStore: string;
 };
 export declare const AuthEvent: {
@@ -40,14 +49,6 @@ export declare const ContextualFacadeClass: {
     Auth: string;
     Input: string;
     Session: string;
-};
-export declare const ResponseTypeClass: {
-    Back: string;
-    Json: string;
-    Jsonp: string;
-    Redirect: string;
-    View: string;
-    HandlebarsView: string;
 };
 export declare const GlobalFacadeClass: {
     Application: string;

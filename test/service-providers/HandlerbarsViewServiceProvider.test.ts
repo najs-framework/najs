@@ -2,7 +2,6 @@ import 'jest'
 import { Najs } from '../../lib/core/Najs'
 import { AppFacade } from '../../lib/facades/global/AppFacade'
 import { HandlebarsViewServiceProvider } from '../../lib/service-providers/HandlebarsViewServiceProvider'
-import { ResponseTypeClass } from '../../lib/constants'
 
 describe('HandlebarsViewServiceProvider', function() {
   it('has getClassName with namespace Najs', function() {
@@ -15,7 +14,7 @@ describe('HandlebarsViewServiceProvider', function() {
       const spy = AppFacade.spy('bind')
       const serviceProvider = new HandlebarsViewServiceProvider(Najs['app'])
       await serviceProvider.register()
-      expect(spy.calledWith(ResponseTypeClass.View, ResponseTypeClass.HandlebarsView)).toBe(true)
+      expect(spy.calledWith('Najs.Http.Response.ViewResponse', 'Najs.Http.Response.HandlebarsViewResponse')).toBe(true)
       AppFacade.restoreFacade()
     })
   })

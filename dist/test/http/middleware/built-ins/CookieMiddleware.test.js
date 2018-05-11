@@ -4,7 +4,7 @@ require("jest");
 const Sinon = require("sinon");
 const Middleware = require("../../../../lib/http/middleware/built-ins/CookieMiddleware");
 const isPromise_1 = require("../../../../lib/private/isPromise");
-const ViewResponse_1 = require("../../../../lib/http/response/types/ViewResponse");
+const ViewResponse_1 = require("../../../../lib/http/response/ViewResponse");
 const HandlebarsHelper_1 = require("../../../../lib/view/handlebars/HandlebarsHelper");
 const HandlebarsViewResponse_1 = require("../../../../lib/view/handlebars/HandlebarsViewResponse");
 const Cookie_1 = require("../../../../lib/http/cookie/Cookie");

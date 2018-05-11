@@ -16,7 +16,7 @@ describe('ExpressHttpDriverServiceProvider', function () {
             const spy = AppFacade_1.AppFacade.spy('bind');
             const serviceProvider = new ExpressHttpDriverServiceProvider_1.ExpressHttpDriverServiceProvider(Najs_1.Najs['app']);
             await serviceProvider.register();
-            expect(spy.calledWith(constants_1.SystemClass.HttpDriver, ExpressHttpDriver_1.ExpressHttpDriver.className)).toBe(true);
+            expect(spy.calledWith(constants_1.Najs.Http.HttpDriver, ExpressHttpDriver_1.ExpressHttpDriver.className)).toBe(true);
             AppFacade_1.AppFacade.restoreFacade();
         });
     });

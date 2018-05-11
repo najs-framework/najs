@@ -15,14 +15,23 @@ export const Najs = {
     RedisClient: 'Najs.Redis.RedisClient'
   },
   Http: {
+    HttpDriver: 'Najs.Http.HttpDriver',
+    ExpressHttpDriver: 'Najs.Http.ExpressHttpDriver',
     Cookie: 'Najs.Http.Cookie',
-    RouteFactory: 'Najs.Http.RouteFactory'
+    RouteFactory: 'Najs.Http.RouteFactory',
+    Response: {
+      BackResponse: 'Najs.Http.Response.BackResponse',
+      JsonResponse: 'Najs.Http.Response.JsonResponse',
+      JsonpResponse: 'Najs.Http.Response.JsonpResponse',
+      RedirectResponse: 'Najs.Http.Response.RedirectResponse',
+      ViewResponse: 'Najs.Http.Response.ViewResponse',
+      HandlebarsViewResponse: 'Najs.Http.Response.HandlebarsViewResponse'
+    }
   }
 }
 
 export const SystemClass = {
   HttpKernel: 'Najs.HttpKernel',
-  HttpDriver: 'Najs.HttpDriver',
   ExpressSessionStore: 'Najs.ExpressSessionStore'
 }
 
@@ -45,15 +54,6 @@ export const ContextualFacadeClass = {
   Auth: 'Najs.AuthManager',
   Input: 'Najs.RequestInput',
   Session: 'Najs.Session'
-}
-
-export const ResponseTypeClass = {
-  Back: 'Najs.BackResponse',
-  Json: 'Najs.JsonResponse',
-  Jsonp: 'Najs.JsonpResponse',
-  Redirect: 'Najs.RedirectResponse',
-  View: 'Najs.ViewResponse',
-  HandlebarsView: 'Najs.HandlebarsViewResponse'
 }
 
 export const GlobalFacadeClass = {

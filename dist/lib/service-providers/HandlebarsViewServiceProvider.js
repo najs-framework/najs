@@ -11,7 +11,7 @@ class HandlebarsViewServiceProvider extends ServiceProvider_1.ServiceProvider {
         return HandlebarsViewServiceProvider.className;
     }
     async register() {
-        this.app.bind(constants_1.ResponseTypeClass.View, constants_1.ResponseTypeClass.HandlebarsView);
+        this.app.bind(constants_1.Najs.Http.Response.ViewResponse, constants_1.Najs.Http.Response.HandlebarsViewResponse);
     }
     static withHandlebarsHelpers(...args) {
         const packages = lodash_1.flatten(args);

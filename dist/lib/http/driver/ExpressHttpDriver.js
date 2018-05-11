@@ -10,7 +10,7 @@ const lodash_1 = require("lodash");
 const Controller_1 = require("../controller/Controller");
 const ExpressController_1 = require("../controller/ExpressController");
 const RouteCollection_1 = require("../routing/RouteCollection");
-const IResponse_1 = require("../response/IResponse");
+const isResponse_1 = require("../../private/isResponse");
 const isPromise_1 = require("../../private/isPromise");
 const ConfigFacade_1 = require("../../facades/global/ConfigFacade");
 const PathFacade_1 = require("../../facades/global/PathFacade");
@@ -65,7 +65,7 @@ class ExpressHttpDriver {
         app.set('views', PathFacade_1.PathFacade.view());
     }
     getClassName() {
-        return ExpressHttpDriver.className;
+        return constants_1.Najs.Http.ExpressHttpDriver;
     }
     getNativeDriver() {
         return this.express;
@@ -149,7 +149,7 @@ class ExpressHttpDriver {
     async handleEndpointResult(request, response, result, controller, middleware) {
         const rawValue = isPromise_1.isPromise(result) ? await result : result;
         const value = await RouteMiddlewareUtil_1.RouteMiddlewareUtil.applyAfterMiddleware(middleware, request, response, rawValue, controller);
-        if (IResponse_1.isIResponse(value)) {
+        if (isResponse_1.isResponse(value)) {
             return value.respond(request, response, this);
         }
     }
@@ -183,6 +183,6 @@ class ExpressHttpDriver {
         response.redirect(status, url);
     }
 }
-ExpressHttpDriver.className = 'ExpressHttpDriver';
+ExpressHttpDriver.className = constants_1.Najs.Http.ExpressHttpDriver;
 exports.ExpressHttpDriver = ExpressHttpDriver;
-index_1.register(ExpressHttpDriver);
+index_1.register(ExpressHttpDriver, constants_1.Najs.Http.ExpressHttpDriver);

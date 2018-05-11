@@ -1,12 +1,12 @@
 import { register } from 'najs-binding'
-import { ResponseTypeClass } from '../../constants'
-import { ViewResponse } from '../../http/response/types/ViewResponse'
+import { Najs } from '../../constants'
+import { ViewResponse } from '../../http/response/ViewResponse'
 
 export class HandlebarsViewResponse<T extends Object = {}> extends ViewResponse<T> {
-  static className: string = ResponseTypeClass.HandlebarsView
+  static className: string = Najs.Http.Response.HandlebarsViewResponse
 
   getClassName() {
-    return ResponseTypeClass.HandlebarsView
+    return Najs.Http.Response.HandlebarsViewResponse
   }
 
   helper(name: string, fn: Function): this
@@ -22,4 +22,4 @@ export class HandlebarsViewResponse<T extends Object = {}> extends ViewResponse<
     return this
   }
 }
-register(HandlebarsViewResponse)
+register(HandlebarsViewResponse, Najs.Http.Response.HandlebarsViewResponse)

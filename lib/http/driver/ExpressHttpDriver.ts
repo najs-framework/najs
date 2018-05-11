@@ -2,7 +2,7 @@
 /// <reference path="../../contracts/types/http.ts" />
 
 import { HttpKernel } from '../HttpKernel'
-import { SystemClass, ConfigurationKeys } from '../../constants'
+import { Najs, SystemClass, ConfigurationKeys } from '../../constants'
 import { make } from 'najs-binding'
 import { register } from '../../index'
 import { LogFacade as Log } from '../../facades/global/LogFacade'
@@ -10,7 +10,7 @@ import { isFunction, isString } from 'lodash'
 import { Controller } from '../controller/Controller'
 import { ExpressController } from '../controller/ExpressController'
 import { RouteCollection } from '../routing/RouteCollection'
-import { isIResponse } from '../response/IResponse'
+import { isResponse } from '../../private/isResponse'
 import { isPromise } from '../../private/isPromise'
 import { ConfigFacade } from '../../facades/global/ConfigFacade'
 import { PathFacade } from '../../facades/global/PathFacade'
@@ -51,7 +51,7 @@ const METHODS: string[] = [
 ]
 
 export class ExpressHttpDriver implements Najs.Contracts.HttpDriver<ExpressApp, Express.Response> {
-  static className: string = 'ExpressHttpDriver'
+  static className: string = Najs.Http.ExpressHttpDriver
 
   protected express: ExpressApp
   protected server: Http.Server
@@ -85,7 +85,7 @@ export class ExpressHttpDriver implements Najs.Contracts.HttpDriver<ExpressApp, 
   }
 
   getClassName() {
-    return ExpressHttpDriver.className
+    return Najs.Http.ExpressHttpDriver
   }
 
   getNativeDriver(): ExpressApp {
@@ -213,7 +213,7 @@ export class ExpressHttpDriver implements Najs.Contracts.HttpDriver<ExpressApp, 
       rawValue,
       controller
     )
-    if (isIResponse(value)) {
+    if (isResponse(value)) {
       return value.respond(request, response, this)
     }
   }
@@ -257,4 +257,4 @@ export class ExpressHttpDriver implements Najs.Contracts.HttpDriver<ExpressApp, 
     response.redirect(status, url)
   }
 }
-register(ExpressHttpDriver)
+register(ExpressHttpDriver, Najs.Http.ExpressHttpDriver)

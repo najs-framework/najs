@@ -5,7 +5,7 @@ const Sinon = require("sinon");
 const Middleware = require("../../../../lib/http/middleware/built-ins/CsurfMiddleware");
 const ExpressMiddlewareBase_1 = require("../../../../lib/http/middleware/ExpressMiddlewareBase");
 const isPromise_1 = require("../../../../lib/private/isPromise");
-const ViewResponse_1 = require("../../../../lib/http/response/types/ViewResponse");
+const ViewResponse_1 = require("../../../../lib/http/response/ViewResponse");
 describe('CsurfMiddleware', function () {
     it('extends ExpressMiddlewareBase', function () {
         const middleware = new Middleware.CsurfMiddleware('test');

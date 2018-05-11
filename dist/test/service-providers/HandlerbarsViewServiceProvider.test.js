@@ -4,7 +4,6 @@ require("jest");
 const Najs_1 = require("../../lib/core/Najs");
 const AppFacade_1 = require("../../lib/facades/global/AppFacade");
 const HandlebarsViewServiceProvider_1 = require("../../lib/service-providers/HandlebarsViewServiceProvider");
-const constants_1 = require("../../lib/constants");
 describe('HandlebarsViewServiceProvider', function () {
     it('has getClassName with namespace Najs', function () {
         const serviceProvider = new HandlebarsViewServiceProvider_1.HandlebarsViewServiceProvider({});
@@ -15,7 +14,7 @@ describe('HandlebarsViewServiceProvider', function () {
             const spy = AppFacade_1.AppFacade.spy('bind');
             const serviceProvider = new HandlebarsViewServiceProvider_1.HandlebarsViewServiceProvider(Najs_1.Najs['app']);
             await serviceProvider.register();
-            expect(spy.calledWith(constants_1.ResponseTypeClass.View, constants_1.ResponseTypeClass.HandlebarsView)).toBe(true);
+            expect(spy.calledWith('Najs.Http.Response.ViewResponse', 'Najs.Http.Response.HandlebarsViewResponse')).toBe(true);
             AppFacade_1.AppFacade.restoreFacade();
         });
     });

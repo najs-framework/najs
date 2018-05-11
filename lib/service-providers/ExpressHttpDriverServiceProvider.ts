@@ -1,6 +1,5 @@
-import { SystemClass } from '../constants'
+import { Najs } from '../constants'
 import { ServiceProvider } from '../core/ServiceProvider'
-import { ExpressHttpDriver } from '../http/driver/ExpressHttpDriver'
 
 export class ExpressHttpDriverServiceProvider extends ServiceProvider {
   static className: string = 'Najs.ExpressHttpDriverServiceProvider'
@@ -10,6 +9,6 @@ export class ExpressHttpDriverServiceProvider extends ServiceProvider {
   }
 
   async register() {
-    this.app.bind(SystemClass.HttpDriver, ExpressHttpDriver.className)
+    this.app.bind(Najs.Http.HttpDriver, Najs.Http.ExpressHttpDriver)
   }
 }

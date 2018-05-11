@@ -2,8 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
-const constants_1 = require("../../../lib/constants");
-const ViewResponse_1 = require("../../../lib/http/response/types/ViewResponse");
+const ViewResponse_1 = require("../../../lib/http/response/ViewResponse");
 const HandlebarsViewResponse_1 = require("../../../lib/view/handlebars/HandlebarsViewResponse");
 describe('HandlebarsViewResponse', function () {
     it('extends ViewResponse', function () {
@@ -12,7 +11,7 @@ describe('HandlebarsViewResponse', function () {
     });
     it('returns different class name', function () {
         const handlebarsView = new HandlebarsViewResponse_1.HandlebarsViewResponse('test');
-        expect(handlebarsView.getClassName()).toEqual(constants_1.ResponseTypeClass.HandlebarsView);
+        expect(handlebarsView.getClassName()).toEqual('Najs.Http.Response.HandlebarsViewResponse');
     });
     describe('.helper()', function () {
         it('is chain-able', function () {

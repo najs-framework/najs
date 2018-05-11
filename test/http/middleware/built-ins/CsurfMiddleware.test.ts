@@ -3,7 +3,7 @@ import * as Sinon from 'sinon'
 import * as Middleware from '../../../../lib/http/middleware/built-ins/CsurfMiddleware'
 import { ExpressMiddlewareBase } from '../../../../lib/http/middleware/ExpressMiddlewareBase'
 import { isPromise } from '../../../../lib/private/isPromise'
-import { ViewResponse } from '../../../../lib/http/response/types/ViewResponse'
+import { ViewResponse } from '../../../../lib/http/response/ViewResponse'
 
 describe('CsurfMiddleware', function() {
   it('extends ExpressMiddlewareBase', function() {

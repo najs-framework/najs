@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="../../contracts/Response.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const najs_binding_1 = require("najs-binding");
 const najs_facade_1 = require("najs-facade");
@@ -8,19 +9,19 @@ class ResponseFactory extends najs_facade_1.Facade {
         return constants_1.GlobalFacadeClass.Response;
     }
     view(view, variables) {
-        return najs_binding_1.make(constants_1.ResponseTypeClass.View, [view, variables]);
+        return najs_binding_1.make(constants_1.Najs.Http.Response.ViewResponse, [view, variables]);
     }
     json(value) {
-        return najs_binding_1.make(constants_1.ResponseTypeClass.Json, [value]);
+        return najs_binding_1.make(constants_1.Najs.Http.Response.JsonResponse, [value]);
     }
     jsonp(value) {
-        return najs_binding_1.make(constants_1.ResponseTypeClass.Jsonp, [value]);
+        return najs_binding_1.make(constants_1.Najs.Http.Response.JsonpResponse, [value]);
     }
     redirect(url, status = 302) {
-        return najs_binding_1.make(constants_1.ResponseTypeClass.Redirect, [url, status]);
+        return najs_binding_1.make(constants_1.Najs.Http.Response.RedirectResponse, [url, status]);
     }
     back(defaultUrl) {
-        return najs_binding_1.make(constants_1.ResponseTypeClass.Back, [defaultUrl]);
+        return najs_binding_1.make(constants_1.Najs.Http.Response.BackResponse, [defaultUrl]);
     }
 }
 ResponseFactory.className = constants_1.GlobalFacadeClass.Response;

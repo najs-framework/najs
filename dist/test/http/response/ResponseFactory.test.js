@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const ResponseFactory_1 = require("../../../lib/http/response/ResponseFactory");
-const ViewResponse_1 = require("../../../lib/http/response/types/ViewResponse");
-const JsonResponse_1 = require("../../../lib/http/response/types/JsonResponse");
-const RedirectResponse_1 = require("../../../lib/http/response/types/RedirectResponse");
-const BackResponse_1 = require("../../../lib/http/response/types/BackResponse");
-const JsonpResponse_1 = require("../../../lib/http/response/types/JsonpResponse");
+const ViewResponse_1 = require("../../../lib/http/response/ViewResponse");
+const JsonResponse_1 = require("../../../lib/http/response/JsonResponse");
+const RedirectResponse_1 = require("../../../lib/http/response/RedirectResponse");
+const BackResponse_1 = require("../../../lib/http/response/BackResponse");
+const JsonpResponse_1 = require("../../../lib/http/response/JsonpResponse");
 const najs_facade_1 = require("najs-facade");
 const constants_1 = require("../../../lib/constants");
 const najs_binding_1 = require("najs-binding");

@@ -2,7 +2,7 @@ import 'jest'
 import { Najs } from '../../lib/core/Najs'
 import { AppFacade } from '../../lib/facades/global/AppFacade'
 import { ExpressHttpDriverServiceProvider } from '../../lib/service-providers/ExpressHttpDriverServiceProvider'
-import { SystemClass } from '../../lib/constants'
+import { Najs as NajsClasses } from '../../lib/constants'
 import { ExpressHttpDriver } from '../../lib/http/driver/ExpressHttpDriver'
 
 describe('ExpressHttpDriverServiceProvider', function() {
@@ -16,7 +16,7 @@ describe('ExpressHttpDriverServiceProvider', function() {
       const spy = AppFacade.spy('bind')
       const serviceProvider = new ExpressHttpDriverServiceProvider(Najs['app'])
       await serviceProvider.register()
-      expect(spy.calledWith(SystemClass.HttpDriver, ExpressHttpDriver.className)).toBe(true)
+      expect(spy.calledWith(NajsClasses.Http.HttpDriver, ExpressHttpDriver.className)).toBe(true)
       AppFacade.restoreFacade()
     })
   })

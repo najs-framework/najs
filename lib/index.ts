@@ -20,7 +20,7 @@ export default Najs
 export { ServiceProvider } from './core/ServiceProvider'
 
 // constants
-export { SystemClass, GlobalFacadeClass, ContextualFacadeClass, ResponseTypeClass } from './constants'
+export { SystemClass, GlobalFacadeClass, ContextualFacadeClass } from './constants'
 
 // http package
 export { HttpKernel, MiddlewareDefinition, MiddlewareGroupDefinition } from './http/HttpKernel'
@@ -34,13 +34,7 @@ export { ExpressController } from './http/controller/ExpressController'
 export { RouteFactory } from './http/routing/RouteFactory'
 
 export { ResponseFactory } from './http/response/ResponseFactory'
-export { IResponse } from './http/response/IResponse'
 export { IResponseFactory } from './http/response/IResponseFactory'
-export { ViewResponse } from './http/response/types/ViewResponse'
-export { RedirectResponse } from './http/response/types/RedirectResponse'
-export { BackResponse } from './http/response/types/BackResponse'
-export { JsonResponse } from './http/response/types/JsonResponse'
-export { JsonpResponse } from './http/response/types/JsonpResponse'
 
 export { IRequestDataReader } from './http/request/IRequestDataReader'
 export { IRequestDataWriter } from './http/request/IRequestDataWriter'

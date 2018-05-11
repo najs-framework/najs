@@ -45,7 +45,7 @@ class NajsFramework extends najs_facade_1.FacadeContainer {
             this.fireEventIfNeeded('start', this);
             await this.applyServiceProviders(true, 'registered');
             await this.applyServiceProviders(false, 'booted');
-            this.httpDriver = this.app.make(constants_1.SystemClass.HttpDriver);
+            this.httpDriver = this.app.make(constants_1.Najs.Http.HttpDriver);
             this.httpDriver.start(options);
             this.fireEventIfNeeded('started', this);
         }

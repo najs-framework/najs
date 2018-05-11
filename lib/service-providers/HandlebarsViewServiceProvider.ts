@@ -1,5 +1,5 @@
 import '../view/handlebars/HandlebarsViewResponse'
-import { ResponseTypeClass } from '../constants'
+import { Najs } from '../constants'
 import { ServiceProvider } from '../core/ServiceProvider'
 import * as Handlebars from 'handlebars'
 import { flatten } from 'lodash'
@@ -13,7 +13,7 @@ export class HandlebarsViewServiceProvider extends ServiceProvider {
   }
 
   async register() {
-    this.app.bind(ResponseTypeClass.View, ResponseTypeClass.HandlebarsView)
+    this.app.bind(Najs.Http.Response.ViewResponse, Najs.Http.Response.HandlebarsViewResponse)
   }
 
   /**

@@ -6,7 +6,7 @@ import { EventEmitter } from 'events'
 import { ServiceProvider } from './ServiceProvider'
 import { Application } from './Application'
 import { make } from 'najs-binding'
-import { SystemClass } from '../constants'
+import { Najs as NajsClasses } from '../constants'
 import { FacadeContainer } from 'najs-facade'
 import * as SystemPath from 'path'
 
@@ -60,7 +60,7 @@ class NajsFramework extends FacadeContainer implements INajs {
       this.fireEventIfNeeded('start', this)
       await this.applyServiceProviders(true, 'registered')
       await this.applyServiceProviders(false, 'booted')
-      this.httpDriver = this.app.make<Najs.Contracts.HttpDriver<any, any>>(SystemClass.HttpDriver)
+      this.httpDriver = this.app.make<Najs.Contracts.HttpDriver<any, any>>(NajsClasses.Http.HttpDriver)
       this.httpDriver.start(options)
       this.fireEventIfNeeded('started', this)
     } catch (error) {

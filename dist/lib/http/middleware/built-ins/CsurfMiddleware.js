@@ -4,7 +4,7 @@ const ConfigFacade_1 = require("../../../facades/global/ConfigFacade");
 const constants_1 = require("../../../constants");
 const ExpressMiddlewareBase_1 = require("../ExpressMiddlewareBase");
 const najs_binding_1 = require("najs-binding");
-const ViewResponse_1 = require("../../response/types/ViewResponse");
+const ViewResponse_1 = require("../../response/ViewResponse");
 const Csurf = require("csurf");
 class CsurfMiddleware extends ExpressMiddlewareBase_1.ExpressMiddlewareBase {
     getOptions() {

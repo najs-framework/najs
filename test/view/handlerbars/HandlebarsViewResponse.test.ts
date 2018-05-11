@@ -1,7 +1,6 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import { ResponseTypeClass } from '../../../lib/constants'
-import { ViewResponse } from '../../../lib/http/response/types/ViewResponse'
+import { ViewResponse } from '../../../lib/http/response/ViewResponse'
 import { HandlebarsViewResponse } from '../../../lib/view/handlebars/HandlebarsViewResponse'
 
 describe('HandlebarsViewResponse', function() {
@@ -12,7 +11,7 @@ describe('HandlebarsViewResponse', function() {
 
   it('returns different class name', function() {
     const handlebarsView = new HandlebarsViewResponse('test')
-    expect(handlebarsView.getClassName()).toEqual(ResponseTypeClass.HandlebarsView)
+    expect(handlebarsView.getClassName()).toEqual('Najs.Http.Response.HandlebarsViewResponse')
   })
 
   describe('.helper()', function() {
