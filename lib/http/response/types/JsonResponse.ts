@@ -1,7 +1,8 @@
+/// <reference path="../../../contracts/HttpDriver.ts" />
+
 import { IAutoload, register } from 'najs-binding'
 import { ResponseTypeClass } from '../../../constants'
 import { IResponse } from '../IResponse'
-import { IHttpDriver } from '../../driver/IHttpDriver'
 
 export class JsonResponse implements IResponse, IAutoload {
   static className: string = ResponseTypeClass.Json
@@ -15,7 +16,7 @@ export class JsonResponse implements IResponse, IAutoload {
     return ResponseTypeClass.Json
   }
 
-  respond(request: any, response: any, driver: IHttpDriver) {
+  respond(request: any, response: any, driver: Najs.Contracts.HttpDriver<any, any>) {
     return driver.respondJson(response, this.value)
   }
 }

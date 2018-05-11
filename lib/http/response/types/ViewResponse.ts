@@ -1,8 +1,9 @@
+/// <reference path="../../../contracts/HttpDriver.ts" />
+
 import { IAutoload, register } from 'najs-binding'
 import { ResponseTypeClass } from '../../../constants'
 import { IView } from './IViewGrammars'
 import { IResponse } from '../IResponse'
-import { IHttpDriver } from '../../driver/IHttpDriver'
 import { set } from 'lodash'
 
 export class ViewResponse<T extends Object = {}> implements IResponse, IAutoload, IView {
@@ -21,7 +22,7 @@ export class ViewResponse<T extends Object = {}> implements IResponse, IAutoload
     return ResponseTypeClass.View
   }
 
-  respond(request: any, response: any, driver: IHttpDriver) {
+  respond(request: any, response: any, driver: Najs.Contracts.HttpDriver<any, any>) {
     return driver.respondView(response, this.view, this.variables)
   }
 

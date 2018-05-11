@@ -1,9 +1,9 @@
+/// <reference path="../../contracts/HttpDriver.ts" />
 /// <reference path="../../contracts/types/http.ts" />
 
 import { HttpKernel } from '../HttpKernel'
 import { SystemClass, ConfigurationKeys } from '../../constants'
-import { IHttpDriver, HttpDriverStartOptions } from './IHttpDriver'
-import { IAutoload, make } from 'najs-binding'
+import { make } from 'najs-binding'
 import { register } from '../../index'
 import { LogFacade as Log } from '../../facades/global/LogFacade'
 import { isFunction, isString } from 'lodash'
@@ -23,33 +23,34 @@ export type ExpressApp = Express.Express
 
 export type ExpressHandlers = Array<Express.RequestHandler | Express.ErrorRequestHandler>
 
-export class ExpressHttpDriver implements IHttpDriver, IAutoload {
-  static METHODS: string[] = [
-    'all',
-    'checkout',
-    'copy',
-    'delete',
-    'get',
-    'head',
-    'lock',
-    'merge',
-    'mkactivity',
-    'mkcol',
-    'move',
-    'm-search',
-    'notify',
-    'options',
-    'patch',
-    'post',
-    'purge',
-    'put',
-    'report',
-    'search',
-    'subscribe',
-    'trace',
-    'unlock',
-    'unsubscribe'
-  ]
+const METHODS: string[] = [
+  'all',
+  'checkout',
+  'copy',
+  'delete',
+  'get',
+  'head',
+  'lock',
+  'merge',
+  'mkactivity',
+  'mkcol',
+  'move',
+  'm-search',
+  'notify',
+  'options',
+  'patch',
+  'post',
+  'purge',
+  'put',
+  'report',
+  'search',
+  'subscribe',
+  'trace',
+  'unlock',
+  'unsubscribe'
+]
+
+export class ExpressHttpDriver implements Najs.Contracts.HttpDriver<ExpressApp, Express.Response> {
   static className: string = 'ExpressHttpDriver'
 
   protected express: ExpressApp
@@ -95,7 +96,7 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
 
   route(route: Najs.Http.IRouteData) {
     const method: string = route.method.toLowerCase()
-    if (ExpressHttpDriver.METHODS.indexOf(method) === -1) {
+    if (METHODS.indexOf(method) === -1) {
       return
     }
 
@@ -217,9 +218,9 @@ export class ExpressHttpDriver implements IHttpDriver, IAutoload {
     }
   }
 
-  start(options?: HttpDriverStartOptions) {
+  start(options?: Najs.Http.StartOptions) {
     RouteCollection.getData().map(this.route.bind(this))
-    const opts: HttpDriverStartOptions = Object.assign(
+    const opts: Najs.Http.StartOptions = Object.assign(
       {},
       {
         createServer: true,

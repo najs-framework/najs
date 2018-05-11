@@ -1,4 +1,6 @@
 "use strict";
+/// <reference path="../contracts/HttpDriver.ts" />
+/// <reference path="../contracts/types/http.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const events_1 = require("events");
 const Application_1 = require("./Application");

@@ -1,4 +1,5 @@
-import { HttpDriverStartOptions } from '../http/driver/IHttpDriver'
+/// <reference path="../contracts/types/http.ts" />
+
 import { ServiceProvider } from './ServiceProvider'
 
 export interface INajs {
@@ -18,5 +19,5 @@ export interface INajs {
   on(event: 'booted', listener: (najs: INajs, classProvider: ServiceProvider) => void): this
 
   start(): Promise<void>
-  start(options: HttpDriverStartOptions): Promise<void>
+  start(options: Najs.Http.StartOptions): Promise<void>
 }

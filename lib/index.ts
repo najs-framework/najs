@@ -23,8 +23,6 @@ export { ServiceProvider } from './core/ServiceProvider'
 export { SystemClass, GlobalFacadeClass, ContextualFacadeClass, ResponseTypeClass } from './constants'
 
 // http package
-export { IHttpDriver } from './http/driver/IHttpDriver'
-export { HttpDriverStartOptions } from './http/driver/IHttpDriver'
 export { HttpKernel, MiddlewareDefinition, MiddlewareGroupDefinition } from './http/HttpKernel'
 
 export { RouteCollection } from './http/routing/RouteCollection'

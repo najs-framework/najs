@@ -1,7 +1,8 @@
+/// <reference path="../../../contracts/HttpDriver.ts" />
+
 import { IAutoload, register } from 'najs-binding'
 import { ResponseTypeClass } from '../../../constants'
 import { IResponse } from '../IResponse'
-import { IHttpDriver } from '../../driver/IHttpDriver'
 
 export class BackResponse implements IResponse, IAutoload {
   static className: string = ResponseTypeClass.Back
@@ -16,7 +17,7 @@ export class BackResponse implements IResponse, IAutoload {
     return ResponseTypeClass.Back
   }
 
-  respond(request: any, response: any, driver: IHttpDriver) {
+  respond(request: any, response: any, driver: Najs.Contracts.HttpDriver<any, any>) {
     let url: string = request.header('Referer')
     if (!url) {
       url = this.defaultUrl

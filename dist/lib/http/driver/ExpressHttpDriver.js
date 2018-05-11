@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="../../contracts/HttpDriver.ts" />
 /// <reference path="../../contracts/types/http.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../../constants");
@@ -17,6 +18,32 @@ const RouteMiddlewareUtil_1 = require("./private/RouteMiddlewareUtil");
 const Express = require("express");
 const Http = require("http");
 const ExpressHandlebars = require("express-handlebars");
+const METHODS = [
+    'all',
+    'checkout',
+    'copy',
+    'delete',
+    'get',
+    'head',
+    'lock',
+    'merge',
+    'mkactivity',
+    'mkcol',
+    'move',
+    'm-search',
+    'notify',
+    'options',
+    'patch',
+    'post',
+    'purge',
+    'put',
+    'report',
+    'search',
+    'subscribe',
+    'trace',
+    'unlock',
+    'unsubscribe'
+];
 class ExpressHttpDriver {
     constructor() {
         this.express = this.setup();
@@ -46,7 +73,7 @@ class ExpressHttpDriver {
     // -------------------------------------------------------------------------------------------------------------------
     route(route) {
         const method = route.method.toLowerCase();
-        if (ExpressHttpDriver.METHODS.indexOf(method) === -1) {
+        if (METHODS.indexOf(method) === -1) {
             return;
         }
         const path = route.prefix + route.path;
@@ -156,32 +183,6 @@ class ExpressHttpDriver {
         response.redirect(status, url);
     }
 }
-ExpressHttpDriver.METHODS = [
-    'all',
-    'checkout',
-    'copy',
-    'delete',
-    'get',
-    'head',
-    'lock',
-    'merge',
-    'mkactivity',
-    'mkcol',
-    'move',
-    'm-search',
-    'notify',
-    'options',
-    'patch',
-    'post',
-    'purge',
-    'put',
-    'report',
-    'search',
-    'subscribe',
-    'trace',
-    'unlock',
-    'unsubscribe'
-];
 ExpressHttpDriver.className = 'ExpressHttpDriver';
 exports.ExpressHttpDriver = ExpressHttpDriver;
 index_1.register(ExpressHttpDriver);

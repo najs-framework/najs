@@ -1,7 +1,7 @@
+/// <reference path="../../../contracts/HttpDriver.ts" />
 /// <reference path="../../../contracts/types/http.ts" />
 
 import { HttpKernel } from '../../HttpKernel'
-import { IHttpDriver } from '../IHttpDriver'
 import { flatten, isFunction, isString, isObject } from 'lodash'
 
 export class RouteMiddlewareUtil {
@@ -28,7 +28,7 @@ export class RouteMiddlewareUtil {
 
   static createNativeMiddlewareHandlers(
     middlewareList: Najs.Http.IMiddleware[],
-    driver: IHttpDriver
+    driver: Najs.Contracts.HttpDriver<any, any>
   ): Najs.Http.NativeMiddleware[] {
     const result: Najs.Http.NativeMiddleware[][] = middlewareList
       .filter(function(middleware) {

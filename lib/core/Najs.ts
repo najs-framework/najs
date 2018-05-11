@@ -1,10 +1,12 @@
+/// <reference path="../contracts/HttpDriver.ts" />
+/// <reference path="../contracts/types/http.ts" />
+
 import { INajs } from './INajs'
 import { EventEmitter } from 'events'
 import { ServiceProvider } from './ServiceProvider'
 import { Application } from './Application'
 import { make } from 'najs-binding'
 import { SystemClass } from '../constants'
-import { IHttpDriver, HttpDriverStartOptions } from '../http/driver/IHttpDriver'
 import { FacadeContainer } from 'najs-facade'
 import * as SystemPath from 'path'
 
@@ -13,7 +15,7 @@ class NajsFramework extends FacadeContainer implements INajs {
   protected cwd: string
   protected serviceProviders: ServiceProvider[]
   protected app: Application
-  protected httpDriver: IHttpDriver
+  protected httpDriver: Najs.Contracts.HttpDriver<any, any>
 
   constructor() {
     super()
@@ -52,13 +54,13 @@ class NajsFramework extends FacadeContainer implements INajs {
   }
 
   async start(): Promise<void>
-  async start(options: HttpDriverStartOptions): Promise<void>
-  async start(options?: HttpDriverStartOptions): Promise<void> {
+  async start(options: Najs.Http.StartOptions): Promise<void>
+  async start(options?: Najs.Http.StartOptions): Promise<void> {
     try {
       this.fireEventIfNeeded('start', this)
       await this.applyServiceProviders(true, 'registered')
       await this.applyServiceProviders(false, 'booted')
-      this.httpDriver = this.app.make<IHttpDriver>(SystemClass.HttpDriver)
+      this.httpDriver = this.app.make<Najs.Contracts.HttpDriver<any, any>>(SystemClass.HttpDriver)
       this.httpDriver.start(options)
       this.fireEventIfNeeded('started', this)
     } catch (error) {

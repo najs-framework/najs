@@ -1,8 +1,7 @@
 /// <reference path="types/http.ts" />
-/// <reference types="node" />
 
 namespace Najs.Contracts {
-  export interface HttpDriver<T, Response> {
+  export interface HttpDriver<T, Response> extends Autoload {
     /**
      * Get the native driver instance
      */
