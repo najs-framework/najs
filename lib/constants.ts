@@ -19,6 +19,7 @@ export const Najs = {
     ExpressHttpDriver: 'Najs.Http.ExpressHttpDriver',
     Cookie: 'Najs.Http.Cookie',
     RouteFactory: 'Najs.Http.RouteFactory',
+    ResponseFactory: 'Najs.Http.ResponseFactory',
     Response: {
       BackResponse: 'Najs.Http.Response.BackResponse',
       JsonResponse: 'Najs.Http.Response.JsonResponse',
@@ -59,7 +60,6 @@ export const ContextualFacadeClass = {
 export const GlobalFacadeClass = {
   Application: 'Najs.Application',
   Event: 'Najs.EventDispatcher',
-  Response: 'Najs.ResponseFactory'
 }
 
 /**

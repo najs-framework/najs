@@ -34,7 +34,6 @@ export { ExpressController } from './http/controller/ExpressController'
 export { RouteFactory } from './http/routing/RouteFactory'
 
 export { ResponseFactory } from './http/response/ResponseFactory'
-export { IResponseFactory } from './http/response/IResponseFactory'
 
 export { IRequestDataReader } from './http/request/IRequestDataReader'
 export { IRequestDataWriter } from './http/request/IRequestDataWriter'

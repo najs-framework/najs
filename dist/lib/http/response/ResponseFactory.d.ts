@@ -1,17 +1,13 @@
 /// <reference path="../../contracts/Response.d.ts" />
-import { IAutoload } from 'najs-binding';
+/// <reference path="../../contracts/ViewResponse.d.ts" />
+/// <reference path="../../contracts/ResponseFactory.d.ts" />
 import { Facade } from 'najs-facade';
-import { IView } from './IViewGrammars';
-import { IResponseFactory } from './IResponseFactory';
-export declare class ResponseFactory extends Facade implements IResponseFactory, IAutoload {
+export declare class ResponseFactory extends Facade implements Najs.Contracts.ResponseFactory {
     static className: string;
     getClassName(): string;
-    view<R = IView>(view: string): R;
-    view<T extends Object = {}, R = IView>(view: string, variables: T): R;
-    json<R = Najs.Contracts.Response>(value: any): R;
-    jsonp<R = Najs.Contracts.Response>(value: any): R;
-    redirect<R = Najs.Contracts.Response>(url: string): R;
-    redirect<R = Najs.Contracts.Response>(url: string, status: number): R;
-    back<R = Najs.Contracts.Response>(): R;
-    back<R = Najs.Contracts.Response>(defaultUrl: string): R;
+    view<T extends Object = {}>(view: string, variables?: T): Najs.Contracts.ViewResponse;
+    json(value: any): Najs.Contracts.Response;
+    jsonp(value: any): Najs.Contracts.Response;
+    redirect(url: string, status?: number): Najs.Contracts.Response;
+    back(defaultUrl?: string): Najs.Contracts.Response;
 }

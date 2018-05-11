@@ -1,42 +1,36 @@
 /// <reference path="../../contracts/Response.ts" />
+/// <reference path="../../contracts/ViewResponse.ts" />
+/// <reference path="../../contracts/ResponseFactory.ts" />
 
-import { IAutoload, make, register } from 'najs-binding'
+import { make, register } from 'najs-binding'
 import { Facade } from 'najs-facade'
-import { GlobalFacadeClass, Najs } from '../../constants'
-import { IView } from './IViewGrammars'
-import { IResponseFactory } from './IResponseFactory'
+import { Najs } from '../../constants'
 
-export class ResponseFactory extends Facade implements IResponseFactory, IAutoload {
-  static className: string = GlobalFacadeClass.Response
+export class ResponseFactory extends Facade implements Najs.Contracts.ResponseFactory {
+  static className: string = Najs.Http.ResponseFactory
 
   getClassName() {
-    return GlobalFacadeClass.Response
+    return Najs.Http.ResponseFactory
   }
 
-  view<R = IView>(view: string): R
-  view<T extends Object = {}, R = IView>(view: string, variables: T): R
-  view<T extends Object = {}, R = IView>(view: string, variables?: T): R {
+  view<T extends Object = {}>(view: string, variables?: T): Najs.Contracts.ViewResponse {
     return make(Najs.Http.Response.ViewResponse, [view, <any>variables])
   }
 
-  json<R = Najs.Contracts.Response>(value: any): R {
+  json(value: any): Najs.Contracts.Response {
     return make(Najs.Http.Response.JsonResponse, [value])
   }
 
-  jsonp<R = Najs.Contracts.Response>(value: any): R {
+  jsonp(value: any): Najs.Contracts.Response {
     return make(Najs.Http.Response.JsonpResponse, [value])
   }
 
-  redirect<R = Najs.Contracts.Response>(url: string): R
-  redirect<R = Najs.Contracts.Response>(url: string, status: number): R
-  redirect<R = Najs.Contracts.Response>(url: string, status: number = 302): R {
+  redirect(url: string, status: number = 302): Najs.Contracts.Response {
     return make(Najs.Http.Response.RedirectResponse, [url, status])
   }
 
-  back<R = Najs.Contracts.Response>(): R
-  back<R = Najs.Contracts.Response>(defaultUrl: string): R
-  back<R = Najs.Contracts.Response>(defaultUrl?: string): R {
+  back(defaultUrl?: string): Najs.Contracts.Response {
     return make(Najs.Http.Response.BackResponse, [defaultUrl])
   }
 }
-register(ResponseFactory)
+register(ResponseFactory, Najs.Http.ResponseFactory)

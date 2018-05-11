@@ -6,15 +6,14 @@ import { RedirectResponse } from '../../../lib/http/response/RedirectResponse'
 import { BackResponse } from '../../../lib/http/response/BackResponse'
 import { JsonpResponse } from '../../../lib/http/response/JsonpResponse'
 import { Facade } from 'najs-facade'
-import { GlobalFacadeClass } from '../../../lib/constants'
 import { ClassRegistry } from 'najs-binding'
 
 describe('ResponseFacade', function() {
   const Response = new ResponseFactory()
   it('extends from Facade so it definitely a FacadeClass', function() {
     expect(Response).toBeInstanceOf(Facade)
-    expect(Response.getClassName()).toEqual(GlobalFacadeClass.Response)
-    expect(ClassRegistry.has(GlobalFacadeClass.Response)).toBe(true)
+    expect(Response.getClassName()).toEqual('Najs.Http.ResponseFactory')
+    expect(ClassRegistry.has('Najs.Http.ResponseFactory')).toBe(true)
   })
 
   describe('view', function() {

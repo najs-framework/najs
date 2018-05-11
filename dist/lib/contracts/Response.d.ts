@@ -1,5 +1,5 @@
 declare namespace Najs.Contracts {
-    interface Response<Request = any, Response = any> extends Contracts.Autoload {
+    interface Response extends Contracts.Autoload {
         /**
          * Perform response for current request.
          *
@@ -7,6 +7,6 @@ declare namespace Najs.Contracts {
          * @param {Object} response
          * @param {Object} driver
          */
-        respond(request: Request, response: Response, driver: Najs.Contracts.HttpDriver<any, Response>): void;
+        respond(request: any, response: any, driver: Najs.Contracts.HttpDriver<any, any>): void;
     }
 }

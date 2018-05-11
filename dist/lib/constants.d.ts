@@ -18,6 +18,7 @@ export declare const Najs: {
         ExpressHttpDriver: string;
         Cookie: string;
         RouteFactory: string;
+        ResponseFactory: string;
         Response: {
             BackResponse: string;
             JsonResponse: string;
@@ -53,7 +54,6 @@ export declare const ContextualFacadeClass: {
 export declare const GlobalFacadeClass: {
     Application: string;
     Event: string;
-    Response: string;
 };
 /**
  * This Object Configuration's key

@@ -18,16 +18,16 @@ export class LoginController extends ExpressController {
     if (!this.auth.check()) {
       const attemptSuccess = await this.auth.attempt(this.input.all(), this.input.get('remember', false))
       if (!attemptSuccess) {
-        return Response.redirect(this.getUrl('loginFailure'))
+        return Response.redirect(this.getUrl('loginFailure')) as RedirectResponse
       }
     }
-    return Response.redirect(this.getUrl('loginSuccess'))
+    return Response.redirect(this.getUrl('loginSuccess')) as RedirectResponse
   }
 
   async logout(): Promise<RedirectResponse> {
     if (this.auth.check()) {
       await this.auth.logout()
     }
-    return Response.redirect(this.getUrl('logoutRedirect'))
+    return Response.redirect(this.getUrl('logoutRedirect')) as RedirectResponse
   }
 }
