@@ -1,132 +1,50 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import { Facade, FacadeContainer } from 'najs-facade'
-import { Najs } from '../../lib/constants'
-import { RedisClient } from '../../lib/redis/RedisClient'
-import { RedisPromise } from '../../lib/redis/RedisPromise'
-import { ClassRegistry } from 'najs-binding'
+import * as Redis from 'redis'
 import { isPromise } from '../../lib/private/isPromise'
-import { ConfigurationKeys } from '../../lib/constants'
-import { ConfigFacade } from '../../lib/facades/global/ConfigFacade'
+import { RedisPromise } from '../../lib/redis/RedisPromise'
 
-describe('RedisClient', function() {
-  let redisClient: RedisClient
-  beforeAll(function() {
-    redisClient = new RedisClient()
-  })
+describe('RedisPromise', function() {
+  const redisClient = Redis.createClient()
+  const redisPromise = new RedisPromise(redisClient)
 
-  it('extends from Facade so it definitely a FacadeClass', function() {
-    expect(redisClient).toBeInstanceOf(Facade)
-    expect(redisClient.getClassName()).toEqual(Najs.Redis.RedisClient)
-    expect(ClassRegistry.has(Najs.Redis.RedisClient)).toBe(true)
-  })
-
-  describe('constructor()', function() {
-    it('calls createClient() with default and config get from ConfigFacade', function() {
-      ConfigFacade.shouldReceive('get').withArgs(ConfigurationKeys.Redis, {
-        host: 'localhost',
-        port: 6379
-      })
-      const newRedisClient = new RedisClient()
-      expect(newRedisClient.getCurrentClient()).toEqual('default')
-      FacadeContainer.verifyAndRestoreAllFacades()
-    })
-  })
-
-  describe('.createClient()', function() {
-    it('creates new client and put into bucket if the name is not exists', function() {
-      redisClient.createClient('test', {
-        host: 'localhost',
-        port: 6379
-      })
-      expect(typeof redisClient['bucket']['test'] === 'object').toBe(true)
+  describe('static .promisify()', function() {
+    it('simply calls RedisClient.prototype[method] with custom callback', function() {
+      const redisStub = Sinon.stub(Redis.RedisClient.prototype, 'get')
+      expect(isPromise(RedisPromise.promisify('get', redisClient, ['test']))).toBe(true)
+      expect(redisStub.calledWith('test')).toBe(true)
+      expect(typeof redisStub.lastCall.args[1] === 'function').toBe(true)
+      expect(redisStub.lastCall.thisValue === redisClient).toBe(true)
+      redisStub.restore()
     })
 
-    it('does not creates new client the name is exists', function() {
-      redisClient.createClient('default', {
-        host: 'localhost',
-        port: 6379
-      })
-      expect(redisClient.getCurrentClient()).toEqual('default')
+    it('calls Promise.resolve if there is no error', async function() {
+      const result = await RedisPromise.promisify('append', redisClient, ['test', 'a'])
+      expect(result).toBeGreaterThan(0)
     })
 
-    it('always return created/existing client', function() {
-      expect(
-        redisClient.createClient('test', {
-          host: 'localhost',
-          port: 6379
-        }) === redisClient['bucket']['test']
-      ).toBe(true)
-      expect(redisClient.getCurrentClient()).toEqual('default')
-    })
-  })
-
-  describe('.useClient()', function() {
-    it('sets currentBucket to the name if it exists', function() {
-      expect(redisClient.useClient('test').getCurrentClient()).toEqual('test')
-      expect(redisClient.useClient('default').getCurrentClient()).toEqual('default')
-    })
-
-    it('throws an Error if the name is not in bucket list', function() {
+    it('call Promise.reject if there is any error', async function() {
+      const redisStub = Sinon.stub(Redis.RedisClient.prototype, 'get')
       try {
-        redisClient.useClient('test-not-found')
+        redisStub.callsFake(function(key, done) {
+          done(new Error(key))
+        })
+        await RedisPromise.promisify('get', redisClient, ['test'])
       } catch (error) {
-        expect(error.message).toEqual('RedisClient "test-not-found" is not found')
+        expect(error.message).toEqual('test')
+        redisStub.restore()
         return
       }
       expect('should not reach this line').toEqual('hm')
     })
   })
-
-  describe('.getClient()', function() {
-    it('returns RedisPromise instance which wraps native RedisClient', function() {
-      const redis = redisClient.getClient('test')
-      expect(redis).toBeInstanceOf(RedisPromise)
-      expect(redis['redisClient'] === redisClient['bucket']['test']).toBe(true)
-    })
-
-    it('creates create instance once time and returns the cache in next time called', function() {
-      expect(redisClient['redisPromiseBucket']['test']).not.toBeUndefined()
-      expect(redisClient.getClient('test') === redisClient['redisPromiseBucket']['test']).toBe(true)
-    })
-  })
-
-  describe('.getRedisClient()', function() {
-    it('returns native redis client if name exists', function() {
-      expect(redisClient.getRedisClient('test') === redisClient['bucket']['test']).toBe(true)
-    })
-
-    it('throws an Error if the name is not in bucket list', function() {
-      try {
-        redisClient.getRedisClient('test-not-found')
-      } catch (error) {
-        expect(error.message).toEqual('RedisClient "test-not-found" is not found')
-        return
-      }
-      expect('should not reach this line').toEqual('hm')
-    })
-  })
-
-  describe('.getCurrentClient()', function() {
-    it('simply returns currentBucket', function() {})
-  })
-
-  describe('.hasClient()', function() {
-    it('simply returns true if there is client with name in bucket', function() {
-      expect(redisClient.hasClient('default')).toBe(true)
-      expect(redisClient.hasClient('test')).toBe(true)
-      expect(redisClient.hasClient('test-not-found')).toBe(false)
-    })
-  })
-
-  // -------------------------------------------------------------------------------------------------------------------
 
   function promisify_test_for(facadeMethod: string, redisMethod: string, args: any[]) {
     describe('.' + facadeMethod + '()', function() {
       it('returns a promise', function() {
         const promisifyStub = Sinon.stub(RedisPromise, 'promisify')
         promisifyStub.callsFake(async function() {})
-        expect(isPromise(redisClient[facadeMethod](...args))).toBe(true)
+        expect(isPromise(redisPromise[facadeMethod](...args))).toBe(true)
         promisifyStub.restore()
       })
 
@@ -135,9 +53,9 @@ describe('RedisClient', function() {
         promisifyStub.callsFake(async function() {
           return true
         })
-        redisClient[facadeMethod](...args)
+        redisPromise[facadeMethod](...args)
         expect(promisifyStub.calledWith(redisMethod)).toBe(true)
-        expect(promisifyStub.lastCall.args[1]).toEqual(redisClient['bucket'][redisClient['currentBucket']])
+        expect(promisifyStub.lastCall.args[1]).toEqual(redisClient)
         expect(Array.from(promisifyStub.lastCall.args[2])).toEqual(args)
         promisifyStub.restore()
       })

@@ -2,117 +2,47 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
-const najs_facade_1 = require("najs-facade");
-const constants_1 = require("../../lib/constants");
-const RedisClient_1 = require("../../lib/redis/RedisClient");
-const RedisPromise_1 = require("../../lib/redis/RedisPromise");
-const najs_binding_1 = require("najs-binding");
+const Redis = require("redis");
 const isPromise_1 = require("../../lib/private/isPromise");
-const constants_2 = require("../../lib/constants");
-const ConfigFacade_1 = require("../../lib/facades/global/ConfigFacade");
-describe('RedisClient', function () {
-    let redisClient;
-    beforeAll(function () {
-        redisClient = new RedisClient_1.RedisClient();
-    });
-    it('extends from Facade so it definitely a FacadeClass', function () {
-        expect(redisClient).toBeInstanceOf(najs_facade_1.Facade);
-        expect(redisClient.getClassName()).toEqual(constants_1.Najs.Redis.RedisClient);
-        expect(najs_binding_1.ClassRegistry.has(constants_1.Najs.Redis.RedisClient)).toBe(true);
-    });
-    describe('constructor()', function () {
-        it('calls createClient() with default and config get from ConfigFacade', function () {
-            ConfigFacade_1.ConfigFacade.shouldReceive('get').withArgs(constants_2.ConfigurationKeys.Redis, {
-                host: 'localhost',
-                port: 6379
-            });
-            const newRedisClient = new RedisClient_1.RedisClient();
-            expect(newRedisClient.getCurrentClient()).toEqual('default');
-            najs_facade_1.FacadeContainer.verifyAndRestoreAllFacades();
+const RedisPromise_1 = require("../../lib/redis/RedisPromise");
+describe('RedisPromise', function () {
+    const redisClient = Redis.createClient();
+    const redisPromise = new RedisPromise_1.RedisPromise(redisClient);
+    describe('static .promisify()', function () {
+        it('simply calls RedisClient.prototype[method] with custom callback', function () {
+            const redisStub = Sinon.stub(Redis.RedisClient.prototype, 'get');
+            expect(isPromise_1.isPromise(RedisPromise_1.RedisPromise.promisify('get', redisClient, ['test']))).toBe(true);
+            expect(redisStub.calledWith('test')).toBe(true);
+            expect(typeof redisStub.lastCall.args[1] === 'function').toBe(true);
+            expect(redisStub.lastCall.thisValue === redisClient).toBe(true);
+            redisStub.restore();
         });
-    });
-    describe('.createClient()', function () {
-        it('creates new client and put into bucket if the name is not exists', function () {
-            redisClient.createClient('test', {
-                host: 'localhost',
-                port: 6379
-            });
-            expect(typeof redisClient['bucket']['test'] === 'object').toBe(true);
+        it('calls Promise.resolve if there is no error', async function () {
+            const result = await RedisPromise_1.RedisPromise.promisify('append', redisClient, ['test', 'a']);
+            expect(result).toBeGreaterThan(0);
         });
-        it('does not creates new client the name is exists', function () {
-            redisClient.createClient('default', {
-                host: 'localhost',
-                port: 6379
-            });
-            expect(redisClient.getCurrentClient()).toEqual('default');
-        });
-        it('always return created/existing client', function () {
-            expect(redisClient.createClient('test', {
-                host: 'localhost',
-                port: 6379
-            }) === redisClient['bucket']['test']).toBe(true);
-            expect(redisClient.getCurrentClient()).toEqual('default');
-        });
-    });
-    describe('.useClient()', function () {
-        it('sets currentBucket to the name if it exists', function () {
-            expect(redisClient.useClient('test').getCurrentClient()).toEqual('test');
-            expect(redisClient.useClient('default').getCurrentClient()).toEqual('default');
-        });
-        it('throws an Error if the name is not in bucket list', function () {
+        it('call Promise.reject if there is any error', async function () {
+            const redisStub = Sinon.stub(Redis.RedisClient.prototype, 'get');
             try {
-                redisClient.useClient('test-not-found');
+                redisStub.callsFake(function (key, done) {
+                    done(new Error(key));
+                });
+                await RedisPromise_1.RedisPromise.promisify('get', redisClient, ['test']);
             }
             catch (error) {
-                expect(error.message).toEqual('RedisClient "test-not-found" is not found');
+                expect(error.message).toEqual('test');
+                redisStub.restore();
                 return;
             }
             expect('should not reach this line').toEqual('hm');
         });
     });
-    describe('.getClient()', function () {
-        it('returns RedisPromise instance which wraps native RedisClient', function () {
-            const redis = redisClient.getClient('test');
-            expect(redis).toBeInstanceOf(RedisPromise_1.RedisPromise);
-            expect(redis['redisClient'] === redisClient['bucket']['test']).toBe(true);
-        });
-        it('creates create instance once time and returns the cache in next time called', function () {
-            expect(redisClient['redisPromiseBucket']['test']).not.toBeUndefined();
-            expect(redisClient.getClient('test') === redisClient['redisPromiseBucket']['test']).toBe(true);
-        });
-    });
-    describe('.getRedisClient()', function () {
-        it('returns native redis client if name exists', function () {
-            expect(redisClient.getRedisClient('test') === redisClient['bucket']['test']).toBe(true);
-        });
-        it('throws an Error if the name is not in bucket list', function () {
-            try {
-                redisClient.getRedisClient('test-not-found');
-            }
-            catch (error) {
-                expect(error.message).toEqual('RedisClient "test-not-found" is not found');
-                return;
-            }
-            expect('should not reach this line').toEqual('hm');
-        });
-    });
-    describe('.getCurrentClient()', function () {
-        it('simply returns currentBucket', function () { });
-    });
-    describe('.hasClient()', function () {
-        it('simply returns true if there is client with name in bucket', function () {
-            expect(redisClient.hasClient('default')).toBe(true);
-            expect(redisClient.hasClient('test')).toBe(true);
-            expect(redisClient.hasClient('test-not-found')).toBe(false);
-        });
-    });
-    // -------------------------------------------------------------------------------------------------------------------
     function promisify_test_for(facadeMethod, redisMethod, args) {
         describe('.' + facadeMethod + '()', function () {
             it('returns a promise', function () {
                 const promisifyStub = Sinon.stub(RedisPromise_1.RedisPromise, 'promisify');
                 promisifyStub.callsFake(async function () { });
-                expect(isPromise_1.isPromise(redisClient[facadeMethod](...args))).toBe(true);
+                expect(isPromise_1.isPromise(redisPromise[facadeMethod](...args))).toBe(true);
                 promisifyStub.restore();
             });
             it('calls RedisPromise.proxify(), passes method name and arguments', async function () {
@@ -120,9 +50,9 @@ describe('RedisClient', function () {
                 promisifyStub.callsFake(async function () {
                     return true;
                 });
-                redisClient[facadeMethod](...args);
+                redisPromise[facadeMethod](...args);
                 expect(promisifyStub.calledWith(redisMethod)).toBe(true);
-                expect(promisifyStub.lastCall.args[1]).toEqual(redisClient['bucket'][redisClient['currentBucket']]);
+                expect(promisifyStub.lastCall.args[1]).toEqual(redisClient);
                 expect(Array.from(promisifyStub.lastCall.args[2])).toEqual(args);
                 promisifyStub.restore();
             });

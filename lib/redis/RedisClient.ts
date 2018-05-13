@@ -4,13 +4,17 @@ import { register } from 'najs-binding'
 import { ConfigurationKeys, Najs } from '../constants'
 import { Facade } from 'najs-facade'
 import { ConfigFacade } from '../facades/global/ConfigFacade'
-import * as Redis from 'redis'
+import { RedisPromise } from './RedisPromise'
+import * as NodeRedis from 'redis'
 
-export interface RedisClient extends Najs.Contracts.Redis<Redis.RedisClient> {}
+export interface RedisClient extends Najs.Contracts.Redis<NodeRedis.RedisClient> {}
 export class RedisClient extends Facade {
   static className: string = Najs.Redis.RedisClient
   protected bucket: {
-    [key: string]: Redis.RedisClient
+    [key: string]: NodeRedis.RedisClient
+  }
+  protected redisPromiseBucket: {
+    [key: string]: RedisPromise
   }
   protected currentBucket: string
   protected proxy: any
@@ -18,6 +22,7 @@ export class RedisClient extends Facade {
   constructor() {
     super()
     this.bucket = {}
+    this.redisPromiseBucket = {}
     this.createClient(
       'default',
       ConfigFacade.get(ConfigurationKeys.Redis, {
@@ -32,9 +37,9 @@ export class RedisClient extends Facade {
     return Najs.Redis.RedisClient
   }
 
-  createClient(name: string, options: Redis.ClientOpts): Redis.RedisClient {
+  createClient(name: string, options: Redis.ClientOpts): NodeRedis.RedisClient {
     if (!this.bucket[name]) {
-      this.bucket[name] = Redis.createClient(options)
+      this.bucket[name] = NodeRedis.createClient(options)
     }
     return this.bucket[name]
   }
@@ -47,11 +52,19 @@ export class RedisClient extends Facade {
     return this
   }
 
-  getClient(name: string): Redis.RedisClient {
+  getRedisClient(name: string): NodeRedis.RedisClient {
     if (!this.bucket[name]) {
       throw new Error(`RedisClient "${name}" is not found`)
     }
     return this.bucket[name]
+  }
+
+  getClient(name: string): Redis.RedisPromise {
+    if (typeof this.redisPromiseBucket[name] === 'undefined') {
+      const redisClient = this.getRedisClient(name)
+      this.redisPromiseBucket[name] = new RedisPromise(redisClient)
+    }
+    return this.redisPromiseBucket[name]
   }
 
   getCurrentClient(): string {
@@ -61,33 +74,16 @@ export class RedisClient extends Facade {
   hasClient(name: string): boolean {
     return !!this.bucket[name]
   }
-
-  redisClientProxy(method: string, args: ArrayLike<any>): Promise<any> {
-    return <any>new Promise((resolve, reject) => {
-      Reflect.apply(
-        Redis.RedisClient.prototype[method],
-        this.bucket[this.currentBucket],
-        Array.from(args).concat([
-          function(error: Error | null, result: any) {
-            if (error) {
-              return reject(error)
-            }
-            resolve(result)
-          }
-        ])
-      )
-    })
-  }
 }
 
 // implements Najs.Contracts.Redis implicitly
-const functions = Object.getOwnPropertyNames(Redis.RedisClient.prototype)
+const functions = Object.getOwnPropertyNames(NodeRedis.RedisClient.prototype)
 for (const name of functions) {
   if (name === 'constructor') {
     continue
   }
   RedisClient.prototype[name] = function() {
-    return this.redisClientProxy(name, arguments)
+    return RedisPromise.promisify(name, this['bucket'][this['currentBucket']], arguments)
   }
 }
 
