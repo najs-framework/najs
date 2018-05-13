@@ -266,71 +266,71 @@ describe('RedisCache', function() {
     })
   })
 
-  describe('Errors handle', function() {
-    const fakeRedis = {
-      GET(key: any, callback: any) {
-        callback(new Error('Fake GET'))
-      },
-      SET(key: any, value: any, typeOrCallback: any, ttl: any, callback: any) {
-        if (typeof typeOrCallback === 'function') {
-          return typeOrCallback(new Error('Fake SET'))
-        }
-        callback(new Error('Fake SET'))
-      },
-      EXISTS(key: any, callback: any) {
-        callback(new Error('Fake EXISTS'))
-      },
-      DEL(key: any, callback: any) {
-        callback(new Error('Fake DEL'))
-      }
-    }
+  // describe('Errors handle', function() {
+  //   const fakeRedis = {
+  //     GET(key: any, callback: any) {
+  //       callback(new Error('Fake GET'))
+  //     },
+  //     SET(key: any, value: any, typeOrCallback: any, ttl: any, callback: any) {
+  //       if (typeof typeOrCallback === 'function') {
+  //         return typeOrCallback(new Error('Fake SET'))
+  //       }
+  //       callback(new Error('Fake SET'))
+  //     },
+  //     EXISTS(key: any, callback: any) {
+  //       callback(new Error('Fake EXISTS'))
+  //     },
+  //     DEL(key: any, callback: any) {
+  //       callback(new Error('Fake DEL'))
+  //     }
+  //   }
 
-    it('returns promise reject if redis.GET() has error', async function() {
-      const redisCache = new RedisCache()
-      redisCache.redis = <any>fakeRedis
-      try {
-        await redisCache.get('error')
-      } catch (error) {
-        expect(error.message).toEqual('Fake GET')
-        return
-      }
-      expect('should not reach this line').toEqual('hmm')
-    })
+  //   it('returns promise reject if redis.GET() has error', async function() {
+  //     const redisCache = new RedisCache()
+  //     redisCache.redis = <any>fakeRedis
+  //     try {
+  //       await redisCache.get('error')
+  //     } catch (error) {
+  //       expect(error.message).toEqual('Fake GET')
+  //       return
+  //     }
+  //     expect('should not reach this line').toEqual('hmm')
+  //   })
 
-    it('returns promise reject if redis.SET() has error', async function() {
-      const redisCache = new RedisCache()
-      redisCache.redis = <any>fakeRedis
-      try {
-        await redisCache.set('error', 'any')
-      } catch (error) {
-        expect(error.message).toEqual('Fake SET')
-        return
-      }
-      expect('should not reach this line').toEqual('hmm')
-    })
+  //   it('returns promise reject if redis.SET() has error', async function() {
+  //     const redisCache = new RedisCache()
+  //     redisCache.redis = <any>fakeRedis
+  //     try {
+  //       await redisCache.set('error', 'any')
+  //     } catch (error) {
+  //       expect(error.message).toEqual('Fake SET')
+  //       return
+  //     }
+  //     expect('should not reach this line').toEqual('hmm')
+  //   })
 
-    it('returns promise reject if redis.EXISTS() has error', async function() {
-      const redisCache = new RedisCache()
-      redisCache.redis = <any>fakeRedis
-      try {
-        await redisCache.has('error')
-      } catch (error) {
-        expect(error.message).toEqual('Fake EXISTS')
-        return
-      }
-      expect('should not reach this line').toEqual('hmm')
-    })
+  //   it('returns promise reject if redis.EXISTS() has error', async function() {
+  //     const redisCache = new RedisCache()
+  //     redisCache.redis = <any>fakeRedis
+  //     try {
+  //       await redisCache.has('error')
+  //     } catch (error) {
+  //       expect(error.message).toEqual('Fake EXISTS')
+  //       return
+  //     }
+  //     expect('should not reach this line').toEqual('hmm')
+  //   })
 
-    it('returns promise reject if redis.DEL() has error', async function() {
-      const redisCache = new RedisCache()
-      redisCache.redis = <any>fakeRedis
-      try {
-        await redisCache.clear('error')
-      } catch (error) {
-        expect(error.message).toEqual('Fake DEL')
-        return
-      }
-      expect('should not reach this line').toEqual('hmm')
-    })
-  })
+  //   it('returns promise reject if redis.DEL() has error', async function() {
+  //     const redisCache = new RedisCache()
+  //     redisCache.redis = <any>fakeRedis
+  //     try {
+  //       await redisCache.clear('error')
+  //     } catch (error) {
+  //       expect(error.message).toEqual('Fake DEL')
+  //       return
+  //     }
+  //     expect('should not reach this line').toEqual('hmm')
+  //   })
+  // })
 })

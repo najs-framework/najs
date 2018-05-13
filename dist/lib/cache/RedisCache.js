@@ -2,10 +2,9 @@
 /// <reference path="../contracts/Cache.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const najs_facade_1 = require("najs-facade");
-const ConfigFacade_1 = require("../facades/global/ConfigFacade");
 const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../constants");
-const Redis = require("redis");
+const RedisFacade_1 = require("../facades/global/RedisFacade");
 function get_tag_manage_key(tagName) {
     return `tag:${tagName}`;
 }
@@ -15,60 +14,30 @@ function get_tag_value_key(tagName, key) {
 class RedisCache extends najs_facade_1.Facade {
     constructor() {
         super();
-        this.redis = Redis.createClient(ConfigFacade_1.ConfigFacade.get(constants_1.ConfigurationKeys.Cache.redis, {
-            host: 'localhost',
-            port: 6379
-        }));
     }
     getClassName() {
         return constants_1.Najs.Cache.RedisCache;
     }
     async get(key, defaultValue) {
-        return new Promise((resolve, reject) => {
-            this.redis.GET(key, function (error, response) {
-                if (error) {
-                    return reject(error);
-                }
-                if (response === null && defaultValue) {
-                    return resolve(defaultValue);
-                }
-                return resolve(JSON.parse(response));
-            });
-        });
+        const response = await RedisFacade_1.Redis.get(key);
+        if (response === null && defaultValue) {
+            return defaultValue;
+        }
+        return JSON.parse(response);
     }
     async set(key, value, ttl) {
-        return new Promise((resolve, reject) => {
-            function callback(error, response) {
-                if (error) {
-                    return reject(error);
-                }
-                resolve(response === 'OK');
-            }
-            if (ttl) {
-                return this.redis.SET(key, JSON.stringify(value), 'EX', ttl, callback);
-            }
-            return this.redis.SET(key, JSON.stringify(value), callback);
-        });
+        const response = ttl
+            ? await RedisFacade_1.Redis.set(key, JSON.stringify(value), 'EX', ttl)
+            : await RedisFacade_1.Redis.set(key, JSON.stringify(value));
+        return response === 'OK';
     }
     async has(key) {
-        return new Promise((resolve, reject) => {
-            this.redis.EXISTS(key, function (error, response) {
-                if (error) {
-                    return reject(error);
-                }
-                resolve(response === 1);
-            });
-        });
+        const response = await RedisFacade_1.Redis.exists(key);
+        return response === 1;
     }
     async clear(key) {
-        return new Promise((resolve, reject) => {
-            this.redis.DEL(key, function (error, response) {
-                if (error) {
-                    return reject(error);
-                }
-                resolve(response > 0);
-            });
-        });
+        const response = await RedisFacade_1.Redis.del(key);
+        return response > 0;
     }
     async getTag(tag, key, defaultValue) {
         return this.get(get_tag_value_key(tag, key), defaultValue);

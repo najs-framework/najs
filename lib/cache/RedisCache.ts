@@ -1,10 +1,9 @@
 /// <reference path="../contracts/Cache.ts" />
 
 import { Facade } from 'najs-facade'
-import { ConfigFacade } from '../facades/global/ConfigFacade'
 import { register } from 'najs-binding'
-import { Najs, ConfigurationKeys } from '../constants'
-import * as Redis from 'redis'
+import { Najs } from '../constants'
+import { Redis } from '../facades/global/RedisFacade'
 
 function get_tag_manage_key(tagName: string): string {
   return `tag:${tagName}`
@@ -16,16 +15,9 @@ function get_tag_value_key(tagName: string, key: string): string {
 
 export class RedisCache extends Facade implements Najs.Contracts.Cache {
   static className: string = Najs.Cache.RedisCache
-  redis: Redis.RedisClient
 
   constructor() {
     super()
-    this.redis = Redis.createClient(
-      ConfigFacade.get(ConfigurationKeys.Cache.redis, {
-        host: 'localhost',
-        port: 6379
-      })
-    )
   }
 
   getClassName(): string {
@@ -33,55 +25,28 @@ export class RedisCache extends Facade implements Najs.Contracts.Cache {
   }
 
   async get(key: string, defaultValue?: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.redis.GET(key, function(error, response) {
-        if (error) {
-          return reject(error)
-        }
-        if (response === null && defaultValue) {
-          return resolve(defaultValue)
-        }
-        return resolve(JSON.parse(response))
-      })
-    })
+    const response = await Redis.get(key)
+    if (response === null && defaultValue) {
+      return defaultValue
+    }
+    return JSON.parse(response)
   }
 
   async set(key: string, value: any, ttl?: number): Promise<boolean> {
-    return <Promise<boolean>>new Promise((resolve, reject) => {
-      function callback(error: any, response: any) {
-        if (error) {
-          return reject(error)
-        }
-        resolve(response === 'OK')
-      }
-
-      if (ttl) {
-        return this.redis.SET(key, JSON.stringify(value), 'EX', ttl, callback)
-      }
-      return this.redis.SET(key, JSON.stringify(value), callback)
-    })
+    const response = ttl
+      ? await Redis.set(key, JSON.stringify(value), 'EX', ttl)
+      : await Redis.set(key, JSON.stringify(value))
+    return response === 'OK'
   }
 
   async has(key: string): Promise<boolean> {
-    return <Promise<boolean>>new Promise((resolve, reject) => {
-      this.redis.EXISTS(key, function(error, response) {
-        if (error) {
-          return reject(error)
-        }
-        resolve(response === 1)
-      })
-    })
+    const response = await Redis.exists(key)
+    return response === 1
   }
 
   async clear(key: string): Promise<boolean> {
-    return <Promise<boolean>>new Promise((resolve, reject) => {
-      this.redis.DEL(key, function(error, response) {
-        if (error) {
-          return reject(error)
-        }
-        resolve(response > 0)
-      })
-    })
+    const response = await Redis.del(key)
+    return response > 0
   }
 
   async getTag(tag: string, key: string, defaultValue?: any): Promise<any> {
