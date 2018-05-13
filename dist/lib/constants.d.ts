@@ -1,5 +1,6 @@
 export declare const SchemaValidatorClass: string;
 export declare const Najs: {
+    Application: string;
     Config: string;
     Cache: {
         RedisCache: string;
@@ -52,7 +53,6 @@ export declare const ContextualFacadeClass: {
     Session: string;
 };
 export declare const GlobalFacadeClass: {
-    Application: string;
     Event: string;
 };
 /**

@@ -1,11 +1,12 @@
 "use strict";
+/// <reference path="../contracts/Application.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const najs_binding_1 = require("najs-binding");
 const najs_facade_1 = require("najs-facade");
 const constants_1 = require("../constants");
 class Application extends najs_facade_1.Facade {
     getClassName() {
-        return Application.className;
+        return constants_1.Najs.Application;
     }
     make(className) {
         return najs_binding_1.make(className);
@@ -26,6 +27,6 @@ class Application extends najs_facade_1.Facade {
         return this;
     }
 }
-Application.className = constants_1.GlobalFacadeClass.Application;
+Application.className = constants_1.Najs.Application;
 exports.Application = Application;
-najs_binding_1.register(Application, constants_1.GlobalFacadeClass.Application);
+najs_binding_1.register(Application, constants_1.Najs.Application);

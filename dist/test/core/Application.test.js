@@ -5,7 +5,6 @@ const Sinon = require("sinon");
 const NajsBinding = require("najs-binding");
 const Application_1 = require("../../lib/core/Application");
 const najs_facade_1 = require("najs-facade");
-const constants_1 = require("../../lib/constants");
 const najs_binding_1 = require("najs-binding");
 class Test {
 }
@@ -18,8 +17,8 @@ describe('Application', function () {
     it('extends from Facade so it definitely a FacadeClass', function () {
         const app = new Application_1.Application();
         expect(app).toBeInstanceOf(najs_facade_1.Facade);
-        expect(app.getClassName()).toEqual(constants_1.GlobalFacadeClass.Application);
-        expect(najs_binding_1.ClassRegistry.has(constants_1.GlobalFacadeClass.Application)).toBe(true);
+        expect(app.getClassName()).toEqual('Najs.Application');
+        expect(najs_binding_1.ClassRegistry.has('Najs.Application')).toBe(true);
     });
     describe('.register()', function () {
         it('proxies register() function', function () {

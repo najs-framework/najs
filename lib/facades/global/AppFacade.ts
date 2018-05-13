@@ -1,13 +1,14 @@
+/// <reference path="../../contracts/Application.ts" />
+
 import '../../../lib/core/Application'
 import { Facade, IFacade, IFacadeBase } from 'najs-facade'
-import { IApplication } from '../../../lib/core/IApplication'
 import { Najs } from '../../../lib/core/Najs'
 import { make } from 'najs-binding'
-import { GlobalFacadeClass } from '../../constants'
+import { Najs as NajsClasses } from '../../constants'
 
-const facade = Facade.create<IApplication>(<any>Najs, 'app', function() {
-  return make<IApplication>(GlobalFacadeClass.Application)
+const facade = Facade.create<Najs.Contracts.Application>(<any>Najs, 'app', function() {
+  return make<Najs.Contracts.Application>(NajsClasses.Application)
 })
 
-export const App: IApplication & IFacadeBase = facade
-export const AppFacade: IApplication & IFacade = facade
+export const App: Najs.Contracts.Application & IFacadeBase = facade
+export const AppFacade: Najs.Contracts.Application & IFacade = facade

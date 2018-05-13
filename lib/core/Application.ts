@@ -1,49 +1,36 @@
-import { make, register, bind, IAutoload, extend, InstanceCreator, InstanceExtending } from 'najs-binding'
-import { IApplication } from './IApplication'
-import { Facade } from 'najs-facade'
-import { GlobalFacadeClass } from '../constants'
+/// <reference path="../contracts/Application.ts" />
 
-export class Application extends Facade implements IApplication, IAutoload {
-  static className: string = GlobalFacadeClass.Application
+import { make, register, bind, IAutoload, extend, InstanceCreator, InstanceExtending } from 'najs-binding'
+import { Facade } from 'najs-facade'
+import { Najs } from '../constants'
+
+export class Application extends Facade implements Najs.Contracts.Application, IAutoload {
+  static className: string = Najs.Application
   getClassName(): string {
-    return Application.className
+    return Najs.Application
   }
 
-  make<T>(classDefinition: any): T
-  make<T>(className: string): T
   make(className: any): any {
     return make(className)
   }
 
-  makeWith<T>(classDefinition: any, data: Object): T
-  makeWith<T>(className: string, data: Object): T
-  makeWith<T>(classDefinition: string, data: any[]): T
-  makeWith<T>(className: string, data: any[]): T
   makeWith<T>(className: any, data: any): T {
     return make(className, data)
   }
 
-  register<T>(classDefinition: T): this
-  register<T>(classDefinition: T, className: string): this
-  register<T>(classDefinition: T, className: string, overridable: boolean): this
-  register<T>(classDefinition: T, className: string, overridable: boolean, singleton: boolean): this
   register(classDefinition: any, className?: any, overridable?: any, singleton?: any): this {
     register(classDefinition, className, overridable, singleton)
     return this
   }
 
-  bind(className: string, instanceCreator: InstanceCreator): this
-  bind(className: string, concrete: string): this
   bind(abstract: string, concrete: string | InstanceCreator): this {
     bind(abstract, <any>concrete)
     return this
   }
 
-  extend(className: string, decorator: InstanceExtending): IApplication
-  extend(classDefinition: Function, decorator: InstanceExtending): IApplication
-  extend(abstract: any, decorator: InstanceExtending): IApplication {
+  extend(abstract: any, decorator: InstanceExtending): Najs.Contracts.Application {
     extend(abstract, decorator)
     return this
   }
 }
-register(Application, GlobalFacadeClass.Application)
+register(Application, Najs.Application)

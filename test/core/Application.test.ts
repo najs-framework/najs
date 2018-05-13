@@ -3,7 +3,6 @@ import * as Sinon from 'sinon'
 import * as NajsBinding from 'najs-binding'
 import { Application } from '../../lib/core/Application'
 import { Facade } from 'najs-facade'
-import { GlobalFacadeClass } from '../../lib/constants'
 import { ClassRegistry } from 'najs-binding'
 
 class Test {
@@ -19,8 +18,8 @@ describe('Application', function() {
   it('extends from Facade so it definitely a FacadeClass', function() {
     const app = new Application()
     expect(app).toBeInstanceOf(Facade)
-    expect(app.getClassName()).toEqual(GlobalFacadeClass.Application)
-    expect(ClassRegistry.has(GlobalFacadeClass.Application)).toBe(true)
+    expect(app.getClassName()).toEqual('Najs.Application')
+    expect(ClassRegistry.has('Najs.Application')).toBe(true)
   })
 
   describe('.register()', function() {

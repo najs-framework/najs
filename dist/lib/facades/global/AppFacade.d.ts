@@ -1,5 +1,5 @@
+/// <reference path="../../contracts/Application.d.ts" />
 import '../../../lib/core/Application';
 import { IFacade, IFacadeBase } from 'najs-facade';
-import { IApplication } from '../../../lib/core/IApplication';
-export declare const App: IApplication & IFacadeBase;
-export declare const AppFacade: IApplication & IFacade;
+export declare const App: Najs.Contracts.Application & IFacadeBase;
+export declare const AppFacade: Najs.Contracts.Application & IFacade;

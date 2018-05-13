@@ -1,12 +1,13 @@
-import { IApplication } from './IApplication'
+/// <reference path="../contracts/Application.ts" />
+
 import { IAutoload } from 'najs-binding'
 
 export abstract class ServiceProvider implements IAutoload {
   abstract getClassName(): string
 
-  protected app: IApplication
+  protected app: Najs.Contracts.Application
 
-  constructor(app: IApplication) {
+  constructor(app: Najs.Contracts.Application) {
     this.app = app
   }
 

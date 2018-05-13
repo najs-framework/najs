@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="../contracts/Application.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 class ServiceProvider {
     constructor(app) {

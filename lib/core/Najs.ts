@@ -14,7 +14,7 @@ class NajsFramework extends FacadeContainer implements INajs {
   private internalEventEmitter: EventEmitter
   protected cwd: string
   protected serviceProviders: ServiceProvider[]
-  protected app: Application
+  protected app: Najs.Contracts.Application
   protected httpDriver: Najs.Contracts.HttpDriver<any, any>
 
   constructor() {
