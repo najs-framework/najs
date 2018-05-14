@@ -1,9 +1,12 @@
+/// <reference path="../contracts/types/redis.ts" />
 /// <reference path="../contracts/Cache.ts" />
 
 import { Facade } from 'najs-facade'
 import { register } from 'najs-binding'
 import { Najs } from '../constants'
 import { Redis } from '../facades/global/RedisFacade'
+import { ConfigurationKeys } from '../constants'
+import { ConfigFacade } from '../facades/global/ConfigFacade'
 
 function get_tag_manage_key(tagName: string): string {
   return `tag:${tagName}`
@@ -15,9 +18,17 @@ function get_tag_value_key(tagName: string, key: string): string {
 
 export class RedisCache extends Facade implements Najs.Contracts.Cache {
   static className: string = Najs.Cache.RedisCache
+  protected redisClient: Redis.RedisPromise
 
   constructor() {
     super()
+    const config = ConfigFacade.get(ConfigurationKeys.Cache.redis, {
+      name: 'cache',
+      host: 'localhost',
+      port: 6379
+    })
+    Redis.createClient(config.name, config)
+    this.redisClient = Redis.getClient(config.name)
   }
 
   getClassName(): string {
@@ -25,7 +36,7 @@ export class RedisCache extends Facade implements Najs.Contracts.Cache {
   }
 
   async get(key: string, defaultValue?: any): Promise<any> {
-    const response = await Redis.get(key)
+    const response = await this.redisClient.get(key)
     if (response === null && defaultValue) {
       return defaultValue
     }
@@ -34,18 +45,18 @@ export class RedisCache extends Facade implements Najs.Contracts.Cache {
 
   async set(key: string, value: any, ttl?: number): Promise<boolean> {
     const response = ttl
-      ? await Redis.set(key, JSON.stringify(value), 'EX', ttl)
-      : await Redis.set(key, JSON.stringify(value))
+      ? await this.redisClient.set(key, JSON.stringify(value), 'EX', ttl)
+      : await this.redisClient.set(key, JSON.stringify(value))
     return response === 'OK'
   }
 
   async has(key: string): Promise<boolean> {
-    const response = await Redis.exists(key)
+    const response = await this.redisClient.exists(key)
     return response === 1
   }
 
   async clear(key: string): Promise<boolean> {
-    const response = await Redis.del(key)
+    const response = await this.redisClient.del(key)
     return response > 0
   }
 

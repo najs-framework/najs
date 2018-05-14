@@ -1,7 +1,9 @@
+/// <reference path="../contracts/types/redis.d.ts" />
 /// <reference path="../contracts/Cache.d.ts" />
 import { Facade } from 'najs-facade';
 export declare class RedisCache extends Facade implements Najs.Contracts.Cache {
     static className: string;
+    protected redisClient: Redis.RedisPromise;
     constructor();
     getClassName(): string;
     get(key: string, defaultValue?: any): Promise<any>;
