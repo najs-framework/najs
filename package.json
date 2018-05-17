@@ -3,7 +3,7 @@
   "version": "0.5.3",
   "scripts": {
     "build": "npm run build-ts && npm run tslint",
-    "build-ts": "tsc -d && ./script/copy-custom-definitions.js",
+    "build-ts": "tsc -d",
     "coverage": "npm run build && jest ./dist/test --coverage --forceExit",
     "test": "jest ./dist/test --forceExit",
     "tslint": "tslint -c tslint.json -p tsconfig.json",

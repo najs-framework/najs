@@ -52,7 +52,6 @@ exclude_patterns:
 - "**/tests/"
 - "**/vendor/"
 - "**/*.d.ts"
-- "benchmark/"
 - "syntax/"
 - "lib/contracts/"
 - "lib/http/routing/interfaces/IRouteGrammars.ts"
