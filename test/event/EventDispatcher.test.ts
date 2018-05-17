@@ -3,15 +3,15 @@ import * as Sinon from 'sinon'
 import * as NajsBinding from 'najs-binding'
 import { EventDispatcher } from '../../lib/event/EventDispatcher'
 import { Facade } from 'najs-facade'
-import { GlobalFacadeClass } from '../../lib/constants'
+import { Najs } from '../../lib/constants'
 import { ClassRegistry } from 'najs-binding'
 
 describe('EventDispatcher', function() {
   it('extends from Facade so it definitely a FacadeClass', function() {
     const dispatcher = new EventDispatcher()
     expect(dispatcher).toBeInstanceOf(Facade)
-    expect(dispatcher.getClassName()).toEqual(GlobalFacadeClass.Event)
-    expect(ClassRegistry.has(GlobalFacadeClass.Event)).toBe(true)
+    expect(dispatcher.getClassName()).toEqual(Najs.Event.EventDispatcher)
+    expect(ClassRegistry.has(Najs.Event.EventDispatcher)).toBe(true)
   })
 
   describe('.listen()', function() {

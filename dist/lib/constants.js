@@ -7,6 +7,9 @@ exports.Najs = {
     Cache: {
         RedisCache: 'Najs.Cache.RedisCache'
     },
+    Event: {
+        EventDispatcher: 'Najs.Event.EventDispatcher'
+    },
     FileSystem: {
         Path: 'Najs.FileSystem.Path'
     },
@@ -53,9 +56,6 @@ exports.ContextualFacadeClass = {
     Auth: 'Najs.AuthManager',
     Input: 'Najs.RequestInput',
     Session: 'Najs.Session'
-};
-exports.GlobalFacadeClass = {
-    Event: 'Najs.EventDispatcher'
 };
 /**
  * This Object Configuration's key

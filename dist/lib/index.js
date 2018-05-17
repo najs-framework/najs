@@ -27,7 +27,6 @@ exports.ServiceProvider = ServiceProvider_1.ServiceProvider;
 // constants
 var constants_1 = require("./constants");
 exports.SystemClass = constants_1.SystemClass;
-exports.GlobalFacadeClass = constants_1.GlobalFacadeClass;
 exports.ContextualFacadeClass = constants_1.ContextualFacadeClass;
 // http package
 var HttpKernel_1 = require("./http/HttpKernel");

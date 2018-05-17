@@ -5,6 +5,9 @@ export declare const Najs: {
     Cache: {
         RedisCache: string;
     };
+    Event: {
+        EventDispatcher: string;
+    };
     FileSystem: {
         Path: string;
     };
@@ -51,9 +54,6 @@ export declare const ContextualFacadeClass: {
     Auth: string;
     Input: string;
     Session: string;
-};
-export declare const GlobalFacadeClass: {
-    Event: string;
 };
 /**
  * This Object Configuration's key

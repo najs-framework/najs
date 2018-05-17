@@ -13,7 +13,7 @@ import { Najs } from './core/Najs';
 export { Najs };
 export default Najs;
 export { ServiceProvider } from './core/ServiceProvider';
-export { SystemClass, GlobalFacadeClass, ContextualFacadeClass } from './constants';
+export { SystemClass, ContextualFacadeClass } from './constants';
 export { HttpKernel, MiddlewareDefinition, MiddlewareGroupDefinition } from './http/HttpKernel';
 export { RouteCollection } from './http/routing/RouteCollection';
 export { ExpressHttpDriver } from './http/driver/ExpressHttpDriver';

@@ -6,6 +6,9 @@ export const Najs = {
   Cache: {
     RedisCache: 'Najs.Cache.RedisCache'
   },
+  Event: {
+    EventDispatcher: 'Najs.Event.EventDispatcher'
+  },
   FileSystem: {
     Path: 'Najs.FileSystem.Path'
   },
@@ -56,10 +59,6 @@ export const ContextualFacadeClass = {
   Auth: 'Najs.AuthManager',
   Input: 'Najs.RequestInput',
   Session: 'Najs.Session'
-}
-
-export const GlobalFacadeClass = {
-  Event: 'Najs.EventDispatcher'
 }
 
 /**

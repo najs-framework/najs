@@ -20,7 +20,7 @@ export default Najs
 export { ServiceProvider } from './core/ServiceProvider'
 
 // constants
-export { SystemClass, GlobalFacadeClass, ContextualFacadeClass } from './constants'
+export { SystemClass, ContextualFacadeClass } from './constants'
 
 // http package
 export { HttpKernel, MiddlewareDefinition, MiddlewareGroupDefinition } from './http/HttpKernel'

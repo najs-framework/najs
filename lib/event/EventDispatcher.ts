@@ -5,11 +5,11 @@ import { register, make } from 'najs-binding'
 import { Facade } from 'najs-facade'
 import { EventEmitter } from 'events'
 import { EventSubscriber } from './EventSubscriber'
-import { GlobalFacadeClass } from '../constants'
+import { Najs } from '../constants'
 
 export interface EventDispatcher extends NodeJS.EventEmitter {}
 export class EventDispatcher extends Facade implements Najs.Contracts.Dispatcher {
-  static className: string = GlobalFacadeClass.Event
+  static className: string = Najs.Event.EventDispatcher
   protected eventEmitter: EventEmitter
 
   constructor() {
@@ -18,7 +18,7 @@ export class EventDispatcher extends Facade implements Najs.Contracts.Dispatcher
   }
 
   getClassName() {
-    return GlobalFacadeClass.Event
+    return Najs.Event.EventDispatcher
   }
 
   listen(name: string, listener: string): this
@@ -102,4 +102,4 @@ for (const functionName in EVENT_EMITTER_FUNCTIONS) {
   }
 }
 
-register(EventDispatcher, GlobalFacadeClass.Event)
+register(EventDispatcher, Najs.Event.EventDispatcher)

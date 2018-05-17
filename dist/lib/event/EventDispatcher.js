@@ -12,7 +12,7 @@ class EventDispatcher extends najs_facade_1.Facade {
         this.eventEmitter = new events_1.EventEmitter();
     }
     getClassName() {
-        return constants_1.GlobalFacadeClass.Event;
+        return constants_1.Najs.Event.EventDispatcher;
     }
     listen(name, arg) {
         const listener = this.resolveListener(arg);
@@ -59,7 +59,7 @@ class EventDispatcher extends najs_facade_1.Facade {
         return listener;
     }
 }
-EventDispatcher.className = constants_1.GlobalFacadeClass.Event;
+EventDispatcher.className = constants_1.Najs.Event.EventDispatcher;
 exports.EventDispatcher = EventDispatcher;
 const EVENT_EMITTER_FUNCTIONS = {
     addListener: true,
@@ -85,4 +85,4 @@ for (const functionName in EVENT_EMITTER_FUNCTIONS) {
         return result;
     };
 }
-najs_binding_1.register(EventDispatcher, constants_1.GlobalFacadeClass.Event);
+najs_binding_1.register(EventDispatcher, constants_1.Najs.Event.EventDispatcher);
