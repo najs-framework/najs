@@ -125,6 +125,7 @@ exports.Auth = AuthContextualFacade_1.Auth;
 var CookieContextualFacade_1 = require("./facades/contextual/CookieContextualFacade");
 exports.CookieContextualFacade = CookieContextualFacade_1.CookieContextualFacade;
 exports.Cookie = CookieContextualFacade_1.Cookie;
+// event package
 var EventDispatcher_1 = require("./event/EventDispatcher");
 exports.EventDispatcher = EventDispatcher_1.EventDispatcher;
 var EventSubscriber_1 = require("./event/EventSubscriber");

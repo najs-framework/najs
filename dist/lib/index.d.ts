@@ -59,8 +59,6 @@ export { InputContextualFacade, Input } from './facades/contextual/InputContextu
 export { SessionContextualFacade, Session } from './facades/contextual/SessionContextualFacade';
 export { AuthContextualFacade, Auth } from './facades/contextual/AuthContextualFacade';
 export { CookieContextualFacade, Cookie } from './facades/contextual/CookieContextualFacade';
-export { IEventEmitter } from './event/IEventEmitter';
-export { IDispatcher } from './event/IDispatcher';
 export { EventDispatcher } from './event/EventDispatcher';
 export { EventSubscriber } from './event/EventSubscriber';
 export { RedisCache } from './cache/RedisCache';

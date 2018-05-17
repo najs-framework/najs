@@ -1,11 +1,11 @@
+/// <reference path="../contracts/Dispatcher.d.ts" />
 /// <reference types="node" />
-import { IAutoload } from 'najs-binding';
 import { Facade } from 'najs-facade';
-import { IDispatcher } from './IDispatcher';
 import { EventEmitter } from 'events';
 import { EventSubscriber } from './EventSubscriber';
-import { IEventEmitter } from './IEventEmitter';
-export declare class EventDispatcher extends Facade implements IDispatcher, IAutoload, IEventEmitter {
+export interface EventDispatcher extends NodeJS.EventEmitter {
+}
+export declare class EventDispatcher extends Facade implements Najs.Contracts.Dispatcher {
     static className: string;
     protected eventEmitter: EventEmitter;
     constructor();

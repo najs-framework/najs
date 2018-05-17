@@ -1,4 +1,5 @@
 "use strict";
+/// <reference types="node" />
 Object.defineProperty(exports, "__esModule", { value: true });
 require("../../../lib/event/EventDispatcher");
 const najs_facade_1 = require("najs-facade");

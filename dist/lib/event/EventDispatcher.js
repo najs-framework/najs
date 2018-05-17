@@ -1,4 +1,6 @@
 "use strict";
+/// <reference types="node" />
+/// <reference path="../contracts/Dispatcher.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const najs_binding_1 = require("najs-binding");
 const najs_facade_1 = require("najs-facade");

@@ -1,5 +1,5 @@
+/// <reference path="../../contracts/Dispatcher.d.ts" />
 import '../../../lib/event/EventDispatcher';
 import { IFacade, IFacadeBase } from 'najs-facade';
-import { IDispatcher } from '../../../lib/event/IDispatcher';
-export declare const Dispatcher: IDispatcher & IFacadeBase;
-export declare const DispatcherFacade: IDispatcher & IFacade;
+export declare const Dispatcher: Najs.Contracts.Dispatcher & IFacadeBase;
+export declare const DispatcherFacade: Najs.Contracts.Dispatcher & IFacade;

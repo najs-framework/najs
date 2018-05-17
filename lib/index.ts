@@ -98,8 +98,6 @@ export { AuthContextualFacade, Auth } from './facades/contextual/AuthContextualF
 export { CookieContextualFacade, Cookie } from './facades/contextual/CookieContextualFacade'
 
 // event package
-export { IEventEmitter } from './event/IEventEmitter'
-export { IDispatcher } from './event/IDispatcher'
 export { EventDispatcher } from './event/EventDispatcher'
 export { EventSubscriber } from './event/EventSubscriber'
 
