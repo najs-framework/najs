@@ -75,66 +75,31 @@ export class EventDispatcher extends Facade implements Najs.Contracts.Dispatcher
     }
     return listener
   }
+}
 
-  // -------------------------------------------------------------------------------------------------------------------
-  addListener(event: string | symbol, listener: (...args: any[]) => void): this {
-    this.eventEmitter.addListener(event, listener)
-    return this
-  }
-
-  on(event: string | symbol, listener: (...args: any[]) => void): this {
-    this.eventEmitter.on(event, listener)
-    return this
-  }
-
-  once(event: string | symbol, listener: (...args: any[]) => void): this {
-    this.eventEmitter.once(event, listener)
-    return this
-  }
-
-  prependListener(event: string | symbol, listener: (...args: any[]) => void): this {
-    this.eventEmitter.prependListener(event, listener)
-    return this
-  }
-
-  prependOnceListener(event: string | symbol, listener: (...args: any[]) => void): this {
-    this.eventEmitter.prependOnceListener(event, listener)
-    return this
-  }
-
-  removeListener(event: string | symbol, listener: (...args: any[]) => void): this {
-    this.eventEmitter.removeListener(event, listener)
-    return this
-  }
-
-  removeAllListeners(event?: string | symbol): this {
-    this.eventEmitter.removeAllListeners(event)
-    return this
-  }
-
-  setMaxListeners(n: number): this {
-    this.eventEmitter.setMaxListeners(n)
-    return this
-  }
-
-  getMaxListeners(): number {
-    return this.eventEmitter.getMaxListeners()
-  }
-
-  listeners(event: string | symbol): Function[] {
-    return this.eventEmitter.listeners(event)
-  }
-
-  emit(event: string | symbol, ...args: any[]): boolean {
-    return this.eventEmitter.emit(event, ...args)
-  }
-
-  eventNames(): Array<string | symbol> {
-    return this.eventEmitter.eventNames()
-  }
-
-  listenerCount(type: string | symbol): number {
-    return this.eventEmitter.listenerCount(type)
+const EVENT_EMITTER_FUNCTIONS = {
+  addListener: true,
+  on: true,
+  once: true,
+  prependListener: true,
+  prependOnceListener: true,
+  removeListener: true,
+  removeAllListeners: true,
+  setMaxListeners: true,
+  getMaxListeners: false,
+  listeners: false,
+  emit: false,
+  eventNames: false,
+  listenerCount: false
+}
+for (const functionName in EVENT_EMITTER_FUNCTIONS) {
+  EventDispatcher.prototype[functionName] = function() {
+    const result = this['eventEmitter'][functionName](...arguments)
+    if (EVENT_EMITTER_FUNCTIONS[functionName]) {
+      return this
+    }
+    return result
   }
 }
+
 register(EventDispatcher, GlobalFacadeClass.Event)

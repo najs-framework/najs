@@ -58,55 +58,31 @@ class EventDispatcher extends najs_facade_1.Facade {
         }
         return listener;
     }
-    // -------------------------------------------------------------------------------------------------------------------
-    addListener(event, listener) {
-        this.eventEmitter.addListener(event, listener);
-        return this;
-    }
-    on(event, listener) {
-        this.eventEmitter.on(event, listener);
-        return this;
-    }
-    once(event, listener) {
-        this.eventEmitter.once(event, listener);
-        return this;
-    }
-    prependListener(event, listener) {
-        this.eventEmitter.prependListener(event, listener);
-        return this;
-    }
-    prependOnceListener(event, listener) {
-        this.eventEmitter.prependOnceListener(event, listener);
-        return this;
-    }
-    removeListener(event, listener) {
-        this.eventEmitter.removeListener(event, listener);
-        return this;
-    }
-    removeAllListeners(event) {
-        this.eventEmitter.removeAllListeners(event);
-        return this;
-    }
-    setMaxListeners(n) {
-        this.eventEmitter.setMaxListeners(n);
-        return this;
-    }
-    getMaxListeners() {
-        return this.eventEmitter.getMaxListeners();
-    }
-    listeners(event) {
-        return this.eventEmitter.listeners(event);
-    }
-    emit(event, ...args) {
-        return this.eventEmitter.emit(event, ...args);
-    }
-    eventNames() {
-        return this.eventEmitter.eventNames();
-    }
-    listenerCount(type) {
-        return this.eventEmitter.listenerCount(type);
-    }
 }
 EventDispatcher.className = constants_1.GlobalFacadeClass.Event;
 exports.EventDispatcher = EventDispatcher;
+const EVENT_EMITTER_FUNCTIONS = {
+    addListener: true,
+    on: true,
+    once: true,
+    prependListener: true,
+    prependOnceListener: true,
+    removeListener: true,
+    removeAllListeners: true,
+    setMaxListeners: true,
+    getMaxListeners: false,
+    listeners: false,
+    emit: false,
+    eventNames: false,
+    listenerCount: false
+};
+for (const functionName in EVENT_EMITTER_FUNCTIONS) {
+    EventDispatcher.prototype[functionName] = function () {
+        const result = this['eventEmitter'][functionName](...arguments);
+        if (EVENT_EMITTER_FUNCTIONS[functionName]) {
+            return this;
+        }
+        return result;
+    };
+}
 najs_binding_1.register(EventDispatcher, constants_1.GlobalFacadeClass.Event);
