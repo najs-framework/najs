@@ -40,7 +40,7 @@ export class SessionMiddleware extends ExpressMiddlewareBase implements IAutoloa
     })
   }
 
-  before(request: Express.Request, response: Express.Response, controller: Controller) {
+  async before(request: Express.Request, response: Express.Response, controller: Controller) {
     SessionContextualFacade.of(controller)
   }
 

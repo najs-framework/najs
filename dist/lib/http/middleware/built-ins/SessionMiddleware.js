@@ -30,7 +30,7 @@ class SessionMiddleware extends ExpressMiddlewareBase_1.ExpressMiddlewareBase {
             saveUninitialized: true
         });
     }
-    before(request, response, controller) {
+    async before(request, response, controller) {
         SessionContextualFacade_1.SessionContextualFacade.of(controller);
     }
     async after(request, response, result, controller) {

@@ -98,46 +98,28 @@ class Session extends najs_facade_1.ContextualFacade {
         }
         return RequestDataWriter_1.RequestDataWriter.prototype.get.apply(this, arguments);
     }
-    has(path) {
-        return RequestDataWriter_1.RequestDataWriter.prototype.has.apply(this, arguments);
-    }
-    exists(path) {
-        return RequestDataWriter_1.RequestDataWriter.prototype.exists.apply(this, arguments);
-    }
-    all() {
-        return RequestDataWriter_1.RequestDataWriter.prototype.all.apply(this, arguments);
-    }
-    only(...args) {
-        return RequestDataWriter_1.RequestDataWriter.prototype.only.apply(this, arguments);
-    }
-    except(...args) {
-        return RequestDataWriter_1.RequestDataWriter.prototype.except.apply(this, arguments);
-    }
-    set(path, value) {
-        return RequestDataWriter_1.RequestDataWriter.prototype.set.apply(this, arguments);
-    }
-    put(path, value) {
-        return this.set(path, value);
-    }
-    push(path, value) {
-        return this.set(path, value);
-    }
-    pull(path, defaultValue) {
-        return RequestDataWriter_1.RequestDataWriter.prototype.pull.apply(this, arguments);
-    }
-    delete(path) {
-        return RequestDataWriter_1.RequestDataWriter.prototype.delete.apply(this, arguments);
-    }
-    remove(path) {
-        return this.delete(path);
-    }
-    forget(path) {
-        return this.delete(path);
-    }
-    flush() {
-        return this.clear();
-    }
 }
 Session.FlashRegistryKey = '_flashRegistry';
 exports.Session = Session;
+// implements IRequestDataWriter implicitly
+const IRequestDataWriterFunctions = [
+    'has',
+    'exists',
+    'all',
+    'only',
+    'except',
+    'set',
+    'put',
+    'push',
+    'pull',
+    'delete',
+    'remove',
+    'forget',
+    'flush'
+];
+for (const name of IRequestDataWriterFunctions) {
+    Session.prototype[name] = function () {
+        return RequestDataWriter_1.RequestDataWriter.prototype[name].apply(this, arguments);
+    };
+}
 najs_binding_1.register(Session);

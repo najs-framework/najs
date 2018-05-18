@@ -2,6 +2,8 @@ import { IAutoload } from 'najs-binding';
 import { ContextualFacade } from 'najs-facade';
 import { Controller } from '../controller/Controller';
 import { FlashRegistry, ISession } from './ISession';
+export interface Session extends ISession {
+}
 export declare class Session extends ContextualFacade<Controller> implements ISession, IAutoload {
     static FlashRegistryKey: string;
     protected data: Object;
@@ -18,22 +20,4 @@ export declare class Session extends ContextualFacade<Controller> implements ISe
     isFlashPath(path: string): boolean;
     get<T extends any>(path: string): T;
     get<T extends any>(path: string, defaultValue: T): T;
-    has(path: string): boolean;
-    exists(path: string): boolean;
-    all(): Object;
-    only(path: string): Object;
-    only(paths: string[]): Object;
-    only(...args: Array<string | string[]>): Object;
-    except(path: string): Object;
-    except(paths: string[]): Object;
-    except(...args: Array<string | string[]>): Object;
-    set<T extends any>(path: string, value: T): this;
-    put<T extends any>(path: string, value: T): this;
-    push<T extends any>(path: string, value: T): this;
-    pull<T extends any>(path: string): T;
-    pull<T extends any>(path: string, defaultValue: T): T;
-    delete(path: string): this;
-    remove(path: string): this;
-    forget(path: string): this;
-    flush(): this;
 }

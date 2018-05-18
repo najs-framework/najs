@@ -9,6 +9,7 @@ import { ExpressController } from '../controller/ExpressController'
 import { has, get, flatten } from 'lodash'
 import { Request, Response } from 'express'
 
+export interface Cookie extends Najs.Contracts.Cookie {}
 export class Cookie extends ContextualFacade<Controller> implements Najs.Contracts.Cookie {
   protected data: Object
   protected cookies: Object
@@ -33,9 +34,6 @@ export class Cookie extends ContextualFacade<Controller> implements Najs.Contrac
     return (this.context as ExpressController).response
   }
 
-  isSigned(name: string): boolean
-  isSigned(names: string[]): boolean
-  isSigned(...args: Array<string | string[]>): boolean
   isSigned(...args: Array<string | string[]>): boolean {
     const paths: string[] = flatten(args)
     for (const path of paths) {
@@ -46,14 +44,6 @@ export class Cookie extends ContextualFacade<Controller> implements Najs.Contrac
     return true
   }
 
-  get<T extends any>(path: string): T
-  get<T extends any>(path: string, defaultValue: T): T
-  get<T extends any>(path: string, defaultValue?: T): T {
-    return RequestDataReader.prototype.get.apply(this, arguments)
-  }
-
-  has(path: string): boolean
-  has(path: string, signed: boolean): boolean
   has(path: string, signed?: boolean): boolean {
     if (signed === true) {
       return has(this.signedCookies, path) && !!get(this.signedCookies, path)
@@ -64,8 +54,6 @@ export class Cookie extends ContextualFacade<Controller> implements Najs.Contrac
     return RequestDataReader.prototype.has.apply(this, arguments)
   }
 
-  exists(path: string): boolean
-  exists(path: string, signed: boolean): boolean
   exists(path: string, signed?: boolean): boolean {
     if (signed === true) {
       return has(this.signedCookies, path)
@@ -76,8 +64,6 @@ export class Cookie extends ContextualFacade<Controller> implements Najs.Contrac
     return RequestDataReader.prototype.exists.apply(this, arguments)
   }
 
-  all(): Object
-  all(signed: boolean): Object
   all(signed?: boolean): Object {
     if (signed === true) {
       return this.signedCookies
@@ -88,24 +74,6 @@ export class Cookie extends ContextualFacade<Controller> implements Najs.Contrac
     return this.data
   }
 
-  only(path: string): Object
-  only(paths: string[]): Object
-  only(...args: Array<string | string[]>): Object
-  only(...args: Array<string | string[]>): Object {
-    return RequestDataReader.prototype.only.apply(this, arguments)
-  }
-
-  except(path: string): Object
-  except(paths: string[]): Object
-  except(...args: Array<string | string[]>): Object
-  except(...args: Array<string | string[]>): Object {
-    return RequestDataReader.prototype.except.apply(this, arguments)
-  }
-
-  forget(name: string): this
-  forget(name: string, path: string): this
-  forget(name: string, path: string, domain: string): this
-  forget(name: string, options: Najs.Http.CookieOptions): this
   forget(name: string, arg1?: Najs.Http.CookieOptions | string, arg2?: string): this {
     if (typeof arg1 === 'undefined') {
       this.getResponse().clearCookie(name)
@@ -125,23 +93,6 @@ export class Cookie extends ContextualFacade<Controller> implements Najs.Contrac
     return this
   }
 
-  make(name: string, value: any): this
-  make(name: string, value: any, signed: boolean): this
-  make(name: string, value: any, signed: boolean, minutes: number): this
-  make(name: string, value: any, signed: boolean, minutes: number, path: string): this
-  make(name: string, value: any, signed: boolean, minutes: number, path: string, domain: string): this
-  make(name: string, value: any, signed: boolean, minutes: number, path: string, domain: string, secure: boolean): this
-  make(
-    name: string,
-    value: any,
-    signed: boolean,
-    minutes: number,
-    path: string,
-    domain: string,
-    secure: boolean,
-    httpOnly: boolean
-  ): this
-  make(name: string, value: any, options: Najs.Http.CookieOptions): this
   make(
     name: string,
     value: any,
@@ -177,21 +128,6 @@ export class Cookie extends ContextualFacade<Controller> implements Najs.Contrac
     return this
   }
 
-  forever(name: string, value: any): this
-  forever(name: string, value: any, signed: boolean): this
-  forever(name: string, value: any, signed: boolean, path: string): this
-  forever(name: string, value: any, signed: boolean, path: string, domain: string): this
-  forever(name: string, value: any, signed: boolean, path: string, domain: string, secure: boolean): this
-  forever(
-    name: string,
-    value: any,
-    signed: boolean,
-    path: string,
-    domain: string,
-    secure: boolean,
-    httpOnly: boolean
-  ): this
-  forever(name: string, value: any, options: Najs.Http.CookieOptions): this
   forever(
     name: string,
     value: any,
@@ -209,4 +145,13 @@ export class Cookie extends ContextualFacade<Controller> implements Najs.Contrac
     return this.make(name, value, optionsOrSigned, 157680000000, <any>path, <any>domain, <any>secure, <any>httpOnly)
   }
 }
+
+// implements IRequestDataReader implicitly
+const IRequestDataReaderFunctions = ['get', 'only', 'except']
+for (const name of IRequestDataReaderFunctions) {
+  Cookie.prototype[name] = function() {
+    return RequestDataReader.prototype[name].apply(this, arguments)
+  }
+}
+
 register(Cookie, Najs.Http.Cookie)

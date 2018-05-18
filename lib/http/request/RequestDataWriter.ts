@@ -1,8 +1,9 @@
-import { IRequestDataWriter } from './IRequestDataWriter'
+/// <reference path="../../contracts/types/http.ts" />
+
 import { RequestDataReader } from './RequestDataReader'
 import { set, unset } from 'lodash'
 
-export class RequestDataWriter extends RequestDataReader implements IRequestDataWriter {
+export class RequestDataWriter extends RequestDataReader implements Najs.Http.IRequestDataWriter {
   set<T extends any>(path: string, value: T): this {
     set(this.data, path, value)
     return this
@@ -16,8 +17,6 @@ export class RequestDataWriter extends RequestDataReader implements IRequestData
     return this.set(path, value)
   }
 
-  pull<T extends any>(path: string): T
-  pull<T extends any>(path: string, defaultValue: T): T
   pull<T extends any>(path: string, defaultValue?: T): T {
     const value: T = this.get(path, <any>defaultValue)
     this.delete(path)

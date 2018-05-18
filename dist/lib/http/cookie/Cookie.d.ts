@@ -3,6 +3,8 @@
 import { ContextualFacade } from 'najs-facade';
 import { Controller } from '../controller/Controller';
 import { Response } from 'express';
+export interface Cookie extends Najs.Contracts.Cookie {
+}
 export declare class Cookie extends ContextualFacade<Controller> implements Najs.Contracts.Cookie {
     protected data: Object;
     protected cookies: Object;
@@ -10,40 +12,11 @@ export declare class Cookie extends ContextualFacade<Controller> implements Najs
     constructor(controller: Controller);
     getClassName(): string;
     protected getResponse(): Response;
-    isSigned(name: string): boolean;
-    isSigned(names: string[]): boolean;
     isSigned(...args: Array<string | string[]>): boolean;
-    get<T extends any>(path: string): T;
-    get<T extends any>(path: string, defaultValue: T): T;
-    has(path: string): boolean;
-    has(path: string, signed: boolean): boolean;
-    exists(path: string): boolean;
-    exists(path: string, signed: boolean): boolean;
-    all(): Object;
-    all(signed: boolean): Object;
-    only(path: string): Object;
-    only(paths: string[]): Object;
-    only(...args: Array<string | string[]>): Object;
-    except(path: string): Object;
-    except(paths: string[]): Object;
-    except(...args: Array<string | string[]>): Object;
-    forget(name: string): this;
-    forget(name: string, path: string): this;
-    forget(name: string, path: string, domain: string): this;
-    forget(name: string, options: Najs.Http.CookieOptions): this;
-    make(name: string, value: any): this;
-    make(name: string, value: any, signed: boolean): this;
-    make(name: string, value: any, signed: boolean, minutes: number): this;
-    make(name: string, value: any, signed: boolean, minutes: number, path: string): this;
-    make(name: string, value: any, signed: boolean, minutes: number, path: string, domain: string): this;
-    make(name: string, value: any, signed: boolean, minutes: number, path: string, domain: string, secure: boolean): this;
-    make(name: string, value: any, signed: boolean, minutes: number, path: string, domain: string, secure: boolean, httpOnly: boolean): this;
-    make(name: string, value: any, options: Najs.Http.CookieOptions): this;
-    forever(name: string, value: any): this;
-    forever(name: string, value: any, signed: boolean): this;
-    forever(name: string, value: any, signed: boolean, path: string): this;
-    forever(name: string, value: any, signed: boolean, path: string, domain: string): this;
-    forever(name: string, value: any, signed: boolean, path: string, domain: string, secure: boolean): this;
-    forever(name: string, value: any, signed: boolean, path: string, domain: string, secure: boolean, httpOnly: boolean): this;
-    forever(name: string, value: any, options: Najs.Http.CookieOptions): this;
+    has(path: string, signed?: boolean): boolean;
+    exists(path: string, signed?: boolean): boolean;
+    all(signed?: boolean): Object;
+    forget(name: string, arg1?: Najs.Http.CookieOptions | string, arg2?: string): this;
+    make(name: string, value: any, optionsOrSigned?: boolean | Najs.Http.CookieOptions, minutes?: number, path?: string | undefined, domain?: string | undefined, secure?: boolean | undefined, httpOnly?: boolean | undefined): this;
+    forever(name: string, value: any, optionsOrSigned?: boolean | Najs.Http.CookieOptions, path?: string | undefined, domain?: string | undefined, secure?: boolean | undefined, httpOnly?: boolean | undefined): this;
 }

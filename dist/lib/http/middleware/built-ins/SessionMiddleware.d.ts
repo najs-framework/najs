@@ -12,6 +12,6 @@ export declare class SessionMiddleware extends ExpressMiddlewareBase implements 
     createMiddleware(): Express.Handler | Express.Handler[] | undefined;
     protected makeStore(): any;
     protected getOptions(): any;
-    before(request: Express.Request, response: Express.Response, controller: Controller): void;
+    before(request: Express.Request, response: Express.Response, controller: Controller): Promise<void>;
     after(request: Express.Request, response: Express.Response, result: any, controller: ExpressController): Promise<any>;
 }

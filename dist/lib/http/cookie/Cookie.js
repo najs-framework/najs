@@ -33,9 +33,6 @@ class Cookie extends najs_facade_1.ContextualFacade {
         }
         return true;
     }
-    get(path, defaultValue) {
-        return RequestDataReader_1.RequestDataReader.prototype.get.apply(this, arguments);
-    }
     has(path, signed) {
         if (signed === true) {
             return lodash_1.has(this.signedCookies, path) && !!lodash_1.get(this.signedCookies, path);
@@ -62,12 +59,6 @@ class Cookie extends najs_facade_1.ContextualFacade {
             return this.cookies;
         }
         return this.data;
-    }
-    only(...args) {
-        return RequestDataReader_1.RequestDataReader.prototype.only.apply(this, arguments);
-    }
-    except(...args) {
-        return RequestDataReader_1.RequestDataReader.prototype.except.apply(this, arguments);
     }
     forget(name, arg1, arg2) {
         if (typeof arg1 === 'undefined') {
@@ -118,4 +109,11 @@ class Cookie extends najs_facade_1.ContextualFacade {
     }
 }
 exports.Cookie = Cookie;
+// implements IRequestDataReader implicitly
+const IRequestDataReaderFunctions = ['get', 'only', 'except'];
+for (const name of IRequestDataReaderFunctions) {
+    Cookie.prototype[name] = function () {
+        return RequestDataReader_1.RequestDataReader.prototype[name].apply(this, arguments);
+    };
+}
 najs_binding_1.register(Cookie, constants_1.Najs.Http.Cookie);
