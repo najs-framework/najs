@@ -1,8 +1,6 @@
 import { register, IAutoload } from 'najs-binding'
 import { ExpressMiddlewareBase } from '../ExpressMiddlewareBase'
 import { ExpressController } from '../../controller/ExpressController'
-import { HandlebarsViewResponse } from '../../../view/handlebars/HandlebarsViewResponse'
-import { HandlebarsHelper } from '../../../view/handlebars/HandlebarsHelper'
 import { CookieHandlebarsHelper } from '../../../view/handlebars/helpers/CookieHandlebarsHelper'
 import { CookieContextualFacade } from '../../../facades/contextual/CookieContextualFacade'
 import { ConfigFacade } from '../../../facades/global/ConfigFacade'
@@ -44,10 +42,7 @@ export class CookieMiddleware extends ExpressMiddlewareBase implements IAutoload
   }
 
   async after(request: Express.Request, response: Express.Response, result: any, controller: ExpressController) {
-    if (result instanceof HandlebarsViewResponse) {
-      result.helper('Cookie', HandlebarsHelper.create(CookieHandlebarsHelper, controller))
-    }
-    return result
+    return this.defineHandlebarsHelperIfNeeded(result, 'Cookie', CookieHandlebarsHelper, controller)
   }
 }
 register(CookieMiddleware)

@@ -3,8 +3,6 @@ import { make, IAutoload } from 'najs-binding'
 import { SystemClass, ConfigurationKeys } from '../../../constants'
 import { register } from 'najs-binding'
 import { ExpressController } from '../../controller/ExpressController'
-import { HandlebarsViewResponse } from '../../../view/handlebars/HandlebarsViewResponse'
-import { HandlebarsHelper } from '../../../view/handlebars/HandlebarsHelper'
 import { SessionHandlebarsHelper } from '../../../view/handlebars/helpers/SessionHandlebarsHelper'
 import { ConfigFacade } from '../../../facades/global/ConfigFacade'
 import { Controller } from '../../../http/controller/Controller'
@@ -47,10 +45,7 @@ export class SessionMiddleware extends ExpressMiddlewareBase implements IAutoloa
   }
 
   async after(request: Express.Request, response: Express.Response, result: any, controller: ExpressController) {
-    if (result instanceof HandlebarsViewResponse) {
-      result.helper('Session', HandlebarsHelper.create(SessionHandlebarsHelper, controller))
-    }
-    return result
+    return this.defineHandlebarsHelperIfNeeded(result, 'Session', SessionHandlebarsHelper, controller)
   }
 }
 register(SessionMiddleware)

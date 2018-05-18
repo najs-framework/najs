@@ -1,5 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const HandlebarsViewResponse_1 = require("../../view/handlebars/HandlebarsViewResponse");
+const HandlebarsHelper_1 = require("../../view/handlebars/HandlebarsHelper");
 class ExpressMiddlewareBase {
     constructor(name, level, ...args) {
         this.name = name;
@@ -18,6 +20,12 @@ class ExpressMiddlewareBase {
     }
     createMiddleware() {
         return undefined;
+    }
+    defineHandlebarsHelperIfNeeded(result, name, helper, controller) {
+        if (result instanceof HandlebarsViewResponse_1.HandlebarsViewResponse) {
+            result.helper(name, HandlebarsHelper_1.HandlebarsHelper.create(helper, controller));
+        }
+        return result;
     }
     native(driver) {
         const middleware = this.createMiddleware();

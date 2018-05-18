@@ -4,8 +4,6 @@ require("../../session/ExpressSessionMemoryStore");
 const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../../../constants");
 const najs_binding_2 = require("najs-binding");
-const HandlebarsViewResponse_1 = require("../../../view/handlebars/HandlebarsViewResponse");
-const HandlebarsHelper_1 = require("../../../view/handlebars/HandlebarsHelper");
 const SessionHandlebarsHelper_1 = require("../../../view/handlebars/helpers/SessionHandlebarsHelper");
 const ConfigFacade_1 = require("../../../facades/global/ConfigFacade");
 const SessionContextualFacade_1 = require("../../../facades/contextual/SessionContextualFacade");
@@ -36,10 +34,7 @@ class SessionMiddleware extends ExpressMiddlewareBase_1.ExpressMiddlewareBase {
         SessionContextualFacade_1.SessionContextualFacade.of(controller);
     }
     async after(request, response, result, controller) {
-        if (result instanceof HandlebarsViewResponse_1.HandlebarsViewResponse) {
-            result.helper('Session', HandlebarsHelper_1.HandlebarsHelper.create(SessionHandlebarsHelper_1.SessionHandlebarsHelper, controller));
-        }
-        return result;
+        return this.defineHandlebarsHelperIfNeeded(result, 'Session', SessionHandlebarsHelper_1.SessionHandlebarsHelper, controller);
     }
 }
 SessionMiddleware.className = 'Najs.SessionMiddleware';

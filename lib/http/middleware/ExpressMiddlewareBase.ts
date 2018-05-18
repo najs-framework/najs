@@ -1,6 +1,8 @@
 import * as Express from 'express'
 import { ExpressHttpDriver } from '../driver/ExpressHttpDriver'
 import { IExpressMiddleware } from './IExpressMiddleware'
+import { HandlebarsViewResponse } from '../../view/handlebars/HandlebarsViewResponse'
+import { HandlebarsHelper } from '../../view/handlebars/HandlebarsHelper'
 
 export class ExpressMiddlewareBase implements IExpressMiddleware {
   protected identify: string
@@ -29,6 +31,18 @@ export class ExpressMiddlewareBase implements IExpressMiddleware {
 
   createMiddleware(): Express.Handler | Express.Handler[] | undefined {
     return undefined
+  }
+
+  protected defineHandlebarsHelperIfNeeded(
+    result: any,
+    name: string,
+    helper: typeof HandlebarsHelper,
+    controller: any
+  ) {
+    if (result instanceof HandlebarsViewResponse) {
+      result.helper(name, HandlebarsHelper.create(helper, controller))
+    }
+    return result
   }
 
   native(driver: ExpressHttpDriver): Express.Handler | Express.Handler[] | undefined {
