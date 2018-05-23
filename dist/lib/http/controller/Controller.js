@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="../../contracts/types/http.ts" />
 /// <reference path="../../contracts/Cookie.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 class Controller {

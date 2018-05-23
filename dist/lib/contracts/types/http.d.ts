@@ -24,7 +24,7 @@ declare namespace Najs.Http {
         after?(request: any, response: any, result: any, controller: any): Promise<any>;
     }
     type RouteMiddleware = string | IMiddleware | NativeMiddleware;
-    type RouteController = string | IController<any, any> | Object;
+    type RouteController = string | IController | Object;
     type RouteEndpoint = string | Function;
     interface IRouteData {
         metadata?: Object;
@@ -33,7 +33,7 @@ declare namespace Najs.Http {
         path: string;
         prefix: string;
         middleware: Array<RouteMiddleware>;
-        controller?: string | IController<any, any> | Object;
+        controller?: string | IController | Object;
         endpoint?: string | Function;
     }
     interface IRouteBuilder {
@@ -42,7 +42,7 @@ declare namespace Najs.Http {
         registerChildRoute(route: IRouteBuilder): void;
         shouldRegisterChildRoute(): boolean;
     }
-    interface IController<Request, Response> extends Najs.Contracts.Autoload {
+    interface IController<Request extends NodeJS.ReadableStream = NodeJS.ReadableStream, Response extends NodeJS.WritableStream = NodeJS.WritableStream> extends Najs.Contracts.Autoload {
         request: Request;
         response: Response;
         input: any;

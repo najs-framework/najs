@@ -179,13 +179,17 @@ desc('Can use Joi Validation Middleware with prettier ignore flag', () => {
     }))
 })
 
-class Controller {
-  validEndpoint() {}
-}
-
 desc('it can detect invalid endpoint if passed controller constructor', function() {
-  Route.get('/', Controller, 'validEndpoint')
-  Route.method('GET', '/', Controller, 'validEndpoint')
+  class TestController {
+    validEndpoint() {}
+
+    getClassName() {
+      return 'TestController'
+    }
+  }
+
+  Route.get('/', TestController, 'validEndpoint')
+  Route.method('GET', '/', TestController, 'validEndpoint')
 })
 
 const controllerInstance = {

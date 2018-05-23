@@ -1,3 +1,4 @@
+/// <reference types="node" />
 /// <reference types="najs-binding" />
 /// <reference path="../HttpDriver.ts" />
 
@@ -56,7 +57,7 @@ namespace Najs.Http {
   }
 
   export type RouteMiddleware = string | IMiddleware | NativeMiddleware
-  export type RouteController = string | IController<any, any> | Object
+  export type RouteController = string | IController | Object
   export type RouteEndpoint = string | Function
 
   export interface IRouteData {
@@ -66,7 +67,7 @@ namespace Najs.Http {
     path: string
     prefix: string
     middleware: Array<RouteMiddleware>
-    controller?: string | IController<any, any> | Object
+    controller?: string | IController | Object
     endpoint?: string | Function
   }
 
@@ -77,7 +78,10 @@ namespace Najs.Http {
     shouldRegisterChildRoute(): boolean
   }
 
-  export interface IController<Request, Response> extends Najs.Contracts.Autoload {
+  export interface IController<
+    Request extends NodeJS.ReadableStream = NodeJS.ReadableStream,
+    Response extends NodeJS.WritableStream = NodeJS.WritableStream
+  > extends Najs.Contracts.Autoload {
     request: Request
 
     response: Response
