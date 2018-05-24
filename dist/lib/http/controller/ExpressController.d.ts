@@ -1,15 +1,15 @@
+/// <reference path="../../contracts/types/http.d.ts" />
 /// <reference types="express" />
 import { Controller } from './Controller';
-import { IRequestDataReader } from '../request/IRequestDataReader';
 import { Request, Response } from 'express';
 export declare type RequestIdAutoloadMetadata = {
     readonly requestId: string;
 };
 export declare abstract class ExpressController extends Controller {
     __autoloadMetadata: RequestIdAutoloadMetadata;
-    protected body: IRequestDataReader;
-    protected query: IRequestDataReader;
-    protected params: IRequestDataReader;
+    protected body: Najs.Http.IRequestDataReader;
+    protected query: Najs.Http.IRequestDataReader;
+    protected params: Najs.Http.IRequestDataReader;
     request: Request;
     response: Response;
     constructor(request: Request, response: Response);

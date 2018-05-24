@@ -1,7 +1,8 @@
-import { IRequestDataReader } from './IRequestDataReader'
+/// <reference path="../../contracts/types/http.ts" />
+
 import { get, set, unset, has, flatten } from 'lodash'
 
-export class RequestDataReader implements IRequestDataReader {
+export class RequestDataReader implements Najs.Http.IRequestDataReader {
   protected data: Object
 
   constructor(data: Object) {

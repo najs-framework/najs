@@ -1,14 +1,12 @@
 /// <reference path="../../contracts/types/http.ts" />
 
-import { IRequestDataReader } from '../request/IRequestDataReader'
-
 export type FlashRegistry = {
   reflash: boolean
   keep: string[]
   flash: string[]
 }
 
-export interface ISession extends IRequestDataReader, Najs.Http.IRequestDataWriter {
+export interface ISession extends Najs.Http.IRequestDataReader, Najs.Http.IRequestDataWriter {
   /**
    * regenerates the session ID
    */

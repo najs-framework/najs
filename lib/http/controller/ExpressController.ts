@@ -1,7 +1,8 @@
+/// <reference path="../../contracts/types/http.ts" />
+
 import { Log } from './../../facades/global/LogFacade'
 import { MemberProxy } from './MemberProxy'
 import { Controller } from './Controller'
-import { IRequestDataReader } from '../request/IRequestDataReader'
 import { Request, Response } from 'express'
 import { RequestDataReader } from '../request/RequestDataReader'
 import { Input } from '../../facades/contextual/InputContextualFacade'
@@ -37,9 +38,9 @@ const CookieProxySetting = {
 
 export abstract class ExpressController extends Controller {
   __autoloadMetadata: RequestIdAutoloadMetadata
-  protected body: IRequestDataReader
-  protected query: IRequestDataReader
-  protected params: IRequestDataReader
+  protected body: Najs.Http.IRequestDataReader
+  protected query: Najs.Http.IRequestDataReader
+  protected params: Najs.Http.IRequestDataReader
   public request: Request
   public response: Response
 

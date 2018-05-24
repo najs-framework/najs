@@ -35,7 +35,6 @@ export { RouteFactory } from './http/routing/RouteFactory'
 
 export { ResponseFactory } from './http/response/ResponseFactory'
 
-export { IRequestDataReader } from './http/request/IRequestDataReader'
 export { RequestInput } from './http/request/RequestInput'
 export { RequestDataReader } from './http/request/RequestDataReader'
 export { RequestDataWriter } from './http/request/RequestDataWriter'

@@ -4,11 +4,10 @@ import { ExpressController } from '../controller/ExpressController'
 import { ContextualFacade } from 'najs-facade'
 import { ContextualFacadeClass } from '../../constants'
 import { RequestDataReader } from './RequestDataReader'
-import { IRequestDataReader } from './IRequestDataReader'
 import { HttpMethod } from '../HttpMethod'
 import * as Express from 'express'
 
-export class RequestInput extends ContextualFacade<Controller> implements IRequestDataReader, IAutoload {
+export class RequestInput extends ContextualFacade<Controller> implements Najs.Http.IRequestDataReader, IAutoload {
   protected data: Object
   readonly method: HttpMethod
 

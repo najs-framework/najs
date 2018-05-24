@@ -1,5 +1,5 @@
-import { IRequestDataReader } from './IRequestDataReader';
-export declare class RequestDataReader implements IRequestDataReader {
+/// <reference path="../../contracts/types/http.d.ts" />
+export declare class RequestDataReader implements Najs.Http.IRequestDataReader {
     protected data: Object;
     constructor(data: Object);
     get<T extends any>(path: string): T;

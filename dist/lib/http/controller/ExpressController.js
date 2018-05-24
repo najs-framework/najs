@@ -1,4 +1,5 @@
 "use strict";
+/// <reference path="../../contracts/types/http.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const LogFacade_1 = require("./../../facades/global/LogFacade");
 const MemberProxy_1 = require("./MemberProxy");
