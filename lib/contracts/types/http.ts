@@ -78,13 +78,10 @@ namespace Najs.Http {
     shouldRegisterChildRoute(): boolean
   }
 
-  export interface IController<
-    Request extends NodeJS.ReadableStream = NodeJS.ReadableStream,
-    Response extends NodeJS.WritableStream = NodeJS.WritableStream
-  > extends Najs.Contracts.Autoload {
-    request: Request
+  export interface IController extends Najs.Contracts.Autoload {
+    request: NodeJS.ReadableStream
 
-    response: Response
+    response: NodeJS.WritableStream
 
     input: any
 

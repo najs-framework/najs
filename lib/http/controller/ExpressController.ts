@@ -35,11 +35,13 @@ const CookieProxySetting = {
   returnEmptyObject: ['all', 'only', 'except']
 }
 
-export abstract class ExpressController extends Controller<Request, Response> {
+export abstract class ExpressController extends Controller {
   __autoloadMetadata: RequestIdAutoloadMetadata
   protected body: IRequestDataReader
   protected query: IRequestDataReader
   protected params: IRequestDataReader
+  public request: Request
+  public response: Response
 
   constructor(request: Request, response: Response) {
     super(request, response)

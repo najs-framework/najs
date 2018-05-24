@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const RouteFacade_1 = require("../lib/facades/global/RouteFacade");
+const lib_1 = require("../lib");
 function desc(name, callback) { }
 desc('Simple route with prefix() before HTTP verb', () => {
     RouteFacade_1.RouteFacade.prefix('test').get('/get', 'Controller@endpoint');
@@ -146,7 +147,7 @@ desc('Can use Joi Validation Middleware with prettier ignore flag', () => {
     }));
 });
 desc('it can detect invalid endpoint if passed controller constructor', function () {
-    class TestController {
+    class TestController extends lib_1.Controller {
         validEndpoint() { }
         getClassName() {
             return 'TestController';
@@ -155,10 +156,14 @@ desc('it can detect invalid endpoint if passed controller constructor', function
     RouteFacade_1.RouteFacade.get('/', TestController, 'validEndpoint');
     RouteFacade_1.RouteFacade.method('GET', '/', TestController, 'validEndpoint');
 });
-const controllerInstance = {
-    validEndpoint() { }
-};
 desc('it can detect invalid endpoint if passed controller instance', function () {
+    class TestController extends lib_1.Controller {
+        validEndpoint() { }
+        getClassName() {
+            return 'TestController';
+        }
+    }
+    const controllerInstance = new TestController({}, {});
     RouteFacade_1.RouteFacade.get('/', controllerInstance, 'validEndpoint');
     RouteFacade_1.RouteFacade.method('GET', '/', controllerInstance, 'validEndpoint');
 });

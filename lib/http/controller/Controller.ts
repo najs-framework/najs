@@ -6,18 +6,15 @@ import { ISession } from '../session/ISession'
 import { IAuth } from '../../auth/interfaces/IAuth'
 import { IncomingMessage, ServerResponse } from 'http'
 
-export abstract class Controller<
-  Request extends IncomingMessage = IncomingMessage,
-  Response extends ServerResponse = ServerResponse
-> implements Najs.Http.IController {
-  public request: Request
-  public response: Response
+export abstract class Controller implements Najs.Http.IController {
+  public request: IncomingMessage
+  public response: ServerResponse
   public input: IRequestDataReader
   public auth: IAuth
   public session: ISession
   public cookie: Najs.Contracts.Cookie
 
-  public constructor(request: Request, response: Response) {
+  public constructor(request: IncomingMessage, response: ServerResponse) {
     this.request = request
     this.response = response
   }

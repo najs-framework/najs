@@ -294,7 +294,7 @@ describe('RouteFactory', function() {
         const Controller = {
           endpoint: function() {}
         }
-        Route.method(HttpMethod.M_SEARCH, 'path', Controller, 'endpoint')
+        Route.method(HttpMethod.M_SEARCH, 'path', <any>Controller, 'endpoint')
         expect(methodSpy.calledWith(HttpMethod.M_SEARCH, 'path', Controller, 'endpoint')).toBe(true)
 
         Route.method(HttpMethod.CHECKOUT, 'path', 'Controller@endpoint')

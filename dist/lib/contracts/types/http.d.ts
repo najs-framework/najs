@@ -42,9 +42,9 @@ declare namespace Najs.Http {
         registerChildRoute(route: IRouteBuilder): void;
         shouldRegisterChildRoute(): boolean;
     }
-    interface IController<Request extends NodeJS.ReadableStream = NodeJS.ReadableStream, Response extends NodeJS.WritableStream = NodeJS.WritableStream> extends Najs.Contracts.Autoload {
-        request: Request;
-        response: Response;
+    interface IController extends Najs.Contracts.Autoload {
+        request: NodeJS.ReadableStream;
+        response: NodeJS.WritableStream;
         input: any;
         auth?: any;
         session?: any;

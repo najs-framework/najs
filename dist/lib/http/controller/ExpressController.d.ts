@@ -5,10 +5,12 @@ import { Request, Response } from 'express';
 export declare type RequestIdAutoloadMetadata = {
     readonly requestId: string;
 };
-export declare abstract class ExpressController extends Controller<Request, Response> {
+export declare abstract class ExpressController extends Controller {
     __autoloadMetadata: RequestIdAutoloadMetadata;
     protected body: IRequestDataReader;
     protected query: IRequestDataReader;
     protected params: IRequestDataReader;
+    request: Request;
+    response: Response;
     constructor(request: Request, response: Response);
 }

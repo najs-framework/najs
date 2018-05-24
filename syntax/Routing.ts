@@ -1,4 +1,5 @@
 import { RouteFacade as Route } from '../lib/facades/global/RouteFacade'
+import { Controller } from '../lib'
 
 function desc(name: string, callback: () => void): void {}
 
@@ -180,7 +181,7 @@ desc('Can use Joi Validation Middleware with prettier ignore flag', () => {
 })
 
 desc('it can detect invalid endpoint if passed controller constructor', function() {
-  class TestController {
+  class TestController extends Controller {
     validEndpoint() {}
 
     getClassName() {
@@ -192,11 +193,16 @@ desc('it can detect invalid endpoint if passed controller constructor', function
   Route.method('GET', '/', TestController, 'validEndpoint')
 })
 
-const controllerInstance = {
-  validEndpoint() {}
-}
-
 desc('it can detect invalid endpoint if passed controller instance', function() {
+  class TestController extends Controller {
+    validEndpoint() {}
+
+    getClassName() {
+      return 'TestController'
+    }
+  }
+
+  const controllerInstance = new TestController(<any>{}, <any>{})
   Route.get('/', controllerInstance, 'validEndpoint')
   Route.method('GET', '/', controllerInstance, 'validEndpoint')
 })
