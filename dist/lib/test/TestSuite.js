@@ -1,21 +1,30 @@
 "use strict";
+/// <reference path="../contracts/types/http.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
-// import { INajs } from '../core/INajs'
 const najs_facade_1 = require("najs-facade");
 class TestSuite {
-    // static start(najs: INajs) {
-    //   this.najs = najs
-    // }
-    // async setUpExpressIfNeeded() {
-    //   // if (!TestSuite.isSetUpExpress) {
-    //   //   await Najs.start({
-    //   //     createServer: false
-    //   //   })
-    //   //   TestSuite.isSetUpExpress = true
-    //   //   this.express = Najs['httpDriver']['express']
-    //   // }
-    // }
-    setUp() { }
+    static getFramework() {
+        return this.najs;
+    }
+    static setFramework(najs, startOptions = { createServer: false }) {
+        this.najs = najs;
+        this.startOptions = startOptions;
+        return this.najs;
+    }
+    static clear() {
+        this.najs = undefined;
+    }
+    setUp() {
+        if (typeof TestSuite.najs === 'undefined' || TestSuite.najs.isStarted()) {
+            return;
+        }
+        return new Promise(resolve => {
+            TestSuite.najs.start(TestSuite.startOptions).then(() => {
+                this.nativeHttpDriver = TestSuite.najs.getNativeHttpDriver();
+                resolve();
+            });
+        });
+    }
     tearDown() {
         najs_facade_1.FacadeContainer.verifyAndRestoreAllFacades();
     }

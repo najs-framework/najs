@@ -1,26 +1,39 @@
-// import { INajs } from '../core/INajs'
+/// <reference path="../contracts/types/http.ts" />
+
+import { INajs } from '../core/INajs'
 import { FacadeContainer } from 'najs-facade'
 
 export class TestSuite {
-  // static najs: INajs
-  // static isStarted: boolean = false
+  protected static najs: INajs | undefined
+  protected static startOptions: Najs.Http.StartOptions
   protected nativeHttpDriver: any
 
-  // static start(najs: INajs) {
-  //   this.najs = najs
-  // }
+  static getFramework(): INajs | undefined {
+    return this.najs
+  }
 
-  // async setUpExpressIfNeeded() {
-  //   // if (!TestSuite.isSetUpExpress) {
-  //   //   await Najs.start({
-  //   //     createServer: false
-  //   //   })
-  //   //   TestSuite.isSetUpExpress = true
-  //   //   this.express = Najs['httpDriver']['express']
-  //   // }
-  // }
+  static setFramework(najs: INajs, startOptions: Najs.Http.StartOptions = { createServer: false }): INajs | undefined {
+    this.najs = najs
+    this.startOptions = startOptions
+    return this.najs
+  }
 
-  setUp() {}
+  static clear() {
+    this.najs = undefined
+  }
+
+  setUp() {
+    if (typeof TestSuite.najs === 'undefined' || TestSuite.najs.isStarted()) {
+      return
+    }
+
+    return new Promise(resolve => {
+      TestSuite.najs!.start(TestSuite.startOptions).then(() => {
+        this.nativeHttpDriver = TestSuite.najs!.getNativeHttpDriver()
+        resolve()
+      })
+    })
+  }
 
   tearDown() {
     FacadeContainer.verifyAndRestoreAllFacades()
