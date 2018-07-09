@@ -15,6 +15,7 @@ class NajsFramework extends najs_facade_1.FacadeContainer {
         this.internalEventEmitter = new events_1.EventEmitter();
         this.serviceProviders = [];
         this.app = new Application_1.Application();
+        this.started = false;
     }
     workingDirectory(cwd) {
         this.cwd = cwd;
@@ -40,6 +41,15 @@ class NajsFramework extends najs_facade_1.FacadeContainer {
         this.internalEventEmitter.on(event, listener);
         return this;
     }
+    isStarted() {
+        return this.started;
+    }
+    getNativeHttpDriver() {
+        if (!this.started) {
+            return undefined;
+        }
+        return this.httpDriver.getNativeDriver();
+    }
     async start(options) {
         try {
             this.fireEventIfNeeded('start', this);
@@ -48,6 +58,7 @@ class NajsFramework extends najs_facade_1.FacadeContainer {
             this.httpDriver = this.app.make(constants_1.Najs.Http.HttpDriver);
             this.httpDriver.start(options);
             this.fireEventIfNeeded('started', this);
+            this.started = true;
         }
         catch (error) {
             this.handleError(error);

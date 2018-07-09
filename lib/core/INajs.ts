@@ -20,4 +20,8 @@ export interface INajs {
 
   start(): Promise<void>
   start(options: Najs.Http.StartOptions): Promise<void>
+
+  isStarted(): boolean
+
+  getNativeHttpDriver(): any
 }

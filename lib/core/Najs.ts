@@ -13,6 +13,7 @@ import * as SystemPath from 'path'
 class NajsFramework extends FacadeContainer implements INajs {
   private internalEventEmitter: EventEmitter
   protected cwd: string
+  protected started: boolean
   protected serviceProviders: ServiceProvider[]
   protected app: Najs.Contracts.Application
   protected httpDriver: Najs.Contracts.HttpDriver<any, any>
@@ -23,6 +24,7 @@ class NajsFramework extends FacadeContainer implements INajs {
     this.internalEventEmitter = new EventEmitter()
     this.serviceProviders = []
     this.app = new Application()
+    this.started = false
   }
 
   workingDirectory(cwd: string): this {
@@ -53,6 +55,17 @@ class NajsFramework extends FacadeContainer implements INajs {
     return this
   }
 
+  isStarted(): boolean {
+    return this.started
+  }
+
+  getNativeHttpDriver(): any {
+    if (!this.started) {
+      return undefined
+    }
+    return this.httpDriver.getNativeDriver()
+  }
+
   async start(): Promise<void>
   async start(options: Najs.Http.StartOptions): Promise<void>
   async start(options?: Najs.Http.StartOptions): Promise<void> {
@@ -63,6 +76,7 @@ class NajsFramework extends FacadeContainer implements INajs {
       this.httpDriver = this.app.make<Najs.Contracts.HttpDriver<any, any>>(NajsClasses.Http.HttpDriver)
       this.httpDriver.start(options)
       this.fireEventIfNeeded('started', this)
+      this.started = true
     } catch (error) {
       this.handleError(error)
     }

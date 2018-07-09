@@ -85,6 +85,7 @@ describe('Najs', function () {
             it('fires event "start" then calls applyServiceProviders(register), then applyServiceProviders(boot) and fires "started"', async function () {
                 const applyServiceProvidersSpy = Sinon.spy(Najs_1.Najs, 'applyServiceProviders');
                 const fireEventIfNeededSpy = Sinon.spy(Najs_1.Najs, 'fireEventIfNeeded');
+                expect(Najs_1.Najs['started']).toBe(false);
                 await Najs_1.Najs.start();
                 expect(applyServiceProvidersSpy.firstCall.calledWith(true, 'registered')).toBe(true);
                 expect(applyServiceProvidersSpy.secondCall.calledWith(false, 'booted')).toBe(true);
@@ -92,6 +93,7 @@ describe('Najs', function () {
                 expect(fireEventIfNeededSpy.firstCall.args[1] === Najs_1.Najs).toBe(true);
                 expect(fireEventIfNeededSpy.secondCall.args[0] === 'started').toBe(true);
                 expect(fireEventIfNeededSpy.secondCall.args[1] === Najs_1.Najs).toBe(true);
+                expect(Najs_1.Najs['started']).toBe(true);
                 applyServiceProvidersSpy.restore();
                 fireEventIfNeededSpy.restore();
             });
@@ -102,6 +104,34 @@ describe('Najs', function () {
                 expect(handleErrorStub.called).toBe(true);
                 handleErrorStub.restore();
                 Najs_1.Najs['serviceProviders'] = [];
+            });
+        });
+        describe('.isStarted()', function () {
+            it('simply returns Najs.started', function () {
+                Najs_1.Najs['started'] = false;
+                expect(Najs_1.Najs.isStarted()).toBe(false);
+                Najs_1.Najs['started'] = true;
+                expect(Najs_1.Najs.isStarted()).toBe(true);
+            });
+        });
+        describe('.getNativeHttpDriver()', function () {
+            it('returns undefined if Najs.started = false', function () {
+                Najs_1.Najs['started'] = false;
+                Najs_1.Najs['httpDriver'] = {
+                    getNativeDriver() {
+                        return 'anything';
+                    }
+                };
+                expect(Najs_1.Najs.getNativeHttpDriver()).toBe(undefined);
+            });
+            it('returns this.httpDriver.getNativeDriver() if Najs.started = true', function () {
+                Najs_1.Najs['started'] = true;
+                Najs_1.Najs['httpDriver'] = {
+                    getNativeDriver() {
+                        return 'anything';
+                    }
+                };
+                expect(Najs_1.Najs.getNativeHttpDriver()).toBe('anything');
             });
         });
         describe('protected .handleError()', function () {

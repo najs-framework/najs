@@ -94,6 +94,7 @@ describe('Najs', function() {
       it('fires event "start" then calls applyServiceProviders(register), then applyServiceProviders(boot) and fires "started"', async function() {
         const applyServiceProvidersSpy = Sinon.spy(Najs, <any>'applyServiceProviders')
         const fireEventIfNeededSpy = Sinon.spy(Najs, <any>'fireEventIfNeeded')
+        expect(Najs['started']).toBe(false)
         await Najs.start()
 
         expect(applyServiceProvidersSpy.firstCall.calledWith(true, 'registered')).toBe(true)
@@ -103,6 +104,7 @@ describe('Najs', function() {
         expect(fireEventIfNeededSpy.secondCall.args[0] === 'started').toBe(true)
         expect(fireEventIfNeededSpy.secondCall.args[1] === Najs).toBe(true)
 
+        expect(Najs['started']).toBe(true)
         applyServiceProvidersSpy.restore()
         fireEventIfNeededSpy.restore()
       })
@@ -114,6 +116,37 @@ describe('Najs', function() {
         expect(handleErrorStub.called).toBe(true)
         handleErrorStub.restore()
         Najs['serviceProviders'] = []
+      })
+    })
+
+    describe('.isStarted()', function() {
+      it('simply returns Najs.started', function() {
+        Najs['started'] = false
+        expect(Najs.isStarted()).toBe(false)
+        Najs['started'] = true
+        expect(Najs.isStarted()).toBe(true)
+      })
+    })
+
+    describe('.getNativeHttpDriver()', function() {
+      it('returns undefined if Najs.started = false', function() {
+        Najs['started'] = false
+        Najs['httpDriver'] = {
+          getNativeDriver() {
+            return 'anything'
+          }
+        }
+        expect(Najs.getNativeHttpDriver()).toBe(undefined)
+      })
+
+      it('returns this.httpDriver.getNativeDriver() if Najs.started = true', function() {
+        Najs['started'] = true
+        Najs['httpDriver'] = {
+          getNativeDriver() {
+            return 'anything'
+          }
+        }
+        expect(Najs.getNativeHttpDriver()).toBe('anything')
       })
     })
 

@@ -14,4 +14,6 @@ export interface INajs {
     on(event: 'booted', listener: (najs: INajs, classProvider: ServiceProvider) => void): this;
     start(): Promise<void>;
     start(options: Najs.Http.StartOptions): Promise<void>;
+    isStarted(): boolean;
+    getNativeHttpDriver(): any;
 }
