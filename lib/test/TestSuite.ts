@@ -2,6 +2,7 @@
 
 import { INajs } from '../core/INajs'
 import { FacadeContainer } from 'najs-facade'
+import { generateTestFromTestSuite } from './jest'
 
 export class TestSuite {
   protected static najs: INajs | undefined
@@ -20,6 +21,16 @@ export class TestSuite {
 
   static clear() {
     this.najs = undefined
+  }
+
+  static runWithJest(testSuite: typeof TestSuite): typeof TestSuite {
+    generateTestFromTestSuite(testSuite)
+
+    return TestSuite
+  }
+
+  static jest(testSuite: typeof TestSuite): typeof TestSuite {
+    return this.runWithJest(testSuite)
   }
 
   setUp() {

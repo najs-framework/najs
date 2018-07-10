@@ -7,6 +7,8 @@ export declare class TestSuite {
     static getFramework(): INajs | undefined;
     static setFramework(najs: INajs, startOptions?: Najs.Http.StartOptions): INajs | undefined;
     static clear(): void;
+    static runWithJest(testSuite: typeof TestSuite): typeof TestSuite;
+    static jest(testSuite: typeof TestSuite): typeof TestSuite;
     setUp(): Promise<{}> | undefined;
     tearDown(): void;
 }

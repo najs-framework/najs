@@ -25,3 +25,4 @@ function generateTestFromTestSuite(suite) {
         }
     });
 }
+exports.generateTestFromTestSuite = generateTestFromTestSuite;

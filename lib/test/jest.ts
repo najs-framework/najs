@@ -7,7 +7,7 @@ export function jest(group: string = 'test') {
   }
 }
 
-function generateTestFromTestSuite(suite: typeof TestSuite) {
+export function generateTestFromTestSuite(suite: typeof TestSuite) {
   const functions = Object.getOwnPropertyNames(suite.prototype)
   const tests: string[] = []
   for (const name of functions) {

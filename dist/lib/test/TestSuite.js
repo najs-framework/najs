@@ -2,6 +2,7 @@
 /// <reference path="../contracts/types/http.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const najs_facade_1 = require("najs-facade");
+const jest_1 = require("./jest");
 class TestSuite {
     static getFramework() {
         return this.najs;
@@ -13,6 +14,13 @@ class TestSuite {
     }
     static clear() {
         this.najs = undefined;
+    }
+    static runWithJest(testSuite) {
+        jest_1.generateTestFromTestSuite(testSuite);
+        return TestSuite;
+    }
+    static jest(testSuite) {
+        return this.runWithJest(testSuite);
     }
     setUp() {
         if (typeof TestSuite.najs === 'undefined' || TestSuite.najs.isStarted()) {

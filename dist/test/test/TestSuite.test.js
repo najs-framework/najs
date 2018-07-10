@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
 const najs_facade_1 = require("najs-facade");
+const Jest = require("../../lib/test/jest");
 const TestSuite_1 = require("../../lib/test/TestSuite");
 const isPromise_1 = require("../../lib/private/isPromise");
 describe('TestSuite', function () {
@@ -25,6 +26,33 @@ describe('TestSuite', function () {
             expect(TestSuite_1.TestSuite.setFramework(najs, { createServer: true }) === najs).toBe(true);
             expect(TestSuite_1.TestSuite['startOptions']).toEqual({ createServer: true });
             TestSuite_1.TestSuite.clear();
+        });
+    });
+    describe('static .clear()', function () {
+        it('simply clears TestSuite.najs instance', function () {
+            TestSuite_1.TestSuite['najs'] = 'anything';
+            TestSuite_1.TestSuite.clear();
+            expect(TestSuite_1.TestSuite['najs']).toBeUndefined();
+        });
+    });
+    describe('static .runWithJest()', function () {
+        it('calls .generateTestFromTestSuite() from jest and returns itself', function () {
+            const generateTestFromTestSuiteStub = Sinon.stub(Jest, 'generateTestFromTestSuite');
+            class Test extends TestSuite_1.TestSuite {
+            }
+            expect(TestSuite_1.TestSuite.runWithJest(Test) === TestSuite_1.TestSuite).toBe(true);
+            expect(generateTestFromTestSuiteStub.calledWith(Test)).toBe(true);
+            generateTestFromTestSuiteStub.restore();
+        });
+    });
+    describe('static .jest()', function () {
+        it('is an alias of .runWithJest()', function () {
+            const runWithJestSpy = Sinon.spy(TestSuite_1.TestSuite, 'runWithJest');
+            class Test extends TestSuite_1.TestSuite {
+            }
+            expect(TestSuite_1.TestSuite.jest(Test) === TestSuite_1.TestSuite).toBe(true);
+            expect(runWithJestSpy.calledWith(Test)).toBe(true);
+            runWithJestSpy.restore();
         });
     });
     describe('.setUp()', function () {

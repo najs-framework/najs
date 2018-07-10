@@ -1,6 +1,7 @@
 import 'jest'
 import * as Sinon from 'sinon'
 import { FacadeContainer } from 'najs-facade'
+import * as Jest from '../../lib/test/jest'
 import { TestSuite } from '../../lib/test/TestSuite'
 import { isPromise } from '../../lib/private/isPromise'
 
@@ -27,6 +28,36 @@ describe('TestSuite', function() {
       expect(TestSuite.setFramework(<any>najs, { createServer: true }) === najs).toBe(true)
       expect(TestSuite['startOptions']).toEqual({ createServer: true })
       TestSuite.clear()
+    })
+  })
+
+  describe('static .clear()', function() {
+    it('simply clears TestSuite.najs instance', function() {
+      TestSuite['najs'] = <any>'anything'
+      TestSuite.clear()
+      expect(TestSuite['najs']).toBeUndefined()
+    })
+  })
+
+  describe('static .runWithJest()', function() {
+    it('calls .generateTestFromTestSuite() from jest and returns itself', function() {
+      const generateTestFromTestSuiteStub = Sinon.stub(Jest, 'generateTestFromTestSuite')
+      class Test extends TestSuite {}
+
+      expect(TestSuite.runWithJest(Test) === TestSuite).toBe(true)
+      expect(generateTestFromTestSuiteStub.calledWith(Test)).toBe(true)
+      generateTestFromTestSuiteStub.restore()
+    })
+  })
+
+  describe('static .jest()', function() {
+    it('is an alias of .runWithJest()', function() {
+      const runWithJestSpy = Sinon.spy(TestSuite, 'runWithJest')
+      class Test extends TestSuite {}
+
+      expect(TestSuite.jest(Test) === TestSuite).toBe(true)
+      expect(runWithJestSpy.calledWith(Test)).toBe(true)
+      runWithJestSpy.restore()
     })
   })
 
