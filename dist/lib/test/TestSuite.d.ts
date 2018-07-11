@@ -15,4 +15,5 @@ export declare class TestSuite {
     tearDown(): void;
     protected createSuperTest(): SuperTest.SuperTest<SuperTest.Test>;
     call(method: string | Najs.Http.HttpMethod, url: string, ...assertions: SuperTestExpectations): SuperTest.Test;
+    get(url: string, ...assertions: SuperTestExpectations): SuperTest.Test;
 }

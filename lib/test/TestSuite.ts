@@ -60,12 +60,15 @@ export class TestSuite {
   }
 
   call(method: string | Najs.Http.HttpMethod, url: string, ...assertions: SuperTestExpectations): SuperTest.Test {
-    const superTest = this.createSuperTest()
-    let test: SuperTest.Test = superTest[method](url)
+    let test: SuperTest.Test = this.createSuperTest()[method.toLowerCase()](url)
     const expectations = flatten(assertions)
     for (const expectation of expectations) {
       test = expectation.injectExpectation(test)
     }
     return test
+  }
+
+  get(url: string, ...assertions: SuperTestExpectations) {
+    return this.call('GET', url, ...assertions)
   }
 }

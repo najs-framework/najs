@@ -43,13 +43,15 @@ class TestSuite {
         return SuperTest(this.nativeHttpDriver);
     }
     call(method, url, ...assertions) {
-        const superTest = this.createSuperTest();
-        let test = superTest[method](url);
+        let test = this.createSuperTest()[method.toLowerCase()](url);
         const expectations = lodash_1.flatten(assertions);
         for (const expectation of expectations) {
             test = expectation.injectExpectation(test);
         }
         return test;
+    }
+    get(url, ...assertions) {
+        return this.call('GET', url, ...assertions);
     }
 }
 exports.TestSuite = TestSuite;

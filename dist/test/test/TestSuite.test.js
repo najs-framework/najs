@@ -129,25 +129,39 @@ describe('TestSuite', function () {
             };
             createSuperTestStub.returns(superTest);
             expect(testSuite.call('get', '/')).toEqual('get/');
+            expect(testSuite.call('Get', '/')).toEqual('get/');
+            expect(testSuite.call('GET', '/')).toEqual('get/');
             expect(testSuite.call('post', '/')).toEqual('post/');
+            expect(testSuite.call('Post', '/')).toEqual('post/');
+            expect(testSuite.call('POST', '/')).toEqual('post/');
+        });
+        it('flattens the SuperTestExpectation from 3rd params and call .injectExpectation(test)', function () {
+            const testSuite = new TestSuite_1.TestSuite();
+            const createSuperTestStub = Sinon.stub(testSuite, 'createSuperTest');
+            const superTest = {
+                get(url) {
+                    return 'get' + url;
+                }
+            };
+            const superTestExpectation = {
+                injectExpectation(test) {
+                    return test;
+                }
+            };
+            const injectExpectationSpy = Sinon.spy(superTestExpectation, 'injectExpectation');
+            createSuperTestStub.returns(superTest);
+            expect(testSuite.call('get', '/', superTestExpectation, superTestExpectation, superTestExpectation)).toEqual('get/');
+            expect(injectExpectationSpy.callCount).toEqual(3);
         });
     });
-    it('flattens the SuperTestExpectation from 3rd params and call .injectExpectation(test)', function () {
-        const testSuite = new TestSuite_1.TestSuite();
-        const createSuperTestStub = Sinon.stub(testSuite, 'createSuperTest');
-        const superTest = {
-            get(url) {
-                return 'get' + url;
-            }
-        };
-        const superTestExpectation = {
-            injectExpectation(test) {
-                return test;
-            }
-        };
-        const injectExpectationSpy = Sinon.spy(superTestExpectation, 'injectExpectation');
-        createSuperTestStub.returns(superTest);
-        expect(testSuite.call('get', '/', superTestExpectation, superTestExpectation, superTestExpectation)).toEqual('get/');
-        expect(injectExpectationSpy.callCount).toEqual(3);
+    describe('.get()', function () {
+        it('simply passes param to .call with method "GET"', function () {
+            const testSuite = new TestSuite_1.TestSuite();
+            const callStub = Sinon.stub(testSuite, 'call');
+            callStub.returns('anything');
+            const expectations = ['b', 'c'];
+            expect(testSuite.get('/url', 'a', expectations)).toBe('anything');
+            expect(callStub.calledWith('GET', '/url', 'a', expectations)).toBe(true);
+        });
     });
 });
