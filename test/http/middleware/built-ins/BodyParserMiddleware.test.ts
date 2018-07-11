@@ -4,8 +4,8 @@ import { BodyParserMiddleware } from '../../../../lib/http/middleware/built-ins/
 import { ClassRegistry } from 'najs-binding'
 import { isPromise } from '../../../../lib/private/isPromise'
 import { HandlebarsHelper } from '../../../../lib/view/handlebars/HandlebarsHelper'
-import { ViewResponse } from './../../../../lib/http/response/ViewResponse'
-import { HandlebarsViewResponse } from './../../../../lib/view/handlebars/HandlebarsViewResponse'
+import { ViewResponse } from '../../../../lib/http/response/ViewResponse'
+import { HandlebarsViewResponse } from '../../../../lib/view/handlebars/HandlebarsViewResponse'
 
 describe('BodyParserMiddleware', function() {
   it('implements IAutoload and auto register', function() {

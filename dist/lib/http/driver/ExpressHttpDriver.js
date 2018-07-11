@@ -4,7 +4,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../../constants");
 const najs_binding_1 = require("najs-binding");
-const index_1 = require("../../index");
+const __1 = require("../..");
 const LogFacade_1 = require("../../facades/global/LogFacade");
 const lodash_1 = require("lodash");
 const Controller_1 = require("../controller/Controller");
@@ -185,4 +185,4 @@ class ExpressHttpDriver {
 }
 ExpressHttpDriver.className = constants_1.Najs.Http.ExpressHttpDriver;
 exports.ExpressHttpDriver = ExpressHttpDriver;
-index_1.register(ExpressHttpDriver, constants_1.Najs.Http.ExpressHttpDriver);
+__1.register(ExpressHttpDriver, constants_1.Najs.Http.ExpressHttpDriver);

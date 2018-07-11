@@ -5,7 +5,7 @@ const Sinon = require("sinon");
 const najs_binding_1 = require("najs-binding");
 const Middleware = require("../../../lib/http/middleware/AuthMiddleware");
 const najs_facade_1 = require("najs-facade");
-const ConfigFacade_1 = require("./../../../lib/facades/global/ConfigFacade");
+const ConfigFacade_1 = require("../../../lib/facades/global/ConfigFacade");
 const AuthManager_1 = require("../../../lib/auth/AuthManager");
 describe('AuthMiddleware', function () {
     it('is fit for najs-binding', function () {

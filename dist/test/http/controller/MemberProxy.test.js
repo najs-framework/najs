@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const najs_facade_1 = require("najs-facade");
-const LogFacade_1 = require("./../../../lib/facades/global/LogFacade");
+const LogFacade_1 = require("../../../lib/facades/global/LogFacade");
 const MemberProxy_1 = require("../../../lib/http/controller/MemberProxy");
 const isPromise_1 = require("../../../lib/private/isPromise");
 describe('MemberProxy', function () {

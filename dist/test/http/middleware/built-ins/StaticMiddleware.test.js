@@ -6,7 +6,7 @@ const Middleware = require("../../../../lib/http/middleware/built-ins/StaticMidd
 const Express = require("express");
 const najs_binding_1 = require("najs-binding");
 const najs_facade_1 = require("najs-facade");
-const PathFacade_1 = require("./../../../../lib/facades/global/PathFacade");
+const PathFacade_1 = require("../../../../lib/facades/global/PathFacade");
 const ExpressMiddlewareBase_1 = require("../../../../lib/http/middleware/ExpressMiddlewareBase");
 describe('StaticMiddleware', function () {
     it('extends ExpressMiddlewareBase', function () {

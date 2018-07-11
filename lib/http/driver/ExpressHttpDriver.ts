@@ -4,7 +4,7 @@
 import { HttpKernel } from '../HttpKernel'
 import { Najs, SystemClass, ConfigurationKeys } from '../../constants'
 import { make } from 'najs-binding'
-import { register } from '../../index'
+import { register } from '../..'
 import { LogFacade as Log } from '../../facades/global/LogFacade'
 import { isFunction, isString } from 'lodash'
 import { Controller } from '../controller/Controller'

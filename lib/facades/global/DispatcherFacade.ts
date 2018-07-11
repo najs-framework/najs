@@ -1,8 +1,8 @@
 /// <reference path="../../contracts/Dispatcher.ts" />
 
-import '../../../lib/event/EventDispatcher'
+import '../../event/EventDispatcher'
 import { Facade, IFacade, IFacadeBase } from 'najs-facade'
-import { Najs } from '../../../lib/core/Najs'
+import { Najs } from '../../core/Najs'
 import { make } from 'najs-binding'
 import { Najs as NajsClasses } from '../../constants'
 

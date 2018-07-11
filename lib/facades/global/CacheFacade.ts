@@ -1,8 +1,8 @@
 /// <reference path="../../contracts/Cache.ts" />
 
-import '../../../lib/cache/RedisCache'
+import '../../cache/RedisCache'
 import { Facade, IFacade, IFacadeBase } from 'najs-facade'
-import { Najs } from '../../../lib/core/Najs'
+import { Najs } from '../../core/Najs'
 import { make } from 'najs-binding'
 import { Najs as NajsClasses } from '../../constants'
 

@@ -5,7 +5,7 @@ import { CookieHandlebarsHelper } from '../../../view/handlebars/helpers/CookieH
 import { CookieContextualFacade } from '../../../facades/contextual/CookieContextualFacade'
 import { ConfigFacade } from '../../../facades/global/ConfigFacade'
 import { ConfigurationKeys } from '../../../constants'
-import { Controller } from '../../../http/controller/Controller'
+import { Controller } from '../../controller/Controller'
 import * as Express from 'express'
 import * as CookieParserNative from 'cookie-parser'
 

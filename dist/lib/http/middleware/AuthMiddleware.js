@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const AuthContextualFacade_1 = require("./../../facades/contextual/AuthContextualFacade");
+const AuthContextualFacade_1 = require("../../facades/contextual/AuthContextualFacade");
 class AuthMiddleware {
     constructor(guard) {
         this.guard = guard;

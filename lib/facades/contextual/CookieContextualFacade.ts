@@ -5,7 +5,7 @@ import { IContextualFacadeVerbOf } from 'najs-facade'
 import { Cookie as CookieClass } from '../../http/cookie/Cookie'
 import { Controller } from '../../http/controller/Controller'
 import { Najs } from '../../constants'
-import { MemberProxy } from './../../http/controller/MemberProxy'
+import { MemberProxy } from '../../http/controller/MemberProxy'
 
 const facade = Facade.create<CookieClass, Controller>(function(context: Controller) {
   if (!context.cookie || context.cookie instanceof MemberProxy) {

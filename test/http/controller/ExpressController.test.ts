@@ -2,7 +2,7 @@ import 'jest'
 import { ContextualFacade } from 'najs-facade'
 import { ExpressController } from '../../../lib/http/controller/ExpressController'
 import { MemberProxy } from '../../../lib/http/controller/MemberProxy'
-import { Session } from './../../../lib/http/session/Session'
+import { Session } from '../../../lib/http/session/Session'
 import { Cookie } from '../../../lib/http/cookie/Cookie'
 
 describe('ExpressController', function() {

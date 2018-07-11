@@ -2,7 +2,7 @@
 
 import '../../file-system/Path'
 import { Facade, IFacade, IFacadeBase } from 'najs-facade'
-import { Najs } from '../../../lib/core/Najs'
+import { Najs } from '../../core/Najs'
 import { make } from 'najs-binding'
 import { Najs as NajsClasses } from '../../constants'
 

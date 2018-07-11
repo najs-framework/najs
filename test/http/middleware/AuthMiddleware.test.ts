@@ -3,7 +3,7 @@ import * as Sinon from 'sinon'
 import { register } from 'najs-binding'
 import * as Middleware from '../../../lib/http/middleware/AuthMiddleware'
 import { Facade, FacadeContainer } from 'najs-facade'
-import { ConfigFacade } from './../../../lib/facades/global/ConfigFacade'
+import { ConfigFacade } from '../../../lib/facades/global/ConfigFacade'
 import { AuthManager } from '../../../lib/auth/AuthManager'
 
 describe('AuthMiddleware', function() {

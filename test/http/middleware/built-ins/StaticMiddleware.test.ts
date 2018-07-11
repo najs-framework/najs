@@ -4,7 +4,7 @@ import * as Middleware from '../../../../lib/http/middleware/built-ins/StaticMid
 import * as Express from 'express'
 import { ClassRegistry } from 'najs-binding'
 import { FacadeContainer } from 'najs-facade'
-import { PathFacade } from './../../../../lib/facades/global/PathFacade'
+import { PathFacade } from '../../../../lib/facades/global/PathFacade'
 import { ExpressMiddlewareBase } from '../../../../lib/http/middleware/ExpressMiddlewareBase'
 
 describe('StaticMiddleware', function() {

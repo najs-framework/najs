@@ -1,5 +1,5 @@
 /// <reference types="express" />
-import { ExpressHttpDriver } from './../../driver/ExpressHttpDriver';
+import { ExpressHttpDriver } from '../../driver/ExpressHttpDriver';
 import { ExpressMiddlewareBase } from '../ExpressMiddlewareBase';
 import { IAutoload } from 'najs-binding';
 import * as Express from 'express';

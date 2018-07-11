@@ -1,8 +1,8 @@
 // import { HandlebarsViewResponse } from './../../view/handlebars/HandlebarsViewResponse'
 import { IExpressMiddleware } from './IExpressMiddleware'
 import { Request, Response } from 'express'
-import { ExpressController } from '../../http/controller/ExpressController'
-import { AuthContextualFacade } from './../../facades/contextual/AuthContextualFacade'
+import { ExpressController } from '../controller/ExpressController'
+import { AuthContextualFacade } from '../../facades/contextual/AuthContextualFacade'
 
 export class AuthMiddleware implements IExpressMiddleware {
   static className: string = 'Najs.AuthMiddleware'

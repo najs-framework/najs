@@ -3,6 +3,9 @@
 import { INajs } from '../core/INajs'
 import { FacadeContainer } from 'najs-facade'
 import { generateTestFromTestSuite } from './jest'
+import { flatten } from 'lodash'
+import { SuperTestExpectations } from './supertest/ISuperTestExpectation'
+import * as SuperTest from 'supertest'
 
 export class TestSuite {
   protected static najs: INajs | undefined
@@ -33,6 +36,8 @@ export class TestSuite {
     return this.runWithJest(testSuite)
   }
 
+  // -------------------------------------------------------------------------------------------------------------------
+
   setUp() {
     if (typeof TestSuite.najs === 'undefined' || TestSuite.najs.isStarted()) {
       return
@@ -48,5 +53,19 @@ export class TestSuite {
 
   tearDown() {
     FacadeContainer.verifyAndRestoreAllFacades()
+  }
+
+  protected createSuperTest(): SuperTest.SuperTest<SuperTest.Test> {
+    return SuperTest(this.nativeHttpDriver)
+  }
+
+  call(method: string | Najs.Http.HttpMethod, url: string, ...assertions: SuperTestExpectations): SuperTest.Test {
+    const superTest = this.createSuperTest()
+    let test: SuperTest.Test = superTest[method](url)
+    const expectations = flatten(assertions)
+    for (const expectation of expectations) {
+      test = expectation.injectExpectation(test)
+    }
+    return test
   }
 }

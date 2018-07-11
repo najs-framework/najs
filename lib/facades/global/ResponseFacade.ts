@@ -1,8 +1,8 @@
 /// <reference path="../../contracts/ResponseFactory.ts" />
 
-import '../../../lib/http/response/ResponseFactory'
+import '../../http/response/ResponseFactory'
 import { Facade, IFacade, IFacadeBase } from 'najs-facade'
-import { Najs } from '../../../lib/core/Najs'
+import { Najs } from '../../core/Najs'
 import { make } from 'najs-binding'
 import { Najs as NajsClasses } from '../../constants'
 

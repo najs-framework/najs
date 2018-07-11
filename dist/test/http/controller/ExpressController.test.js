@@ -4,7 +4,7 @@ require("jest");
 const najs_facade_1 = require("najs-facade");
 const ExpressController_1 = require("../../../lib/http/controller/ExpressController");
 const MemberProxy_1 = require("../../../lib/http/controller/MemberProxy");
-const Session_1 = require("./../../../lib/http/session/Session");
+const Session_1 = require("../../../lib/http/session/Session");
 const Cookie_1 = require("../../../lib/http/cookie/Cookie");
 describe('ExpressController', function () {
     describe('.constructor()', function () {

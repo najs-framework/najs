@@ -2,7 +2,7 @@
 import { IAutoload } from 'najs-binding';
 import { ExpressMiddlewareBase } from '../ExpressMiddlewareBase';
 import { ExpressController } from '../../controller/ExpressController';
-import { Controller } from '../../../http/controller/Controller';
+import { Controller } from '../../controller/Controller';
 import * as Express from 'express';
 export declare let CookieParser: Express.RequestHandler;
 export declare class CookieMiddleware extends ExpressMiddlewareBase implements IAutoload {

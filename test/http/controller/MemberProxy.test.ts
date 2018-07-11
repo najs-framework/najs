@@ -1,6 +1,6 @@
 import 'jest'
 import { FacadeContainer } from 'najs-facade'
-import { LogFacade } from './../../../lib/facades/global/LogFacade'
+import { LogFacade } from '../../../lib/facades/global/LogFacade'
 import { MemberProxy } from '../../../lib/http/controller/MemberProxy'
 import { isPromise } from '../../../lib/private/isPromise'
 

@@ -1,5 +1,7 @@
 /// <reference path="../contracts/types/http.d.ts" />
 import { INajs } from '../core/INajs';
+import { SuperTestExpectations } from './supertest/ISuperTestExpectation';
+import * as SuperTest from 'supertest';
 export declare class TestSuite {
     protected static najs: INajs | undefined;
     protected static startOptions: Najs.Http.StartOptions;
@@ -11,4 +13,6 @@ export declare class TestSuite {
     static jest(testSuite: typeof TestSuite): typeof TestSuite;
     setUp(): Promise<{}> | undefined;
     tearDown(): void;
+    protected createSuperTest(): SuperTest.SuperTest<SuperTest.Test>;
+    call(method: string | Najs.Http.HttpMethod, url: string, ...assertions: SuperTestExpectations): SuperTest.Test;
 }

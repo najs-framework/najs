@@ -2,10 +2,12 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
-const najs_facade_1 = require("najs-facade");
+const Express = require("express");
 const Jest = require("../../lib/test/jest");
+const najs_facade_1 = require("najs-facade");
 const TestSuite_1 = require("../../lib/test/TestSuite");
 const isPromise_1 = require("../../lib/private/isPromise");
+const HttpMethod_1 = require("../../lib/http/HttpMethod");
 describe('TestSuite', function () {
     describe('static .getFramework()', function () {
         it('simply returns TestSuite.najs framework instance if there is no params (getter)', function () {
@@ -101,5 +103,51 @@ describe('TestSuite', function () {
             testSuite.tearDown();
             expect(verifyAndRestoreAllFacadesSpy.called).toBe(true);
         });
+    });
+    describe('protected .createSuperTest()', function () {
+        it('uses SuperTest to create an SuperTest instance wrap this.nativeHttpDriver', function () {
+            const testSuite = new TestSuite_1.TestSuite();
+            testSuite['nativeHttpDriver'] = Express();
+            const result = testSuite['createSuperTest']();
+            for (const name in HttpMethod_1.HttpMethod) {
+                const method = name === 'M_SEARCH' ? 'm-search' : name.toLowerCase();
+                expect(typeof result[method]).toEqual('function');
+            }
+        });
+    });
+    describe('.call()', function () {
+        it('calls .createSuperTest() to get the superTest instance then call [http-method] with url', function () {
+            const testSuite = new TestSuite_1.TestSuite();
+            const createSuperTestStub = Sinon.stub(testSuite, 'createSuperTest');
+            const superTest = {
+                get(url) {
+                    return 'get' + url;
+                },
+                post(url) {
+                    return 'post' + url;
+                }
+            };
+            createSuperTestStub.returns(superTest);
+            expect(testSuite.call('get', '/')).toEqual('get/');
+            expect(testSuite.call('post', '/')).toEqual('post/');
+        });
+    });
+    it('flattens the SuperTestExpectation from 3rd params and call .injectExpectation(test)', function () {
+        const testSuite = new TestSuite_1.TestSuite();
+        const createSuperTestStub = Sinon.stub(testSuite, 'createSuperTest');
+        const superTest = {
+            get(url) {
+                return 'get' + url;
+            }
+        };
+        const superTestExpectation = {
+            injectExpectation(test) {
+                return test;
+            }
+        };
+        const injectExpectationSpy = Sinon.spy(superTestExpectation, 'injectExpectation');
+        createSuperTestStub.returns(superTest);
+        expect(testSuite.call('get', '/', superTestExpectation, superTestExpectation, superTestExpectation)).toEqual('get/');
+        expect(injectExpectationSpy.callCount).toEqual(3);
     });
 });

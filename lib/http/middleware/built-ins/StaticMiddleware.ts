@@ -1,4 +1,4 @@
-import { ExpressHttpDriver } from './../../driver/ExpressHttpDriver'
+import { ExpressHttpDriver } from '../../driver/ExpressHttpDriver'
 import { ExpressMiddlewareBase } from '../ExpressMiddlewareBase'
 import { IAutoload, register } from 'najs-binding'
 import { Path } from '../../../facades/global/PathFacade'

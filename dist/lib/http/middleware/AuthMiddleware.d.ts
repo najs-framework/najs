@@ -1,7 +1,7 @@
 /// <reference types="express" />
 import { IExpressMiddleware } from './IExpressMiddleware';
 import { Request, Response } from 'express';
-import { ExpressController } from '../../http/controller/ExpressController';
+import { ExpressController } from '../controller/ExpressController';
 export declare class AuthMiddleware implements IExpressMiddleware {
     static className: string;
     protected guard: string | undefined;

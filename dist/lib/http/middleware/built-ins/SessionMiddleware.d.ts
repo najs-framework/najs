@@ -2,7 +2,7 @@
 import '../../session/ExpressSessionMemoryStore';
 import { IAutoload } from 'najs-binding';
 import { ExpressController } from '../../controller/ExpressController';
-import { Controller } from '../../../http/controller/Controller';
+import { Controller } from '../../controller/Controller';
 import { ExpressMiddlewareBase } from '../ExpressMiddlewareBase';
 import * as Express from 'express';
 export declare let Session: Express.RequestHandler;

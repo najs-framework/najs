@@ -1,9 +1,9 @@
 /// <reference path="../../contracts/Redis.ts" />
 
-import '../../../lib/redis/RedisClient'
+import '../../redis/RedisClient'
 
 import { Facade, IFacade, IFacadeBase } from 'najs-facade'
-import { Najs } from '../../../lib/core/Najs'
+import { Najs } from '../../core/Najs'
 import { make } from 'najs-binding'
 import { Najs as NajsClasses } from '../../constants'
 import * as NodeRedis from 'redis'

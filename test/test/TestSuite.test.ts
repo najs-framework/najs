@@ -1,9 +1,11 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import { FacadeContainer } from 'najs-facade'
+import * as Express from 'express'
 import * as Jest from '../../lib/test/jest'
+import { FacadeContainer } from 'najs-facade'
 import { TestSuite } from '../../lib/test/TestSuite'
 import { isPromise } from '../../lib/private/isPromise'
+import { HttpMethod } from '../../lib/http/HttpMethod'
 
 describe('TestSuite', function() {
   describe('static .getFramework()', function() {
@@ -116,5 +118,58 @@ describe('TestSuite', function() {
       testSuite.tearDown()
       expect(verifyAndRestoreAllFacadesSpy.called).toBe(true)
     })
+  })
+
+  describe('protected .createSuperTest()', function() {
+    it('uses SuperTest to create an SuperTest instance wrap this.nativeHttpDriver', function() {
+      const testSuite = new TestSuite()
+      testSuite['nativeHttpDriver'] = Express()
+
+      const result = testSuite['createSuperTest']()
+      for (const name in HttpMethod) {
+        const method = name === 'M_SEARCH' ? 'm-search' : name.toLowerCase()
+        expect(typeof result[method]).toEqual('function')
+      }
+    })
+  })
+
+  describe('.call()', function() {
+    it('calls .createSuperTest() to get the superTest instance then call [http-method] with url', function() {
+      const testSuite = new TestSuite()
+      const createSuperTestStub = Sinon.stub(testSuite, <any>'createSuperTest')
+      const superTest = {
+        get(url: string) {
+          return 'get' + url
+        },
+
+        post(url: string) {
+          return 'post' + url
+        }
+      }
+      createSuperTestStub.returns(superTest)
+
+      expect(testSuite.call('get', '/')).toEqual('get/')
+      expect(testSuite.call('post', '/')).toEqual('post/')
+    })
+  })
+
+  it('flattens the SuperTestExpectation from 3rd params and call .injectExpectation(test)', function() {
+    const testSuite = new TestSuite()
+    const createSuperTestStub = Sinon.stub(testSuite, <any>'createSuperTest')
+    const superTest = {
+      get(url: string) {
+        return 'get' + url
+      }
+    }
+    const superTestExpectation = {
+      injectExpectation(test: any) {
+        return test
+      }
+    }
+    const injectExpectationSpy = Sinon.spy(superTestExpectation, 'injectExpectation')
+    createSuperTestStub.returns(superTest)
+
+    expect(testSuite.call('get', '/', superTestExpectation, superTestExpectation, superTestExpectation)).toEqual('get/')
+    expect(injectExpectationSpy.callCount).toEqual(3)
   })
 })

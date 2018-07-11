@@ -1,13 +1,13 @@
 /// <reference path="../../contracts/types/http.ts" />
 
-import { Log } from './../../facades/global/LogFacade'
+import { Log } from '../../facades/global/LogFacade'
 import { MemberProxy } from './MemberProxy'
 import { Controller } from './Controller'
 import { Request, Response } from 'express'
 import { RequestDataReader } from '../request/RequestDataReader'
 import { Input } from '../../facades/contextual/InputContextualFacade'
 import { CookieContextualFacade } from '../../facades/contextual/CookieContextualFacade'
-import { SessionContextualFacade } from './../../facades/contextual/SessionContextualFacade'
+import { SessionContextualFacade } from '../../facades/contextual/SessionContextualFacade'
 
 export type RequestIdAutoloadMetadata = {
   readonly requestId: string
