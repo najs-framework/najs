@@ -1,6 +1,7 @@
 import 'jest'
 import * as Sinon from 'sinon'
 import * as Express from 'express'
+import * as NajsBinding from 'najs-binding'
 import * as Jest from '../../lib/test/jest'
 import { FacadeContainer } from 'najs-facade'
 import { TestSuite } from '../../lib/test/TestSuite'
@@ -189,6 +190,41 @@ describe('TestSuite', function() {
       const expectations = ['b', 'c']
       expect(testSuite.get('/url', <any>'a', <any>expectations)).toBe('anything')
       expect(callStub.calledWith('GET', '/url', 'a', expectations)).toBe(true)
+    })
+  })
+
+  describe('.expectJson()', function() {
+    it('use make() to create an instance of Najs.Test.SuperTestExpectation.JsonExpectation', function() {
+      const makeStub = Sinon.stub(NajsBinding, 'make')
+      makeStub.returns('anything')
+
+      const testSuite = new TestSuite()
+      expect(testSuite.expectJson()).toEqual('anything')
+      expect(makeStub.calledWith('Najs.Test.SuperTestExpectation.JsonExpectation')).toBe(true)
+
+      const body = { a: 'any' }
+      expect(testSuite.expectJson(body)).toEqual('anything')
+      expect(makeStub.calledWith('Najs.Test.SuperTestExpectation.JsonExpectation', [body])).toBe(true)
+
+      makeStub.restore()
+    })
+  })
+
+  describe('Integration', function() {
+    describe('.expectJson()', function() {
+      it('should work with/without body', async function() {
+        const testSuite = new TestSuite()
+        const express = Express()
+        testSuite['nativeHttpDriver'] = express
+
+        const data = { a: 1, b: { c: 'test' } }
+        express.get('/test/integration/expectJson', function(req: any, res: any) {
+          return res.json(data)
+        })
+
+        await testSuite.get('/test/integration/expectJson', testSuite.expectJson())
+        await testSuite.get('/test/integration/expectJson', testSuite.expectJson(data))
+      })
     })
   })
 })

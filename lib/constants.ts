@@ -32,6 +32,11 @@ export const Najs = {
       ViewResponse: 'Najs.Http.Response.ViewResponse',
       HandlebarsViewResponse: 'Najs.Http.Response.HandlebarsViewResponse'
     }
+  },
+  Test: {
+    SuperTestExpectation: {
+      JsonExpectation: 'Najs.Test.SuperTestExpectation.JsonExpectation'
+    }
   }
 }
 

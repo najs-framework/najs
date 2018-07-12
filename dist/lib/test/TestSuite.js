@@ -1,10 +1,13 @@
 "use strict";
 /// <reference path="../contracts/types/http.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
+require("./supertest/JsonExpectation");
+const SuperTest = require("supertest");
 const najs_facade_1 = require("najs-facade");
 const jest_1 = require("./jest");
 const lodash_1 = require("lodash");
-const SuperTest = require("supertest");
+const najs_binding_1 = require("najs-binding");
+const constants_1 = require("../constants");
 class TestSuite {
     static getFramework() {
         return this.najs;
@@ -39,6 +42,7 @@ class TestSuite {
     tearDown() {
         najs_facade_1.FacadeContainer.verifyAndRestoreAllFacades();
     }
+    // -------------------------------------------------------------------------------------------------------------------
     createSuperTest() {
         return SuperTest(this.nativeHttpDriver);
     }
@@ -52,6 +56,9 @@ class TestSuite {
     }
     get(url, ...assertions) {
         return this.call('GET', url, ...assertions);
+    }
+    expectJson(body) {
+        return najs_binding_1.make(constants_1.Najs.Test.SuperTestExpectation.JsonExpectation, [body]);
     }
 }
 exports.TestSuite = TestSuite;

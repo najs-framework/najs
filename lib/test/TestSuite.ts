@@ -1,11 +1,14 @@
 /// <reference path="../contracts/types/http.ts" />
 
+import './supertest/JsonExpectation'
+import * as SuperTest from 'supertest'
 import { INajs } from '../core/INajs'
 import { FacadeContainer } from 'najs-facade'
 import { generateTestFromTestSuite } from './jest'
 import { flatten } from 'lodash'
-import { SuperTestExpectations } from './supertest/ISuperTestExpectation'
-import * as SuperTest from 'supertest'
+import { SuperTestExpectations, ISuperTestExpectation } from './supertest/ISuperTestExpectation'
+import { make } from 'najs-binding'
+import { Najs as NajsClasses } from '../constants'
 
 export class TestSuite {
   protected static najs: INajs | undefined
@@ -55,6 +58,8 @@ export class TestSuite {
     FacadeContainer.verifyAndRestoreAllFacades()
   }
 
+  // -------------------------------------------------------------------------------------------------------------------
+
   protected createSuperTest(): SuperTest.SuperTest<SuperTest.Test> {
     return SuperTest(this.nativeHttpDriver)
   }
@@ -71,4 +76,10 @@ export class TestSuite {
   get(url: string, ...assertions: SuperTestExpectations) {
     return this.call('GET', url, ...assertions)
   }
+
+  expectJson(body?: any): ISuperTestExpectation {
+    return make(NajsClasses.Test.SuperTestExpectation.JsonExpectation, [body])
+  }
+
+  // -------------------------------------------------------------------------------------------------------------------
 }

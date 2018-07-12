@@ -32,6 +32,11 @@ export declare const Najs: {
             HandlebarsViewResponse: string;
         };
     };
+    Test: {
+        SuperTestExpectation: {
+            JsonExpectation: string;
+        };
+    };
 };
 export declare const SystemClass: {
     HttpKernel: string;
