@@ -1,10 +1,14 @@
 "use strict";
+/// <reference types="najs-binding" />
 Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("../../constants");
 const najs_binding_1 = require("najs-binding");
 class JsonExpectation {
     constructor(body) {
         this.body = body;
+    }
+    getClassName() {
+        return constants_1.Najs.Test.SuperTestExpectation.JsonExpectation;
     }
     injectExpectation(test) {
         test.expect('content-type', /application\/json/);
