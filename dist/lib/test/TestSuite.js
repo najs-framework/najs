@@ -2,6 +2,7 @@
 /// <reference path="../contracts/types/http.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
 require("./supertest/JsonExpectation");
+require("./supertest/StatusExpectation");
 const SuperTest = require("supertest");
 const najs_facade_1 = require("najs-facade");
 const jest_1 = require("./jest");
@@ -59,6 +60,9 @@ class TestSuite {
     }
     expectJson(body) {
         return najs_binding_1.make(constants_1.Najs.Test.SuperTestExpectation.JsonExpectation, [body]);
+    }
+    expectStatus(status) {
+        return najs_binding_1.make(constants_1.Najs.Test.SuperTestExpectation.StatusExpectation, [status]);
     }
 }
 exports.TestSuite = TestSuite;

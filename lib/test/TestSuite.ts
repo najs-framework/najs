@@ -1,6 +1,7 @@
 /// <reference path="../contracts/types/http.ts" />
 
 import './supertest/JsonExpectation'
+import './supertest/StatusExpectation'
 import * as SuperTest from 'supertest'
 import { INajs } from '../core/INajs'
 import { FacadeContainer } from 'najs-facade'
@@ -79,6 +80,10 @@ export class TestSuite {
 
   expectJson(body?: any): ISuperTestExpectation {
     return make(NajsClasses.Test.SuperTestExpectation.JsonExpectation, [body])
+  }
+
+  expectStatus(status: number): ISuperTestExpectation {
+    return make(NajsClasses.Test.SuperTestExpectation.StatusExpectation, [status])
   }
 
   // -------------------------------------------------------------------------------------------------------------------

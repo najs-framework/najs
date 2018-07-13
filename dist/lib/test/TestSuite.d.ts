@@ -1,5 +1,6 @@
 /// <reference path="../contracts/types/http.d.ts" />
 import './supertest/JsonExpectation';
+import './supertest/StatusExpectation';
 import * as SuperTest from 'supertest';
 import { INajs } from '../core/INajs';
 import { SuperTestExpectations, ISuperTestExpectation } from './supertest/ISuperTestExpectation';
@@ -18,4 +19,5 @@ export declare class TestSuite {
     call(method: string | Najs.Http.HttpMethod, url: string, ...assertions: SuperTestExpectations): SuperTest.Test;
     get(url: string, ...assertions: SuperTestExpectations): SuperTest.Test;
     expectJson(body?: any): ISuperTestExpectation;
+    expectStatus(status: number): ISuperTestExpectation;
 }

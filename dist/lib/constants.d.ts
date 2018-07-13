@@ -35,6 +35,7 @@ export declare const Najs: {
     Test: {
         SuperTestExpectation: {
             JsonExpectation: string;
+            StatusExpectation: string;
         };
     };
 };

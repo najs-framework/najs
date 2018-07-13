@@ -226,5 +226,24 @@ describe('TestSuite', function() {
         await testSuite.get('/test/integration/expectJson', testSuite.expectJson(data))
       })
     })
+
+    describe('.expectStatus()', function() {
+      it('should work with any status', async function() {
+        const testSuite = new TestSuite()
+        const express = Express()
+        testSuite['nativeHttpDriver'] = express
+
+        express.get('/test/integration/expectStatus/204', function(req: any, res: any) {
+          return res.status(204).send()
+        })
+
+        express.get('/test/integration/expectStatus/404', function(req: any, res: any) {
+          return res.status(404).send()
+        })
+
+        await testSuite.get('/test/integration/expectStatus/204', testSuite.expectStatus(204))
+        await testSuite.get('/test/integration/expectStatus/404', testSuite.expectStatus(404))
+      })
+    })
   })
 })
