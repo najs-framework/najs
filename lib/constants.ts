@@ -34,6 +34,14 @@ export const Najs = {
     }
   },
   Test: {
+    Http: {
+      SuperTest: {
+        Expectation: {
+          JsonExpectation: 'Najs.Test.Http.SuperTest.Expectation.JsonExpectation',
+          StatusExpectation: 'Najs.Test.Http.SuperTest.Expectation.StatusExpectation'
+        }
+      }
+    },
     SuperTestExpectation: {
       JsonExpectation: 'Najs.Test.SuperTestExpectation.JsonExpectation',
       StatusExpectation: 'Najs.Test.SuperTestExpectation.StatusExpectation'

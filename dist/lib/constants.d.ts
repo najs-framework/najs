@@ -33,6 +33,14 @@ export declare const Najs: {
         };
     };
     Test: {
+        Http: {
+            SuperTest: {
+                Expectation: {
+                    JsonExpectation: string;
+                    StatusExpectation: string;
+                };
+            };
+        };
         SuperTestExpectation: {
             JsonExpectation: string;
             StatusExpectation: string;
