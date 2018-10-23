@@ -148,11 +148,11 @@ export class ExpressHttpDriver implements Najs.Contracts.HttpDriver<ExpressApp, 
   }
 
   protected createEndpointWrapper(controllerName: string, endpointName: string, middleware: Najs.Http.IMiddleware[]) {
-    return async (request: Express.Request, response: Express.Response) => {
+    return async (request: Express.Request, response: Express.Response, next: Express.NextFunction) => {
       const controller = make<Controller>(controllerName, [request, response])
       const endpoint: any = Reflect.get(controller, endpointName)
       if (isFunction(endpoint)) {
-        await this.triggerEndpoint(<any>controller, endpoint, request, response, middleware)
+        await this.triggerEndpoint(<any>controller, endpoint, request, response, middleware, next)
       }
     }
   }
@@ -162,11 +162,11 @@ export class ExpressHttpDriver implements Najs.Contracts.HttpDriver<ExpressApp, 
     endpointName: string,
     middleware: Najs.Http.IMiddleware[]
   ) {
-    return async (request: Express.Request, response: Express.Response) => {
+    return async (request: Express.Request, response: Express.Response, next: Express.NextFunction) => {
       const controller: Object = this.cloneControllerObject(controllerObject, request, response)
       const endpoint: any = Reflect.get(controller, endpointName)
       if (isFunction(endpoint)) {
-        await this.triggerEndpoint(<any>controller, endpoint, request, response, middleware)
+        await this.triggerEndpoint(<any>controller, endpoint, request, response, middleware, next)
       }
     }
   }
@@ -179,10 +179,10 @@ export class ExpressHttpDriver implements Najs.Contracts.HttpDriver<ExpressApp, 
   }
 
   protected createEndpointWrapperByFunction(endpoint: Function, middleware: Najs.Http.IMiddleware[]) {
-    return async (request: Express.Request, response: Express.Response) => {
+    return async (request: Express.Request, response: Express.Response, next: Express.NextFunction) => {
       // Can not use make for default ExpressController
       const controller = Reflect.construct(ExpressController, [request, response])
-      await this.triggerEndpoint(<any>controller, endpoint, request, response, middleware)
+      await this.triggerEndpoint(<any>controller, endpoint, request, response, middleware, next)
     }
   }
 
@@ -191,11 +191,16 @@ export class ExpressHttpDriver implements Najs.Contracts.HttpDriver<ExpressApp, 
     endpoint: Function,
     request: Express.Request,
     response: Express.Response,
-    middleware: Najs.Http.IMiddleware[]
+    middleware: Najs.Http.IMiddleware[],
+    next: Express.NextFunction
   ) {
-    await RouteMiddlewareUtil.applyBeforeMiddleware(middleware, request, response, controller)
-    const result = Reflect.apply(endpoint, controller, [request, response])
-    return this.handleEndpointResult(request, response, result, controller, middleware)
+    try {
+      await RouteMiddlewareUtil.applyBeforeMiddleware(middleware, request, response, controller)
+      const result = Reflect.apply(endpoint, controller, [request, response, next])
+      return this.handleEndpointResult(request, response, result, controller, middleware)
+    } catch (error) {
+      next(error)
+    }
   }
 
   protected async handleEndpointResult(

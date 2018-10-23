@@ -226,7 +226,7 @@ describe('ExpressHttpDriver', function () {
             const result = driver['createEndpointWrapper']('NotFound', 'invalid', []);
             expect(typeof result === 'function').toBe(true);
             try {
-                await result({}, {});
+                await result({}, {}, () => { });
             }
             catch (error) {
                 expect(error).toBeInstanceOf(ReferenceError);
@@ -241,7 +241,7 @@ describe('ExpressHttpDriver', function () {
             const result = driver['createEndpointWrapper']('TestControllerA', 'invalid', []);
             const request = {};
             const response = {};
-            result(request, response);
+            result(request, response, () => { });
             expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true);
             expect(endpointSpy.called).toBe(false);
             makeSpy.restore();
@@ -255,7 +255,7 @@ describe('ExpressHttpDriver', function () {
             const result = driver['createEndpointWrapper']('TestControllerA', 'endpoint', []);
             const request = {};
             const response = {};
-            await result(request, response);
+            await result(request, response, () => { });
             expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true);
             expect(endpointSpy.called).toBe(true);
             expect(handleEndpointResultStub.calledWith(request, response, undefined)).toBe(true);
@@ -280,7 +280,7 @@ describe('ExpressHttpDriver', function () {
             const result = driver['createEndpointWrapperByObject'](controller, 'invalid', []);
             const request = {};
             const response = {};
-            result(request, response);
+            result(request, response, () => { });
             expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true);
             expect(cloneControllerObjectSpy.called).toBe(true);
             makeSpy.restore();
@@ -295,7 +295,7 @@ describe('ExpressHttpDriver', function () {
             const result = driver['createEndpointWrapperByObject'](controller, 'endpoint', []);
             const request = {};
             const response = {};
-            await result(request, response);
+            await result(request, response, () => { });
             expect(cloneControllerObjectSpy.called).toBe(true);
             expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true);
             expect(handleEndpointResultStub.calledWith(request, response, undefined)).toBe(true);
@@ -313,7 +313,7 @@ describe('ExpressHttpDriver', function () {
             const result = driver['createEndpointWrapperByObject'](controller, 'invalid', []);
             const request = {};
             const response = {};
-            result(request, response);
+            result(request, response, () => { });
             expect(cloneControllerObjectSpy.called).toBe(true);
             expect(endpointSpy.called).toBe(false);
             cloneControllerObjectSpy.restore();
@@ -330,7 +330,7 @@ describe('ExpressHttpDriver', function () {
             const result = driver['createEndpointWrapperByObject'](controller, 'endpoint', []);
             const request = {};
             const response = {};
-            await result(request, response);
+            await result(request, response, () => { });
             expect(cloneControllerObjectSpy.called).toBe(true);
             expect(endpointSpy.called).toBe(true);
             expect(handleEndpointResultStub.calledWith(request, response, undefined)).toBe(true);
@@ -353,7 +353,7 @@ describe('ExpressHttpDriver', function () {
             expect(typeof result).toEqual('function');
         });
         it('creates new Controller with request, response', async function () {
-            await result(request, response);
+            await result(request, response, () => { });
             expect(handlerSpy.callCount).toEqual(1);
             const thisValue = handlerSpy.firstCall.thisValue;
             expect(thisValue).toBeInstanceOf(Controller_1.Controller);
@@ -368,6 +368,27 @@ describe('ExpressHttpDriver', function () {
             expect(handleEndpointResultStub.lastCall.args[3]).toBeInstanceOf(Controller_1.Controller);
             expect(handleEndpointResultStub.lastCall.args[4]).toEqual([]);
             handleEndpointResultStub.restore();
+        });
+        it('passes error to the NextFunction if there is any error thrown', async function () {
+            const error = new Error('Test');
+            function errorHandler() {
+                throw error;
+            }
+            const errorHandlerSpy = Sinon.spy(errorHandler);
+            const driver = new ExpressHttpDriver_1.ExpressHttpDriver();
+            const result = driver['createEndpointWrapperByFunction'](errorHandlerSpy, []);
+            const request = { method: 'GET' };
+            const response = {};
+            function next() { }
+            const nextSpy = Sinon.spy(next);
+            await result(request, response, nextSpy);
+            expect(errorHandlerSpy.callCount).toEqual(1);
+            expect(nextSpy.calledWith(error)).toBe(true);
+            const thisValue = errorHandlerSpy.firstCall.thisValue;
+            expect(thisValue).toBeInstanceOf(Controller_1.Controller);
+            expect(thisValue).toBeInstanceOf(ExpressController_1.ExpressController);
+            expect(thisValue.request === request).toBe(true);
+            expect(thisValue.response === response).toBe(true);
         });
     });
     describe('protected .cloneControllerObject()', function () {

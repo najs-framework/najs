@@ -278,7 +278,7 @@ describe('ExpressHttpDriver', function() {
       const result = driver['createEndpointWrapper']('NotFound', 'invalid', [])
       expect(typeof result === 'function').toBe(true)
       try {
-        await result(<any>{}, <any>{})
+        await result(<any>{}, <any>{}, () => {})
       } catch (error) {
         expect(error).toBeInstanceOf(ReferenceError)
         return
@@ -294,7 +294,7 @@ describe('ExpressHttpDriver', function() {
 
       const request = {}
       const response = {}
-      result(<any>request, <any>response)
+      result(<any>request, <any>response, () => {})
       expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true)
       expect(endpointSpy.called).toBe(false)
       makeSpy.restore()
@@ -310,7 +310,7 @@ describe('ExpressHttpDriver', function() {
       const result = driver['createEndpointWrapper']('TestControllerA', 'endpoint', [])
       const request = {}
       const response = {}
-      await result(<any>request, <any>response)
+      await result(<any>request, <any>response, () => {})
       expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true)
       expect(endpointSpy.called).toBe(true)
       expect(handleEndpointResultStub.calledWith(request, response, undefined)).toBe(true)
@@ -339,7 +339,7 @@ describe('ExpressHttpDriver', function() {
 
       const request = {}
       const response = {}
-      result(<any>request, <any>response)
+      result(<any>request, <any>response, () => {})
       expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true)
       expect(cloneControllerObjectSpy.called).toBe(true)
 
@@ -358,7 +358,7 @@ describe('ExpressHttpDriver', function() {
 
       const request = {}
       const response = {}
-      await result(<any>request, <any>response)
+      await result(<any>request, <any>response, () => {})
       expect(cloneControllerObjectSpy.called).toBe(true)
       expect(makeSpy.calledWith('TestControllerA', [request, response])).toBe(true)
       expect(handleEndpointResultStub.calledWith(request, response, undefined)).toBe(true)
@@ -381,7 +381,7 @@ describe('ExpressHttpDriver', function() {
 
       const request = {}
       const response = {}
-      result(<any>request, <any>response)
+      result(<any>request, <any>response, () => {})
       expect(cloneControllerObjectSpy.called).toBe(true)
       expect(endpointSpy.called).toBe(false)
       cloneControllerObjectSpy.restore()
@@ -401,7 +401,7 @@ describe('ExpressHttpDriver', function() {
 
       const request = {}
       const response = {}
-      await result(<any>request, <any>response)
+      await result(<any>request, <any>response, () => {})
       expect(cloneControllerObjectSpy.called).toBe(true)
       expect(endpointSpy.called).toBe(true)
       expect(handleEndpointResultStub.calledWith(request, response, undefined)).toBe(true)
@@ -429,7 +429,7 @@ describe('ExpressHttpDriver', function() {
     })
 
     it('creates new Controller with request, response', async function() {
-      await result(<any>request, <any>response)
+      await result(<any>request, <any>response, () => {})
 
       expect(handlerSpy.callCount).toEqual(1)
       const thisValue = handlerSpy.firstCall.thisValue
@@ -447,6 +447,32 @@ describe('ExpressHttpDriver', function() {
       expect(handleEndpointResultStub.lastCall.args[3]).toBeInstanceOf(Controller)
       expect(handleEndpointResultStub.lastCall.args[4]).toEqual([])
       handleEndpointResultStub.restore()
+    })
+
+    it('passes error to the NextFunction if there is any error thrown', async function() {
+      const error = new Error('Test')
+      function errorHandler() {
+        throw error
+      }
+      const errorHandlerSpy = Sinon.spy(errorHandler)
+
+      const driver = new ExpressHttpDriver()
+      const result = driver['createEndpointWrapperByFunction'](errorHandlerSpy, [])
+      const request = { method: 'GET' }
+      const response = {}
+
+      function next() {}
+      const nextSpy = Sinon.spy(next)
+
+      await result(<any>request, <any>response, nextSpy)
+
+      expect(errorHandlerSpy.callCount).toEqual(1)
+      expect(nextSpy.calledWith(error)).toBe(true)
+      const thisValue = errorHandlerSpy.firstCall.thisValue
+      expect(thisValue).toBeInstanceOf(Controller)
+      expect(thisValue).toBeInstanceOf(ExpressController)
+      expect(thisValue.request === request).toBe(true)
+      expect(thisValue.response === response).toBe(true)
     })
   })
 

@@ -20,11 +20,11 @@ export declare class ExpressHttpDriver implements Najs.Contracts.HttpDriver<Expr
     route(route: Najs.Http.IRouteData): void;
     protected getEndpointHandlers(method: string, path: string, route: Najs.Http.IRouteData): ExpressHandlers;
     protected createHandlersForRoute(route: Najs.Http.IRouteData, middlewareList: Najs.Http.IMiddleware[]): ExpressHandlers;
-    protected createEndpointWrapper(controllerName: string, endpointName: string, middleware: Najs.Http.IMiddleware[]): (request: Express.Request, response: Express.Response) => Promise<void>;
-    protected createEndpointWrapperByObject(controllerObject: Object, endpointName: string, middleware: Najs.Http.IMiddleware[]): (request: Express.Request, response: Express.Response) => Promise<void>;
+    protected createEndpointWrapper(controllerName: string, endpointName: string, middleware: Najs.Http.IMiddleware[]): (request: Express.Request, response: Express.Response, next: Express.NextFunction) => Promise<void>;
+    protected createEndpointWrapperByObject(controllerObject: Object, endpointName: string, middleware: Najs.Http.IMiddleware[]): (request: Express.Request, response: Express.Response, next: Express.NextFunction) => Promise<void>;
     protected cloneControllerObject(controller: Object, request: Express.Request, response: Express.Response): Object;
-    protected createEndpointWrapperByFunction(endpoint: Function, middleware: Najs.Http.IMiddleware[]): (request: Express.Request, response: Express.Response) => Promise<void>;
-    protected triggerEndpoint(controller: Controller, endpoint: Function, request: Express.Request, response: Express.Response, middleware: Najs.Http.IMiddleware[]): Promise<any>;
+    protected createEndpointWrapperByFunction(endpoint: Function, middleware: Najs.Http.IMiddleware[]): (request: Express.Request, response: Express.Response, next: Express.NextFunction) => Promise<void>;
+    protected triggerEndpoint(controller: Controller, endpoint: Function, request: Express.Request, response: Express.Response, middleware: Najs.Http.IMiddleware[], next: Express.NextFunction): Promise<any>;
     protected handleEndpointResult(request: Express.Request, response: Express.Response, result: any, controller: Controller, middleware: Najs.Http.IMiddleware[]): Promise<any>;
     start(options?: Najs.Http.StartOptions): void;
     respondView(response: Express.Response, view: string, variables: Object): void;

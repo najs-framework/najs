@@ -111,20 +111,20 @@ class ExpressHttpDriver {
         return handlers;
     }
     createEndpointWrapper(controllerName, endpointName, middleware) {
-        return async (request, response) => {
+        return async (request, response, next) => {
             const controller = najs_binding_1.make(controllerName, [request, response]);
             const endpoint = Reflect.get(controller, endpointName);
             if (lodash_1.isFunction(endpoint)) {
-                await this.triggerEndpoint(controller, endpoint, request, response, middleware);
+                await this.triggerEndpoint(controller, endpoint, request, response, middleware, next);
             }
         };
     }
     createEndpointWrapperByObject(controllerObject, endpointName, middleware) {
-        return async (request, response) => {
+        return async (request, response, next) => {
             const controller = this.cloneControllerObject(controllerObject, request, response);
             const endpoint = Reflect.get(controller, endpointName);
             if (lodash_1.isFunction(endpoint)) {
-                await this.triggerEndpoint(controller, endpoint, request, response, middleware);
+                await this.triggerEndpoint(controller, endpoint, request, response, middleware, next);
             }
         };
     }
@@ -135,16 +135,21 @@ class ExpressHttpDriver {
         return Object.assign({}, controller, { request, response });
     }
     createEndpointWrapperByFunction(endpoint, middleware) {
-        return async (request, response) => {
+        return async (request, response, next) => {
             // Can not use make for default ExpressController
             const controller = Reflect.construct(ExpressController_1.ExpressController, [request, response]);
-            await this.triggerEndpoint(controller, endpoint, request, response, middleware);
+            await this.triggerEndpoint(controller, endpoint, request, response, middleware, next);
         };
     }
-    async triggerEndpoint(controller, endpoint, request, response, middleware) {
-        await RouteMiddlewareUtil_1.RouteMiddlewareUtil.applyBeforeMiddleware(middleware, request, response, controller);
-        const result = Reflect.apply(endpoint, controller, [request, response]);
-        return this.handleEndpointResult(request, response, result, controller, middleware);
+    async triggerEndpoint(controller, endpoint, request, response, middleware, next) {
+        try {
+            await RouteMiddlewareUtil_1.RouteMiddlewareUtil.applyBeforeMiddleware(middleware, request, response, controller);
+            const result = Reflect.apply(endpoint, controller, [request, response, next]);
+            return this.handleEndpointResult(request, response, result, controller, middleware);
+        }
+        catch (error) {
+            next(error);
+        }
     }
     async handleEndpointResult(request, response, result, controller, middleware) {
         const rawValue = isPromise_1.isPromise(result) ? await result : result;
