@@ -2,6 +2,11 @@
 /// <reference path="../../contracts/ViewResponse.ts" />
 /// <reference path="../../contracts/ResponseFactory.ts" />
 
+import './BackResponse'
+import './JsonpResponse'
+import './JsonResponse'
+import './RedirectResponse'
+import './ViewResponse'
 import { make, register } from 'najs-binding'
 import { Facade } from 'najs-facade'
 import { Najs } from '../../constants'

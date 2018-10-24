@@ -3,6 +3,11 @@
 /// <reference path="../../contracts/ViewResponse.ts" />
 /// <reference path="../../contracts/ResponseFactory.ts" />
 Object.defineProperty(exports, "__esModule", { value: true });
+require("./BackResponse");
+require("./JsonpResponse");
+require("./JsonResponse");
+require("./RedirectResponse");
+require("./ViewResponse");
 const najs_binding_1 = require("najs-binding");
 const najs_facade_1 = require("najs-facade");
 const constants_1 = require("../../constants");

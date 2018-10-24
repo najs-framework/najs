@@ -1,6 +1,11 @@
 /// <reference path="../../contracts/Response.d.ts" />
 /// <reference path="../../contracts/ViewResponse.d.ts" />
 /// <reference path="../../contracts/ResponseFactory.d.ts" />
+import './BackResponse';
+import './JsonpResponse';
+import './JsonResponse';
+import './RedirectResponse';
+import './ViewResponse';
 import { Facade } from 'najs-facade';
 export declare class ResponseFactory extends Facade implements Najs.Contracts.ResponseFactory {
     static className: string;
