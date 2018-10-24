@@ -64,6 +64,20 @@ describe('TestSuite', function() {
     })
   })
 
+  describe('.beforeAll()', function() {
+    it('does nothing, just a definition, it will run before all tests', function() {
+      const testSuite = new TestSuite()
+      expect(testSuite.beforeAll()).toBeUndefined()
+    })
+  })
+
+  describe('.afterAll()', function() {
+    it('does nothing, just a definition, it will run after all tests', function() {
+      const testSuite = new TestSuite()
+      expect(testSuite.afterAll()).toBeUndefined()
+    })
+  })
+
   describe('.setUp()', function() {
     it('does nothing and return undefined if the TestSuite.najs instance is undefined', function() {
       const testSuite = new TestSuite()

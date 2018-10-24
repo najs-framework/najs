@@ -13,6 +13,8 @@ export declare class TestSuite {
     static clear(): void;
     static runWithJest(testSuite: typeof TestSuite): typeof TestSuite;
     static jest(testSuite: typeof TestSuite): typeof TestSuite;
+    beforeAll(): void;
+    afterAll(): void;
     setUp(): Promise<{}> | undefined;
     tearDown(): void;
     protected createSuperTest(): SuperTest.SuperTest<SuperTest.Test>;

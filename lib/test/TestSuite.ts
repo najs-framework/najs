@@ -42,6 +42,10 @@ export class TestSuite {
 
   // -------------------------------------------------------------------------------------------------------------------
 
+  beforeAll() {}
+
+  afterAll() {}
+
   setUp() {
     if (typeof TestSuite.najs === 'undefined' || TestSuite.najs.isStarted()) {
       return

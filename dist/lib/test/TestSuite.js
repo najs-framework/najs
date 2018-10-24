@@ -29,6 +29,8 @@ class TestSuite {
         return this.runWithJest(testSuite);
     }
     // -------------------------------------------------------------------------------------------------------------------
+    beforeAll() { }
+    afterAll() { }
     setUp() {
         if (typeof TestSuite.najs === 'undefined' || TestSuite.najs.isStarted()) {
             return;

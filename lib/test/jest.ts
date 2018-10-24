@@ -19,6 +19,9 @@ export function generateTestFromTestSuite(suite: typeof TestSuite) {
 
   const instance: TestSuite = Reflect.construct(suite, [])
   describe(suite.name, function() {
+    beforeAll(instance.beforeAll.bind(instance))
+    afterAll(instance.afterAll.bind(instance))
+
     beforeEach(instance.setUp.bind(instance))
     afterEach(instance.tearDown.bind(instance))
 
