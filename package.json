@@ -64,7 +64,7 @@
     "handlebars-helpers": "^0.10.0",
     "jest": "^21.2.1",
     "najs-binding": "^1.8.0",
-    "najs-eloquent": "^0.2.15",
+    "najs-eloquent": "^0.4.0",
     "najs-facade": "^1.1.0",
     "redis": "^2.8.0",
     "sinon": "^4.1.3",
