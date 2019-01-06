@@ -11,21 +11,6 @@ const AuthManager_1 = require("../../lib/auth/AuthManager");
 const constants_2 = require("../../lib/constants");
 const EventFacade_1 = require("../../lib/facades/global/EventFacade");
 const najs_binding_1 = require("najs-binding");
-const mongoose_1 = require("mongoose");
-const mongoose = require('mongoose');
-class MongooseProvider {
-    getClassName() {
-        return MongooseProvider.className;
-    }
-    getMongooseInstance() {
-        return mongoose;
-    }
-    createModelFromSchema(modelName, schema) {
-        return mongoose_1.model(modelName, schema);
-    }
-}
-MongooseProvider.className = 'MongooseProvider';
-najs_binding_1.register(MongooseProvider);
 describe('AuthManager', function () {
     it('extends from ContextualFacade', function () {
         const authManager = new AuthManager_1.AuthManager({});

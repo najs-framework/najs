@@ -5,8 +5,7 @@ const constants_1 = require("../constants");
 const najs_eloquent_1 = require("najs-eloquent");
 const mongoose_1 = require("mongoose");
 const Crypto = require("crypto");
-exports.GenericUserBase = najs_eloquent_1.Eloquent.Mongoose();
-class GenericUser extends exports.GenericUserBase {
+class GenericUser extends najs_eloquent_1.Model {
     getClassName() {
         return GenericUser.className;
     }
@@ -41,8 +40,8 @@ class GenericUser extends exports.GenericUserBase {
     toObject() {
         return this.cleanSecretAttribute(super.toObject());
     }
-    toJson() {
-        return this.cleanSecretAttribute(super.toJson());
+    toJSON() {
+        return this.cleanSecretAttribute(super.toJSON());
     }
     // -------------------------------------------------------------------------------------------------------------------
     getAuthIdentifierName() {

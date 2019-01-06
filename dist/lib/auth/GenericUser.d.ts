@@ -1,10 +1,12 @@
 import { IGenericUser } from './interfaces/IGenericUser';
 import { IAuthenticatable } from './interfaces/IAuthenticatable';
-import { EloquentMongooseSpec } from 'najs-eloquent';
+import { Model } from 'najs-eloquent';
 import { Schema } from 'mongoose';
-export declare const GenericUserBase: EloquentMongooseSpec<IGenericUser, GenericUser>;
-export declare class GenericUser extends GenericUserBase implements IAuthenticatable {
+export declare class GenericUser extends Model implements IAuthenticatable, IGenericUser {
     static className: string;
+    id?: string;
+    email: string;
+    remember_token: string;
     getClassName(): string;
     getSchema(): Schema;
     password: string;
@@ -12,7 +14,7 @@ export declare class GenericUser extends GenericUserBase implements IAuthenticat
     protected hashPassword(password: string): any;
     protected cleanSecretAttribute(value: Object): Object;
     toObject(): Object;
-    toJson(): Object;
+    toJSON(): Object;
     getAuthIdentifierName(): string;
     getAuthIdentifier(): any;
     getAuthPassword(password?: string): string;

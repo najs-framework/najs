@@ -9,26 +9,6 @@ import { AuthManager } from '../../lib/auth/AuthManager'
 import { ContextualFacadeClass } from '../../lib/constants'
 import { EventFacade } from '../../lib/facades/global/EventFacade'
 import { register } from 'najs-binding'
-import { IMongooseProvider } from 'najs-eloquent'
-import { Schema, Document, model } from 'mongoose'
-const mongoose = require('mongoose')
-
-class MongooseProvider implements IMongooseProvider {
-  static className: string = 'MongooseProvider'
-
-  getClassName() {
-    return MongooseProvider.className
-  }
-
-  getMongooseInstance() {
-    return mongoose
-  }
-
-  createModelFromSchema<T extends Document>(modelName: string, schema: Schema) {
-    return model<T>(modelName, schema)
-  }
-}
-register(MongooseProvider)
 
 describe('AuthManager', function() {
   it('extends from ContextualFacade', function() {

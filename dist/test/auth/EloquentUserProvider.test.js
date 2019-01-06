@@ -2,25 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 require("jest");
 const Sinon = require("sinon");
-const najs_binding_1 = require("najs-binding");
 const constants_1 = require("../../lib/constants");
 const EloquentUserProvider_1 = require("../../lib/auth/EloquentUserProvider");
 const GenericUser_1 = require("../../lib/auth/GenericUser");
-const mongoose_1 = require("mongoose");
-const mongoose = require('mongoose');
-class MongooseProvider {
-    getClassName() {
-        return MongooseProvider.className;
-    }
-    getMongooseInstance() {
-        return mongoose;
-    }
-    createModelFromSchema(modelName, schema) {
-        return mongoose_1.model(modelName, schema);
-    }
-}
-MongooseProvider.className = 'MongooseProvider';
-najs_binding_1.register(MongooseProvider);
 describe('EloquentUserProvider', function () {
     it('implements IAutoload', function () {
         const userProvider = new EloquentUserProvider_1.EloquentUserProvider();

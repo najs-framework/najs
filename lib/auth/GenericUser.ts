@@ -2,16 +2,15 @@ import { register } from 'najs-binding'
 import { IGenericUser } from './interfaces/IGenericUser'
 import { IAuthenticatable } from './interfaces/IAuthenticatable'
 import { AuthClass } from '../constants'
-import { Eloquent, EloquentMongooseSpec } from 'najs-eloquent'
+import { Model } from 'najs-eloquent'
 import { Schema } from 'mongoose'
 import * as Crypto from 'crypto'
 
-export const GenericUserBase: EloquentMongooseSpec<IGenericUser, GenericUser> = Eloquent.Mongoose<
-  IGenericUser,
-  GenericUser
->()
-export class GenericUser extends GenericUserBase implements IAuthenticatable {
+export class GenericUser extends Model implements IAuthenticatable, IGenericUser {
   static className: string = AuthClass.GenericUser
+  id?: string
+  email: string
+  remember_token: string
 
   getClassName() {
     return GenericUser.className
@@ -57,8 +56,8 @@ export class GenericUser extends GenericUserBase implements IAuthenticatable {
     return this.cleanSecretAttribute(super.toObject())
   }
 
-  toJson() {
-    return this.cleanSecretAttribute(super.toJson())
+  toJSON() {
+    return this.cleanSecretAttribute(super.toJSON())
   }
 
   // -------------------------------------------------------------------------------------------------------------------

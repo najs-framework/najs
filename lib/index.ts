@@ -128,9 +128,9 @@ export { HandlebarsViewServiceProvider } from './service-providers/HandlebarsVie
 export { MongooseServiceProvider } from './service-providers/MongooseServiceProvider'
 
 // auth package
-// export { AuthManager } from './auth/AuthManager'
-// export { Guard } from './auth/guards/Guard'
-// export { SessionGuard } from './auth/guards/SessionGuard'
-// export { GenericUser } from './auth/GenericUser'
-// export { EloquentUserProvider } from './auth/EloquentUserProvider'
-// export { LoginController } from './auth/controller/LoginController'
+export { AuthManager } from './auth/AuthManager'
+export { Guard } from './auth/guards/Guard'
+export { SessionGuard } from './auth/guards/SessionGuard'
+export { GenericUser } from './auth/GenericUser'
+export { EloquentUserProvider } from './auth/EloquentUserProvider'
+export { LoginController } from './auth/controller/LoginController'

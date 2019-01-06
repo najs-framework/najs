@@ -165,9 +165,15 @@ exports.HandlebarsViewServiceProvider = HandlebarsViewServiceProvider_1.Handleba
 var MongooseServiceProvider_1 = require("./service-providers/MongooseServiceProvider");
 exports.MongooseServiceProvider = MongooseServiceProvider_1.MongooseServiceProvider;
 // auth package
-// export { AuthManager } from './auth/AuthManager'
-// export { Guard } from './auth/guards/Guard'
-// export { SessionGuard } from './auth/guards/SessionGuard'
-// export { GenericUser } from './auth/GenericUser'
-// export { EloquentUserProvider } from './auth/EloquentUserProvider'
-// export { LoginController } from './auth/controller/LoginController'
+var AuthManager_1 = require("./auth/AuthManager");
+exports.AuthManager = AuthManager_1.AuthManager;
+var Guard_1 = require("./auth/guards/Guard");
+exports.Guard = Guard_1.Guard;
+var SessionGuard_1 = require("./auth/guards/SessionGuard");
+exports.SessionGuard = SessionGuard_1.SessionGuard;
+var GenericUser_1 = require("./auth/GenericUser");
+exports.GenericUser = GenericUser_1.GenericUser;
+var EloquentUserProvider_1 = require("./auth/EloquentUserProvider");
+exports.EloquentUserProvider = EloquentUserProvider_1.EloquentUserProvider;
+var LoginController_1 = require("./auth/controller/LoginController");
+exports.LoginController = LoginController_1.LoginController;

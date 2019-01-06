@@ -919,6 +919,10 @@ bser@^2.0.0:
   dependencies:
     node-int64 "^0.4.0"
 
+bson@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/bson/-/bson-3.0.2.tgz#2467a76507a98c63ce34072f9965f4024e753dfc"
+
 bson@~1.0.4:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/bson/-/bson-1.0.4.tgz#93c10d39eaa5b58415cbc4052f3e53e562b0b72c"
@@ -990,6 +994,10 @@ chalk@^2.0.1, chalk@^2.3.0:
     escape-string-regexp "^1.0.5"
     supports-color "^5.2.0"
 
+chance@^1.0.13:
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/chance/-/chance-1.0.18.tgz#79788fe6fca4c338bf404321c347eecc80f969ee"
+
 chokidar@^1.6.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/chokidar/-/chokidar-1.7.0.tgz#798e689778151c8076b4b360e5edd28cda2bb468"
@@ -1049,6 +1057,10 @@ co@^4.6.0:
 code-point-at@^1.0.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/code-point-at/-/code-point-at-1.1.0.tgz#0d070b4d043a5bea33a2f1a40e2edb3d9a4ccf77"
+
+collect.js@^4.0.11:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/collect.js/-/collect.js-4.3.0.tgz#9ad641f76a66f17a63373f26aa8c5f0ca8471ad1"
 
 collect.js@^4.0.4:
   version "4.0.11"
@@ -1391,6 +1403,10 @@ ecdsa-sig-formatter@1.0.9:
 ee-first@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/ee-first/-/ee-first-1.1.1.tgz#590c61156b0ae2f4f0255732a158b266bc56b21d"
+
+emittery@^0.4.0:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/emittery/-/emittery-0.4.1.tgz#abe9d3297389ba424ac87e53d1c701962ce7433d"
 
 encodeurl@~1.0.1:
   version "1.0.2"
@@ -3110,16 +3126,9 @@ moment@^2.18.1:
   version "2.20.1"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.20.1.tgz#d6eb1a46cbcc14a2b2f9434112c1ff8907f313fd"
 
-moment@^2.20.1, moment@^2.21.0:
+moment@^2.21.0:
   version "2.21.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.21.0.tgz#2a114b51d2a6ec9e6d83cf803f838a878d8a023a"
-
-mongodb-core@3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/mongodb-core/-/mongodb-core-3.0.3.tgz#496d7dd0052dc3a2e213edf9ddcddc78b47a712c"
-  dependencies:
-    bson "~1.0.4"
-    require_optional "^1.0.1"
 
 mongodb-core@3.0.4:
   version "3.0.4"
@@ -3127,12 +3136,6 @@ mongodb-core@3.0.4:
   dependencies:
     bson "~1.0.4"
     require_optional "^1.0.1"
-
-mongodb@3.0.3:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/mongodb/-/mongodb-3.0.3.tgz#83b33e01f26b4a2e1f8a2b3427cabbaee31df017"
-  dependencies:
-    mongodb-core "3.0.3"
 
 mongodb@3.0.4:
   version "3.0.4"
@@ -3143,22 +3146,6 @@ mongodb@3.0.4:
 mongoose-legacy-pluralize@1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
-
-mongoose@^5.0.0-rc0:
-  version "5.0.8"
-  resolved "https://registry.yarnpkg.com/mongoose/-/mongoose-5.0.8.tgz#0bec202dfa7529b0592a55c880e3cf0949656852"
-  dependencies:
-    async "2.1.4"
-    bson "~1.0.4"
-    kareem "2.0.5"
-    lodash.get "4.4.2"
-    mongodb "3.0.3"
-    mongoose-legacy-pluralize "1.0.2"
-    mpath "0.3.0"
-    mquery "3.0.0"
-    ms "2.0.0"
-    regexp-clone "0.0.1"
-    sliced "1.0.1"
 
 mongoose@^5.0.9:
   version "5.0.9"
@@ -3203,18 +3190,36 @@ najs-binding@^1.8.0:
   dependencies:
     lodash "^4.17.4"
 
-najs-eloquent@^0.2.15:
-  version "0.2.15"
-  resolved "https://registry.yarnpkg.com/najs-eloquent/-/najs-eloquent-0.2.15.tgz#0d300a1852d1b23b90e1bd250d7b2cbd7a5a8e7e"
+najs-eloquent@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/najs-eloquent/-/najs-eloquent-0.4.0.tgz#b02b8c3e3e905b9a57faa33dd6ab8eed2648f641"
   dependencies:
+    bson "^3.0.2"
+    chance "^1.0.13"
+    collect.js "^4.0.11"
     lodash "^4.17.4"
-    moment "^2.20.1"
-    mongoose "^5.0.0-rc0"
+    moment "^2.21.0"
+    najs-event "^0.2.0"
+    najs-facade "^1.1.1"
     pluralize "^7.0.0"
+
+najs-event@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/najs-event/-/najs-event-0.2.0.tgz#46512f22286d98a8fe19a3320cf2c942e4597e59"
+  dependencies:
+    emittery "^0.4.0"
+    najs-facade "^1.1.1"
+    wolfy87-eventemitter "^5.2.4"
 
 najs-facade@^1.1.0:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/najs-facade/-/najs-facade-1.1.0.tgz#6e79867ba8003a4b75880aad8875fab9ac400b35"
+  dependencies:
+    sinon "^4.1.3"
+
+najs-facade@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/najs-facade/-/najs-facade-1.1.1.tgz#f651a7c8b3d27268c9c6f4dd1ed30f6095c0b124"
   dependencies:
     sinon "^4.1.3"
 
@@ -4680,6 +4685,10 @@ winston@^2.4.0:
     eyes "0.1.x"
     isstream "0.1.x"
     stack-trace "0.0.x"
+
+wolfy87-eventemitter@^5.2.4:
+  version "5.2.5"
+  resolved "https://registry.yarnpkg.com/wolfy87-eventemitter/-/wolfy87-eventemitter-5.2.5.tgz#e7af2adbb84e481c65edeb2a2e01032c8ff1b88f"
 
 wordwrap@0.0.2:
   version "0.0.2"

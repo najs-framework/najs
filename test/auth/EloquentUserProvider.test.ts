@@ -1,30 +1,8 @@
 import 'jest'
 import * as Sinon from 'sinon'
-import { register } from 'najs-binding'
 import { AuthClass } from '../../lib/constants'
 import { EloquentUserProvider } from '../../lib/auth/EloquentUserProvider'
-import { IMongooseProvider } from 'najs-eloquent'
 import { GenericUser } from '../../lib/auth/GenericUser'
-import { Schema, Document, model } from 'mongoose'
-
-const mongoose = require('mongoose')
-
-class MongooseProvider implements IMongooseProvider {
-  static className: string = 'MongooseProvider'
-
-  getClassName() {
-    return MongooseProvider.className
-  }
-
-  getMongooseInstance() {
-    return mongoose
-  }
-
-  createModelFromSchema<T extends Document>(modelName: string, schema: Schema) {
-    return model<T>(modelName, schema)
-  }
-}
-register(MongooseProvider)
 
 describe('EloquentUserProvider', function() {
   it('implements IAutoload', function() {
